@@ -1,0 +1,11 @@
+{
+  "project_name": "PROJECT_NAME_PLACEHOLDER",
+  "dataset_path": "DATASET_PATH_PLACEHOLDER",
+  "yolo_version": "11",
+  "model_size": "medium",
+  "epochs": 50,
+  "image_size": 1024,
+  "batch_size": 16,
+  "num_seeds": 5,
+  "mode": "experimental"
+}

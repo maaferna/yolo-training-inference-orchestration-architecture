@@ -1,0 +1,7 @@
+{
+  "project_name": "PROJECT_NAME_PLACEHOLDER",
+  "new_data_path": "NEW_DATA_PLACEHOLDER",
+  "mode": "continuous_improvement",
+  "improvement_threshold": 0.01,
+  "expected_baseline_mAP50": "ILLUSTRATIVE_METRIC_VALUE"
+}

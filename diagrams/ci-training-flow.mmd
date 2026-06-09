@@ -1,0 +1,38 @@
+sequenceDiagram
+    participant User
+    participant Django
+    participant FastAPI
+    participant Storage as Shared Storage
+    participant YOLO as CI Training
+    participant ClearML
+    
+    User->>Django: POST /ci-training<br/>(new_data)
+    Django->>FastAPI: HTTP Request
+    
+    FastAPI->>Storage: Read best_model_ref.json
+    Storage-->>FastAPI: {path: "models/best_v5.pt"}
+    FastAPI->>Storage: Load best model
+    
+    Note over FastAPI: Baseline metrics captured
+    FastAPI->>FastAPI: baseline = previous best metrics
+    
+    FastAPI->>YOLO: Incremental training<br/>(load previous best, new data)
+    YOLO->>YOLO: Fine-tune on new data
+    YOLO->>Storage: Save checkpoint
+    ClearML->>ClearML: Log metrics
+    
+    YOLO-->>FastAPI: CI training complete<br/>(new_metrics={mAP50:0.87})
+    
+    FastAPI->>FastAPI: Compare metrics<br/>improvement = new - baseline
+    FastAPI->>FastAPI: Check: improvement > 0.01?
+    
+    alt improvement >= threshold
+        FastAPI->>Storage: Save new model
+        FastAPI->>Storage: ⚠️ UPDATE best_model_ref.json<br/>(potential race condition)
+        FastAPI->>ClearML: Log improvement
+        FastAPI-->>Django: SUCCESS<br/>(improved to 0.87)
+        Django-->>User: Model improved!
+    else no improvement
+        FastAPI-->>Django: APPROVED<br/>(no improvement)
+        Django-->>User: Previous model still best
+    end

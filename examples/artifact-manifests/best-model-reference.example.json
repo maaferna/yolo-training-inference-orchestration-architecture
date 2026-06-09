@@ -1,0 +1,16 @@
+{
+  "best_model_id": "BEST_MODEL_ID_PLACEHOLDER",
+  "model_path": "models/PROJECT_NAME_PLACEHOLDER/best.pt",
+  "model_version": "ILLUSTRATIVE_VERSION_NUMBER",
+  "mAP50": "ILLUSTRATIVE_METRIC_VALUE",
+  "created_at": "2024-01-15T14:30:00Z",
+  "training_epochs": 50,
+  "image_size": 1024,
+  "batch_size": 16,
+  "yolo_version": "11",
+  "performance_metadata": {
+    "validation_dataset": "VALIDATION_DATA_PLACEHOLDER",
+    "total_classes": "ILLUSTRATIVE_COUNT",
+    "inference_speed_ms": "ILLUSTRATIVE_TIME_VALUE"
+  }
+}

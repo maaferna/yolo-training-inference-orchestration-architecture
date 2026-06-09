@@ -1,0 +1,24 @@
+{
+  "training_job_id": "TRAINING_JOB_ID_PLACEHOLDER",
+  "project_name": "PROJECT_NAME_PLACEHOLDER",
+  "num_seeds": 5,
+  "seeds_used": [42, 123, 456, 789, 999],
+  "metrics_by_seed": [
+    {
+      "seed": 42,
+      "mAP50": "ILLUSTRATIVE_METRIC_VALUE",
+      "mAP75": "ILLUSTRATIVE_METRIC_VALUE",
+      "epochs_completed": 50
+    }
+  ],
+  "best_seed": 42,
+  "best_model_path": "models/PROJECT_NAME_PLACEHOLDER/best_v1.pt",
+  "training_summary": {
+    "total_time_hours": "ILLUSTRATIVE_TIME_VALUE",
+    "gpu_memory_peak_gb": "ILLUSTRATIVE_VALUE",
+    "final_metrics": {
+      "mean_mAP50": "ILLUSTRATIVE_METRIC_VALUE",
+      "std_mAP50": "ILLUSTRATIVE_METRIC_VALUE"
+    }
+  }
+}

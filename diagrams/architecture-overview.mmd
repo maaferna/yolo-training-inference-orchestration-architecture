@@ -1,0 +1,48 @@
+graph TB
+    Django["Django Web Layer<br/>(port 8000)<br/>User Interface"]
+    FastAPI["FastAPI Orchestration<br/>(port 8001)<br/>GPU Coordination"]
+    
+    subgraph Compute["GPU Compute Layer"]
+        YOLO["YOLO Training<br/>(Multi-seed)"]
+        SAHI["SAHI Inference<br/>(Tiling)"]
+        CI["CI Training<br/>(Incremental)"]
+    end
+    
+    subgraph Metadata["Metadata Layer"]
+        ClearML["ClearML<br/>(Experiment Tracking)"]
+        PostgreSQL["PostgreSQL<br/>(Data & Models)"]
+    end
+    
+    subgraph Storage["Artifact Storage Layer"]
+        SharedFS["Shared Filesystem<br/>Docker Volume"]
+    end
+    
+    GPU["GPU Resource<br/>(NVIDIA CUDA)"]
+    
+    Django -->|HTTP API<br/>Training Requests| FastAPI
+    FastAPI -->|Coordinate| YOLO
+    FastAPI -->|Coordinate| SAHI
+    FastAPI -->|Coordinate| CI
+    
+    YOLO -->|Metrics| ClearML
+    CI -->|Metrics| ClearML
+    SAHI -->|Metrics| ClearML
+    
+    YOLO -->|Read/Write| SharedFS
+    CI -->|Read/Write| SharedFS
+    SAHI -->|Read/Write| SharedFS
+    
+    Django -->|Queries| PostgreSQL
+    FastAPI -->|Store Status| PostgreSQL
+    ClearML -->|Experiments| PostgreSQL
+    
+    YOLO -->|GPU Compute| GPU
+    SAHI -->|GPU Compute| GPU
+    CI -->|GPU Compute| GPU
+    
+    style Django fill:#4A90E2
+    style FastAPI fill:#F5A623
+    style Compute fill:#7ED321
+    style Metadata fill:#BD10E0
+    style Storage fill:#FF6B6B
+    style GPU fill:#50E3C2

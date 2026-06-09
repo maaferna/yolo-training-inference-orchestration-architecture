@@ -1,0 +1,36 @@
+sequenceDiagram
+    participant User
+    participant Django
+    participant FastAPI
+    participant YOLO as YOLO Engine
+    participant Storage as Shared Storage
+    participant ClearML
+    
+    User->>Django: POST /training<br/>(dataset_id, hyperparams)
+    Django->>FastAPI: HTTP Request
+    FastAPI->>FastAPI: Queue training job
+    FastAPI-->>Django: Accept (status=QUEUED)
+    Django-->>User: Job ID
+    
+    Note over FastAPI,YOLO: For each seed (3-5 runs)
+    FastAPI->>YOLO: Start training<br/>(seed=42)
+    YOLO->>YOLO: Initialize model
+    YOLO->>YOLO: Epoch 1-50 loop
+    YOLO->>YOLO: Collect metrics
+    YOLO->>YOLO: Validate
+    YOLO->>Storage: Save checkpoint
+    ClearML->>ClearML: Log per-epoch metrics
+    YOLO->>YOLO: Clean CUDA memory
+    
+    YOLO-->>FastAPI: Training complete<br/>(metrics={seed:42, mAP50:0.85})
+    
+    Note over FastAPI: Aggregate metrics across seeds
+    FastAPI->>FastAPI: Select best model<br/>(highest mAP50)
+    FastAPI->>Storage: Save best model
+    FastAPI->>Storage: Write best_model_ref.json
+    
+    FastAPI->>ClearML: Log final metrics
+    FastAPI->>ClearML: Register best model
+    
+    FastAPI-->>Django: COMPLETED<br/>(model_path, metrics)
+    Django-->>User: Training finished<br/>Model ready for deployment

@@ -1,0 +1,25 @@
+{
+  "inference_job_id": "INFERENCE_JOB_ID_PLACEHOLDER",
+  "image_path": "IMAGE_PATH_PLACEHOLDER",
+  "inference_type": "sahi",
+  "model_used": "best.pt",
+  "detections_total": "ILLUSTRATIVE_COUNT",
+  "detections_by_class": {
+    "CLASS_NAME_1": "ILLUSTRATIVE_COUNT",
+    "CLASS_NAME_2": "ILLUSTRATIVE_COUNT"
+  },
+  "artifacts_generated": [
+    "predictions.json",
+    "annotated_image.png",
+    "output.shp",
+    "output.shx",
+    "output.dbf"
+  ],
+  "processing_time_seconds": "ILLUSTRATIVE_TIME_VALUE",
+  "gpu_memory_used_mb": "ILLUSTRATIVE_VALUE",
+  "sahi_config": {
+    "tile_size": 640,
+    "overlap_ratio": 0.5,
+    "tiles_generated": "ILLUSTRATIVE_COUNT"
+  }
+}

@@ -1,0 +1,38 @@
+sequenceDiagram
+    participant User
+    participant Django
+    participant FastAPI
+    participant SAHI as SAHI Engine
+    participant YOLO as YOLOv11
+    participant Storage as Shared Storage
+    
+    User->>Django: POST /inference<br/>(image)
+    Django->>FastAPI: HTTP Request + image
+    
+    FastAPI->>Storage: Read best_model_ref.json
+    Storage-->>FastAPI: {path: "models/best_v5.pt"}
+    FastAPI->>Storage: Load model
+    Storage-->>FastAPI: Model loaded
+    
+    FastAPI->>SAHI: Start inference<br/>(image, model, tile_size=640)
+    
+    Note over SAHI: Tiling Phase
+    SAHI->>SAHI: Slice image into 640×640 tiles<br/>(50% overlap)
+    SAHI->>SAHI: Generate ~20 tiles
+    
+    Note over SAHI,YOLO: Per-tile inference
+    loop For each tile
+        SAHI->>YOLO: Run inference
+        YOLO->>YOLO: Detect objects in tile
+        YOLO-->>SAHI: Detections [x,y,w,h,conf,class]
+    end
+    
+    Note over SAHI: Merging Phase
+    SAHI->>SAHI: Combine detections from all tiles
+    SAHI->>SAHI: Apply NMS deduplication<br/>(remove duplicates from overlaps)
+    SAHI->>SAHI: Filter by confidence threshold
+    SAHI-->>FastAPI: Final detections
+    
+    FastAPI->>Storage: Save output manifest<br/>(detections + metadata)
+    FastAPI-->>Django: SUCCESS<br/>(detections)
+    Django-->>User: Detections displayed
