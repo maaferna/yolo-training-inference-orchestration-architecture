@@ -16,36 +16,36 @@ Managing YOLO training configurations manually is error-prone and doesn't scale.
 
 ### ProjectConfiguration
 
-**Purpose**: Represents a top-level training project for high-resolution object detection.
+**Purpose**: Represents a top-level training project for object detection.
 
 **Responsibilities**:
 - Define project identity and metadata
 - Associate datasets (train/val/test splits)
-- Associate label sets (class definitions)
+- Associate class definitions (class sets)
 - Maintain training configuration metadata
 - Serve as reference point for all related training runs
 
 **Key Attributes**:
 - `project_name`: Unique project identifier
 - `description`: Human-readable project purpose
-- `dataset_root`: Base path to dataset directory (e.g., `PROJECT_NAME_PLACEHOLDER/dataset/`)
-- `label_set`: Foreign key to associated ClassSet
+- `dataset_root`: Base path to dataset directory (e.g., `DATASET_PATH_PLACEHOLDER`)
+- `class_set`: Foreign key to associated ClassSet
 - `created_at`, `updated_at`: Temporal tracking
 
 **Relationships**:
 ```
 ProjectConfiguration
     ├── (1:1) ClassSet
-    ├── (1:N) DatasetConfig
-    └── (1:N) Training runs (future)
+    ├── (1:N) DatasetConfiguration
+    └── (1:N) Training execution records (future)
 ```
 
 **Example Usage**:
 ```
 ProjectConfiguration(
     project_name="agricultural_detection_v1",
-    dataset_root="/datasets/agriculture/high_res/",
-    label_set=ClassSet.objects.get(name="crop_classification")
+    dataset_root="DATASET_PATH_PLACEHOLDER",
+    class_set=ClassSet.objects.get(name="crop_classification")
 )
 ```
 
@@ -62,8 +62,8 @@ ProjectConfiguration(
 - Enable class reusability across projects
 
 **Key Attributes**:
-- `name`: Class name (e.g., "weed", "fruit", "disease")
-- `class_id`: Numeric identifier for YOLO format
+- `name`: Class name (e.g., "CLASS_NAME_PLACEHOLDER")
+- `class_id`: Numeric identifier for dataset format
 - `color_hex`: HEX color code for visualization
 - `description`: Optional class description
 
@@ -109,9 +109,9 @@ ClassSet (1:N) DetectionClass
 ```
 
 **Dynamic Class Access**:
-```python
-label_set = ClassSet.objects.get(name="CLASSSET_PLACEHOLDER")
-classes = label_set.label_classes.all().order_by('class_id')
+```
+class_set = ClassSet.objects.get(name="CLASSSET_PLACEHOLDER")
+classes = class_set.detection_classes.all().order_by('class_id')
 class_names = [cls.name for cls in classes]
 nc = classes.count()
 # Output: nc=5, names=['class1', 'class2', ...]
@@ -119,22 +119,22 @@ nc = classes.count()
 
 ---
 
-### DatasetConfig
+### DatasetConfiguration
 
-**Purpose**: YOLO-compatible dataset configuration with automatic YAML generation.
+**Purpose**: Dataset configuration with automatic metadata file generation.
 
 **Responsibilities**:
-- Store YAML configuration parameters
-- Automatically generate dataset.yaml files
+- Store dataset configuration parameters
+- Automatically generate configuration files
 - Configure data augmentation settings
-- Store Roboflow metadata (if applicable)
+- Store external platform metadata (if applicable)
 - Maintain paths to train/val/test splits
-- Generate payloads for FastAPI training requests
+- Generate payloads for AI service requests
 
 **Key Attributes**:
 - `project`: Foreign key to ProjectConfiguration
-- `yaml_filename`: Generated filename (e.g., "PROJECT_NAME_PLACEHOLDER.yaml")
-- `dataset_yaml_path`: Full path to generated YAML file on disk
+- `config_filename`: Generated filename (e.g., "DATASET_PLACEHOLDER.yaml")
+- `config_file_path`: Full path to generated configuration file on disk
 - `nc`: Number of classes (derived from ClassSet)
 - `names`: List of class names (derived from DetectionClass)
 - `path`: Dataset root directory
@@ -142,12 +142,12 @@ nc = classes.count()
 - `val`: Path to validation images (relative to path)
 - `test`: Path to test images (relative to path, optional)
 - `augmentation_config`: JSON-encoded augmentation parameters
-- `roboflow_metadata`: Optional Roboflow dataset info
+- `external_platform_metadata`: Optional external platform info
 - `created_at`, `updated_at`: Tracking timestamps
 
-**Example YAML Output**:
+**Example Generated Configuration**:
 ```yaml
-path: /datasets/PROJECT_NAME_PLACEHOLDER/
+path: DATASET_PATH_PLACEHOLDER
 train: train/images
 val: valid/images
 test: test/images

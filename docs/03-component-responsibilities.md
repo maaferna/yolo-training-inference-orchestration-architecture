@@ -520,36 +520,36 @@ For comprehensive documentation, see [**docs/20-synthetic-dataset-generation-pip
 
 ### IS RESPONSIBLE FOR
 
-- ✅ Load YOLO dataset configuration
-- ✅ Convert YOLO bounding boxes to SAM segmentation masks
-- ✅ Extract real objects as RGBA cutouts
-- ✅ Apply quality filters (size, area constraints)
-- ✅ Generate synthetic training images
-- ✅ Create COCO format annotations
-- ✅ Export to YOLO/COCO/CVAT compatible formats
-- ✅ Maintain versioned dataset artifacts
-- ✅ Validate annotation structure and format
+- ✅ Load dataset configuration from YAML
+- ✅ Execute object segmentation pipeline
+- ✅ Extract segmented objects as standalone cutouts
+- ✅ Apply data quality validation and filtering
+- ✅ Compose synthetic scenes from extracted objects
+- ✅ Generate detection annotations in standardized formats
+- ✅ Export datasets in multiple compatible formats
+- ✅ Maintain versioned artifact storage with metadata
+- ✅ Validate output structure and data integrity
 
 ### IS NOT RESPONSIBLE FOR
 
-- ❌ Model training execution (that's FastAPI)
-- ❌ Inference processing
-- ❌ Dataset collection or initial annotation
-- ❌ Distributed job orchestration (async/queue)
-- ❌ External platform deployment
+- ❌ Model training execution (that's orchestration service)
+- ❌ Inference execution
+- ❌ Initial dataset collection or annotation
+- ❌ Distributed task queuing and job scheduling
+- ❌ External ML platform integration
 
 ### Key Dependencies
 
-- SAM checkpoint for segmentation
-- Original annotated dataset (YOLO format)
-- Background images for composition
-- OpenCV, NumPy, PyTorch, CUDA
+- Advanced segmentation model (pre-trained)
+- Original annotated dataset files
+- Source images for background composition
+- Deep learning framework and GPU acceleration
 
 ### Execution Context
 
-- Notebook-driven (Jupyter experimentation)
-- Backend script execution
-- Not part of main production training path
+- Interactive experimentation layer (Jupyter notebooks)
+- Batch processing scripts
+- Auxiliary workflow (not core training path)
 
 ---
 
