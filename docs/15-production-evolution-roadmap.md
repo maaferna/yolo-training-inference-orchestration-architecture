@@ -118,6 +118,95 @@ For comprehensive documentation, see [**docs/08-yolo-dataset-configuration-manag
 
 ---
 
+## Synthetic Dataset Generation Pipeline Evolution
+
+For comprehensive documentation, see [**docs/20-synthetic-dataset-generation-pipeline.md**](./docs/20-synthetic-dataset-generation-pipeline.md).
+
+### Phase 1 Enhancement (Current): Notebook-Based Experimentation
+
+**Current State**:
+- Sequential SAM processing
+- Single GPU execution
+- Local filesystem storage
+- Batch compositing possible but not optimized
+
+**Phase 1 Improvements**:
+- ✓ Implement object filtering and quality checks
+- ✓ Support COCO/YOLO dual-format export
+- ✓ Version artifacts with manifest metadata
+- ✓ Implement error recovery (skip failed images)
+
+---
+
+### Phase 2 Enhancement (With Job Queue): Distributed Pipeline
+
+**When Phase 1 triggers**:
+- Dataset generation needed for 1000+ images
+- Sequential processing takes 2+ hours
+- Interactive notebook workflow becomes tedious
+
+**Phase 2 Improvements**:
+1. **Async SAM Segmentation**
+   - Queue SAM tasks via Celery
+   - Batch process 8-16 images per task
+   - Utilize multiple GPUs for parallelism
+
+2. **Distributed Object Extraction**
+   - Split dataset across workers
+   - Extract objects in parallel
+   - Aggregate results in shared storage
+
+3. **Synthetic Composition Workers**
+   - Distribute image composition tasks
+   - Balance workload across workers
+   - Monitor quality metrics in real-time
+
+4. **Dataset Registry**
+   - Publish dataset versions to central registry
+   - Track lineage (source images → extracted objects → compositions)
+   - Link to training jobs that consumed dataset
+
+5. **Quality Monitoring**
+   - Real-time quality metrics dashboard
+   - Alert on composition failures
+   - Track object coverage and distribution
+
+**Expected Performance**:
+- 1000-image segmentation: 10 hours → 30 minutes (4 GPU workers)
+- Composition time: 4 hours → 15 minutes (multi-worker parallel)
+- Total pipeline: 14 hours → 45 minutes
+
+---
+
+### Phase 3+ Enhancement: Enterprise Scale
+
+**Phase 3 Improvements**:
+1. **GPU Affinity**
+   - Route SAM tasks to high-memory GPUs (A100/H100)
+   - Route composition to general GPUs
+
+2. **Distributed Object Storage**
+   - Objects stored in S3 buckets with versioning
+   - CDN-accessible for external platform uploads
+   - Lifecycle policies for old versions
+
+3. **Artifact Manifest Registry**
+   - Metadata database for all generated artifacts
+   - Query: "Find all datasets with CLASS_NAME_PLACEHOLDER"
+   - Trace: "Which models trained on dataset version_5?"
+
+4. **Advanced Validation Pipeline**
+   - Automated quality gates before export
+   - Validation against platform requirements
+   - Automated platform uploads (CVAT, Roboflow)
+
+5. **A/B Testing Support**
+   - Generate multiple composition strategies
+   - Compare model performance on each variant
+   - Track which synthetic data helps most
+
+---
+
 ## Phase 2: Distributed Job Queue (3-6 months)
 
 ### Timeline: When Phase 1 bottleneck appears

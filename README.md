@@ -148,6 +148,10 @@ This system orchestrates AI model training and inference workflows across multip
 
 This architecture includes a Django-based YOLO dataset configuration management layer that centralizes training parameters through ORM models (ProjectConfiguration, ClassSet, DetectionClass, DatasetConfig) with automatic Ultralytics-compatible YAML generation. See [**docs/08-yolo-dataset-configuration-management.md**](./docs/08-yolo-dataset-configuration-management.md) for comprehensive documentation.
 
+### Auxiliary: Synthetic Dataset Generation
+
+The broader ecosystem includes an auxiliary synthetic dataset generation pipeline based on SAM (Segment Anything Model) for dataset engineering and research experimentation. This component automates object extraction from annotated images and synthetic scene composition, supporting dataset enrichment workflows. See [**docs/20-synthetic-dataset-generation-pipeline.md**](./docs/20-synthetic-dataset-generation-pipeline.md) for details.
+
 ---
 
 ## System Flow Summary

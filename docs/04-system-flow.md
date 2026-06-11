@@ -608,6 +608,153 @@ Both containers refer to same file via Docker volume mapping
 
 ---
 
+## Synthetic Dataset Generation Flow (Auxiliary)
+
+For comprehensive documentation, see [**docs/20-synthetic-dataset-generation-pipeline.md**](./docs/20-synthetic-dataset-generation-pipeline.md).
+
+### Happy Path: Generate Synthetic Dataset
+
+```
+┌─ JUPYTER NOTEBOOK / BACKEND ───────────────────────────┐
+│                                                          │
+│  1. Load configuration YAML                            │
+│     dataset:                                           │
+│       path: DATASET_PATH_PLACEHOLDER                   │
+│     sam:                                               │
+│       checkpoint: SAM_CHECKPOINT_PLACEHOLDER           │
+│     output:                                            │
+│       dir: SYNTHETIC_OUTPUT_DIR_PLACEHOLDER            │
+│       format: [coco, yolo]                             │
+│                                                          │
+│  2. Validate dataset structure                         │
+│     ├─ Check YOLO labels/ directory exists             │
+│     ├─ Verify images/ contains files                   │
+│     ├─ Parse annotations (bounding boxes)              │
+│     └─ Exit if validation fails                        │
+│                                                          │
+└────────────────────┬──────────────────────────────────┘
+                     │
+                     ↓
+┌─ SAM SEGMENTATION MODULE ──────────────────────────────┐
+│                                                          │
+│  3. Load SAM model                                     │
+│     - checkpoint_path = SAM_CHECKPOINT_PLACEHOLDER     │
+│     - device: cuda:0 (GPU accelerated)                 │
+│     - model_type: vit_b / vit_h                        │
+│                                                          │
+│  4. For each image in dataset:                         │
+│     4a. Load RGB image                                 │
+│     4b. Parse YOLO labels (bbox coords)                │
+│     4c. Convert bbox to SAM input points               │
+│     4d. Run SAM inference                              │
+│     4e. Extract masks (confidence > 0.8)               │
+│     4f. Apply quality filters                          │
+│                                                          │
+└────────────────────┬──────────────────────────────────┘
+                     │
+                     ↓
+┌─ OBJECT EXTRACTION ────────────────────────────────────┐
+│                                                          │
+│  5. Extract RGBA objects                               │
+│     for each mask:                                     │
+│       5a. Create RGBA cutout                           │
+│       5b. Apply alpha blending                         │
+│       5c. Validate object size (10x10 min)             │
+│       5d. Store with versioning                        │
+│     end for                                            │
+│                                                          │
+└────────────────────┬──────────────────────────────────┘
+                     │
+                     ↓
+┌─ SYNTHETIC COMPOSITION ────────────────────────────────┐
+│                                                          │
+│  6. Generate synthetic images                          │
+│     for each background image:                         │
+│       6a. Load background (1024x1024)                  │
+│       6b. Sample N objects (2-8 per image)             │
+│       6c. Validate canvas fit (no overflow)            │
+│       6d. Apply random placement                       │
+│       6e. Blend RGBA objects on canvas                 │
+│       6f. Save as JPEG (optimized quality)             │
+│     end for                                            │
+│                                                          │
+│  7. Validate composition quality                       │
+│     ├─ File size checks (< 20 MB for platforms)        │
+│     ├─ Object coverage verification                    │
+│     ├─ No pixel overflow                               │
+│     └─ Skip corrupted images                           │
+│                                                          │
+└────────────────────┬──────────────────────────────────┘
+                     │
+                     ↓
+┌─ ANNOTATION CONVERSION ────────────────────────────────┐
+│                                                          │
+│  8. Create COCO annotations                            │
+│     - Image entries (id, file_name, width, height)     │
+│     - Category entries (id, name)                      │
+│     - Annotation entries (bbox, area, iscrowd)         │
+│     - Verify file_name matches physical files          │
+│                                                          │
+│  9. Export formats (user selectable)                   │
+│     - COCO JSON: annotations.json                      │
+│     - YOLO: images/ + labels/                          │
+│     - CVAT XML: for annotation review                  │
+│                                                          │
+│  10. Validate exports                                  │
+│      ├─ Parse and re-validate each format              │
+│      ├─ Cross-check file counts                        │
+│      ├─ Verify annotation structure                    │
+│      └─ Generate summary report                        │
+│                                                          │
+└────────────────────┬──────────────────────────────────┘
+                     │
+                     ↓
+┌─ VERSIONED STORAGE ────────────────────────────────────┐
+│                                                          │
+│  11. Store artifacts with versioning                   │
+│      SYNTHETIC_OUTPUT_DIR_PLACEHOLDER/                 │
+│      ├── version_1_2026-06-09_103000/                  │
+│      │   ├── images/                                   │
+│      │   ├── labels/                                   │
+│      │   ├── annotations.json (COCO)                   │
+│      │   ├── annotations.xml (CVAT)                    │
+│      │   └── manifest.json (versioning metadata)       │
+│      │                                                  │
+│      └── version_2_2026-06-10_091500/                  │
+│          └── [same structure]                          │
+│                                                          │
+│  12. Generate manifest                                 │
+│      {                                                 │
+│        "version": 1,                                   │
+│        "timestamp": "2026-06-09T10:30:00Z",            │
+│        "source_dataset": "original_dataset_v1",        │
+│        "num_images": 450,                              │
+│        "num_objects": 1200,                            │
+│        "object_classes": ["CLASS_NAME_PLACEHOLDER"],   │
+│        "quality_metrics": {                            │
+│          "avg_object_area": 5234,                      │
+│          "coverage_mean": 0.25,                        │
+│          "extraction_success_rate": 0.94               │
+│        }                                               │
+│      }                                                 │
+│                                                          │
+└────────────────────┬──────────────────────────────────┘
+                     │
+                     ↓
+┌─ EXTERNAL PLATFORM EXPORT ─────────────────────────────┐
+│                                                          │
+│  13. Optional: Export to external platforms            │
+│      - CVAT: Upload for annotation refinement          │
+│      - Roboflow: Dataset versioning/hosting            │
+│      - Direct: Store in artifact repository            │
+│                                                          │
+└────────────────────────────────────────────────────────┘
+
+Result: Versioned synthetic dataset ready for training pipelines
+```
+
+---
+
 ## Error Handling Flow
 
 ```

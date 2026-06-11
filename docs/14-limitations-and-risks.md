@@ -528,6 +528,220 @@ Django YOLO configuration models (ProjectConfiguration, ClassSet, DatasetConfig)
 
 ---
 
+## Synthetic Dataset Generation Pipeline Risks
+
+For comprehensive documentation, see [**docs/20-synthetic-dataset-generation-pipeline.md**](./docs/20-synthetic-dataset-generation-pipeline.md).
+
+### Risk 1: Sequential Processing Bottleneck
+
+**Scenario**:
+- Pipeline processes images sequentially (1 image at a time)
+- SAM segmentation for each image takes 2-5 seconds on GPU
+- 1000-image dataset takes 30-80 minutes to process
+- Single machine can't parallelize
+
+**Impact**:
+- ⚠️ Slow dataset generation (hours of wall clock time)
+- ⚠️ Inefficient GPU utilization (batch processing impossible)
+- ⚠️ User wait times unacceptable for interactive workflows
+
+**Mitigation**:
+- Implement batch SAM processing (8-16 images/batch)
+- Use multiprocessing for extraction and composition
+- Consider Redis job queue for distributed processing
+
+---
+
+### Risk 2: No Retry Logic on Segmentation Failures
+
+**Scenario**:
+- SAM segmentation fails on 5% of images (edge cases)
+- Pipeline stops with no recovery mechanism
+- Entire dataset generation fails mid-pipeline
+- User must restart from beginning
+
+**Impact**:
+- ⚠️ Pipeline brittleness
+- ⚠️ Wasted computation time
+- ⚠️ Poor user experience
+
+**Mitigation**:
+- Log failed images without blocking
+- Continue processing remaining images
+- Generate report of failed segmentations
+- Implement selective retry with different SAM parameters
+
+---
+
+### Risk 3: SAM Model Inference Bottleneck
+
+**Scenario**:
+- SAM model takes ~2-5 seconds per image
+- Entire dataset bottlenecked on GPU serialization
+- Cannot distribute across multiple GPUs easily
+- Scaling requires major refactoring
+
+**Impact**:
+- ⚠️ Not horizontally scalable
+- ⚠️ Dataset generation becomes expensive at scale
+- ⚠️ Multi-GPU clusters underutilized
+
+**Mitigation**:
+- Batch SAM processing (not per-image)
+- Implement SAM worker pools
+- Consider parallel GPU workers for large datasets
+
+---
+
+### Risk 4: Storage Growth Without Limits
+
+**Scenario**:
+- Each synthetic dataset versioned: version_1, version_2, ...
+- Each version stores 1000+ images
+- No automatic cleanup
+- Storage fills quickly (1TB per 500 synthetic images)
+- Out of disk space errors halt pipeline
+
+**Impact**:
+- ⚠️ Unchecked storage growth
+- ⚠️ Infrastructure cost escalation
+- ⚠️ Pipeline failures from disk exhaustion
+
+**Mitigation**:
+- Implement version retention policy (keep last 5 versions)
+- Add storage quota enforcement
+- Implement automatic cleanup of old versions
+- Monitor storage usage with alerts
+
+---
+
+### Risk 5: COCO/YOLO Format Compatibility
+
+**Scenario**:
+- Pipeline generates COCO format annotations
+- External platform (Roboflow) expects specific format variant
+- Segmentation fields in COCO cause platform to misclassify task
+- Model training on platform fails silently
+
+**Impact**:
+- ⚠️ Format incompatibility breaks downstream workflows
+- ⚠️ Silent failures (data looks correct but task type wrong)
+- ⚠️ Poor debugging visibility
+
+**Mitigation**:
+- Remove segmentation fields for object detection exports
+- Validate format against platform requirements
+- Test export with external platforms before production use
+- Maintain format conversion matrix documentation
+
+---
+
+### Risk 6: Object Placement Overflow
+
+**Scenario**:
+- Synthetic image canvas is 1024x1024
+- Large extracted objects (800x600) can't fit
+- Random placement attempts randint(0, -200) causing ValueError
+- Pipeline crashes on placement validation
+
+**Impact**:
+- ⚠️ Large objects cause segmentation faults
+- ⚠️ Pipeline halts without graceful degradation
+- ⚠️ Requires manual dataset preprocessing
+
+**Mitigation**:
+- Pre-validate object fit before placement
+- Resize oversized objects to fit canvas
+- Skip oversized objects if critical
+- Implement canvas boundary checking
+
+---
+
+### Risk 7: Dataset Quality Drift Over Time
+
+**Scenario**:
+- Generated synthetic images become training data
+- Model trained on synthetic data exhibits distribution shift
+- Real-world inference performance drops
+- Feedback loop: model never sees real data distribution
+
+**Impact**:
+- ⚠️ Synthetic-only training is risky
+- ⚠️ Model may overfit to synthetic artifacts
+- ⚠️ Poor generalization to production scenarios
+
+**Mitigation**:
+- Always mix synthetic + real training data (70/30 real minimum)
+- Monitor real-world inference metrics
+- Periodically regenerate synthetic data with new SAM versions
+- Track synthetic data provenance in model metadata
+
+---
+
+### Risk 8: No Idempotency Guarantees
+
+**Scenario**:
+- Pipeline runs twice with same configuration
+- Random seed for object placement differs
+- Second run generates completely different images
+- Reproducibility impossible
+- Cannot verify dataset consistency
+
+**Impact**:
+- ⚠️ Non-deterministic outputs
+- ⚠️ Can't reproduce dataset version
+- ⚠️ Audit trail broken
+
+**Mitigation**:
+- Accept random seed as configuration parameter
+- Document seed in manifest.json
+- Enable reproducible mode (fix seeds, deterministic algorithms)
+- Store seed used in version metadata
+
+---
+
+### Risk 9: SAM Checkpoint Availability
+
+**Scenario**:
+- SAM checkpoint stored in single location (MODEL_REGISTRY_PLACEHOLDER)
+- Checkpoint becomes unavailable (network failure, deletion)
+- Pipeline fails immediately
+- No local fallback
+
+**Impact**:
+- ⚠️ Pipeline depends on external resource
+- ⚠️ Single point of failure
+- ⚠️ Network partition causes cascade failures
+
+**Mitigation**:
+- Cache SAM checkpoint locally
+- Implement checkpoint availability checks
+- Provide fallback checkpoint (locally stored)
+- Document checkpoint dependencies in manifest
+
+---
+
+### Risk 10: Quality Filtering False Positives/Negatives
+
+**Scenario**:
+- Pipeline filters objects by area thresholds (e.g., 100-50000 pixels)
+- Thresholds too strict: discards valid small objects
+- Thresholds too loose: includes noise/artifacts
+- Dataset quality inconsistent
+
+**Impact**:
+- ⚠️ Manual threshold tuning required
+- ⚠️ Quality varies across datasets
+- ⚠️ No objective quality metrics
+
+**Mitigation**:
+- Implement statistical quality metrics (histogram, percentiles)
+- Make thresholds configurable per dataset
+- Generate quality report with filtering statistics
+- Implement manual review step for edge cases
+
+---
+
 ## Not Production-Ready for High-Throughput
 
 ### Scale Limitations

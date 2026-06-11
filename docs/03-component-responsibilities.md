@@ -514,6 +514,45 @@ PostgreSQL Container:
 
 ---
 
+## Synthetic Dataset Generation Pipeline (Auxiliary)
+
+For comprehensive documentation, see [**docs/20-synthetic-dataset-generation-pipeline.md**](./docs/20-synthetic-dataset-generation-pipeline.md).
+
+### IS RESPONSIBLE FOR
+
+- ✅ Load YOLO dataset configuration
+- ✅ Convert YOLO bounding boxes to SAM segmentation masks
+- ✅ Extract real objects as RGBA cutouts
+- ✅ Apply quality filters (size, area constraints)
+- ✅ Generate synthetic training images
+- ✅ Create COCO format annotations
+- ✅ Export to YOLO/COCO/CVAT compatible formats
+- ✅ Maintain versioned dataset artifacts
+- ✅ Validate annotation structure and format
+
+### IS NOT RESPONSIBLE FOR
+
+- ❌ Model training execution (that's FastAPI)
+- ❌ Inference processing
+- ❌ Dataset collection or initial annotation
+- ❌ Distributed job orchestration (async/queue)
+- ❌ External platform deployment
+
+### Key Dependencies
+
+- SAM checkpoint for segmentation
+- Original annotated dataset (YOLO format)
+- Background images for composition
+- OpenCV, NumPy, PyTorch, CUDA
+
+### Execution Context
+
+- Notebook-driven (Jupyter experimentation)
+- Backend script execution
+- Not part of main production training path
+
+---
+
 ## Summary: Responsibility Checklist
 
 **Before modifying a component, verify**:

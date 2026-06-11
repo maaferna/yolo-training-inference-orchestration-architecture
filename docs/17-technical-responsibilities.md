@@ -528,6 +528,78 @@ Return path to frontend/FastAPI
 
 ---
 
+## Synthetic Dataset Generation Architecture
+
+For comprehensive documentation, see [**docs/20-synthetic-dataset-generation-pipeline.md**](./docs/20-synthetic-dataset-generation-pipeline.md).
+
+**Responsibility**: Designed auxiliary synthetic dataset enrichment pipeline leveraging Segment Anything Model (SAM) for automated object extraction and composition.
+
+### Technical Challenges Solved
+
+1. **SAM Integration with YOLO Annotations**
+   - Problem: SAM requires point inputs, YOLO has bounding boxes
+   - Solution: Convert YOLO bbox centroids to SAM input points
+   - Benefit: Reuses existing annotations for segmentation
+
+2. **RGBA Object Extraction and Blending**
+   - Problem: Extracted objects need transparent backgrounds for composition
+   - Solution: Convert segmentation masks to alpha channels, apply Gaussian blur on edges
+   - Benefit: Natural-looking synthetic compositions without visible boundaries
+
+3. **Format Compatibility (COCO vs YOLO)**
+   - Problem: Pipeline generates COCO format, external tools expect YOLO or variant
+   - Solution: Dual-format exporter with platform-specific validation
+   - Segmentation field removal for object detection export (prevents task misclassification)
+   - Benefit: Works with CVAT, Roboflow, and local training workflows
+
+4. **Canvas Bounds Validation**
+   - Problem: Large extracted objects cause randint() ValueError during placement
+   - Solution: Pre-validate object fit, resize oversized objects, or skip with logging
+   - Benefit: Robust composition pipeline that never crashes
+
+5. **Versioned Artifact Management**
+   - Problem: Need to reproduce specific dataset version used in training
+   - Solution: Implement version_N_TIMESTAMP directory structure with manifest.json
+   - Metadata: source dataset, object count, quality metrics, extraction parameters
+   - Benefit: Complete dataset provenance tracking for model lineage
+
+### Design Patterns Demonstrated
+
+1. **Configuration-Driven Pipelines**
+   - YAML configuration specifies SAM checkpoint, output format, quality thresholds
+   - Enables experimentation without code changes
+   - Same codebase supports multiple dataset generation strategies
+
+2. **Quality Filtering Architecture**
+   - Pre-extraction filters: mask confidence threshold
+   - Post-extraction filters: object area bounds (min/max pixels)
+   - Composition-time filters: canvas fit validation
+   - Effect: Consistent high-quality dataset output
+
+3. **Error Recovery Strategy**
+   - Sequential image processing with per-image error logging
+   - Skip failed images (log details, continue processing)
+   - Generate quality report highlighting problematic source images
+   - Benefit: Pipeline robustness—one failed image doesn't halt entire dataset
+
+4. **Format Normalization**
+   - Input: YOLO bounding boxes → SAM segmentation → extraction → composition
+   - Output: COCO annotations → normalize file_name → validate structure → platform export
+   - Effect: Seamless integration with both local training and external annotation platforms
+
+### Computer Vision Expertise Demonstrated
+
+1. **Image Processing**: RGBA blending, alpha compositing, Gaussian blur edge smoothing
+2. **Deep Learning Integration**: SAM checkpoint loading, GPU inference, batch processing strategies
+3. **Object Detection Pipelines**: Mask-to-bbox conversion, area calculations, quality metrics
+4. **Data Engineering**: Version control, manifest metadata, format conversion
+
+### Portfolio Language
+
+> "Architected synthetic dataset generation pipeline integrating Segment Anything Model (SAM) for automated object extraction. Designed RGBA compositing system with blending algorithms for natural-looking synthetic images. Implemented dual-format annotation export (COCO/YOLO) with platform-specific validation, solving format compatibility challenges with external tools. Designed versioned artifact storage with manifest-based provenance tracking, enabling reproducibility of specific dataset versions used in model training. Solved 10 identified engineering problems including canvas bounds validation, object placement overflow handling, and quality filtering strategies."
+
+---
+
 ## Interview Positioning
 
 ### When Asked: "Tell me about a complex system you designed"
