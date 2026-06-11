@@ -460,6 +460,74 @@ Benefit: Training completes even with seed failures
 
 ---
 
+## Django Configuration Layer Management
+
+**Responsibility**: Designed centralized YOLO configuration management through Django ORM models with automatic YAML generation.
+
+For comprehensive documentation, see [**docs/08-yolo-dataset-configuration-management.md**](./08-yolo-dataset-configuration-management.md).
+
+### Domain Model Design
+
+**Domain Models Implemented**:
+1. **ProjectConfiguration**: Project-level aggregation of datasets and label sets
+2. **DetectionClass**: Individual class definition (name, color, metadata)
+3. **ClassSet**: Reusable grouping of label classes for multi-project sharing
+4. **DatasetConfig**: Automated YAML generation from ORM state
+
+### YAML Generation Pipeline
+
+**Architecture**:
+```
+User configures project UI
+    ↓
+Django admin creates ProjectConfiguration
+    ↓
+Assign ClassSet (predefined or create new)
+    ↓
+DatasetConfig.generate_yaml() called
+    ↓
+Query ORM relations:
+  - project.label_sets.all() → [ClassSet]
+  - label_set.label_classes.all() → [DetectionClass]
+    ↓
+Build intermediate YAML dictionary
+    ↓
+Apply custom PyYAML representer (inline-style lists)
+    ↓
+Write to shared_storage/configs/yaml_TIMESTAMP.yaml
+    ↓
+Return path to frontend/FastAPI
+```
+
+### Technical Challenges Solved
+
+1. **ORM Relationship Navigation**
+   - Correct relation: `.label_classes` not `.labels`
+   - Many-to-many through proper Django relations
+   - Lazy loading optimization
+
+2. **YAML Serialization Format**
+   - Problem: PyYAML default = block-style lists
+   - Solution: Custom representer for inline-style
+   - Requirement: Ultralytics needs `names: ["class1", "class2"]` not block-style
+
+3. **Docker Path Mapping Coordination**
+   - Django sees: `/data/shared/configs/`
+   - FastAPI sees: `/app/shared_data/configs/`
+   - Same volume, different mounts
+   - Solution: Environment-variable-based paths
+
+4. **Bootstrap UI Integration**
+   - AJAX-based dynamic form rendering
+   - Real-time YAML preview
+   - Error handling and user feedback
+
+### Portfolio Language
+
+> "Designed Django ORM-based configuration management layer for YOLO training parameters. Implemented automatic YAML generation with custom PyYAML serialization to ensure Ultralytics compatibility. Solved multi-container path mapping challenge by implementing environment-variable-aware path resolution, enabling single shared volume to be accessed via different mount points in different containers. Created full-stack integration from Bootstrap UI through Django forms to AJAX endpoints to FastAPI payload generation."
+
+---
+
 ## Interview Positioning
 
 ### When Asked: "Tell me about a complex system you designed"

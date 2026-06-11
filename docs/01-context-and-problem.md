@@ -48,6 +48,14 @@ The fundamental challenge: implement a unified orchestration system capable of:
    - Shared storage synchronization
    - Asynchronous long-running operations
 
+7. **Django-Based YOLO Configuration Management**
+   - Centralizing YOLO dataset configuration (train/val/test paths, class definitions)
+   - Managing dataset metadata through Django ORM models (ProjectConfiguration, ClassSet, DetectionClass)
+   - Automatically generating YAML configuration files for Ultralytics
+   - Coordinating configuration between web UI and FastAPI training service
+   - Handling Docker path mapping between host and container environments
+   - Synchronizing custom class definitions across multiple training scenarios
+
 ## Why This Architecture?
 
 ### Microservice Separation
@@ -85,6 +93,19 @@ A common filesystem layer enables:
 - **Lazy loading**: Django reads results without duplicating data
 - **Path-based references**: Simple artifact discovery (though with risks)
 - **Checkpoint management**: Training resumption and validation
+- **Generated Configuration**: YAML files created by Django-based configuration layer
+
+### Django Configuration Layer
+
+Centralizing YOLO training configuration through Django ORM models provides:
+
+- **Single source of truth**: Dataset paths, class definitions, project metadata in database
+- **Automated YAML generation**: DatasetConfig model generates Ultralytics-compatible configuration
+- **Reusability**: ClassSet enables class definition reuse across multiple projects
+- **Web UI integration**: Bootstrap-based UI for managing projects, label sets, and configurations
+- **Docker coordination**: Environment-aware path mapping between host and container filesystems
+
+For detailed architecture of the Django configuration layer, see [**docs/08-yolo-dataset-configuration-management.md**](./08-yolo-dataset-configuration-management.md).
 
 ## Key Design Decisions
 

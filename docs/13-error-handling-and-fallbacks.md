@@ -297,6 +297,225 @@ def handle_fastapi_connection_error(retry_count=3):
 
 ---
 
+## Django Configuration Errors
+
+Django YOLO configuration models (ProjectConfiguration, ClassSet, DatasetConfig) introduce specific error categories. For comprehensive documentation, see [**docs/08-yolo-dataset-configuration-management.md**](./08-yolo-dataset-configuration-management.md).
+
+### 7. ORM Relationship Mismatch (ClassSet/DetectionClass)
+
+**Problem**: Code references incorrect ORM relation
+
+**Error**:
+```
+AttributeError: 'ClassSet' object has no attribute 'labels'
+```
+
+**Cause**:
+- Code uses `.labels` instead of correct relation `.label_classes`
+- ORM relation names differ from intuitive naming
+- Stale code after schema changes
+
+**Detection**:
+```python
+# Wrong:
+class_names = [lc.name for lc in label_set.labels.all()]  # AttributeError!
+
+# Correct:
+class_names = [lc.name for lc in label_set.label_classes.all()]
+```
+
+**Recovery**:
+- Update all code references to use `.label_classes`
+- Add integration tests to verify ORM relations
+- Consider relation aliases for clarity
+
+---
+
+### 8. YAML Serialization Format Mismatch
+
+**Problem**: PyYAML produces block-style lists; YOLO requires inline-style
+
+**Error**:
+```
+YOLOError: Invalid YAML format
+YAML content:
+names:
+  - person
+  - vehicle
+Expected:
+names: ["person", "vehicle"]
+```
+
+**Cause**:
+- Default PyYAML representer uses block-style for lists
+- Ultralytics expects inline-style format
+- Custom serializer not applied
+
+**Detection**:
+```python
+# Wrong output:
+names:
+  - person
+  - vehicle
+
+# Correct output (must be inline):
+names: ["person", "vehicle"]
+```
+
+**Recovery**:
+```python
+# Implement custom PyYAML representer:
+def str_presenter(dumper, data):
+    if '\n' in data:
+        return dumper.represent_scalar('tag:yaml.org,2002:str', data, style='|')
+    return dumper.represent_scalar('tag:yaml.org,2002:str', data)
+
+def list_presenter(dumper, data):
+    return dumper.represent_sequence('tag:yaml.org,2002:seq', data, flow_style=True)
+
+yaml.add_representer(str, str_presenter)
+yaml.add_representer(list, list_presenter)
+```
+
+---
+
+### 9. Duplicated URL Prefix Routing
+
+**Problem**: Django URL patterns create duplicate paths (404 errors)
+
+**Error**:
+```
+POST http://django:8000/deep_learning/deep_learning/configuration/
+404 Not Found
+```
+
+**Cause**:
+- `urls.py` includes path with prefix already in parent URLs
+- Nested include() creates duplicate prefix
+- Missing `app_name` or `namespace` configuration
+
+**Detection**:
+```python
+# urls.py creates /deep_learning/:
+# If included in app urls.py with path('deep_learning/', include(...))
+# Results in /deep_learning/deep_learning/ (duplicated)
+```
+
+**Recovery**:
+```python
+# Option 1: Remove prefix from include path
+path('', include('app.urls'))  # Instead of path('deep_learning/', ...)
+
+# Option 2: Use namespace correctly
+path('deep_learning/', include(('app.urls', 'app'), namespace='app'))
+
+# Verify with: python manage.py show_urls
+```
+
+---
+
+### 10. Undefined JavaScript Variables (AJAX)
+
+**Problem**: Frontend AJAX code references undefined variables
+
+**Error**:
+```
+Uncaught ReferenceError: yamlPreviewBox is not defined
+```
+
+**Cause**:
+- HTML elements not initialized before JavaScript runs
+- DOM elements selected but not cached properly
+- Missing `document.getElementById()` or selector calls
+
+**Detection**:
+```javascript
+// Wrong:
+yamlPreviewBox.innerHTML = yaml_content;  // ReferenceError!
+
+// Correct:
+const yamlPreviewBox = document.getElementById('yaml-preview');
+if (yamlPreviewBox) {
+    yamlPreviewBox.innerHTML = yaml_content;
+}
+```
+
+**Recovery**:
+```javascript
+// Initialize all required elements:
+function initializeForm() {
+    window.formElements = {
+        yamlPreviewBox: document.getElementById('yaml-preview'),
+        yamlDownloadBtn: document.getElementById('yaml-download'),
+        trainingSubmitBtn: document.getElementById('training-submit'),
+        configStatusSpan: document.getElementById('config-status')
+    };
+    
+    // Verify all elements exist
+    Object.entries(window.formElements).forEach(([key, elem]) => {
+        if (!elem) console.warn(`Missing element: ${key}`);
+    });
+}
+
+// Call on page load
+document.addEventListener('DOMContentLoaded', initializeForm);
+```
+
+---
+
+### 11. Docker Host/Container Path Mismatch
+
+**Problem**: File accessible on host but not in container
+
+**Error**:
+```
+FileNotFoundError: /app/shared_data/configs/yaml_1717857600.yaml not found in FastAPI container
+But file EXISTS at /home/user/shared_configs/yaml_1717857600.yaml on host
+```
+
+**Cause**:
+- Django writes to `/data/shared/configs/` (its container path)
+- FastAPI reads from `/app/shared_data/` (its container path)
+- Same volume mounted with different paths in each container
+- Path returned to FastAPI doesn't account for mapping
+
+**Detection**:
+```python
+# Django creates file at host path:
+# /home/user/shared/configs/yaml_1717857600.yaml
+
+# Django container sees it at:
+# /data/shared/configs/yaml_1717857600.yaml
+
+# FastAPI container sees it at:
+# /app/shared_data/configs/yaml_1717857600.yaml
+
+# But FastAPI receives path from Django as:
+# "/data/shared/configs/yaml_1717857600.yaml"  ← WRONG for FastAPI!
+```
+
+**Recovery**:
+```python
+# Django DatasetConfig returns environment-aware path:
+config_base = os.getenv('CONFIG_BASE_PATH', '/data/shared/configs/')
+yaml_filename = f"yaml_{timestamp}.yaml"
+yaml_relative_path = f"{yaml_filename}"
+
+# Return only filename or relative path to frontend
+return {
+    'yaml_filename': yaml_relative_path,
+    'yaml_relative_path': 'configs/',
+    'full_url': f'/shared_storage/configs/{yaml_relative_path}'
+}
+
+# FastAPI constructs full path using its environment:
+fastapi_config_base = os.getenv('CONFIG_BASE_PATH', '/app/shared_data/configs/')
+yaml_filename = request.dataset_yaml_filename
+full_path = os.path.join(fastapi_config_base, yaml_filename)
+```
+
+---
+
 ## Partial Error Handling
 
 ### Seed N Fails, Continue Training

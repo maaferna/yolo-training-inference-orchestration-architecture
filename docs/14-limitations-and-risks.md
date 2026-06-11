@@ -399,6 +399,135 @@ def log_structured(level, message, **fields):
 
 ---
 
+## Django Configuration Layer Risks
+
+Django YOLO configuration models (ProjectConfiguration, ClassSet, DatasetConfig) introduce specific architectural risks. For comprehensive documentation, see [**docs/08-yolo-dataset-configuration-management.md**](./08-yolo-dataset-configuration-management.md).
+
+### Risk 1: YAML/Database Configuration Drift
+
+**Scenario**:
+- Django database has DetectionClass A, B, C
+- YAML file was previously generated with classes A, B
+- FastAPI training uses stale YAML file with only A, B
+- New class C is ignored
+- Model trained on incomplete class set
+
+**Impact**:
+- ⚠️ Inconsistent training datasets
+- ⚠️ Hard to debug (appears random)
+- ⚠️ Model degradation on new classes
+
+**Mitigation**:
+- Regenerate YAML immediately after class changes
+- Add integration test: compare YAML names with DB classes
+- Include class checksum in YAML for validation
+
+---
+
+### Risk 2: Hardcoded Path Coupling
+
+**Scenario**:
+- Django hardcodes `/data/shared/configs/` 
+- Docker mount setup changes to `/app/configs/`
+- DatasetConfig still writes to old hardcoded path
+- FastAPI can't find YAML files
+- Training requests fail
+
+**Impact**:
+- ⚠️ Tight coupling between code and infrastructure
+- ⚠️ Difficult environment transitions (dev→staging→prod)
+- ⚠️ Container orchestration inflexible
+
+**Mitigation**:
+- Use environment variables: `CONFIG_BASE_PATH`
+- Read from settings, not hardcoded strings
+- Validate paths at startup
+
+---
+
+### Risk 3: Synchronous YAML Generation Blocking
+
+**Scenario**:
+- Large ClassSet with 1000+ classes
+- YAML generation takes 5+ seconds
+- Django UI blocks during `DatasetConfig.generate_yaml()`
+- User sees spinner for 5+ seconds
+- Appears frozen/unresponsive
+
+**Impact**:
+- ⚠️ Poor user experience
+- ⚠️ Appears to be bug
+- ⚠️ No parallelism
+
+**Mitigation**:
+- Make generation async (Django task, Celery)
+- Cache generated YAML files
+- Pre-generate YAMLs on schedule
+
+---
+
+### Risk 4: No Formal Retry Logic
+
+**Scenario**:
+- DatasetConfig.save_yaml() fails (disk full, permission denied)
+- Django UI shows error, but no automatic retry
+- User must manually regenerate, might forget
+- Training never runs
+
+**Impact**:
+- ⚠️ Depends on user manual intervention
+- ⚠️ No recovery mechanism
+- ⚠️ Failed attempts not tracked
+
+**Mitigation**:
+- Implement exponential backoff retry
+- Log retry attempts for debugging
+- Email user if permanent failure
+
+---
+
+### Risk 5: No Job Status Registry
+
+**Scenario**:
+- User creates ProjectConfiguration 1 with ClassSet A
+- User creates ProjectConfiguration 2 with ClassSet B
+- Both generate YAML files at similar timestamps
+- User can't remember which YAML is for which project
+- Wrong YAML used for training
+
+**Impact**:
+- ⚠️ Confusion between configurations
+- ⚠️ Manual tracking burden
+- ⚠️ Audit trail missing
+
+**Mitigation**:
+- Create YAMLJobRegistry table
+- Link each YAML file to project and user
+- Display generation history in UI
+
+---
+
+### Risk 6: Stale dataset_yaml_path References
+
+**Scenario**:
+- User generates YAML, trains model, saves result
+- User later regenerates YAML (classes changed)
+- Old best_model_ref.json points to old YAML
+- Using old model for inference loads incompatible classes
+- Inference fails or produces incorrect results
+
+**Impact**:
+- ⚠️ Model-configuration mismatch
+- ⚠️ Silent failures (model loads but classes wrong)
+- ⚠️ Model lineage broken
+
+**Mitigation**:
+- Validate YAML availability before inference
+- Store YAML content/hash in model metadata
+- Prevent deletion of YAML files in use
+
+---
+
 ## Not Production-Ready for High-Throughput
 
 ### Scale Limitations

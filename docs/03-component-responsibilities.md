@@ -286,6 +286,102 @@ On failure:
 
 ---
 
+## Django Configuration Domain Models
+
+The Django configuration layer provides domain models to centralize YOLO dataset configuration and YAML generation. For comprehensive documentation, see [**docs/08-yolo-dataset-configuration-management.md**](./08-yolo-dataset-configuration-management.md).
+
+### ProjectConfiguration Model
+
+### IS RESPONSIBLE FOR
+- ✅ Represent a high-resolution image detection project
+- ✅ Associate datasets and label sets
+- ✅ Manage project metadata (name, description, creation date)
+- ✅ Link to related training runs and inference jobs
+- ✅ Provide UI access for project administrators
+
+### IS NOT RESPONSIBLE FOR
+- ❌ Image file storage (external dataset)
+- ❌ Training execution (FastAPI handles this)
+- ❌ Metric calculation or evaluation
+- ❌ Model versioning (handled by DatasetConfig artifacts)
+
+---
+
+### DetectionClass Model
+
+### IS RESPONSIBLE FOR
+- ✅ Define individual class definitions (object types)
+- ✅ Store class metadata (name, color, description)
+- ✅ Enable class reuse across multiple projects
+- ✅ Maintain class hierarchy if applicable
+
+### IS NOT RESPONSIBLE FOR
+- ❌ Class annotation assignment (handled by external tools)
+- ❌ Dataset statistics or class distribution
+- ❌ Per-class performance metrics
+
+---
+
+### ClassSet Model
+
+### IS RESPONSIBLE FOR
+- ✅ Group DetectionClass objects into reusable sets
+- ✅ Enable class definition reuse across projects
+- ✅ Maintain class order and hierarchy
+- ✅ Track set modifications and versions
+
+### IS NOT RESPONSIBLE FOR
+- ❌ Individual annotation data
+- ❌ Dataset-specific class filtering
+- ❌ Balancing class distributions
+
+---
+
+### DatasetConfig Model
+
+### IS RESPONSIBLE FOR
+- ✅ Generate Ultralytics-compatible dataset.yaml from database state
+- ✅ Manage dataset paths (train/val/test directories)
+- ✅ Automatically generate class name and color lists from ClassSet
+- ✅ Create YAML files accessible to FastAPI
+- ✅ Handle custom PyYAML serialization (inline-style lists)
+- ✅ Coordinate with ProjectConfiguration and ClassSet models
+- ✅ Store YAML artifacts in shared storage
+
+### IS NOT RESPONSIBLE FOR
+- ❌ Dataset directory creation (assumed to exist)
+- ❌ Image file validation
+- ❌ Training execution (FastAPI responsibility)
+- ❌ YAML schema validation beyond Ultralytics requirements
+
+### Integration Points
+```
+Django UI receives configuration from user
+  ↓
+ProjectConfiguration + ClassSet + dataset_root combined
+  ↓
+DatasetConfig.generate_yaml() called
+  ↓
+Intermediate YAML dict created:
+  {
+    path: dataset_root,
+    train: "train/images",
+    val: "val/images",
+    test: "test/images",
+    nc: num_classes,
+    names: ['class1', 'class2', ...]
+  }
+  ↓
+Custom PyYAML representer forces inline-style:
+  names: ['class1', 'class2', ...]  # Instead of block-style
+  ↓
+YAML file written to shared_storage/configs/
+  ↓
+Path returned to Django frontend and FastAPI training request
+```
+
+---
+
 ## Shared Storage Layer
 
 ### IS RESPONSIBLE FOR

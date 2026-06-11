@@ -459,6 +459,155 @@ PREVENTION (future):
 
 ---
 
+## Django Configuration to Training Flow
+
+This flow describes how Django configuration models (ProjectConfiguration, ClassSet, DatasetConfig) coordinate to prepare YOLO training.
+
+For comprehensive documentation, see [**docs/08-yolo-dataset-configuration-management.md**](./08-yolo-dataset-configuration-management.md).
+
+```
+┌─ DJANGO ADMIN UI ──────────────────────────────────────┐
+│                                                          │
+│  1. Administrator creates project                      │
+│     - Project name: ILLUSTRATIVE_PROJECT_NAME          │
+│     - Dataset root: /data/ILLUSTRATIVE_DATASET         │
+│     - Label set: Select existing or create new         │
+│                                                          │
+│  2. Administrator defines label set (if new)           │
+│     - Add DetectionClass objects:                          │
+│       * DetectionClass 1: person, color=RED               │
+│       * DetectionClass 2: vehicle, color=BLUE             │
+│       * DetectionClass 3: animal, color=GREEN             │
+│     - Save as reusable ClassSet                        │
+│                                                          │
+│  3. Link ProjectConfiguration to ClassSet                    │
+│     - Project → ClassSet M2M relation created         │
+│     - Database state now reflects configuration       │
+│                                                          │
+└────────────────────┬──────────────────────────────────┘
+                     │
+                     ↓ User clicks "Generate YAML"
+                     │
+┌─ DJANGO BACKEND ───────────────────────────────────────┐
+│                                                          │
+│  4. DatasetConfig.generate_yaml() called with:            │
+│     - project: ProjectConfiguration instance                │
+│     - dataset_root: /data/ILLUSTRATIVE_DATASET         │
+│                                                          │
+│  5. Fetch related data from database                   │
+│     - project.label_sets.all() → [ClassSet]           │
+│     - label_set.label_classes.all() → [DetectionClass]    │
+│                                                          │
+│  6. Build intermediate YAML dictionary:                │
+│     {                                                  │
+│       "path": "/data/ILLUSTRATIVE_DATASET",           │
+│       "train": "train/images",                        │
+│       "val": "val/images",                            │
+│       "test": "test/images",                          │
+│       "nc": 3,                                        │
+│       "names": ["person", "vehicle", "animal"]        │
+│     }                                                  │
+│                                                          │
+│  7. Apply custom PyYAML serializer                     │
+│     - Default PyYAML would produce:                    │
+│       names:                                          │
+│         - person                                      │
+│         - vehicle                                     │
+│         - animal                                      │
+│     - Custom representer forces inline-style:         │
+│       names: ["person", "vehicle", "animal"]          │
+│                                                          │
+│  8. Write YAML file to shared storage:                 │
+│     Path: /shared_storage/configs/yaml_TIMESTAMP.yaml  │
+│     Content: (inline-style YAML from step 7)          │
+│                                                          │
+│  9. Return YAML file path to Django UI                 │
+│                                                          │
+└────────────────────┬──────────────────────────────────┘
+                     │
+                     ↓
+┌─ DJANGO FRONTEND (AJAX) ───────────────────────────────┐
+│                                                          │
+│  10. Display YAML preview to user                      │
+│      - Show file path                                 │
+│      - Show YAML content in textarea                  │
+│      - Allow download or copy                         │
+│                                                          │
+│  11. User submits training request with YAML path:     │
+│      {                                                 │
+│        "dataset_yaml_path": "/shared_storage/configs/yaml_TIMESTAMP.yaml", │
+│        "model_size": "m",                             │
+│        "epochs": 50                                   │
+│      }                                                │
+│                                                          │
+└────────────────────┬──────────────────────────────────┘
+                     │
+                     ↓ HTTP POST /training (with YAML path)
+                     │
+┌─ FASTAPI LAYER ────────────────────────────────────────┐
+│                                                          │
+│  12. Receive training request                          │
+│      - Parse dataset_yaml_path                        │
+│      - Validate YAML file exists in shared storage    │
+│      - Load YAML content                              │
+│                                                          │
+│  13. Ultralytics YOLO training executes               │
+│      trainer.train(                                   │
+│        data="/shared_storage/configs/yaml_TIMESTAMP.yaml", │
+│        model="yolov8m.pt",                           │
+│        epochs=50                                     │
+│      )                                               │
+│                                                          │
+│  14. Training proceeds with classes from YAML:         │
+│      - Class 0: person                               │
+│      - Class 1: vehicle                              │
+│      - Class 2: animal                               │
+│                                                          │
+└────────────────────┬──────────────────────────────────┘
+                     │
+                     ↓
+┌─ TRAINING EXECUTION ───────────────────────────────────┐
+│                                                          │
+│  15. Multi-seed training loop with Django config      │
+│      (Same as standard training flow, but config      │
+│       originated from Django database models)         │
+│                                                          │
+└────────────────────┬──────────────────────────────────┘
+                     │
+                     ↓
+┌─ ARTIFACTS BACK TO DJANGO ─────────────────────────────┐
+│                                                          │
+│  16. Best model stored in shared_storage              │
+│      Django can associate training result with:        │
+│      - Original ProjectConfiguration                        │
+│      - ClassSet used                                 │
+│      - YAML configuration file                       │
+│      - Training metrics                              │
+│                                                          │
+└────────────────────────────────────────────────────────┘
+```
+
+### Docker Path Coordination
+
+Django and FastAPI must both access the same YAML file despite different mount paths:
+
+```
+Host system:
+  /home/user/shared_configs/yaml_TIMESTAMP.yaml (actual file)
+
+Django container:
+  Volume mount: shared_storage:/data/shared
+  Access path: /data/shared/yaml_TIMESTAMP.yaml
+
+FastAPI container:
+  Volume mount: shared_storage:/app/shared_data
+  Access path: /app/shared_data/yaml_TIMESTAMP.yaml
+
+Both containers refer to same file via Docker volume mapping
+```
+
+---
+
 ## Error Handling Flow
 
 ```

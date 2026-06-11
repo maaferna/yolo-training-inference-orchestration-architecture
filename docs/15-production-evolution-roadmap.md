@@ -49,6 +49,73 @@ Django Web ←HTTP→ FastAPI Single Instance ←→ Shared Volume
 - Training requests being dropped
 - System overload during peak hours
 
+### Django Configuration Layer Evolution (Integrated into Phase 1+)
+
+Django YOLO configuration models (ProjectConfiguration, ClassSet, DatasetConfig) require continuous improvement in parallel with GPU infrastructure scaling.
+
+For comprehensive documentation, see [**docs/08-yolo-dataset-configuration-management.md**](./08-yolo-dataset-configuration-management.md).
+
+**Phase 1 Enhancements (Immediate)**:
+
+1. **Add Async YAML Generation**
+   - Make `DatasetConfig.generate_yaml()` async (Celery or APScheduler)
+   - Prevents UI blocking on large ClassSets
+   - Returns job status to user
+
+2. **Implement Configuration Validation**
+   - Checksum YAML content after generation
+   - Compare with database state on load
+   - Warn user of drift
+
+3. **Create YAMLJobRegistry Table**
+   - Track all YAML file generations
+   - Link YAML to ProjectConfiguration and user
+   - Enable audit trail and history
+
+4. **Use Environment Variables for Paths**
+   - Replace hardcoded `/data/shared/` paths
+   - Read `CONFIG_BASE_PATH` from settings
+   - Support multi-environment deployments
+
+5. **Add Preflight Validation**
+   - Validate dataset directories exist
+   - Check write permissions for YAML generation
+   - Fail early with clear error messages
+
+**Phase 2 Enhancements (With Job Queue)**:
+
+1. **Async Configuration Generation**
+   - Queue configuration generation as Celery task
+   - Support bulk YAML generation for multiple projects
+   - Parallel generation across workers
+
+2. **Configuration Versioning**
+   - Store previous YAML versions in database
+   - Enable rollback if configuration breaks training
+   - Compare versions in UI
+
+3. **Linked Job Tracking**
+   - Each YAML file linked to training jobs
+   - Prevent deletion of active YAML files
+   - Track model lineage to configuration
+
+**Phase 3+ Enhancements**:
+
+1. **Configuration as Code**
+   - YAML definitions stored in version control
+   - GitOps-style configuration management
+   - Reproducible configurations
+
+2. **Configuration Marketplace**
+   - Share ClassSets across teams
+   - Version control for class hierarchies
+   - Templated configurations for common tasks
+
+3. **Advanced Validation**
+   - Test YAML with Ultralytics before submission
+   - Detect class imbalance from dataset statistics
+   - Recommend optimal training parameters
+
 ---
 
 ## Phase 2: Distributed Job Queue (3-6 months)

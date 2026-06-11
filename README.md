@@ -134,6 +134,7 @@ This system orchestrates AI model training and inference workflows across multip
 | Layer | Technologies |
 |-------|--------------|
 | Web Framework | Django, Django REST Framework |
+| Configuration Management | Django ORM Models, YAML Generation |
 | AI Service | FastAPI, Pydantic |
 | Object Detection | YOLOv8, YOLOv11 (Ultralytics) |
 | High-Resolution Inference | SAHI |
@@ -142,6 +143,10 @@ This system orchestrates AI model training and inference workflows across multip
 | Database | PostgreSQL |
 | Containerization | Docker, Docker Compose |
 | GPU Orchestration | NVIDIA CUDA, nvidia-docker |
+
+### Django Configuration Layer
+
+This architecture includes a Django-based YOLO dataset configuration management layer that centralizes training parameters through ORM models (ProjectConfiguration, ClassSet, DetectionClass, DatasetConfig) with automatic Ultralytics-compatible YAML generation. See [**docs/08-yolo-dataset-configuration-management.md**](./docs/08-yolo-dataset-configuration-management.md) for comprehensive documentation.
 
 ---
 
