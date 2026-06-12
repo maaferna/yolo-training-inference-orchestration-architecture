@@ -138,7 +138,7 @@ Key components include:
 | **Inference** | YOLO + SAHI | High-resolution image tiling strategy for small-object detection |
 | **Experiment Tracking** | ClearML | Metadata logging, metrics collection, model lineage management |
 | **Database** | PostgreSQL | User data, request history, configuration metadata |
-| **GPU Execution** | CUDA + DDP | Resource management, distributed data parallel evaluation |
+| **GPU Execution** | CUDA + PyTorch DataParallel | Single-GPU resource management; DDP deferred to Phase 3 |
 | **Containerization** | Docker Compose | Local development; evolution path to Kubernetes |
 | **Storage** | Shared volumes | Local filesystem; evolution path to S3/blob storage |
 
@@ -166,7 +166,7 @@ The broader ecosystem includes an auxiliary synthetic dataset generation pipelin
 - **Multi-seed experimentation**: Why train multiple seeds for statistical robustness over single-run results
 - **Model selection logic**: Validation metrics drive selection (mAP50), not heuristics or manual selection
 - **High-resolution inference**: SAHI tiling strategy trades compute for detection accuracy on small objects
-- **GPU resource management**: CUDA context handling, DataParallel patterns, DDP evaluation strategies
+- **GPU resource management**: CUDA context handling, DataParallel patterns, DDP deferred to Phase 3
 - **Experiment tracking**: ClearML integration enables reproducibility, comparison, and failure debugging
 
 ### C. Backend Integration & Full-Stack Patterns
@@ -490,7 +490,7 @@ These limitations reflect pragmatic early-stage design decisions optimized for i
   - Common interview questions
   - Positioning by audience
 
-- **[Portfolio Positioning Analysis](./PORTFOLIO-POSITIONING-ANALYSIS.md)** — Strategic positioning
+- **[Project Positioning](./PROJECT-POSITIONING.md)** — Strategic positioning
   - What this demonstrates
   - Red flags to avoid
   - Interviewer perspective

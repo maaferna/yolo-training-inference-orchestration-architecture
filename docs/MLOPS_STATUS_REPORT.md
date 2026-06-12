@@ -1,5 +1,7 @@
 # MLOps Status Report - YOLO Training & Inference Orchestration
 
+> **Note**: This is a template for internal team communication. It represents operational patterns that would be used if this project were deployed. These are NOT part of the core architecture documentation; they are examples of how an internal team would manage this system.
+
 **Generated**: June 12, 2026  
 **Project Stage**: MVP with Production-Ready Infrastructure  
 **Review Frequency**: Monthly  

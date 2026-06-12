@@ -133,7 +133,7 @@ This document describes the complete system architecture including all layers, c
 │  ┌────────────────────────────────────────────────────────────┐  │
 │  │ • PyTorch/CUDA runtime                                     │  │
 │  │ • DataParallel (single GPU)                                │  │
-│  │ • DDP (Distributed Data Parallel - evaluated)              │  │
+│  │ • DDP (Distributed Data Parallel - deferred to Phase 3)    │  │
 │  │ • Memory management & cleanup                              │  │
 │  │ • CUDA context synchronization                             │  │
 │  └────────────────────────────────────────────────────────────┘  │

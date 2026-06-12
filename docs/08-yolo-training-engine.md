@@ -366,7 +366,7 @@ model = YOLO('yolov8s.pt')
 results = model.train(device=0, ...)  # Single GPU
 ```
 
-### Evaluated: Distributed Data Parallel (DDP)
+### Deferred: Distributed Data Parallel (DDP - Phase 3)
 
 For future multi-GPU training:
 

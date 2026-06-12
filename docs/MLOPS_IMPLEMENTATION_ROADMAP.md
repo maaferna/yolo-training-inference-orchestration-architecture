@@ -1,5 +1,7 @@
 # MLOps Implementation Roadmap & Action Plan
 
+> **Note**: This is a template for internal team execution planning. It represents the operational decisions an internal team would make to evolve the MLOps stack. These are NOT part of the core architecture documentation; they are examples of deployment and operations planning.
+
 **Status**: Planning Complete, Execution Starts Q3 2026  
 **Created**: June 12, 2026  
 **Owner**: MLOps Team + DevOps Team  

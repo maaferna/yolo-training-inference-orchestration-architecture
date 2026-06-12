@@ -1490,7 +1490,6 @@ That's what makes this architecture worth studying.
 
 **For interview preparation**:
 - See [Project Positioning](./PROJECT-POSITIONING.md)
-- Reference [Portfolio Positioning](./PORTFOLIO-POSITIONING-ANALYSIS.md)
 
 ---
 

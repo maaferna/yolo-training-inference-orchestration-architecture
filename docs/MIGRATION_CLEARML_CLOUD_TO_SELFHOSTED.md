@@ -1,5 +1,7 @@
 # Migration Guide: ClearML Cloud → Self-Hosted
 
+> **Note**: This is a template for infrastructure operations teams. It documents the deployment and operations patterns that would be used if this architecture were moved to self-hosted infrastructure. These are NOT part of the core architecture documentation; they are examples of DevOps execution planning.
+
 **Status**: Planning Phase  
 **Target Date**: Q3 2026  
 **Risk Level**: Low (can run in parallel)  

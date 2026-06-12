@@ -151,7 +151,7 @@ def train_with_dataparallel(model_size='s'):
 
 ---
 
-## Distributed Data Parallel (DDP) - Evaluated
+## Distributed Data Parallel (DDP) - Deferred to Phase 3
 
 ### Multi-GPU Architecture
 
