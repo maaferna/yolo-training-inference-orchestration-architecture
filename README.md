@@ -6,18 +6,17 @@
 
 ### What This Repository Is
 
-This repository documents a **system-level AI orchestration architecture with containerized microservice separation, GPU-backed training/inference execution, and early MLOps capabilities.**
+This repository documents **architectural decisions for a web-connected AI vision platform** that separates user-facing web services from GPU-intensive ML workloads. It demonstrates:
 
-It represents real architectural decisions, design patterns, and engineering integration experience in building:
-- A containerized Django web application layer
-- A FastAPI AI service layer
-- YOLO v8/v11 training engines with multi-seed experimentation
-- Continuous improvement training pipelines
-- SAHI-based high-resolution object detection inference
-- ClearML experiment tracking integration
-- GPU resource management and orchestration
-- Shared artifact storage layer
-- Docker-based distributed deployment
+- **Microservice separation**: stateless web tier (Django) and compute tier (FastAPI) with independent scaling
+- **GPU orchestration patterns**: YOLO training with multi-seed experimentation and validation-based model selection
+- **MLOps integration**: ClearML for experiment tracking, lineage management, and model comparison
+- **Distributed inference strategies**: SAHI tiling for high-resolution object detection at scale
+- **Pragmatic scaling philosophy**: start synchronous, evolve to async/queue-based when real bottlenecks appear
+- **Failure mode awareness**: explicit handling of component failures and error propagation
+- **Production evolution thinking**: documented roadmap for scaling from MVP to enterprise scale
+
+**This is an MVP-level architecture** (single GPU service, shared filesystem storage). The production evolution roadmap documents the reasoning for scaling patterns when specific bottlenecks appear.
 
 ### What This Repository Is NOT
 
@@ -40,11 +39,45 @@ This repository does not contain the private implementation, datasets, trained w
 
 ---
 
-## Architecture Overview
+## Maturity Tier: MVP Architecture
+
+This repository represents **Phase 1 of a documented production evolution roadmap**:
+
+| Aspect | Status | Notes |
+|--------|--------|-------|
+| Request handling | Synchronous | Single GPU service instance; HTTP-based request/response |
+| Job queuing | Not implemented | Triggers Phase 2 when queue wait time exceeds 30 minutes |
+| Multi-GPU scaling | Conceptual | Roadmap: Add worker pool when > 3 concurrent jobs observed |
+| Distributed training | DDP evaluated | Error handling documented; not required at MVP scale |
+| Kubernetes orchestration | Future phase | Local Docker Compose sufficient for current phase |
+| Model registry | ClearML | Experiment tracking implemented; not full model registry |
+| Inference serving | Per-request | No inference caching or batch optimization yet |
+| Observability | Basic | Error handling and logging; no distributed tracing |
+| High-availability | Single node | No failover or redundancy at MVP scale |
+
+**Philosophy**: Build for current requirements, add complexity only when real bottlenecks appear. Each phase is triggered by specific metrics, not speculation.
+
+---
 
 For a comprehensive visual and textual overview of the system architecture, see [**docs/02-system-architecture.md**](./docs/02-system-architecture.md).
 
 The system separates web orchestration (Django) from GPU-intensive compute services (FastAPI), enabling independent scaling and clear component responsibilities.
+
+---
+
+## Clear Responsibility Boundaries
+
+Explicit responsibility separation prevents architectural complexity and makes failure modes obvious:
+
+- **Django**: Web UI, authentication, request history, result visualization → NOT model training
+- **FastAPI**: Training orchestration, inference dispatch, experiment coordination → NOT user authentication
+- **YOLO Training**: Model training with validation-based selection → NOT hyperparameter tuning
+- **SAHI Inference**: High-resolution detection via tiling → NOT post-processing or filtering
+- **ClearML**: Experiment tracking, metrics collection, model lineage → NOT model storage or serving
+- **PostgreSQL**: User data, configuration, request metadata → NOT ML artifact storage
+- **Shared Storage**: Models, checkpoints, training outputs → NOT user data or credentials
+
+This clarity prevents "dependency spaghetti" and makes failure scenarios explicit. For full responsibility matrix and failure handling table, see [**docs/03-component-responsibilities.md**](./docs/03-component-responsibilities.md).
 
 ---
 
@@ -95,20 +128,21 @@ Key components include:
 
 ---
 
-## Technology Stack Represented
+## Technology Stack & Integration Patterns
 
-| Layer | Technologies |
-|-------|--------------|
-| Web Framework | Django, Django REST Framework |
-| Configuration Management | Django ORM Models, YAML Generation |
-| AI Service | FastAPI, Pydantic |
-| Object Detection | YOLOv8, YOLOv11 (Ultralytics) |
-| High-Resolution Inference | SAHI |
-| Experiment Tracking | ClearML |
-| Deep Learning | PyTorch, CUDA |
-| Database | PostgreSQL |
-| Containerization | Docker, Docker Compose |
-| GPU Orchestration | NVIDIA CUDA, nvidia-docker |
+| Layer | Technology | Integration Pattern |
+|-------|-----------|----------------------|
+| **Web** | Django + DRF | Request/response validation, ORM-backed data persistence |
+| **Compute** | FastAPI | Async task delegation via HTTP; long-running training/inference |
+| **Training** | PyTorch + Ultralytics YOLO | Multi-seed experimentation with validation-based model selection |
+| **Inference** | YOLO + SAHI | High-resolution image tiling strategy for small-object detection |
+| **Experiment Tracking** | ClearML | Metadata logging, metrics collection, model lineage management |
+| **Database** | PostgreSQL | User data, request history, configuration metadata |
+| **GPU Execution** | CUDA + DDP | Resource management, distributed data parallel evaluation |
+| **Containerization** | Docker Compose | Local development; evolution path to Kubernetes |
+| **Storage** | Shared volumes | Local filesystem; evolution path to S3/blob storage |
+
+**Integration Philosophy**: Keep concerns separated (web, compute, storage, database). Communicate via clear interfaces (HTTP between services, filesystem for artifacts, relational DB for metadata).
 
 ### Django Configuration Layer
 
@@ -117,6 +151,49 @@ This architecture includes a Django-based YOLO dataset configuration management 
 ### Auxiliary: Synthetic Dataset Generation
 
 The broader ecosystem includes an auxiliary synthetic dataset generation pipeline based on SAM (Segment Anything Model) for dataset engineering and research experimentation. This component automates object extraction from annotated images and synthetic scene composition, supporting dataset enrichment workflows. See [**docs/20-synthetic-dataset-generation-pipeline.md**](./docs/20-synthetic-dataset-generation-pipeline.md) for details.
+
+---
+
+## What This Repository Demonstrates
+
+### A. System Design Thinking
+- **Responsibility separation**: Django (stateless web) vs FastAPI (compute tier) prevents cross-cutting concerns
+- **Failure mode analysis**: Each component has explicit handling strategy (see docs/13-error-handling-and-fallbacks.md)
+- **Synchronous-first pragmatism**: MVP justifies simple HTTP-based communication; documents when async is needed
+- **Scaling philosophy**: Growth is metrics-driven (queue wait time, job concurrency) not speculative
+
+### B. AI/ML Architecture Knowledge
+- **Multi-seed experimentation**: Why train multiple seeds for statistical robustness over single-run results
+- **Model selection logic**: Validation metrics drive selection (mAP50), not heuristics or manual selection
+- **High-resolution inference**: SAHI tiling strategy trades compute for detection accuracy on small objects
+- **GPU resource management**: CUDA context handling, DataParallel patterns, DDP evaluation strategies
+- **Experiment tracking**: ClearML integration enables reproducibility, comparison, and failure debugging
+
+### C. Backend Integration & Full-Stack Patterns
+- **Web-to-compute communication**: Synchronous HTTP at MVP, designed for queue migration
+- **Shared storage orchestration**: Docker volumes in development; evolution path to object storage
+- **Database schema design**: User data (PostgreSQL) vs ML artifacts (filesystem) separation
+- **Configuration management**: YOLO dataset YAML generation from ORM models; validation pipeline
+- **Error propagation**: Specific failures mapped to HTTP status codes and user-facing messages
+
+### D. Production Evolution Thinking
+- **Pragmatic MVP**: No Kubernetes, no message queues, no object storage—sufficient for current scale
+- **Growth-triggered phases**: Each evolution phase is triggered by specific bottleneck metrics
+- **Technical decision rationale**: Documents when synchronous fails, when async becomes necessary
+- **Cost awareness**: Complexity is added only when real constraints appear, not pre-emptively
+
+### E. Responsible Public Documentation
+- **Anonymized architecture**: No customer, institution, or project names; no real credentials
+- **Sanitized code examples**: All database URLs, API keys use placeholders; function names are generic
+- **Educational value preserved**: Patterns are reusable; actual implementation remains private
+- **Security discipline**: Pre-commit hooks for credential detection, contributing guidelines, audit reports
+
+### NOT Demonstrated
+- ❌ Production deployment to real cloud infrastructure (conceptual only)
+- ❌ Inference at scale or model serving optimization (future roadmap item)
+- ❌ Advanced MLOps features (no CI/CD, no automated retraining triggers at MVP)
+- ❌ Kubernetes orchestration (documented as Phase 4)
+- ❌ Multi-region or high-availability patterns (Phase 5)
 
 ---
 
@@ -153,6 +230,41 @@ The broader ecosystem includes an auxiliary synthetic dataset generation pipelin
 2. Django reads artifacts via mounted volume
 3. Results are cached and visualized
 4. Error states are logged to ClearML
+
+---
+
+## Architectural Evolution Path
+
+This repository demonstrates **pragmatic growth thinking**. Instead of building for "infinite scale" from day one, the roadmap shows when and why to evolve each component:
+
+### Phase 1: MVP (Current Design)
+- Single GPU service instance
+- Synchronous HTTP request/response
+- Shared filesystem storage
+- **Scaling limit**: ~3 concurrent long-running jobs
+- **Trigger for Phase 2**: Average queue wait time > 30 minutes
+
+### Phase 2: Async Job Queue
+- **When**: 3+ concurrent jobs consistently observed
+- **Add**: Celery/RQ job queue for asynchronous training
+- **Benefit**: Non-blocking user requests; better resource utilization
+
+### Phase 3: Multi-GPU Worker Pool
+- **When**: > 10 concurrent jobs consistently observed
+- **Add**: Multiple GPU service instances with load balancing
+- **Benefit**: Higher throughput; independent job scheduling
+
+### Phase 4: Kubernetes + Object Storage
+- **When**: Multi-region deployment needed or > 50 concurrent jobs
+- **Add**: Kubernetes orchestration; S3/blob storage for artifacts
+- **Benefit**: Managed scaling; geographic redundancy
+
+### Phase 5: Enterprise Observability
+- **When**: SLA requirements > 99.5% uptime
+- **Add**: Distributed tracing, metrics, alerting, incident management
+- **Benefit**: Production reliability; operational visibility
+
+**Philosophy**: Add complexity only when real bottlenecks appear, not speculation. For detailed reasoning and trigger metrics, see [**docs/15-production-evolution-roadmap.md**](./docs/15-production-evolution-roadmap.md).
 
 ---
 
