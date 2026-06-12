@@ -109,9 +109,9 @@ Dataset Engineering Subsystem
 # Pseudo-code illustrating pattern
 config = load_yaml("DATASET_PATH_PLACEHOLDER/config.yaml")
 masks = convert_bounding_boxes_to_mask(config)
-real_shapes = extract_real_shapes(config, masks)
-synthetic_images = generate_synthetic_images(config, real_shapes)
-export_annotations(config, synthetic_images)
+extracted_objects = extract_objects_from_source(config, masks)
+generated_images = generate_training_images(config, extracted_objects)
+export_annotations(config, generated_images)
 ```
 
 ---
@@ -130,9 +130,9 @@ export_annotations(config, synthetic_images)
 
 **Modules**:
 - `convert_bounding_boxes_to_mask.py`
-- `extract_real_shapes.py`
-- `extract_objects_from_masks.py`
-- `generate_synthetic_images.py`
+- `extract_objects_from_source.py`
+- `extract_features_from_masks.py`
+- `generate_training_images.py`
 - `utils.py`
 - `utils_augmentation.py`
 
@@ -240,7 +240,7 @@ Save colored visualization
 
 **Output**:
 - PNG RGBA file with transparent background
-- File organization: `real_shapes/class_ID_NAME/object_*.png`
+- File organization: `extracted_objects/class_ID_NAME/object_*.png`
 
 **Processing Pattern**:
 ```
@@ -370,7 +370,7 @@ SYNTHETIC_OUTPUT_DIR_PLACEHOLDER/
     ├── labels_yolo/            # Re-emitted YOLO labels
     │   ├── image_0.txt
     │   └── ...
-    ├── real_shapes/            # Extracted RGBA objects
+    ├── extracted_objects/      # Extracted RGBA objects
     │   ├── 0_CLASS_NAME_1/
     │   │   ├── object_0001.png
     │   │   ├── object_0002.png
@@ -519,7 +519,7 @@ Step 4: Real Shape Extraction
   │   │   └── Check max_area_frac
   │   ├── Save PNG RGBA cutout
   │   └── Organize by class directory
-  └── Output: real_shapes/class_*/
+  └── Output: extracted_objects/class_*/
 
 Step 5: Quality Filtering
   ├── Evaluate object dimensions
@@ -627,7 +627,7 @@ Step 10: External Platform Integration
 
 ---
 
-### extract_real_shapes
+### extract_objects_from_source
 
 **Purpose**: Extract individual objects as RGBA cutouts with transparency
 
@@ -647,7 +647,7 @@ Step 10: External Platform Integration
 2. Organize by class directory
 
 **Outputs**:
-- `real_shapes/class_ID_NAME/`: Directory per class
+- `extracted_objects/class_ID_NAME/`: Directory per class
 - PNG RGBA files: `object_0001.png`, `object_0002.png`, etc.
 
 **Quality Filters Applied**:
@@ -685,14 +685,14 @@ Step 10: External Platform Integration
 - `object_album/class_ID_NAME/`: Alternative object storage
 - Same PNG RGBA format
 
-**Relationship to extract_real_shapes**:
+**Relationship to extract_objects_from_source**:
 - Complementary module
 - Provides fallback if SAM cannot be re-run
 - Used for rapid object extraction from pre-generated masks
 
 ---
 
-### generate_synthetic_images
+### generate_training_images
 
 **Purpose**: Compose synthetic training images by combining backgrounds with extracted objects
 
@@ -903,7 +903,7 @@ SYNTHETIC_OUTPUT_DIR_PLACEHOLDER/
     │   ├── image_0.txt
     │   ├── image_1.txt
     │   └── ...
-    ├── real_shapes/                   # Extracted RGBA cutouts
+    ├── extracted_objects/                   # Extracted RGBA cutouts
     │   ├── 0_CLASS_NAME_PLACEHOLDER_1/
     │   │   ├── object_0001.png       # RGBA PNG
     │   │   ├── object_0002.png
@@ -950,7 +950,7 @@ SYNTHETIC_OUTPUT_DIR_PLACEHOLDER/
 |----------|-----------|---------|
 | `masks_sam/` | Keep long-term | Debug, regenerate objects |
 | `labels_yolo/` | Keep long-term | Reproduce SAM outputs |
-| `real_shapes/` | Keep long-term | Regenerate synthetic images |
+| `extracted_objects/` | Keep long-term | Regenerate synthetic images |
 | `synthetic_images/` | Keep for training | Final training dataset |
 | `annotations.json` | Keep for training | COCO reference |
 | `annotations_bbox.json` | Keep for training | Object detection export |
@@ -1063,7 +1063,7 @@ export_dataset(dataset, output_format="yolo")  # Or "coco"
 **Issue**:
 ```python
 # Refactored module but forgot to update imports
-from old_module import extract_real_shapes  # ModuleNotFoundError!
+from old_module import extract_objects_from_source  # ModuleNotFoundError!
 ```
 
 **Impact**:
@@ -1079,8 +1079,8 @@ from old_module import extract_real_shapes  # ModuleNotFoundError!
 **Example**:
 ```python
 # In __init__.py for backward compatibility
-from .synthetic_pipeline.extract import extract_real_shapes
-from .synthetic_pipeline.compose import generate_synthetic_images
+from .synthetic_pipeline.extract import extract_objects_from_source
+from .synthetic_pipeline.compose import generate_training_images
 # Now both import sources work
 ```
 
@@ -1372,7 +1372,7 @@ SAM Segmentation (1 image) → Extract (1 image) → Compose (1 image) → Wait.
 ```
 version_1/
   ├── masks_sam/: 50GB
-  ├── real_shapes/: 100GB
+  ├── extracted_objects/: 100GB
   ├── synthetic_images/: 80GB
   └── Total: 230GB per version
 ```
