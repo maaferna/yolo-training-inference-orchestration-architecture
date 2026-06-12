@@ -104,13 +104,13 @@ gunicorn==20.x
 /data/shared/  ← Shared storage for reading results
 ```
 
-**Environment Variables**:
+**Environment Variables** (example placeholders):
 ```env
 DEBUG=False  # Always False in non-development
-ALLOWED_HOSTS=localhost,127.0.0.1,django
-FASTAPI_URL=http://fastapi:8001
-DATABASE_URL=postgresql://postgres:PASSWORD@postgres:5432/mldb
-SECRET_KEY=DJANGO_SECRET_KEY_PLACEHOLDER
+ALLOWED_HOSTS=localhost,127.0.0.1,[DJANGO_SERVICE_NAME]
+FASTAPI_URL=http://[FASTAPI_SERVICE_NAME]:[FASTAPI_PORT]
+DATABASE_URL=[DATABASE_CONNECTION_STRING_PLACEHOLDER]
+SECRET_KEY=[DJANGO_SECRET_KEY_PLACEHOLDER]
 ```
 
 **Network**: `ml_network` (bridge)
@@ -246,10 +246,10 @@ docker exec -i postgres psql -U postgres mldb < backup.sql
 
 **Type**: Bridge network named `ml_network`
 
-**Service Discovery**:
+**Service Discovery** (example placeholders):
 - Services communicate by container name (DNS resolution)
-- Example: Django connects to FastAPI at `http://fastapi:8001`
-- PostgreSQL accessible at `postgresql://postgres:5432/mldb`
+- Example: Django connects to FastAPI at `http://[FASTAPI_SERVICE_NAME]:[FASTAPI_PORT]`
+- PostgreSQL accessible at `postgresql://[DATABASE_HOST]:[DATABASE_PORT]/[DATABASE_NAME]`
 
 **Communication Flows**:
 ```

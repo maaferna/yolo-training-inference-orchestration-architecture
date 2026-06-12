@@ -1,24 +1,59 @@
-# Environment variables
-.env
-.env.local
-.env.*.local
+# ============================================
+# STRICT SANITIZATION - PREVENT ACCIDENTAL COMMITS
+# ============================================
 
-# Model weights and checkpoints
+# Credentials and Secrets
+*.env
+*.env.local
+*.env.*.local
+secrets/
+credentials/
+credentials.yaml
+secrets.yaml
+.aws/
+.gcloud/
+.azure/
+.ssh/
+
+# API Keys and Tokens (additional patterns)
+.token
+.tokens
+.api_key
+.api_keys
+.clearml_token
+
+# Database
+*.sql
+*.backup
+*.db
+*.sqlite
+*.psql_dump
+
+# Model Weights and Checkpoints (comprehensive)
 *.pt
 *.pth
 *.onnx
 *.pb
 *.h5
 *.weights
+*.pkl
+*.pickle
+model_weights/
+checkpoints/
 
-# Datasets and data
+# Datasets and Data (comprehensive)
 datasets/
 data/
 raw_data/
+training_data/
 *.zip
 *.tar
 *.tar.gz
 *.rar
+*.csv
+*.xlsx
+*.xls
+*.parquet
 
 # Media files
 media/
@@ -27,17 +62,77 @@ results/
 training_results/
 inference_outputs/
 screenshots/
+plots/
+visualizations/
 
 # ClearML configuration
 clearml.conf
 clearml/
+.clearml/
 
-# Logs
+# Logs (may contain sensitive info)
 *.log
 logs/
-*.txt
+tmp_logs/
 
 # Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environments
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+.venv
+pip-log.txt
+pip-delete-this-directory.txt
+
+# IDE/Editor
+.vscode/settings.json
+.vscode/launch.json
+.vscode/.history/
+.idea/
+*.swp
+*.swo
+*~
+.sublime-project
+.sublime-workspace
+
+# OS
+.DS_Store
+.Thumbs.db
+Thumbs.db
+*.tmp
+
+# Docker
+Dockerfile
+docker-compose*.yml
+docker-compose*.yaml
+.dockerignore
+
+# Git
+.git/hooks/pre-commit
+.git/hooks/pre-push
 __pycache__/
 *.py[cod]
 *$py.class

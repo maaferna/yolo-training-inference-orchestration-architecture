@@ -429,11 +429,11 @@ This document describes the complete system architecture including all layers, c
 - Network: `ml_network`
 - Environment: POSTGRES_PASSWORD, POSTGRES_DB
 
-**Networking**:
+**Networking** (example placeholders):
 - Docker bridge network: `ml_network`
 - Service discovery via container names (DNS)
-- Django → FastAPI: `http://fastapi:8001`
-- Both → PostgreSQL: `postgresql://postgres:5432/mldb`
+- Django → FastAPI: `http://[FASTAPI_SERVICE_NAME]:8001`
+- Both → PostgreSQL: `postgresql://[DATABASE_HOST]:[DATABASE_PORT]/[DATABASE_NAME]`
 
 **Shared Volume**:
 - Volume name: `shared_storage`

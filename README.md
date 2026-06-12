@@ -42,60 +42,26 @@ This repository does not contain the private implementation, datasets, trained w
 
 ## Architecture Overview
 
-This system orchestrates AI model training and inference workflows across multiple containerized services with the following design:
+For a comprehensive visual and textual overview of the system architecture, see [**docs/02-system-architecture.md**](./docs/02-system-architecture.md).
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                  Django Web Application                     │
-│           (Request Submission & Result Visualization)       │
-└────────────────────────┬────────────────────────────────────┘
-                         │
-                    HTTP/REST
-                         │
-        ┌────────────────┴────────────────┐
-        │                                 │
-┌───────▼─────────────────┐     ┌────────▼──────────────┐
-│   FastAPI AI Service    │     │  Shared Storage Layer │
-│  (Orchestration Engine) │     │   (Artifacts & Models)│
-│                         │     └──────────────────────┘
-│ ┌─────────────────────┐ │
-│ │ YOLO Training       │ │
-│ │ CI Training Pipeline│ │
-│ │ SAHI Inference      │ │
-│ │ ClearML Tracking    │ │
-│ └─────────────────────┘ │
-└───────┬─────────────────┘
-        │
-    ┌───┴──────────────────────┬──────────────┐
-    │                          │              │
-┌───▼────────┐         ┌──────▼──────┐  ┌───▼──────────┐
-│  GPU Layer │         │  PostgreSQL │  │ Docker/Compose
-│  (CUDA/DL) │         │  Database   │  │ (Container Runtime)
-└────────────┘         └─────────────┘  └────────────────┘
-```
+The system separates web orchestration (Django) from GPU-intensive compute services (FastAPI), enabling independent scaling and clear component responsibilities.
 
 ---
 
 ## Main Components
 
+For detailed component responsibilities, interactions, and failure modes, see [**docs/03-component-responsibilities.md**](./docs/03-component-responsibilities.md).
+
+Key components include:
+
 ### 1. **Django Web Application**
-   - Request submission interface
-   - Result visualization and dashboard
-   - User authentication and authorization
-   - Result history and artifact browsing
+   Request submission, result visualization, and user management layer.
 
 ### 2. **FastAPI AI Service**
-   - Orchestration engine for training and inference tasks
-   - Training pipeline coordination
-   - Inference request processing
-   - ClearML experiment management
-   - Async task delegation
+   Orchestration engine coordinating training, inference, and experiment tracking.
 
 ### 3. **YOLO Training Engine**
-   - YOLOv8/YOLOv11 model training
-   - Multi-seed experimentation
-   - Metric collection and validation
-   - Model selection based on mAP50
+   Multi-seed training with automatic model selection based on validation metrics.
 
 ### 4. **Continuous Improvement Training**
    - Incremental training on new data

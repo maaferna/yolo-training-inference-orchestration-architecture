@@ -560,14 +560,14 @@ import boto3
 from botocore.client import Config
 
 class S3ArtifactStorage:
-    """Store artifacts in S3 (or MinIO)"""
+    """Store artifacts in S3 (or MinIO) - example with placeholders"""
     
-    def __init__(self, bucket_name='project-artifacts'):
+    def __init__(self, bucket_name='[S3_BUCKET_PLACEHOLDER]'):
         self.s3 = boto3.client(
             's3',
             endpoint_url=os.getenv('S3_ENDPOINT'),  # S3 or MinIO
-            aws_access_key_id=os.getenv('AWS_ACCESS_KEY'),
-            aws_secret_access_key=os.getenv('AWS_SECRET_KEY'),
+            aws_access_key_id=os.getenv('[AWS_ACCESS_KEY_PLACEHOLDER]'),
+            aws_secret_access_key=os.getenv('[AWS_SECRET_KEY_PLACEHOLDER]'),
             config=Config(signature_version='s3v4')
         )
         self.bucket = bucket_name
