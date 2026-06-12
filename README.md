@@ -197,6 +197,30 @@ The broader ecosystem includes an auxiliary synthetic dataset generation pipelin
 
 ---
 
+## 📖 Engineering Case Study: Deep Dive
+
+For a comprehensive narrative-driven exploration of the architectural decisions behind this system, see the **[Engineering Case Study](./CASE-STUDY.md)**.
+
+**What the case study covers**:
+- **Problem Context**: Why separate web and compute layers? What conflicting requirements exist?
+- **Constraints & Trade-offs**: What are the hard limits? When do we evolve?
+- **Architecture Decision**: The core Django/FastAPI separation and why it matters
+- **Component Design**: What each layer does (and does NOT do)
+- **Data & Artifact Flows**: How requests move through the system
+- **Operational Challenges**: What happens when things break?
+- **Dataset Configuration**: How to manage training data at scale
+- **Trade-offs Explained**: Why certain choices are intentionally "incomplete"
+- **Evolution Roadmap**: Phases 1-5 with trigger metrics and rationale
+- **Lessons Learned**: Principles that generalize beyond this project
+- **Portfolio Relevance**: What this demonstrates in interviews
+
+**Reading time**: 35-45 minutes  
+**Best for**: Architects wanting to understand the reasoning, not just the components
+
+This is the document to share when someone asks: **"Why did you design it this way?"**
+
+---
+
 ## System Flow Summary
 
 ### Training Flow
@@ -438,6 +462,44 @@ These limitations reflect pragmatic early-stage design decisions optimized for i
 - ✅ Generic architectures
 - ✅ Illustrative diagrams
 - ✅ Conceptual code snippets (documentation only)
+
+---
+
+## 📚 Learning Resources
+
+**For Understanding the Architecture**:
+- **[Engineering Case Study](./CASE-STUDY.md)** — Narrative-driven deep dive (35-45 min read)
+  - Why Django and FastAPI are separated
+  - How components interact and fail
+  - Evolution roadmap with trigger metrics
+  - Lessons and architectural principles
+  
+- **[Component Responsibilities](./docs/03-component-responsibilities.md)** — What each part does
+  - Responsibility matrix
+  - IS/IS NOT boundaries
+  - Failure handling strategies
+  
+- **[Production Evolution Roadmap](./docs/15-production-evolution-roadmap.md)** — Scaling path
+  - Phases 1-5 with trigger metrics
+  - When to add complexity
+  - Cost/benefit analysis
+
+**For Interview Preparation**:
+- **[Project Positioning](./PROJECT-POSITIONING.md)** — Talking points and Q&A
+  - Elevator pitch (60 seconds)
+  - Common interview questions
+  - Positioning by audience
+
+- **[Portfolio Positioning Analysis](./PORTFOLIO-POSITIONING-ANALYSIS.md)** — Strategic positioning
+  - What this demonstrates
+  - Red flags to avoid
+  - Interviewer perspective
+
+**For Implementation Details**:
+- **[System Architecture](./docs/02-system-architecture.md)** — High-level design overview
+- **[Docker Runtime Architecture](./docs/06-docker-runtime-architecture.md)** — Deployment setup
+- **[GPU Resource Management](./docs/12-gpu-resource-management.md)** — GPU orchestration
+- **[Error Handling](./docs/13-error-handling-and-fallbacks.md)** — Failure scenarios
 
 ---
 
