@@ -1,10 +1,22 @@
 # ClearML Experiment Tracking
 
-This document describes ClearML integration for experiment tracking, metrics logging, model lineage, and failure isolation.
+This document describes ClearML integration for experiment tracking, metric logging, model artifact registration, and failure isolation.
 
 ## ClearML Role in Architecture
 
 ClearML serves as the **experiment metadata repository** - not the source of truth for artifacts, but the record of what happened.
+
+**What ClearML provides** (implemented):
+- ✅ Experiment metadata (task info, hyperparameters)
+- ✅ Metrics logging (mAP, precision, recall)
+- ✅ Model artifact registration (model path references)
+- ✅ Task comparison and history
+
+**What ClearML does NOT provide** (not implemented):
+- ❌ Data lineage (which datasets fed this model?)
+- ❌ Hyperparameter inheritance tracking
+- ❌ Dependency resolution
+- ❌ Model registry (source of truth is shared filesystem)
 
 ```
 ┌──────────────────────┐

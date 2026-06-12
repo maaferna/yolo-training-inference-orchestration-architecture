@@ -9,14 +9,14 @@
 This repository documents **architectural decisions for a web-connected AI vision platform** that separates user-facing web services from GPU-intensive ML workloads. It demonstrates:
 
 - **Microservice separation**: stateless web tier (Django) and compute tier (FastAPI) with independent scaling
-- **GPU orchestration patterns**: YOLO training with multi-seed experimentation and validation-based model selection
-- **MLOps integration**: ClearML for experiment tracking, lineage management, and model comparison
-- **Distributed inference strategies**: SAHI tiling for high-resolution object detection at scale
-- **Pragmatic scaling philosophy**: start synchronous, evolve to async/queue-based when real bottlenecks appear
-- **Failure mode awareness**: explicit handling of component failures and error propagation
-- **Production evolution thinking**: documented roadmap for scaling from MVP to enterprise scale
+- **GPU compute dispatch**: YOLO training with multi-seed experimentation and validation-based model selection
+- **MLOps integration**: ClearML for experiment tracking, metric logging, and model artifact registration
+- **High-resolution inference patterns**: SAHI tiling for per-tile inference on large images
+- **Pragmatic growth philosophy**: start synchronous on single GPU, evolve to async/queue-based when queue wait exceeds 30 minutes
+- **Failure mode documentation**: explicit identification of known failure modes and error messaging
+- **Production evolution planning**: hypothetical roadmap with trigger metrics for scaling from MVP to enterprise scale
 
-**This is an MVP-level architecture** (single GPU service, shared filesystem storage). The production evolution roadmap documents the reasoning for scaling patterns when specific bottlenecks appear.
+**This is an MVP-level architecture** (single GPU service, shared filesystem storage). Not yet deployed in production. The production evolution roadmap documents hypothetical scaling patterns with explicit trigger metrics.
 
 ### What This Repository Is NOT
 
@@ -48,11 +48,11 @@ This repository represents **Phase 1 of a documented production evolution roadma
 | Request handling | Synchronous | Single GPU service instance; HTTP-based request/response |
 | Job queuing | Not implemented | Triggers Phase 2 when queue wait time exceeds 30 minutes |
 | Multi-GPU scaling | Conceptual | Roadmap: Add worker pool when > 3 concurrent jobs observed |
-| Distributed training | DDP evaluated | Error handling documented; not required at MVP scale |
+| Distributed training | Deferred to Phase 3 | DDP pattern documented in roadmap; single GPU sufficient for MVP |
 | Kubernetes orchestration | Future phase | Local Docker Compose sufficient for current phase |
-| Model registry | ClearML | Experiment tracking implemented; not full model registry |
+| Model registry | ClearML artifact registration | Experiment tracking + metric logging implemented; not full registry |
 | Inference serving | Per-request | No inference caching or batch optimization yet |
-| Observability | Basic | Error handling and logging; no distributed tracing |
+| Observability | Partial | Error handling and logging; no distributed tracing or alerting |
 | High-availability | Single node | No failover or redundancy at MVP scale |
 
 **Philosophy**: Build for current requirements, add complexity only when real bottlenecks appear. Each phase is triggered by specific metrics, not speculation.

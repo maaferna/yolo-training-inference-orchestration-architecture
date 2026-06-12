@@ -12,12 +12,12 @@
 
 This case study documents architectural decisions for an **AI vision platform** that bridges a critical gap: researchers need flexibility for experimentation, but production workloads need reliability and stability. The naive approach—putting GPU work directly in a Django web layer—leads to blocked requests, resource contention, and architectural chaos.
 
-This architecture separates concerns: Django handles web orchestration (user requests, authentication, visualization), while FastAPI handles compute orchestration (GPU-intensive training and inference). The separation enables independent scaling and forces explicit responsibility boundaries.
+This architecture separates concerns: Django handles web request processing (user requests, authentication, visualization), while FastAPI handles compute dispatch and coordination (GPU-intensive training and inference). The separation enables independent scaling and forces explicit responsibility boundaries.
 
 **What you'll learn**:
 - Why microservice separation is worth the operational overhead
-- How to orchestrate GPU resources without over-engineering
-- What makes MVP-level architectures pragmatic and production-ready
+- How to dispatch and coordinate GPU resources without over-engineering
+- What makes MVP-level architectures pragmatic and scalable to production
 - How to design for observability and reproducibility
 - When to add complexity vs. when to keep it simple
 

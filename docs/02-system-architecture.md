@@ -1,5 +1,24 @@
 # System Architecture
 
+## ⚠️ MVP Single-Instance Deployment (Phase 1)
+
+**Current Architecture Constraints**:
+- **Single FastAPI Instance**: No replicas or load balancing
+- **Django HTTP Connection**: Remains open for entire job (1-3 hours)
+- **HTTP Timeout Risk**: Typical timeout ~30 minutes; jobs often > 1 hour
+- **No Job Persistence**: Service restart = lost state
+- **Not Multi-Instance Safe**: Cannot scale without job queue (Phase 2)
+
+**When to Upgrade**:
+- > 3 concurrent jobs observed
+- HTTP timeouts occurring
+- Multi-region deployment needed
+- Job recovery required after failure
+
+See [docs/15-production-evolution-roadmap.md](./15-production-evolution-roadmap.md) for scaling path.
+
+---
+
 ## Architecture Overview
 
 This document describes the complete system architecture including all layers, components, and their relationships.
@@ -64,12 +83,26 @@ This document describes the complete system architecture including all layers, c
 │  └────────────────────────────────────────────────────────────┘  │
 │                                                                    │
 │  ┌────────────────────────────────────────────────────────────┐  │
-│  │ ERROR HANDLING & FALLBACKS                                 │  │
-│  │ • Ultralytics train() validation                           │  │
-│  │ • Manual validation fallback                               │  │
+│  │ ERROR HANDLING & FALLBACKS (Partial Coverage)              │  │
+│  │                                                             │  │
+│  │ ✅ Handled:                                                │  │
+│  │ • Ultralytics train() exceptions                           │  │
 │  │ • CUDA OOM detection and recovery                          │  │
-│  │ • DDP error handling                                       │  │
+│  │ • DDP initialization errors                                │  │
 │  │ • Graceful error responses to Django                       │  │
+│  │                                                             │  │
+│  │ ⚠️  Degraded (Limited Recovery):                           │  │
+│  │ • HTTP connection timeout (1-3 hour jobs, 30 min timeout)  │  │
+│  │ • No job persistence (restart = lost state)                │  │
+│  │                                                             │  │
+│  │ ❌ Not Handled:                                            │  │
+│  │ • Network failure during training                          │  │
+│  │ • Disk full when writing checkpoints                       │  │
+│  │ • Data loading errors (corrupted files)                    │  │
+│  │ • GPU hang (requires manual restart)                       │  │
+│  │ • ClearML connection loss                                  │  │
+│  │                                                             │  │
+│  │ See docs/13-error-handling-and-fallbacks.md for details    │  │
 │  └────────────────────────────────────────────────────────────┘  │
 └──────┬───────────────────────────────────────────────────────────┘
        │

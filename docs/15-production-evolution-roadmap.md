@@ -645,54 +645,61 @@ spec:
 
 ---
 
-## Phase 5: Enterprise Observability & SLA (18+ months)
+## Phase 5: Enterprise Observability & Reliability (18+ months)
 
 ### Timeline: When production requirements demand it
 
+### Purpose
+
+Phase 5 adds infrastructure for:
+- Visibility into system behavior (metrics, logs, traces)
+- Reliability guarantees (SLO/SLI framework)
+- Incident response processes
+- On-call operational readiness
+
 ### Components
 
-#### Structured Logging (ELK Stack or Datadog)
+#### Metrics Collection (Prometheus + Grafana)
+
+**Metrics to track**:
+- Training job duration (histogram)
+- Queue depth (gauge)
+- Job success rate (counter)
+- GPU utilization (gauge)
+- Model inference latency (histogram)
+- HTTP error rates (counter)
+
+**Example Implementation**:
 
 ```python
-# Phase 5: Structured logging with correlation IDs
+from prometheus_client import Counter, Histogram, Gauge, CollectorRegistry, generate_latest
 
-import logging
-from pythonjsonlogger import jsonlogger
-from contextvars import ContextVar
-import uuid
-
-# Global correlation ID context
-correlation_id_ctx: ContextVar[str] = ContextVar('correlation_id')
-
-def middleware_set_correlation_id(request, call_next):
-    """Middleware to set correlation ID for each request"""
-    
-    correlation_id = request.headers.get('X-Correlation-ID', str(uuid.uuid4()))
-    token = correlation_id_ctx.set(correlation_id)
-    
-    response = await call_next(request)
-    response.headers['X-Correlation-ID'] = correlation_id
-    
-    correlation_id_ctx.reset(token)
-    return response
-
-# Configure JSON logging
-logger = logging.getLogger()
-logHandler = logging.StreamHandler()
-formatter = jsonlogger.JsonFormatter()
-logHandler.setFormatter(formatter)
-logger.addHandler(logHandler)
+# Create metrics
+training_duration = Histogram('training_seconds', 'Training job duration')
+queue_depth = Gauge('queue_depth', 'Current queue size')
+job_success = Counter('jobs_completed_total', 'Total completed jobs', ['status'])
+gpu_utilization = Gauge('gpu_utilization_percent', 'GPU memory usage')
 
 # Usage
-logger.info('training_started', extra={
-    'correlation_id': correlation_id_ctx.get(),
-    'job_id': job_id,
-    'model_name': 'yolo-v11',
-    'epochs': 50
-})
+with training_duration.time():
+    run_training_job(job_id)
 ```
 
-#### Metrics Collection (Prometheus)
+**Deployment**:
+- Prometheus server scrapes metrics from `/metrics` endpoint
+- Grafana queries Prometheus for dashboards
+- Alert rules configured in Prometheus
+
+#### Centralized Logging (Loki or ELK Stack)
+
+**Logs to aggregate**:
+- Django application logs
+- FastAPI access/error logs
+- Training job logs
+- Worker process logs
+- GPU error logs
+
+**Example: Structured Logging**:
 
 ```python
 # Phase 5: Prometheus metrics
@@ -724,73 +731,171 @@ with training_duration_seconds.time():
     training_jobs_total.labels(status='COMPLETED').inc()
 ```
 
-#### Distributed Tracing (Jaeger)
+#### Distributed Tracing (OpenTelemetry + Jaeger)
 
+**Purpose**: Track request/job flow across services.
+
+**Example**: Request enters Django → queued in Redis → picked by worker → updates ClearML → returns result
+
+**Implementation**:
+- Instrument Django, FastAPI, worker processes
+- Propagate correlation IDs through all services
+- Store traces in Jaeger backend
+- Query: "Show me all spans for training job #42"
+
+**Example Code**:
 ```python
-# Phase 5: Distributed tracing
-
-from jaeger_client import Config
-
-def init_jaeger_tracer(service_name):
-    Config(
-        config={
-            'sampler': {
-                'type': 'const',
-                'param': 1,
-            },
-            'logging': True,
-            'local_agent': {
-                'reporting_host': 'jaeger-agent',
-                'reporting_port': 6831,
-            }
-        },
-        service_name=service_name,
-    ).initialize_tracer()
-
-# Usage
 from opentelemetry import trace
+from opentelemetry.exporter.jaeger.thrift import JaegerExporter
+from opentelemetry.sdk.trace import TracerProvider
+from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
 
+# Setup
+jaeger_exporter = JaegerExporter(agent_host_name="jaeger", agent_port=6831)
+trace.set_tracer_provider(TracerProvider())
+trace.get_tracer_provider().add_span_processor(...)
+
+# Automatic instrumentation
+FastAPIInstrumentor().instrument_app(app)
+
+# Manual tracing
 tracer = trace.get_tracer(__name__)
-
-@app.post("/training")
-async def submit_training(request: TrainingRequest):
-    with tracer.start_as_current_span("submit_training") as span:
-        span.set_attribute("dataset_id", request.dataset_id)
-        
-        # Trace flows through queuing, worker assignment, etc.
-        task = train_model_task.delay(request.dataset_id)
-        
-        span.set_attribute("task_id", task.id)
-        return {'job_id': task.id}
+with tracer.start_as_current_span("training_step") as span:
+    span.set_attribute("job_id", job_id)
+    train_model(...)
 ```
 
-#### Health Checks & SLA Monitoring
+#### Alerting & On-Call Management (Prometheus Alertmanager)
 
+**Alerts to configure**:
+- ❌ **Critical**: GPU down, service unavailable, training failure rate > 50%
+- ⚠️ **Warning**: Queue depth > 10 jobs, GPU memory > 95%, training slower than baseline
+- ℹ️ **Info**: Daily report of completed jobs, dataset sizes
+
+**Example Alert Rules**:
+```yaml
+groups:
+  - name: training_jobs
+    rules:
+      - alert: HighJobFailureRate
+        expr: rate(training_jobs_total{status="FAILED"}[5m]) > 0.1
+        for: 5m
+        annotations:
+          summary: "Training failure rate > 10%"
+      
+      - alert: QueueBacklog
+        expr: queue_depth > 10
+        for: 15m
+        annotations:
+          summary: "10+ jobs waiting in queue"
+```
+
+**Alerting Channels**:
+- Email notifications
+- Slack webhooks
+- PagerDuty for critical alerts (on-call escalation)
+
+#### SLO/SLI Framework
+
+**SLOs to Define** (example targets):
+- **Availability**: System available 99.5% of time (monthly)
+- **Training Success Rate**: 99% of jobs complete successfully
+- **Inference Latency**: 95th percentile < 500ms
+- **Queue Time**: 95% of jobs start within 15 minutes of submission
+
+**SLIs (Service Level Indicators)**:
 ```python
-# Phase 5: Comprehensive health checks
+# Calculate SLI: What percentage of requests were successful?
+successful_requests = training_jobs_total{status="COMPLETED"}
+total_requests = training_jobs_total
+success_sli = successful_requests / total_requests
 
-@app.get("/health")
-async def health_check():
-    """Full system health"""
-    
-    checks = {
-        'status': 'healthy',
-        'timestamp': datetime.now().isoformat(),
-        'components': {}
-    }
-    
-    # Check PostgreSQL
-    try:
-        await db.execute('SELECT 1')
-        checks['components']['postgres'] = 'healthy'
-    except Exception as e:
-        checks['components']['postgres'] = f'unhealthy: {e}'
-        checks['status'] = 'degraded'
-    
-    # Check Redis
-    try:
-        redis_conn.ping()
-        checks['components']['redis'] = 'healthy'
+# Calculate SLI: What percentage completed within SLO?
+jobs_within_latency_slo = histogram_quantile(0.95, training_duration_seconds) < 1800
+completed_jobs = training_jobs_total{status="COMPLETED"}
+latency_sli = jobs_within_latency_slo / completed_jobs
+```
+
+**Error Budget**:
+- Availability SLO: 99.5% → Error budget = 0.5% = ~3.6 hours downtime/month
+- If actual availability is 99.3% → Used 0.2% of budget → 0.3% remaining
+- Triggers deployment freeze if budget exhausted
+
+#### Incident Response Process
+
+**When alert fires**:
+1. On-call engineer pages
+2. Opens runbook (documented troubleshooting steps)
+3. Implements immediate mitigation
+4. Posts-incident: documents root cause, adds monitoring to prevent repeat
+
+**Example Runbook**:
+```markdown
+# Runbook: GPU Out of Memory
+
+## Symptoms
+- Alert: "gpu_memory_exhausted"
+- Error logs: "CUDA out of memory"
+
+## Immediate Actions
+1. Check active training jobs: `redis-cli KEYS 'job:*'`
+2. Kill long-running job (> 2 hours): `kill -9 <pid>`
+3. Restart GPU: `nvidia-smi -pm 1` (reset persistence mode)
+4. Verify recovery: `nvidia-smi`
+
+## Root Cause Investigation
+- Check training job logs for memory leak
+- Profile memory usage with `gpustat`
+- Update model configs if needed
+
+## Prevention
+- Add memory limit checks before training
+- Monitor GPU memory over time
+- Alert at 80% usage (earlier warning)
+```
+
+### Phase 5 Benefits
+
+| Capability | Before Phase 5 | After Phase 5 |
+|-----------|---------|-----------|
+| **Visibility** | Error logs only | Full observability (metrics, logs, traces) |
+| **Alerting** | Manual checking | Automated, multi-channel alerts |
+| **Incident Time** | 1-2 hours (discovery) | 5-10 min (page on-call) |
+| **Reliability** | Best effort | SLO-backed guarantees |
+| **Scaling** | Guess and check | Data-driven capacity planning |
+| **Cost** | Unknown | Quantified per job |
+
+### Timeline & Complexity
+
+**Duration**: 12-18 months  
+**Team**: DevOps engineer + platform engineer  
+**Effort**: 600-800 hours  
+**Complexity**: Very High
+
+**Why Phase 5 is separate**:
+- Requires DevOps expertise (not ML engineering)
+- Only needed when system is production-critical
+- Can operate for years without Phase 5 at small scale
+- Typical large enterprise already has this infrastructure
+
+---
+
+## When NOT to Implement Phases 2-5
+
+**Keep MVP-only if**:
+- < 1 job per day
+- < 1 year project lifespan
+- < 5 concurrent users
+- Single GPU sufficient
+- Downtime tolerance: 1-2 hours
+- Manual troubleshooting acceptable
+
+**Upgrade to Phase 2+ when**:
+- > 3 concurrent jobs frequently observed
+- > 50 GB/day data generation
+- > 5 concurrent users
+- Need for job recovery after failure
+- Downtime costs real money
     except Exception as e:
         checks['components']['redis'] = f'unhealthy: {e}'
         checks['status'] = 'unhealthy'
