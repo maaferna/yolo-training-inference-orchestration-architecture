@@ -61,19 +61,19 @@ Choose your scenario:
    - Full narrative from problem to solution to lessons
    - Read sequentially; this is the "main story"
    
-2. **[docs/02-system-architecture.md](./docs/02-system-architecture.md)** (5 min)
+2. **[docs/architecture/architecture/02-system-architecture.md](./docs/architecture/02-system-architecture.md)** (5 min)
    - Detailed architecture breakdown
    - Complements case study with specifics
    
-3. **[docs/03-component-responsibilities.md](./docs/03-component-responsibilities.md)** (10 min)
+3. **[docs/architecture/architecture/03-component-responsibilities.md](./docs/architecture/03-component-responsibilities.md)** (10 min)
    - Responsibility matrix
    - Clear IS/IS NOT boundaries
    
-4. **[docs/04-system-flow.md](./docs/04-system-flow.md)** (10 min)
+4. **[docs/architecture/architecture/04-system-flow.md](./docs/architecture/04-system-flow.md)** (10 min)
    - Detailed request/response flows
    - Understand data movement
    
-5. **[docs/14-limitations-and-risks.md](./docs/14-limitations-and-risks.md)** (5 min)
+5. **[docs/architecture/architecture/14-limitations-and-risks.md](./docs/architecture/14-limitations-and-risks.md)** (5 min)
    - What's not included and why
    - Operational risks and mitigations
 
@@ -103,23 +103,23 @@ Choose your scenario:
    - Architecture decision (can you adapt this split?)
    - Component design (what should your components be?)
    
-3. **[docs/02-system-architecture.md](./docs/02-system-architecture.md)** (10 min)
+3. **[docs/architecture/02-system-architecture.md](./docs/architecture/0system-architecture.md)** (10 min)
    - Detailed architecture
    - Technology choices and why
    
-4. **[docs/03-component-responsibilities.md](./docs/03-component-responsibilities.md)** (10 min)
+4. **[docs/architecture/architecture/03-component-responsibilities.md](./docs/architecture/03-component-responsibilities.md)** (10 min)
    - Create your own responsibility matrix
    - Define IS/IS NOT boundaries for your components
    
-5. **[docs/06-docker-runtime-architecture.md](./docs/06-docker-runtime-architecture.md)** (10 min)
+5. **[docs/architecture/architecture/06-docker-runtime-architecture.md](./docs/architecture/06-docker-runtime-architecture.md)** (10 min)
    - Containerization approach
    - Multi-container orchestration
    
-6. **[docs/13-error-handling-and-fallbacks.md](./docs/13-error-handling-and-fallbacks.md)** (10 min)
+6. **[docs/architecture/architecture/13-error-handling-and-fallbacks.md](./docs/architecture/13-error-handling-and-fallbacks.md)** (10 min)
    - Failure scenarios for your architecture
    - How to handle each type of failure
    
-7. **[docs/15-production-evolution-roadmap.md](./docs/15-production-evolution-roadmap.md)** (15 min)
+7. **[docs/architecture/architecture/15-production-evolution-roadmap.md](./docs/architecture/15-production-evolution-roadmap.md)** (15 min)
    - Plan phases for your own project
    - Define trigger metrics for each phase
    
@@ -182,27 +182,27 @@ Choose your scenario:
 1. **[README.md](./README.md)** (5 min)
    - Overview and key components
    
-2. **[docs/06-docker-runtime-architecture.md](./docs/06-docker-runtime-architecture.md)** (15 min)
+2. **[docs/architecture/architecture/06-docker-runtime-architecture.md](./docs/architecture/06-docker-runtime-architecture.md)** (15 min)
    - Container setup
    - Multi-container orchestration with Docker Compose
    - Port mapping and service communication
    
-3. **[docs/07-shared-storage-and-artifacts.md](./docs/07-shared-storage-and-artifacts.md)** (10 min)
+3. **[docs/architecture/architecture/07-shared-storage-and-artifacts.md](./docs/architecture/07-shared-storage-and-artifacts.md)** (10 min)
    - Storage design
    - Artifact paths and naming
    - How services read/write artifacts
    
-4. **[docs/12-gpu-resource-management.md](./docs/12-gpu-resource-management.md)** (10 min)
+4. **[docs/architecture/architecture/12-gpu-resource-management.md](./docs/architecture/12-gpu-resource-management.md)** (10 min)
    - GPU orchestration
    - CUDA setup
    - Resource allocation
    
-5. **[docs/13-error-handling-and-fallbacks.md](./docs/13-error-handling-and-fallbacks.md)** (10 min)
+5. **[docs/architecture/architecture/13-error-handling-and-fallbacks.md](./docs/architecture/13-error-handling-and-fallbacks.md)** (10 min)
    - Common failure scenarios
    - How to handle each failure
    - Recovery procedures
    
-6. **[docs/15-production-evolution-roadmap.md](./docs/15-production-evolution-roadmap.md)** (15 min)
+6. **[docs/architecture/architecture/15-production-evolution-roadmap.md](./docs/architecture/15-production-evolution-roadmap.md)** (15 min)
    - Phases and their operational requirements
    - When to add each new service/tool
    

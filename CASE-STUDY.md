@@ -1476,17 +1476,17 @@ That's what makes this architecture worth studying.
 
 **To understand the architecture deeply**:
 - Start here (this case study)
-- Read [Component Responsibilities](./docs/03-component-responsibilities.md)
-- Review [Production Evolution Roadmap](./docs/15-production-evolution-roadmap.md)
+- Read [Component Responsibilities](./docs/architecture/03-component-responsibilities.md)
+- Review [Production Evolution Roadmap](./docs/architecture/15-production-evolution-roadmap.md)
 
 **To implement similar patterns**:
-- Study [System Architecture](./docs/02-system-architecture.md)
-- Follow [Docker Runtime Architecture](./docs/06-docker-runtime-architecture.md)
-- Adapt [GPU Resource Management](./docs/12-gpu-resource-management.md)
+- Study [System Architecture](./docs/architecture/0system-architecture.md)
+- Follow [Docker Runtime Architecture](./docs/architecture/06-docker-runtime-architecture.md)
+- Adapt [GPU Resource Management](./docs/architecture/12-gpu-resource-management.md)
 
 **To understand failure scenarios**:
-- Review [Error Handling and Fallbacks](./docs/13-error-handling-and-fallbacks.md)
-- Study [Limitations and Risks](./docs/14-limitations-and-risks.md)
+- Review [Error Handling and Fallbacks](./docs/architecture/13-error-handling-and-fallbacks.md)
+- Study [Limitations and Risks](./docs/architecture/14-limitations-and-risks.md)
 
 **For interview preparation**:
 - See [Project Positioning](./PROJECT-POSITIONING.md)

@@ -61,12 +61,12 @@ A **critical senior architect review** identified 11 areas where documentation l
   - Explicitly lists NOT handled items
   - References full error handling doc
 
-### 4. **docs/11-clearml-experiment-tracking.md** (Component docs)
+### 4. **docs/architecture/11-clearml-experiment-tracking.md** (Component docs)
 - Clarified what ClearML does vs. doesn't do
 - Removed "lineage management" (not implemented)
 - Added clarity on data lineage limitations
 
-### 5. **docs/15-production-evolution-roadmap.md** (Scaling guidance)
+### 5. **docs/architecture/15-production-evolution-roadmap.md** (Scaling guidance)
 - **REWRITTEN Phase 5**: From 2 sections → 6 concrete components
   - Metrics Collection (Prometheus + Grafana)
   - Centralized Logging (Loki/ELK)

@@ -23,4 +23,4 @@ All assets in this directory follow the same public-safety guidelines as the doc
 - Anonymized references
 - Conceptual examples
 
-See `../docs/16-public-release-sanitization.md` for complete safety guidelines.
+See `../docs/architecture/16-public-release-sanitization.md` for complete safety guidelines.

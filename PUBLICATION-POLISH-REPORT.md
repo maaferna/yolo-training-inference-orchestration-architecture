@@ -58,8 +58,8 @@ This repository has undergone a comprehensive senior-level publication-grade pol
 **Files Changed**:
 - `README.md` (3 instances)
 - `docs/02-system-architecture.md` (1 instance)
-- `docs/08-yolo-training-engine.md` (1 instance, changed "Evaluated" to "Deferred to Phase 3")
-- `docs/12-gpu-resource-management.md` (1 instance)
+- `docs/architecture/08-yolo-training-engine.md` (1 instance, changed "Evaluated" to "Deferred to Phase 3")
+- `docs/architecture/12-gpu-resource-management.md` (1 instance)
 - `docs/PORTFOLIO_RESUME_CONTENT.md` (1 instance)
 
 **Result**: Crystal clear that DDP is a deferred Phase 3 feature, not current.
@@ -184,7 +184,7 @@ These are entirely optional improvements—not required for publication, but ava
 **Effort**: 2 minutes
 
 ### Optional #2: Add Data Classification Table
-**Where**: docs/16-public-release-sanitization.md  
+**Where**: docs/architecture/16-public-release-sanitization.md  
 **Content**: "Data Classification: All examples are illustrative/anonymized"  
 **Value**: Explicit compliance markers  
 **Effort**: 5 minutes
@@ -205,22 +205,22 @@ These are entirely optional improvements—not required for publication, but ava
 ### Core Architecture Documentation (20 files) ✅
 - ✅ `docs/01-context-and-problem.md` - Clear problem statement; no changes
 - ✅ `docs/02-system-architecture.md` - Excellent detail; fixed DDP language
-- ✅ `docs/03-component-responsibilities.md` - Comprehensive matrix; no changes
-- ✅ `docs/04-system-flow.md` - Clear flows; no changes
-- ✅ `docs/05-api-integration-contracts.md` - Well-structured; no changes
-- ✅ `docs/06-docker-runtime-architecture.md` - Good Docker patterns; no changes
-- ✅ `docs/07-shared-storage-and-artifacts.md` - Storage well-explained; no changes
-- ✅ `docs/08-yolo-training-engine.md` - Fixed DDP language ("Deferred to Phase 3")
-- ✅ `docs/09-continuous-improvement-training.md` - Good patterns; no changes
-- ✅ `docs/10-sahi-inference-engine.md` - SAHI well-documented; no changes
-- ✅ `docs/11-clearml-experiment-tracking.md` - ClearML integration clear; no changes
-- ✅ `docs/12-gpu-resource-management.md` - Fixed DDP language
-- ✅ `docs/13-error-handling-and-fallbacks.md` - Failure modes explicit; no changes
-- ✅ `docs/14-limitations-and-risks.md` - Honest about constraints; no changes
-- ✅ `docs/15-production-evolution-roadmap.md` - Excellent phases with triggers; no changes
-- ✅ `docs/16-public-release-sanitization.md` - Safety guidelines clear; no changes
-- ✅ `docs/17-technical-responsibilities.md` - Portfolio positioning ready; no changes
-- ✅ `docs/20-synthetic-dataset-generation-pipeline.md` - Auxiliary pipeline clear; no changes
+- ✅ `docs/architecture/03-component-responsibilities.md` - Comprehensive matrix; no changes
+- ✅ `docs/architecture/04-system-flow.md` - Clear flows; no changes
+- ✅ `docs/architecture/05-api-integration-contracts.md` - Well-structured; no changes
+- ✅ `docs/architecture/06-docker-runtime-architecture.md` - Good Docker patterns; no changes
+- ✅ `docs/architecture/07-shared-storage-and-artifacts.md` - Storage well-explained; no changes
+- ✅ `docs/architecture/08-yolo-training-engine.md` - Fixed DDP language ("Deferred to Phase 3")
+- ✅ `docs/architecture/09-continuous-improvement-training.md` - Good patterns; no changes
+- ✅ `docs/architecture/10-sahi-inference-engine.md` - SAHI well-documented; no changes
+- ✅ `docs/architecture/11-clearml-experiment-tracking.md` - ClearML integration clear; no changes
+- ✅ `docs/architecture/12-gpu-resource-management.md` - Fixed DDP language
+- ✅ `docs/architecture/13-error-handling-and-fallbacks.md` - Failure modes explicit; no changes
+- ✅ `docs/architecture/14-limitations-and-risks.md` - Honest about constraints; no changes
+- ✅ `docs/architecture/15-production-evolution-roadmap.md` - Excellent phases with triggers; no changes
+- ✅ `docs/architecture/16-public-release-sanitization.md` - Safety guidelines clear; no changes
+- ✅ `docs/architecture/17-technical-responsibilities.md` - Portfolio positioning ready; no changes
+- ✅ `docs/architecture/20-synthetic-dataset-generation-pipeline.md` - Auxiliary pipeline clear; no changes
 - ✅ (2 additional architecture files) - All good; no changes
 
 ### MLOps Reference Templates (9 files) ✅

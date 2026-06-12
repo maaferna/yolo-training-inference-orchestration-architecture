@@ -59,7 +59,7 @@ This repository represents **Phase 1 of a documented production evolution roadma
 
 ---
 
-For a comprehensive visual and textual overview of the system architecture, see [**docs/02-system-architecture.md**](./docs/02-system-architecture.md).
+For a comprehensive visual and textual overview of the system architecture, see [**docs/architecture/02-system-architecture.md**](./docs/architecture/02-system-architecture.md).
 
 The system separates web orchestration (Django) from GPU-intensive compute services (FastAPI), enabling independent scaling and clear component responsibilities.
 
@@ -77,13 +77,13 @@ Explicit responsibility separation prevents architectural complexity and makes f
 - **PostgreSQL**: User data, configuration, request metadata → NOT ML artifact storage
 - **Shared Storage**: Models, checkpoints, training outputs → NOT user data or credentials
 
-This clarity prevents "dependency spaghetti" and makes failure scenarios explicit. For full responsibility matrix and failure handling table, see [**docs/03-component-responsibilities.md**](./docs/03-component-responsibilities.md).
+This clarity prevents "dependency spaghetti" and makes failure scenarios explicit. For full responsibility matrix and failure handling table, see [**docs/architecture/03-component-responsibilities.md**](./docs/architecture/03-component-responsibilities.md).
 
 ---
 
 ## Main Components
 
-For detailed component responsibilities, interactions, and failure modes, see [**docs/03-component-responsibilities.md**](./docs/03-component-responsibilities.md).
+For detailed component responsibilities, interactions, and failure modes, see [**docs/architecture/03-component-responsibilities.md**](./docs/architecture/03-component-responsibilities.md).
 
 Key components include:
 
@@ -146,11 +146,11 @@ Key components include:
 
 ### Django Configuration Layer
 
-This architecture includes a Django-based YOLO dataset configuration management layer that centralizes training parameters through ORM models (ProjectConfiguration, ClassSet, DetectionClass, DatasetConfig) with automatic Ultralytics-compatible YAML generation. See [**docs/08-yolo-dataset-configuration-management.md**](./docs/08-yolo-dataset-configuration-management.md) for comprehensive documentation.
+This architecture includes a Django-based YOLO dataset configuration management layer that centralizes training parameters through ORM models (ProjectConfiguration, ClassSet, DetectionClass, DatasetConfig) with automatic Ultralytics-compatible YAML generation. See [**docs/architecture/08-yolo-dataset-configuration-management.md**](./docs/architecture/08-yolo-dataset-configuration-management.md) for comprehensive documentation.
 
 ### Auxiliary: Synthetic Dataset Generation
 
-The broader ecosystem includes an auxiliary synthetic dataset generation pipeline based on SAM (Segment Anything Model) for dataset engineering and research experimentation. This component automates object extraction from annotated images and synthetic scene composition, supporting dataset enrichment workflows. See [**docs/20-synthetic-dataset-generation-pipeline.md**](./docs/20-synthetic-dataset-generation-pipeline.md) for details.
+The broader ecosystem includes an auxiliary synthetic dataset generation pipeline based on SAM (Segment Anything Model) for dataset engineering and research experimentation. This component automates object extraction from annotated images and synthetic scene composition, supporting dataset enrichment workflows. See [**docs/architecture/20-synthetic-dataset-generation-pipeline.md**](./docs/architecture/20-synthetic-dataset-generation-pipeline.md) for details.
 
 ---
 
@@ -158,7 +158,7 @@ The broader ecosystem includes an auxiliary synthetic dataset generation pipelin
 
 ### A. System Design Thinking
 - **Responsibility separation**: Django (stateless web) vs FastAPI (compute tier) prevents cross-cutting concerns
-- **Failure mode analysis**: Each component has explicit handling strategy (see docs/13-error-handling-and-fallbacks.md)
+- **Failure mode analysis**: Each component has explicit handling strategy (see docs/architecture/13-error-handling-and-fallbacks.md)
 - **Synchronous-first pragmatism**: MVP justifies simple HTTP-based communication; documents when async is needed
 - **Scaling philosophy**: Growth is metrics-driven (queue wait time, job concurrency) not speculative
 
@@ -288,7 +288,7 @@ This repository demonstrates **pragmatic growth thinking**. Instead of building 
 - **Add**: Distributed tracing, metrics, alerting, incident management
 - **Benefit**: Production reliability; operational visibility
 
-**Philosophy**: Add complexity only when real bottlenecks appear, not speculation. For detailed reasoning and trigger metrics, see [**docs/15-production-evolution-roadmap.md**](./docs/15-production-evolution-roadmap.md).
+**Philosophy**: Add complexity only when real bottlenecks appear, not speculation. For detailed reasoning and trigger metrics, see [**docs/architecture/15-production-evolution-roadmap.md**](./docs/architecture/15-production-evolution-roadmap.md).
 
 ---
 
@@ -301,56 +301,78 @@ yolo-training-inference-orchestration-architecture/
 ├── .gitignore                                 # Git ignore rules
 │
 ├── docs/                                      # Comprehensive documentation
-│   ├── 01-context-and-problem.md            # Problem statement & motivation
-│   ├── 02-system-architecture.md            # Detailed architecture breakdown
-│   ├── 03-component-responsibilities.md     # Each component's role
-│   ├── 04-system-flow.md                    # Request/response flows
-│   ├── 05-api-integration-contracts.md      # API payload contracts (no code)
-│   ├── 06-docker-runtime-architecture.md    # Container architecture
-│   ├── 07-shared-storage-and-artifacts.md   # Storage design & path mapping
-│   ├── 08-yolo-training-engine.md           # YOLO training details
-│   ├── 09-continuous-improvement-training.md # CI training pipeline
-│   ├── 10-sahi-inference-engine.md          # SAHI inference design
-│   ├── 11-clearml-experiment-tracking.md    # ClearML integration
-│   ├── 12-gpu-resource-management.md        # GPU orchestration
-│   ├── 13-error-handling-and-fallbacks.md   # Error scenarios & mitigations
-│   ├── 14-limitations-and-risks.md          # Current limitations
-│   ├── 15-production-evolution-roadmap.md   # Future improvements
-│   ├── 16-public-release-sanitization.md    # Safety & sanitization guide
-│   └── 17-technical-responsibilities.md     # Portfolio positioning
+│   │
+│   ├── architecture/                          # Core architectural documentation
+│   │   ├── 01-context-and-problem.md
+│   │   ├── 02-system-architecture.md
+│   │   ├── 03-component-responsibilities.md
+│   │   ├── 04-system-flow.md
+│   │   ├── 05-api-integration-contracts.md
+│   │   ├── 06-docker-runtime-architecture.md
+│   │   ├── 07-shared-storage-and-artifacts.md
+│   │   ├── 08-yolo-dataset-configuration-management.md
+│   │   ├── 08-yolo-training-engine.md
+│   │   ├── 09-continuous-improvement-training.md
+│   │   ├── 10-sahi-inference-engine.md
+│   │   ├── 11-clearml-experiment-tracking.md
+│   │   ├── 12-gpu-resource-management.md
+│   │   ├── 13-error-handling-and-fallbacks.md
+│   │   ├── 14-limitations-and-risks.md
+│   │   ├── 15-production-evolution-roadmap.md
+│   │   ├── 16-public-release-sanitization.md
+│   │   ├── 17-technical-responsibilities.md
+│   │   ├── 20-synthetic-dataset-generation-pipeline.md
+│   │   └── adr/                               # Architecture Decision Records
+│   │       ├── README.md
+│   │       ├── ADR-001.md through ADR-007.md
+│   │
+│   ├── operations/                            # Operational templates (not core architecture)
+│   │   ├── MLOPS_STATUS_REPORT.md
+│   │   ├── MLOPS_IMPLEMENTATION_ROADMAP.md
+│   │   ├── MLOPS_QUICK_REFERENCE.md
+│   │   ├── MLOPS_DOCUMENTATION_INDEX.md
+│   │   ├── MLOPS_DOCUMENTATION_SUMMARY.md
+│   │   ├── MLOPS_DELIVERY_REPORT.md
+│   │   └── MIGRATION_CLEARML_CLOUD_TO_SELFHOSTED.md
+│   │
+│   └── portfolio/                             # Portfolio & resume materials
+│       ├── PORTFOLIO_RESUME_CONTENT.md
+│       └── PORTFOLIO_IMPLEMENTATION_GUIDE.md
 │
 ├── diagrams/                                  # Mermaid architecture diagrams
-│   ├── architecture-overview.mmd            # System architecture diagram
-│   ├── training-flow.mmd                    # Training request flow
-│   ├── ci-training-flow.mmd                 # CI training flow
-│   ├── inference-flow.mmd                   # Inference request flow
-│   ├── storage-flow.mmd                     # Artifact storage flow
-│   └── future-production-architecture.mmd   # Proposed production architecture
+│   ├── architecture-overview.mmd
+│   ├── training-flow.mmd
+│   ├── ci-training-flow.mmd
+│   ├── inference-flow.mmd
+│   ├── storage-flow.mmd
+│   └── future-production-architecture.mmd
 │
 ├── examples/                                  # Example payloads & configs
 │   ├── api-payloads/
-│   │   ├── training-request.example.json           # Training request payload
-│   │   ├── ci-training-request.example.json        # CI training request
-│   │   └── sahi-inference-request.example.json     # Inference request
+│   │   ├── training-request.example.json
+│   │   ├── ci-training-request.example.json
+│   │   └── sahi-inference-request.example.json
 │   │
 │   ├── artifact-manifests/
-│   │   ├── training-summary.example.json           # Training output manifest
-│   │   ├── best-model-reference.example.json       # Best model reference
-│   │   └── inference-output-manifest.example.json  # Inference result manifest
+│   │   ├── training-summary.example.json
+│   │   ├── best-model-reference.example.json
+│   │   └── inference-output-manifest.example.json
 │   │
 │   └── docker/
-│       ├── docker-compose.conceptual.yml   # Conceptual Docker Compose (non-production)
-│       └── environment.example.env         # Environment variable template
+│       ├── docker-compose.conceptual.yml
+│       └── environment.example.env
 │
 ├── assets/                                    # Supporting materials
-│   └── README.md                            # Asset guidelines
+│   └── README.md
 │
-└── public-safety-checklist.md               # Pre-publication safety review
+└── PUBLICATION-POLISH-REPORT.md              # Publication review report
 ```
 
 ---
 
 ## Documentation Index
+
+### Core Architecture (docs/architecture/)
 
 | Document | Purpose |
 |----------|---------|
@@ -371,6 +393,24 @@ yolo-training-inference-orchestration-architecture/
 | **15-production-evolution-roadmap.md** | Future improvements for production readiness |
 | **16-public-release-sanitization.md** | Guidelines for maintaining public safety |
 | **17-technical-responsibilities.md** | Portfolio positioning and technical claims |
+| **adr/ADR-001 through ADR-007** | Architecture Decision Records with full rationale |
+
+### Operations & Deployment Templates (docs/operations/)
+
+| Document | Purpose |
+|----------|---------|
+| **MLOPS_STATUS_REPORT.md** | Current project status and MLOps maturity assessment |
+| **MLOPS_IMPLEMENTATION_ROADMAP.md** | 4-week execution plan for MLOps improvements |
+| **MIGRATION_CLEARML_CLOUD_TO_SELFHOSTED.md** | Step-by-step ClearML migration guide |
+| **MLOPS_QUICK_REFERENCE.md** | Daily operations cheat sheet and common tasks |
+| **MLOPS_DOCUMENTATION_INDEX.md** | Navigation hub organized by role |
+
+### Portfolio & Interview Materials (docs/portfolio/)
+
+| Document | Purpose |
+|----------|---------|
+| **PORTFOLIO_RESUME_CONTENT.md** | Professional resume bullets and LinkedIn descriptions |
+| **PORTFOLIO_IMPLEMENTATION_GUIDE.md** | Platform-specific implementation instructions |
 
 ---
 
@@ -474,12 +514,12 @@ These limitations reflect pragmatic early-stage design decisions optimized for i
   - Evolution roadmap with trigger metrics
   - Lessons and architectural principles
   
-- **[Component Responsibilities](./docs/03-component-responsibilities.md)** — What each part does
+- **[Component Responsibilities](./docs/architecture/03-component-responsibilities.md)** — What each part does
   - Responsibility matrix
   - IS/IS NOT boundaries
   - Failure handling strategies
   
-- **[Production Evolution Roadmap](./docs/15-production-evolution-roadmap.md)** — Scaling path
+- **[Production Evolution Roadmap](./docs/architecture/15-production-evolution-roadmap.md)** — Scaling path
   - Phases 1-5 with trigger metrics
   - When to add complexity
   - Cost/benefit analysis
@@ -497,9 +537,9 @@ These limitations reflect pragmatic early-stage design decisions optimized for i
 
 **For Implementation Details**:
 - **[System Architecture](./docs/02-system-architecture.md)** — High-level design overview
-- **[Docker Runtime Architecture](./docs/06-docker-runtime-architecture.md)** — Deployment setup
-- **[GPU Resource Management](./docs/12-gpu-resource-management.md)** — GPU orchestration
-- **[Error Handling](./docs/13-error-handling-and-fallbacks.md)** — Failure scenarios
+- **[Docker Runtime Architecture](./docs/architecture/06-docker-runtime-architecture.md)** — Deployment setup
+- **[GPU Resource Management](./docs/architecture/12-gpu-resource-management.md)** — GPU orchestration
+- **[Error Handling](./docs/architecture/13-error-handling-and-fallbacks.md)** — Failure scenarios
 
 ---
 
@@ -507,10 +547,10 @@ These limitations reflect pragmatic early-stage design decisions optimized for i
 
 1. **Read first:** `docs/01-context-and-problem.md`
 2. **Understand the design:** `docs/02-system-architecture.md`
-3. **Review the flows:** `docs/04-system-flow.md`
-4. **Study integration contracts:** `docs/05-api-integration-contracts.md`
+3. **Review the flows:** `docs/architecture/04-system-flow.md`
+4. **Study integration contracts:** `docs/architecture/05-api-integration-contracts.md`
 5. **Explore component details:** `docs/08-12` (specific technologies)
-6. **Review limitations:** `docs/14-limitations-and-risks.md`
+6. **Review limitations:** `docs/architecture/14-limitations-and-risks.md`
 7. **Check safety:** `public-safety-checklist.md` before any modifications
 
 ---
