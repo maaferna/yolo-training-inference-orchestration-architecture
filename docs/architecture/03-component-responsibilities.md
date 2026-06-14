@@ -294,7 +294,7 @@ The Django configuration layer provides domain models to centralize YOLO dataset
 
 ### IS RESPONSIBLE FOR
 - ✅ Represent a high-resolution image detection project
-- ✅ Associate datasets and label sets
+- ✅ Associate datasets and class sets
 - ✅ Manage project metadata (name, description, creation date)
 - ✅ Link to related training runs and inference jobs
 - ✅ Provide UI access for project administrators

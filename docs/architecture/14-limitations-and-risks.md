@@ -501,7 +501,7 @@ Django YOLO configuration models (ProjectConfiguration, ClassSet, DatasetConfig)
 - ⚠️ Audit trail missing
 
 **Mitigation**:
-- Create YAMLJobRegistry table
+- Create ConfigurationRegistry table
 - Link each YAML file to project and user
 - Display generation history in UI
 

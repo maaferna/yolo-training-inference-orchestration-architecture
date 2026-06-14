@@ -498,7 +498,7 @@ shared_storage/
 
 ```
 Host System:
-  /home/user/shared_configs/yaml_1717857600.yaml  (actual file)
+  /host/shared_configs/yaml_1717857600.yaml  (actual file)
 
 Django Container:
   Volume mount: shared_storage:/data/shared

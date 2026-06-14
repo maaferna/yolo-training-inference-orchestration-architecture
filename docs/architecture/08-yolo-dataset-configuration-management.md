@@ -382,7 +382,7 @@ function renderClassBadges(classes) {
 
 | Layer | Path | Purpose |
 |-------|------|---------|
-| Host | `/home/user/project/configs/yaml/` | User's working directory |
+| Host | `/host/project/configs/yaml/` | User's working directory |
 | Django Container | `/app/web_service/configs/yaml/` | Internal mount point |
 | FastAPI Container | `/app/shared_data/configs/yaml/` | Compute service mount point |
 | Public URL | `/media/deep_learning_outputs/` | Web-accessible URL |

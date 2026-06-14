@@ -474,15 +474,15 @@ For comprehensive documentation, see [**docs/08-yolo-dataset-configuration-manag
 │     - Label set: Select existing or create new         │
 │                                                          │
 │  2. Administrator defines label set (if new)           │
-│     - Add DetectionClass objects:                          │
-│       * DetectionClass 1: person, color=RED               │
-│       * DetectionClass 2: vehicle, color=BLUE             │
-│       * DetectionClass 3: animal, color=GREEN             │
+│     - Add DetectionClass objects:                      │
+│       * DetectionClass 1: person, color=RED            │
+│       * DetectionClass 2: vehicle, color=BLUE          │
+│       * DetectionClass 3: animal, color=GREEN          │
 │     - Save as reusable ClassSet                        │
 │                                                          │
-│  3. Link ProjectConfiguration to ClassSet                    │
-│     - Project → ClassSet M2M relation created         │
-│     - Database state now reflects configuration       │
+│  3. Link ProjectConfiguration to ClassSet              │
+│     - Project → ClassSet M2M relation created          │
+│     - Database state now reflects configuration        │
 │                                                          │
 └────────────────────┬──────────────────────────────────┘
                      │
@@ -490,13 +490,13 @@ For comprehensive documentation, see [**docs/08-yolo-dataset-configuration-manag
                      │
 ┌─ DJANGO BACKEND ───────────────────────────────────────┐
 │                                                          │
-│  4. DatasetConfig.generate_yaml() called with:            │
-│     - project: ProjectConfiguration instance                │
+│  4. DatasetConfig.generate_yaml() called with:         │
+│     - project: ProjectConfiguration instance           │
 │     - dataset_root: /data/ILLUSTRATIVE_DATASET         │
 │                                                          │
 │  5. Fetch related data from database                   │
-│     - project.label_sets.all() → [ClassSet]           │
-│     - label_set.label_classes.all() → [DetectionClass]    │
+│     - project.class_sets.all() → [ClassSet]            │
+│     - class_set.detection_classes.all() → [DetectionClass] │
 │                                                          │
 │  6. Build intermediate YAML dictionary:                │
 │     {                                                  │
@@ -579,8 +579,8 @@ For comprehensive documentation, see [**docs/08-yolo-dataset-configuration-manag
 │                                                          │
 │  16. Best model stored in shared_storage              │
 │      Django can associate training result with:        │
-│      - Original ProjectConfiguration                        │
-│      - ClassSet used                                 │
+│      - Original ProjectConfiguration                  │
+│      - ClassSet used                                  │
 │      - YAML configuration file                       │
 │      - Training metrics                              │
 │                                                          │
@@ -593,7 +593,7 @@ Django and FastAPI must both access the same YAML file despite different mount p
 
 ```
 Host system:
-  /home/user/shared_configs/yaml_TIMESTAMP.yaml (actual file)
+  /host/shared_configs/yaml_TIMESTAMP.yaml (actual file)
 
 Django container:
   Volume mount: shared_storage:/data/shared

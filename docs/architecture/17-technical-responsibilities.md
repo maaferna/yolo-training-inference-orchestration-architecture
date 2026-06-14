@@ -471,7 +471,7 @@ For comprehensive documentation, see [**docs/08-yolo-dataset-configuration-manag
 **Domain Models Implemented**:
 1. **ProjectConfiguration**: Project-level aggregation of datasets and label sets
 2. **DetectionClass**: Individual class definition (name, color, metadata)
-3. **ClassSet**: Reusable grouping of label classes for multi-project sharing
+3. **ClassSet**: Reusable grouping of detection classes for multi-project sharing
 4. **DatasetConfig**: Automated YAML generation from ORM state
 
 ### YAML Generation Pipeline
@@ -487,8 +487,8 @@ Assign ClassSet (predefined or create new)
 DatasetConfig.generate_yaml() called
     ↓
 Query ORM relations:
-  - project.label_sets.all() → [ClassSet]
-  - label_set.label_classes.all() → [DetectionClass]
+  - project.class_sets.all() → [ClassSet]
+  - class_set.detection_classes.all() → [DetectionClass]
     ↓
 Build intermediate YAML dictionary
     ↓

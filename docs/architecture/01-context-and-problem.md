@@ -102,7 +102,7 @@ Centralizing YOLO training configuration through Django ORM models provides:
 - **Single source of truth**: Dataset paths, class definitions, project metadata in database
 - **Automated YAML generation**: DatasetConfig model generates Ultralytics-compatible configuration
 - **Reusability**: ClassSet enables class definition reuse across multiple projects
-- **Web UI integration**: Bootstrap-based UI for managing projects, label sets, and configurations
+- **Web UI integration**: Bootstrap-based UI for managing projects, class sets, and configurations
 - **Docker coordination**: Environment-aware path mapping between host and container filesystems
 
 For detailed architecture of the Django configuration layer, see [**docs/08-yolo-dataset-configuration-management.md**](./08-yolo-dataset-configuration-management.md).

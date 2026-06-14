@@ -470,7 +470,7 @@ document.addEventListener('DOMContentLoaded', initializeForm);
 **Error**:
 ```
 FileNotFoundError: /app/shared_data/configs/yaml_1717857600.yaml not found in FastAPI container
-But file EXISTS at /home/user/shared_configs/yaml_1717857600.yaml on host
+But file EXISTS at /host/shared_configs/yaml_1717857600.yaml on host
 ```
 
 **Cause**:
@@ -482,7 +482,7 @@ But file EXISTS at /home/user/shared_configs/yaml_1717857600.yaml on host
 **Detection**:
 ```python
 # Django creates file at host path:
-# /home/user/shared/configs/yaml_1717857600.yaml
+# /host/shared/configs/yaml_1717857600.yaml
 
 # Django container sees it at:
 # /data/shared/configs/yaml_1717857600.yaml

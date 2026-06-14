@@ -46,7 +46,7 @@ Problem: Django container cannot directly access this path!
 
 **Host Filesystem**:
 ```
-/home/user/ml_projects/outputs/run_20260614_123456/
+/host/shared_artifacts/run_20260614_123456/
   ├── image_001_annotated.jpg
   ├── image_002_annotated.jpg
   ├── metrics.json
@@ -164,12 +164,12 @@ Django receives FastAPI response with path in **FastAPI container coordinates**,
 fastapi_output_path = "/app/compute_service/outputs/run_001/"
 
 # Step 1: Container → Host
-# Docker bind mount config: /home/user/outputs ↔ /app/compute_service/outputs
-# So: /app/compute_service/outputs/run_001 → /home/user/outputs/run_001
-host_path = "/home/user/outputs/run_001/"
+# Docker bind mount config: /host/shared_artifacts ↔ /app/compute_service/outputs
+# So: /app/compute_service/outputs/run_001 → /host/shared_artifacts/run_001
+host_path = "/host/shared_artifacts/run_001/"
 
 # Step 2: Host → Volume
-# Copy from host (/home/user) to volume (/app/web_service)
+# Copy from host (/host/shared_artifacts) to volume (/app/web_service)
 # Docker compose manages this path
 # After copy: /app/web_service/outputs/run_001
 volume_path = "/app/web_service/outputs/run_001/"
@@ -191,7 +191,7 @@ def copy_inference_results(fastapi_response):
     run_slug = fastapi_response['run_slug']
     
     # Get configuration (from settings or environment)
-    host_outputs_dir = settings.INFERENCE_HOST_PATH  # /home/user/outputs
+    host_outputs_dir = settings.INFERENCE_HOST_PATH  # /host/outputs
     volume_outputs_dir = settings.INFERENCE_VOLUME_PATH  # /app/web_service/outputs
     media_url_prefix = settings.MEDIA_DEEP_LEARNING_PREFIX  # /media/deep_learning_outputs
     
@@ -234,7 +234,7 @@ def copy_inference_results(fastapi_response):
 **Database Storage**:
 
 ```python
-class HighResInferenceRun(models.Model):
+class DetectionRunRecord(models.Model):
     """
     Persistent record of a high-resolution inference execution
     """
@@ -331,7 +331,7 @@ class HighResInferenceRun(models.Model):
 ├─────────────────────────────────────────────────────────────────────┤
 │ • Pydantic validates request parameters                              │
 │ • get_best_model() searches training_results/:                       │
-│   /home/user/training_results/field_survey_2026/yolo_v11_medium/... │
+│   /host/training_results/field_survey_2026/yolo_v11_medium/...      │
 │ • Locates best.pt based on mAP50 metric                             │
 │ • Error handling:                                                    │
 │   - 404 if model not found → return error message to Django         │
@@ -357,7 +357,7 @@ class HighResInferenceRun(models.Model):
 │ STEP 5: FASTAPI GENERATES ARTIFACTS                                 │
 ├─────────────────────────────────────────────────────────────────────┤
 │ • Create output directory:                                          │
-│   /app/compute_service/outputs/run_20260614_143025/              │
+│   /app/compute_service/outputs/run_20260614_143025/                 │
 │ • Save artifacts:                                                   │
 │   - image_001_annotated.jpg (PIL/OpenCV)                           │
 │   - image_002_annotated.jpg                                         │
@@ -376,7 +376,7 @@ class HighResInferenceRun(models.Model):
 │ • JSON Response:                                                    │
 │   {                                                                  │
 │     "status": "success",                                            │
-│     "output_storage_path": "/app/compute_service/outputs/...", │
+│     "output_storage_path": "/app/compute_service/outputs/...",     │
 │     "run_slug": "run_20260614_143025",                             │
 │     "artifact_count": 45,                                          │
 │     "execution_time": 127.5                                        │
@@ -389,11 +389,11 @@ class HighResInferenceRun(models.Model):
 │ STEP 7: DJANGO TRANSLATES PATHS & WAITS FOR FILES                   │
 ├─────────────────────────────────────────────────────────────────────┤
 │ • Parse response: output_storage_path                                │
-│   Input: /app/compute_service/outputs/run_20260614_143025/       │
+│   Input: /app/compute_service/outputs/run_20260614_143025/          │
 │                                                                      │
 │ • Map to host filesystem:                                           │
-│   Config: INFERENCE_HOST_PATH = /home/user/outputs                 │
-│   Result: /home/user/outputs/run_20260614_143025/                  │
+│   Config: INFERENCE_HOST_PATH = /host/outputs                       │
+│   Result: /host/outputs/run_20260614_143025/                        │
 │                                                                      │
 │ • Wait for files with timeout (5 minutes):                          │
 │   wait_for_path(host_path, timeout=300)                            │
@@ -410,8 +410,8 @@ class HighResInferenceRun(models.Model):
 ┌─────────────────────────────────────────────────────────────────────┐
 │ STEP 8: DJANGO COPIES TO SHARED VOLUME                              │
 ├─────────────────────────────────────────────────────────────────────┤
-│ • Source: /home/user/outputs/run_20260614_143025/                   │
-│ • Destination: /app/web_service/outputs/run_20260614_143025/         │
+│ • Source: /host/outputs/run_20260614_143025/                        │
+│ • Destination: /app/web_service/outputs/run_20260614_143025/        │
 │ • Copy with shutil.copytree():                                      │
 │   - All images                                                      │
 │   - All metrics, CSV, shapefiles                                    │
@@ -422,7 +422,7 @@ class HighResInferenceRun(models.Model):
 │   - Use atomic operations where possible                            │
 │                                                                      │
 │ • After copy:                                                       │
-│   Django can access: /app/web_service/outputs/run_20260614_143025/   │
+│   Django can access: /app/web_service/outputs/run_20260614_143025/  │
 └────┬────────────────────────────────────────────────────────────────┘
      │
      ↓
@@ -434,7 +434,7 @@ class HighResInferenceRun(models.Model):
 │   - Metrics: /media/deep_learning_outputs/outputs/run_.../metrics.json │
 │   - CSV: /media/deep_learning_outputs/outputs/run_.../detections.csv │
 │                                                                      │
-│ • Create database record (HighResInferenceRun):                      │
+│ • Create database record (DetectionRunRecord):                      │
 │   - project_id, yolo_version, yolo_size                            │
 │   - output_volume_path, image_url, metrics_url, csv_url            │
 │   - run_slug, execution_time, artifact_count, status               │
@@ -468,14 +468,14 @@ class PathTranslator:
     """
     Maps between 4 coordinate systems:
     1. Container (FastAPI): /app/compute_service/outputs/...
-    2. Host: /home/user/outputs/...
+    2. Host: /host/outputs/...
     3. Volume (Django): /app/web_service/outputs/...
     4. Public URL: /media/deep_learning_outputs/...
     """
     
     def __init__(self, config):
         self.fastapi_container_path = "/app/compute_service/outputs"
-        self.host_path = config['INFERENCE_HOST_PATH']  # /home/user/outputs
+        self.host_path = config['INFERENCE_HOST_PATH']  # /host/outputs
         self.volume_path = config['INFERENCE_VOLUME_PATH']  # /app/web_service/outputs
         self.media_url = config['MEDIA_URL_PREFIX']  # /media/deep_learning_outputs
     

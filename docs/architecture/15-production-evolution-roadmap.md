@@ -67,7 +67,7 @@ For comprehensive documentation, see [**docs/08-yolo-dataset-configuration-manag
    - Compare with database state on load
    - Warn user of drift
 
-3. **Create YAMLJobRegistry Table**
+3. **Create ConfigurationRegistry Table**
    - Track all YAML file generations
    - Link YAML to ProjectConfiguration and user
    - Enable audit trail and history

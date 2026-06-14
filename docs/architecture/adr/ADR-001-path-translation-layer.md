@@ -14,7 +14,7 @@
 When FastAPI (running in Docker container) generates inference results and Django (in a different container) needs to access them, a coordinate system mismatch emerges:
 
 - **FastAPI container sees**: `/app/compute_service/outputs/run_001/`
-- **Host filesystem has**: `/home/user/outputs/run_001/`
+- **Host filesystem has**: `/host/outputs/run_001/`
 - **Django container sees**: `/app/web_service/outputs/run_001/`
 - **Users access via**: `/media/deep_learning_outputs/outputs/run_001/`
 
@@ -28,11 +28,11 @@ Docker mounts in docker-compose.yml:
 services:
   fastapi:
     volumes:
-      - /home/user/outputs:/app/compute_service/outputs  # Bind mount
+      - /host/outputs:/app/compute_service/outputs  # Bind mount
   
   django:
     volumes:
-      - /home/user/outputs:/app/web_service/outputs  # Different mount point!
+      - /host/outputs:/app/web_service/outputs  # Different mount point!
       
   nginx:
     # Serves /app/web_service as /media/ via HTTP
@@ -60,7 +60,7 @@ class PathTranslator:
     def __init__(self, config):
         # 4 coordinate systems
         self.fastapi_container_path = "/app/compute_service/outputs"
-        self.host_path = config['INFERENCE_HOST_PATH']  # /home/user/outputs
+        self.host_path = config['INFERENCE_HOST_PATH']  # /host/outputs
         self.volume_path = config['INFERENCE_VOLUME_PATH']  # /app/web_service/outputs
         self.media_url_prefix = config['MEDIA_URL_PREFIX']  # /media/deep_learning_outputs
     
@@ -142,7 +142,7 @@ This sequence follows the natural data flow: generation → persistence → acce
 
 ```python
 # settings.py
-INFERENCE_HOST_PATH = "/home/user/outputs"
+INFERENCE_HOST_PATH = "/host/outputs"
 INFERENCE_VOLUME_PATH = "/app/web_service/outputs"
 MEDIA_URL_PREFIX = "/media/deep_learning_outputs"
 ```
@@ -263,7 +263,7 @@ shutil.copytree(
 )
 
 # Generate database record with final (volume) paths
-run = HighResInferenceRun.objects.create(
+run = DetectionRunRecord.objects.create(
     output_volume_path=paths['volume_path'],  # Use final layer only!
     image_url=paths['image_url'],
     metrics_url=paths['metrics_url'],
@@ -276,7 +276,7 @@ run = HighResInferenceRun.objects.create(
 ```python
 # settings.py
 INFERENCE_CONFIG = {
-    'INFERENCE_HOST_PATH': '/home/user/outputs',
+    'INFERENCE_HOST_PATH': '/host/outputs',
     'INFERENCE_VOLUME_PATH': '/app/web_service/outputs',
     'MEDIA_URL_PREFIX': '/media/deep_learning_outputs',
 }
@@ -299,7 +299,7 @@ def test_container_to_host_conversion():
     container_path = "/app/compute_service/outputs/run_001/"
     host_path = translator.container_to_host(container_path)
     
-    assert host_path == "/home/user/outputs/run_001/"
+    assert host_path == "/host/outputs/run_001/"
 
 def test_full_pipeline():
     config = {...}
@@ -311,7 +311,7 @@ def test_full_pipeline():
     
     urls = translator.fastapi_response_to_urls(fastapi_response)
     
-    assert urls['host_path'].startswith('/home/user/')
+    assert urls['host_path'].startswith('/host/')
     assert urls['volume_path'].startswith('/app/web_service/')
     assert urls['image_url'].startswith('/media/deep_learning_outputs/')
 ```
