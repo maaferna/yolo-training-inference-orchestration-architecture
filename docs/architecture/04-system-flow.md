@@ -459,6 +459,213 @@ PREVENTION (future):
 
 ---
 
+## High-Resolution Inference with Docker Path Translation
+
+This flow describes the complete journey from user request to rendered results, including the critical Docker path translation layer that synchronizes inference results between FastAPI and Django containers.
+
+**Key Components**:
+- 4-layer path coordinate system (host, FastAPI container, Django volume, public URL)
+- Race condition mitigation with polling-based stability detection
+- Cross-container artifact synchronization
+
+For comprehensive documentation including technical challenges and lessons learned, see [**docs/architecture/18-inference-result-synchronization.md**](./18-inference-result-synchronization.md).
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                STEP 1: USER SUBMITS REQUEST (Django UI)         │
+├─────────────────────────────────────────────────────────────────┤
+│ • User selects: Project, YOLO version, image directory          │
+│ • Django validates form parameters                              │
+│ • Django sends: POST /api/inference/high-resolution             │
+│                                                                 │
+│ Payload example:                                                │
+│ {                                                               │
+│   "project": "field_survey_2026",                              │
+│   "yolo_version": "v11",                                       │
+│   "yolo_size": "medium",                                       │
+│   "images_directory": "/data/images/batch_001",                │
+│   "use_sahi": true,                                            │
+│   "confidence_threshold": 0.5                                  │
+│ }                                                               │
+└──────────────┬──────────────────────────────────────────────────┘
+               │ HTTP POST (JSON payload)
+               ↓
+┌──────────────────────────────────────────────────────────────────┐
+│        STEP 2: FASTAPI VALIDATES & RESOLVES MODEL               │
+├──────────────────────────────────────────────────────────────────┤
+│ • Pydantic validates request parameters                         │
+│ • get_best_model() searches training results directory:         │
+│   /home/user/training_results/field_survey_2026/yolo_v11_medium│
+│ • Locates best.pt based on mAP50 metric                         │
+│                                                                 │
+│ Error handling:                                                 │
+│ ├─ 404: Model not found                                        │
+│ │  └─ Response includes available models and versions          │
+│ └─ 422: Parameter validation failed                            │
+│    └─ Response includes validation error details               │
+└──────────────┬──────────────────────────────────────────────────┘
+               │
+               ↓
+┌──────────────────────────────────────────────────────────────────┐
+│         STEP 3: FASTAPI EXECUTES INFERENCE (on GPU)             │
+├──────────────────────────────────────────────────────────────────┤
+│ • Load model weights (.pt file) to GPU                          │
+│ • If SAHI enabled:                                              │
+│   - Slice images into 640×640 tiles (50% overlap)              │
+│   - Run YOLOv11 on each tile independently                     │
+│   - Merge detections with NMS deduplication                    │
+│ • Else: Direct YOLO inference on images                        │
+│ • Collect results with bounding boxes and confidence           │
+│ • Generate annotations on copies of original images            │
+└──────────────┬──────────────────────────────────────────────────┘
+               │
+               ↓
+┌──────────────────────────────────────────────────────────────────┐
+│        STEP 4: FASTAPI GENERATES ARTIFACTS                      │
+├──────────────────────────────────────────────────────────────────┤
+│ • Create output directory:                                      │
+│   /app/compute_service/outputs/run_20260614_143025/          │
+│                                                                 │
+│ • Save artifacts:                                               │
+│   ├─ image_001_annotated.jpg (with bounding boxes)             │
+│   ├─ image_002_annotated.jpg                                   │
+│   ├─ ... (all images processed)                                │
+│   ├─ metrics.json (precision, recall, mAP, F1)                │
+│   ├─ detections.csv (class, confidence, bbox)                 │
+│   ├─ detections.shp/.shx (geospatial format)                  │
+│   └─ metadata.json (run timestamp, version, parameters)        │
+│                                                                 │
+│ • Total: ~45 files generated                                   │
+└──────────────┬──────────────────────────────────────────────────┘
+               │
+               ↓
+┌──────────────────────────────────────────────────────────────────┐
+│       STEP 5: FASTAPI RETURNS RESPONSE TO DJANGO                │
+├──────────────────────────────────────────────────────────────────┤
+│ • JSON Response:                                                │
+│ {                                                               │
+│   "status": "success",                                         │
+│   "output_storage_path": "/app/compute_service/outputs/...", │
+│   "run_slug": "run_20260614_143025",                           │
+│   "artifact_count": 45,                                        │
+│   "execution_time": 127.5                                      │
+│ }                                                               │
+│                                                                 │
+│ NOTE: Path is in FastAPI CONTAINER coordinates!                │
+│       Django cannot directly access this path.                  │
+└──────────────┬──────────────────────────────────────────────────┘
+               │ HTTP Response closes
+               ↓
+┌──────────────────────────────────────────────────────────────────┐
+│  STEP 6-7: DJANGO PATH TRANSLATION LAYER                        │
+├──────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│ PATH COORDINATE SYSTEM:                                        │
+│                                                                 │
+│ Layer 1 (FastAPI Container):  /app/compute_service/outputs  │
+│   ↓ (Docker bind mount)                                        │
+│ Layer 2 (Host Filesystem):    /home/user/outputs               │
+│   ↓ (mapped to volume)                                         │
+│ Layer 3 (Django Volume):      /app/web_service/outputs          │
+│   ↓ (served as static file)                                    │
+│ Layer 4 (Public URL):         /media/deep_learning_outputs     │
+│                                                                 │
+│ Translation Logic:                                              │
+│ ├─ FastAPI returns: /app/compute_service/outputs/run_001    │
+│ ├─ Django maps to host: /home/user/outputs/run_001             │
+│ ├─ Django maps to volume: /app/web_service/outputs/run_001      │
+│ └─ Public URL: /media/deep_learning_outputs/outputs/run_001    │
+│                                                                 │
+│ Implementation: PathTranslator class handles all 4 mappings    │
+└──────────────┬──────────────────────────────────────────────────┘
+               │
+               ↓
+┌──────────────────────────────────────────────────────────────────┐
+│      STEP 7: DJANGO WAITS FOR FILES (Race Condition Safety)     │
+├──────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│ Problem: FastAPI may still be writing while Django copies      │
+│ Solution: Polling-based stability detection                    │
+│                                                                 │
+│ wait_for_path(host_path, timeout=300):                         │
+│ ├─ Check directory exists                                      │
+│ ├─ Poll every 0.5 seconds for 5 minutes max                    │
+│ ├─ Verify required files present:                              │
+│ │  ├─ metrics.json                                             │
+│ │  ├─ image_*.jpg                                              │
+│ │  └─ detections.csv                                           │
+│ ├─ When file count unchanged for 3 consecutive checks:         │
+│ │  └─ Directory is stable, safe to copy                        │
+│ └─ Timeout → return error to user                              │
+│                                                                 │
+└──────────────┬──────────────────────────────────────────────────┘
+               │
+               ↓
+┌──────────────────────────────────────────────────────────────────┐
+│        STEP 8: DJANGO COPIES TO SHARED VOLUME                   │
+├──────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│ Source:      /home/user/outputs/run_20260614_143025/           │
+│ Destination: /app/web_service/outputs/run_20260614_143025/      │
+│                                                                 │
+│ Copy Operation:                                                 │
+│ ├─ shutil.copytree(source, destination)                        │
+│ ├─ Copy all images, metrics, CSV, shapefiles                   │
+│ ├─ Verify file counts match                                    │
+│ └─ Error handling: If copy fails, report error to user         │
+│                                                                 │
+│ After copy completes:                                          │
+│ └─ Django can access: /app/web_service/outputs/run_.../         │
+│    (This is accessible because it's in the Django container)   │
+└──────────────┬──────────────────────────────────────────────────┘
+               │
+               ↓
+┌──────────────────────────────────────────────────────────────────┐
+│     STEP 9: DJANGO SAVES TO DATABASE & RENDERS RESULTS         │
+├──────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│ Generate public URLs:                                          │
+│ ├─ Image URL: /media/deep_learning_outputs/outputs/run_../image │
+│ ├─ Metrics: /media/deep_learning_outputs/outputs/run_.../metrics │
+│ └─ CSV: /media/deep_learning_outputs/outputs/run_.../detections │
+│                                                                 │
+│ Create database record (HighResInferenceRun):                  │
+│ ├─ project_id, yolo_version, yolo_size                        │
+│ ├─ output_volume_path, image_url, metrics_url, csv_url        │
+│ ├─ run_slug, execution_time, artifact_count                   │
+│ └─ created_at timestamp                                        │
+│                                                                 │
+│ Render Django template:                                        │
+│ ├─ Display annotated images in gallery                         │
+│ ├─ Show metrics table (Precision, Recall, mAP, F1)           │
+│ ├─ Provide download links (CSV, JSON, shapefiles)            │
+│ └─ Generate inference history list                            │
+│                                                                 │
+│ USER SEES RESULTS: 5-10 seconds after initial submission       │
+│                                                                 │
+└────────────────────────────────────────────────────────────────┘
+```
+
+### Critical Risks & Mitigations
+
+**Risk 1: Race Condition - Copy Before Write Complete**
+- Mitigation: `wait_for_path()` polling ensures stability before copying
+- Validation: File count unchanged for 3 consecutive checks
+
+**Risk 2: Path Coordinate System Misconfiguration**
+- Mitigation: Centralized PathTranslator class with validation
+- Validation: Verify paths exist at initialization
+
+**Risk 3: Metadata-Filesystem Mismatch**
+- Mitigation: Store ONLY final-layer (volume/URL) paths in database
+- Validation: Validate paths during ORM save()
+
+**Risk 4: Concurrent Inference Job Conflicts**
+- Mitigation: Unique run_slug per job (timestamp + random)
+- Validation: Separate output directories per job ensure isolation
+
+---
+
 ## Django Configuration to Training Flow
 
 This flow describes how Django configuration models (ProjectConfiguration, ClassSet, DatasetConfig) coordinate to prepare YOLO training.

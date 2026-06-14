@@ -309,6 +309,118 @@ Must be readable by Django at:
   /data/shared/models/best.pt
 ```
 
+---
+
+## Inference Result Path Translation: 4-Layer Coordinate System
+
+### The Path Coordination Challenge
+
+When FastAPI generates inference results and Django needs to serve them to browsers, files must pass through 4 different coordinate systems:
+
+```
+Layer 1: FastAPI Container Coordinate System
+         /app/compute_service/outputs/run_001/
+         └─ Where FastAPI writes results (source)
+
+Layer 2: Host Filesystem (via bind mount)
+         /home/user/outputs/run_001/
+         └─ Persistent storage on host
+
+Layer 3: Django Container Coordinate System  
+         /app/web_service/outputs/run_001/
+         └─ Where Django reads files
+
+Layer 4: Public HTTP URL (served by web server)
+         /media/deep_learning_outputs/outputs/run_001/
+         └─ Where browsers access images
+```
+
+### Docker Compose Configuration for Path Coordination
+
+```yaml
+services:
+  fastapi:
+    volumes:
+      # FastAPI sees host filesystem at /app/compute_service/outputs
+      - /home/user/outputs:/app/compute_service/outputs  # Bind mount
+  
+  django:
+    volumes:
+      # Django sees SAME host filesystem at different container path
+      - /home/user/outputs:/app/web_service/outputs  # Same source, different target!
+      
+  nginx:
+    volumes:
+      # Static file serving: Django volume → public URL
+      - /home/user/outputs:/usr/share/nginx/html/deep_learning_outputs
+    # /media/deep_learning_outputs → /usr/share/nginx/html/deep_learning_outputs
+```
+
+### Path Translation Logic Diagram
+
+```
+FastAPI generates: /app/compute_service/outputs/run_001/image.jpg
+                   ↓
+                   (bind mount mapping: /app/compute_service → /home/user)
+                   ↓
+Host filesystem:   /home/user/outputs/run_001/image.jpg
+                   ↓
+                   (Django reads via its mount: /home/user → /app/web_service)
+                   ↓
+Django accesses:   /app/web_service/outputs/run_001/image.jpg
+                   ↓
+                   (Django template renders)
+                   ↓
+Browser request:   /media/deep_learning_outputs/outputs/run_001/image.jpg
+                   ↓
+                   (nginx static file serving)
+                   ↓
+Server response:   Image bytes from /home/user/outputs/run_001/image.jpg
+```
+
+### Why 4 Layers Instead of Direct Access?
+
+| Layer | Reason |
+|-------|--------|
+| Layer 1 (FastAPI container) | Source generation; isolated compute environment |
+| Layer 2 (Host filesystem) | Persistent storage; survives container restart |
+| Layer 3 (Django container) | Accessible to web app; supports static file serving |
+| Layer 4 (Public URL) | Standard HTTP access; separates internal paths from URLs |
+
+This separation enables:
+- ✅ Service isolation (FastAPI and Django don't share filesystem)
+- ✅ Independent scaling (replace containers without losing data)
+- ✅ Security (internal paths not exposed to browsers)
+- ✅ Flexibility (change storage backend in Phase 3 without affecting consumers)
+
+### PathTranslator Implementation
+
+For comprehensive documentation on path translation abstraction, see:
+- [ADR-001: Path Translation Layer](./adr/ADR-001-path-translation-layer.md)
+- [Inference Result Synchronization Layer](./18-inference-result-synchronization.md)
+
+**Centralized path mapping**:
+
+```python
+# All coordinate system mappings in one place
+translator = PathTranslator(settings)
+
+# Convert FastAPI response to accessible URLs
+fastapi_response = {
+    "output_storage_path": "/app/compute_service/outputs/run_001/"
+}
+
+urls = translator.fastapi_response_to_urls(fastapi_response)
+# Returns:
+# {
+#   'host_path': '/home/user/outputs/run_001/',
+#   'volume_path': '/app/web_service/outputs/run_001/',
+#   'image_url': '/media/deep_learning_outputs/outputs/run_001/image.jpg'
+# }
+```
+
+---
+
 ### Artifact Structure
 
 ```
