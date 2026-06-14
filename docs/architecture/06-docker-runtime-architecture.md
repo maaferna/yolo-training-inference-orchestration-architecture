@@ -1,12 +1,140 @@
 # Docker Runtime Architecture
 
-This document describes the containerized deployment architecture and runtime configuration.
+This document describes the containerized deployment architecture and runtime configuration for the agricultural computer vision platform.
 
-## Docker Compose Overview
+---
+
+## 1. Problem Context
+
+A containerized computer vision platform was being developed and stabilized for processing agricultural images through object detection models. The platform was built on Django and FastAPI, deployed in Docker containers with GPU support.
+
+### Key Challenges Addressed
+
+* Integration between web backend and inference services
+* GPU deployment within Docker containers
+* Management of agricultural image projects and orthomosaics
+* Execution of inference on large-scale images using SAHI
+* System observability and monitoring through logging
+* Troubleshooting deployment and operational issues in containers
+
+### Technical Focus Areas
+
+* Multi-container orchestration
+* GPU/CUDA runtime configuration
+* Shared storage and artifact management
+* Django logging in Docker environments
+* Real-time observability for containerized services
+
+---
+
+## 2. Component Overview
+
+The system consists of multiple specialized modules:
+
+### Image Inference Module
+- Executes object detection on agricultural images using YOLO and SAHI
+- Handles high-resolution inference through tiling and result consolidation
+
+### Orthomosaic Processing Module
+- Enables inference on large-resolution images through tile segmentation
+- Consolidates results from individual tiles
+
+### Project Management Module
+- Administers image processing projects
+- Manages image storage, inference configurations, and result persistence
+
+### Django Backend
+- Data management and web interface
+- REST APIs for system integration
+- Result persistence and project administration
+
+### Inference Service
+- Decoupled execution of computer vision models
+- Handles inference orchestration independent of backend
+
+### Docker Infrastructure
+- Orchestrates Backend, Database, Frontend, Inference Services, and auxiliary CV tools
+
+---
+
+## 3. Technologies Employed
+
+| Layer | Technologies |
+|-------|---|
+| **Backend** | Python, Django, Django REST Framework |
+| **Inference** | FastAPI, PyTorch, YOLO, SAHI |
+| **Frontend** | React, JavaScript |
+| **Database** | PostgreSQL |
+| **Infrastructure** | Docker, Docker Compose |
+| **GPU Computing** | CUDA, NVIDIA Container Runtime |
+| **CV Libraries** | OpenCV, Ultralytics, SAHI |
+| **Complementary Tools** | CVAT, FiftyOne, Nuclio, WebODM |
+
+---
+
+## 4. Docker Compose Overview
 
 The system runs as a multi-container application using Docker Compose for local development and testing.
 
-```yaml
+### System Architecture Diagram
+
+```
+                 +------------------+
+                 |     Frontend     |
+                 |      React       |
+                 +--------+---------+
+                          |
+                          |
+                          v
+                 +------------------+
+                 |     Django       |
+                 |     Backend      |
+                 +----+--------+----+
+                      |        |
+                      |        |
+                      v        v
+             +------------+   +----------------+
+             | PostgreSQL |   | File Storage   |
+             +------------+   +----------------+
+                                   |
+                                   |
+                                   v
+                         +-------------------+
+                         | Inference Service |
+                         | FastAPI + YOLO    |
+                         | SAHI + PyTorch    |
+                         +---------+---------+
+                                   |
+                                   |
+                                   v
+                               GPU Layer
+                          CUDA / NVIDIA
+```
+
+### Main Data Flow
+
+**Inference Pipeline**:
+1. User accesses frontend and loads agricultural images or selects existing project
+2. Frontend sends inference configuration to Django backend (model, confidence threshold, image size, slice size, overlap ratio)
+3. Django registers the execution and persists configuration to PostgreSQL
+4. FastAPI Inference Service receives image and parameters
+5. SAHI partitions large images into tiles
+6. YOLO executes detection on each tile
+7. SAHI merges detection results
+8. Results are stored in database and filesystem
+9. Backend exposes results through API to frontend
+
+### Component Responsibilities
+
+| Component | Responsibility |
+|-----------|---|
+| **Frontend (React)** | User interface, image upload, configuration, result visualization |
+| **Django Backend** | API management, data persistence, project administration, inference orchestration |
+| **PostgreSQL** | Project metadata, execution history, detection results, configuration storage |
+| **File Storage** | Original images, generated tiles, inference results |
+| **FastAPI Service** | Model inference execution, SAHI tile processing, GPU management |
+
+
 # CONCEPTUAL DOCKER COMPOSE STRUCTURE (Non-Production)
 # This is for architectural reference only
 version: '3.8'
@@ -606,20 +734,254 @@ healthcheck:
 
 **This Docker Compose configuration is for architectural documentation and conceptual understanding only.**
 
-**Production Considerations NOT included**:
-- ❌ Multi-stage builds for optimization
-- ❌ Security hardening (read-only filesystems, non-root users)
-- ❌ Resource limits and requests
-- ❌ Secrets management (Vault, AWS Secrets Manager)
-- ❌ Logging aggregation (ELK, Splunk)
-- ❌ Monitoring and alerting
-- ❌ Container registry and image signing
-- ❌ Network policies and segmentation
-- ❌ Multi-region deployment
-- ❌ Disaster recovery
+---
 
-**For production deployment**, refer to Kubernetes manifests, Terraform configurations, and organizational deployment standards.
+## 5. Django Real-Time Logging Configuration
+
+### Problem Addressed
+
+When Django was deployed within Docker Compose, logs were not visible in real-time despite the backend responding correctly to HTTP requests.
+
+### Root Causes
+
+* **Output Buffering**: Python processes executed via Conda/Mamba buffered stdout/stderr
+* **Process Wrapping**: Using `mamba run` or bash wrappers without `exec` prevented log capture
+* **Lost Observability**: Inability to diagnose issues when server responded but logs were invisible
+* **Infrastructure Uncertainty**: Difficulty confirming ports, active processes, and correct server execution
+
+### Solution Implemented
+
+#### Entrypoint Configuration
+
+The startup script was modified to:
+- Disable Python output buffering with `PYTHONUNBUFFERED=1`
+- Set proper encoding with `PYTHONIOENCODING=utf-8`
+- Execute Django using `exec` to connect stdout/stderr directly to Docker
+
+#### Environment Variables
+
+```env
+PYTHONUNBUFFERED=1          # Disable output buffering
+PYTHONIOENCODING=utf-8      # Proper character encoding
+DJANGO_SETTINGS_MODULE=config.settings.production
+DEBUG=False
+```
+
+#### Logging Configuration
+
+Loggers configured for:
+* Django server startup and lifecycle events
+* HTTP request/response details
+* SQL query visibility in debug mode
+* Application-level errors and warnings
+
+#### Docker Log Capture
+
+Real-time logs now visible via:
+```bash
+docker logs <container_id> -f
+docker-compose logs -f django
+docker-compose logs -f fastapi
+```
+
+### Impact
+
+* ✅ HTTP requests visible in real-time
+* ✅ SQL queries traceable during development
+* ✅ Server initialization events observable
+* ✅ Application errors immediately detectable
+* ✅ Operational troubleshooting significantly faster
 
 ---
 
-**This Docker architecture enables local development and testing of the multi-service AI orchestration system while maintaining clear separation of concerns and enabling a future path to distributed deployment.**
+## 6. Container Startup Flow
+
+### Step 1: Container Initialization
+
+When Docker Compose starts the backend:
+
+```bash
+docker-compose up backend
+```
+
+The entrypoint performs:
+1. Verification of mounted volumes
+2. Configuration of environment variables (unbuffered output, encoding)
+3. Execution of Django migrations
+4. Initialization of application components
+5. Logging system configuration
+
+### Step 2: Backend Initialization
+
+During startup:
+* Django loads configuration
+* PostgreSQL connection validated
+* Installed applications initialized
+* Models registered
+* Logging system configured
+
+### Step 3: Vision Library Initialization
+
+If configured:
+* PyTorch loaded and GPU detected
+* FAISS indices initialized (if used)
+* CUDA resources detected and allocated
+
+### Step 4: Server Startup
+
+Finally:
+* Django application starts on port 8000 (internal)
+* Docker exposes configured host port
+* Log capture activated for real-time monitoring
+
+### Step 5: Validation
+
+Checks performed:
+* Volume mount existence and permissions
+* Django project availability
+* PostgreSQL reachability
+* Migration status
+* GPU availability (FastAPI)
+* Configuration consistency
+
+### Step 6: Data Persistence
+
+**PostgreSQL**:
+- Users, projects, configurations
+- Inference execution history
+- Detection results and metadata
+- Image metadata
+
+**File System**:
+- Original images
+- Generated tiles
+- Inference results
+- Static files
+
+---
+
+## 7. Architectural Patterns Detected
+
+### Microservices Architecture
+Separation between management backend (Django) and specialized inference service (FastAPI)
+
+### API Integration
+Component communication via REST APIs
+
+### Batch Processing
+Multiple images and orthomosaics processed in pipeline
+
+### GPU Computing
+GPU acceleration for inference execution
+
+### Data Persistence
+Multi-layer storage for configurations, projects, and results
+
+### Containerized Deployment
+All services deployed and managed via Docker
+
+### Modular Architecture
+Clear separation between management, inference, storage, and visualization
+
+### Computer Vision Pipeline
+Complete pipeline: ingestion → segmentation → inference → consolidation → persistence
+
+---
+
+## 8. Technical Complexity Assessment
+
+### Classification: **High**
+
+### Justification
+
+The system integrates multiple advanced technologies:
+
+* **Frontend**: React-based user interface
+* **Backend**: Django with DRF for API management
+* **Inference**: FastAPI with YOLO and SAHI
+* **Database**: PostgreSQL for persistence
+* **Infrastructure**: Docker Compose with GPU support
+* **Logging**: Real-time observability in containerized environment
+* **Integrations**: Multiple CV tools (CVAT, FiftyOne, Nuclio, WebODM)
+
+This corresponds to responsibilities of:
+- Machine Learning Engineer
+- AI Platform Engineer
+- Computer Vision Engineer
+- Backend Architect
+- MLOps Engineer
+
+---
+
+## 9. Architectural Risks and Mitigations
+
+### Risk: Tight Coupling
+
+**Issue**: Django maintains direct knowledge of inference service configuration
+
+**Mitigation**: Use environment variables and service discovery patterns
+
+### Risk: Scalability Limitation
+
+**Issue**: Current setup designed for single instances
+
+**Mitigation**: Add load balancer, task queue, horizontal scaling layer
+
+### Risk: GPU Resource Contention
+
+**Issue**: Multiple concurrent inferences compete for VRAM and CUDA
+
+**Mitigation**: Implement request queuing and rate limiting
+
+### Risk: Single Point of Failure
+
+**Issue**: Backend failure impacts entire system
+
+**Mitigation**: Implement redundancy and failover mechanisms
+
+### Risk: Storage Growth
+
+**Issue**: Ortomosaics and tiles generate large data volumes
+
+**Mitigation**: Implement distributed storage and cleanup policies
+
+### Risk: Long-Running Requests
+
+**Issue**: Inference on large images may timeout
+
+**Mitigation**: Implement async processing and job queues
+
+### Risk: Logging Overhead
+
+**Issue**: Excessive SQL logging impacts performance
+
+**Mitigation**: Disable verbose logging in production
+
+---
+
+## 10. System Maturity Level
+
+### Classification: **Scalable System**
+
+### Characteristics Present
+
+✅ Modular architecture with clear separation of concerns  
+✅ Backend decoupled from inference service  
+✅ Complete containerization  
+✅ GPU support and acceleration  
+✅ Dataset management integration  
+✅ Full computer vision pipeline  
+✅ Integration with specialized CV tools  
+
+### Characteristics Not Yet Present
+
+❌ Task queue or message broker  
+❌ Distributed storage systems  
+❌ Event-driven architecture  
+❌ Horizontal auto-scaling  
+❌ Workflow orchestration  
+❌ Multi-region deployment  
+
+This represents an advanced scalable system appropriate for medium-scale production use, with clear pathways for evolution toward fully distributed architecture.
+
+
