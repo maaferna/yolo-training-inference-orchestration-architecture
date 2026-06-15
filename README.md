@@ -1,5 +1,54 @@
 # YOLO Training & Inference Orchestration Architecture
 
+## Technology & Architecture Stack
+
+This repository documents an internal production-oriented AI vision platform architecture that combines web orchestration, GPU-backed machine learning services, dataset configuration management, experiment tracking, and research-oriented computer vision workflows.
+
+### Core Platform
+
+![Python](https://img.shields.io/badge/Python-3.x-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![Django](https://img.shields.io/badge/Django-Web%20Application-092E20?style=for-the-badge&logo=django&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-AI%20Service-009688?style=for-the-badge&logo=fastapi&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Metadata%20Store-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
+![REST API](https://img.shields.io/badge/REST%20API-Service%20Integration-005571?style=for-the-badge)
+
+### Machine Learning & Computer Vision
+
+![PyTorch](https://img.shields.io/badge/PyTorch-GPU%20Runtime-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white)
+![CUDA](https://img.shields.io/badge/CUDA-GPU%20Acceleration-76B900?style=for-the-badge&logo=nvidia&logoColor=white)
+![YOLO](https://img.shields.io/badge/YOLO-Object%20Detection-111111?style=for-the-badge)
+![SAHI](https://img.shields.io/badge/SAHI-Sliced%20Inference-6A5ACD?style=for-the-badge)
+![OpenCV](https://img.shields.io/badge/OpenCV-Image%20Processing-5C3EE8?style=for-the-badge&logo=opencv&logoColor=white)
+![Segment Anything](https://img.shields.io/badge/SAM-Segmentation-FF6F00?style=for-the-badge)
+![Pillow](https://img.shields.io/badge/Pillow-Image%20Manipulation-8A2BE2?style=for-the-badge)
+![NumPy](https://img.shields.io/badge/NumPy-Numerical%20Processing-013243?style=for-the-badge&logo=numpy&logoColor=white)
+
+### MLOps, Experiment Tracking & Data Engineering
+
+![ClearML](https://img.shields.io/badge/ClearML-Experiment%20Tracking-1A73E8?style=for-the-badge)
+![YAML](https://img.shields.io/badge/YAML-Configuration-CB171E?style=for-the-badge&logo=yaml&logoColor=white)
+![JSON](https://img.shields.io/badge/JSON-Artifacts-000000?style=for-the-badge&logo=json&logoColor=white)
+![COCO](https://img.shields.io/badge/COCO-Annotation%20Format-7952B3?style=for-the-badge)
+![YOLO Format](https://img.shields.io/badge/YOLO%20Format-Dataset%20Labels-222222?style=for-the-badge)
+![CVAT](https://img.shields.io/badge/CVAT-Dataset%20Annotation-FF9800?style=for-the-badge)
+![Roboflow](https://img.shields.io/badge/Roboflow-Dataset%20Management-6706CE?style=for-the-badge)
+
+### Infrastructure & Runtime
+
+![Docker](https://img.shields.io/badge/Docker-Containerized%20Runtime-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+![Docker Compose](https://img.shields.io/badge/Docker%20Compose-Internal%20Orchestration-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+![Linux](https://img.shields.io/badge/Linux-Operating%20System-FCC624?style=for-the-badge&logo=linux&logoColor=black)
+![Ubuntu](https://img.shields.io/badge/Ubuntu-GPU%20Runtime%20Environment-E95420?style=for-the-badge&logo=ubuntu&logoColor=white)
+![Jupyter](https://img.shields.io/badge/Jupyter-Research%20Workflow-F37626?style=for-the-badge&logo=jupyter&logoColor=white)
+![Shared Storage](https://img.shields.io/badge/Shared%20Storage-Artifact%20Exchange-607D8B?style=for-the-badge)
+
+### Architecture Scope
+
+![Documentation Only](https://img.shields.io/badge/Repository-Documentation%20Only-blue?style=for-the-badge)
+![Public Safe](https://img.shields.io/badge/Public--Safe-Anonymized-green?style=for-the-badge)
+![Internal Platform](https://img.shields.io/badge/Architecture-Internal%20AI%20Platform-purple?style=for-the-badge)
+![Production Oriented](https://img.shields.io/badge/Maturity-Production--Oriented%20Internal%20System-orange?style=for-the-badge)
+
 ## ⚠️ Public-Safe Documentation Repository
 
 **This repository contains generalized, anonymized architecture documentation only. It is not a production release of private source code.**
@@ -26,6 +75,26 @@ It demonstrates:
 - **Fit-for-purpose evolution planning:** a roadmap focused on internal reliability, traceability, and controlled operational growth rather than premature distributed infrastructure.
 
 **Positioning:** Internal production-oriented AI vision platform architecture for controlled agricultural and research workflows.
+
+### Operating System Runtime Decision
+
+Ubuntu was selected as the preferred operating system environment for GPU-backed training and inference workflows.
+
+This decision was important because deep learning workloads involving PyTorch, CUDA, NVIDIA drivers, Ultralytics YOLO, and multi-GPU training are highly sensitive to operating system compatibility, driver versions, CUDA runtime configuration, and multiprocessing behavior.
+
+During development, alternative environments were considered or tested. Windows was suitable for simpler single-GPU execution, but multi-GPU and DDP-oriented workflows introduced additional operational complexity. Other Linux distributions can work, but may require more manual dependency resolution depending on driver, CUDA, PyTorch, and package compatibility.
+
+For this architecture, Ubuntu provides a more predictable and commonly supported runtime baseline for:
+
+- NVIDIA driver installation;
+- CUDA toolkit compatibility;
+- PyTorch GPU execution;
+- Docker-based GPU workloads;
+- multi-GPU training experiments;
+- Linux-native filesystem and process behavior;
+- reproducible deployment on GPU workstations or servers.
+
+This does not mean Ubuntu is the only valid option. It means Ubuntu was selected as the preferred baseline to reduce runtime friction and improve reproducibility for GPU-intensive computer vision workflows.
 
 ---
 
