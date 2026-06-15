@@ -2,307 +2,378 @@
 
 ## ⚠️ Public-Safe Documentation Repository
 
-**This repository contains generalized, anonymized architecture documentation only. It is NOT a production release of private code.**
+**This repository contains generalized, anonymized architecture documentation only. It is not a production release of private source code.**
 
-### What This Repository Is
+This repository documents a public-safe architecture pattern for an internal AI vision platform that separates user-facing web workflows from GPU-intensive machine learning workloads.
 
-This repository documents **architectural decisions for a web-connected AI vision platform** that separates user-facing web services from GPU-intensive ML workloads. It demonstrates:
+It is intended for portfolio, technical communication, and architecture review purposes. It does not include runnable application code, private datasets, model weights, credentials, real metrics, real infrastructure details, or production deployment files.
 
-- **Microservice separation**: stateless web tier (Django) and compute tier (FastAPI) with independent scaling
-- **GPU compute dispatch**: YOLO training with multi-seed experimentation and validation-based model selection
-- **MLOps integration**: ClearML for experiment tracking, metric logging, and model artifact registration
-- **High-resolution inference patterns**: SAHI tiling for per-tile inference on large images
-- **Pragmatic growth philosophy**: start synchronous on single GPU, evolve to async/queue-based when queue wait exceeds 30 minutes
-- **Failure mode documentation**: explicit identification of known failure modes and error messaging
-- **Production evolution planning**: hypothetical roadmap with trigger metrics for scaling from MVP to enterprise scale
+---
 
-**This is an MVP-level architecture** (single GPU service, shared filesystem storage). Not yet deployed in production. The production evolution roadmap documents hypothetical scaling patterns with explicit trigger metrics.
+## What This Repository Is
 
-### What This Repository Is NOT
+This repository documents **architectural decisions for a web-connected AI vision platform** designed for controlled internal agricultural, industrial, or research-oriented workflows.
+
+It demonstrates:
+
+- **Microservice separation:** a Django-based web and administration layer separated from a FastAPI-based AI processing layer.
+- **GPU-backed AI execution:** YOLO training, validation, inference, SAHI-based high-resolution inference, and experiment workflows executed through a dedicated compute service.
+- **Training runtime flexibility:** single-GPU and multi-GPU training runtime strategies, including DataParallel support and evaluated DDP patterns where applicable.
+- **Dataset configuration management:** database-backed dataset configuration, label/class metadata, and public-safe documentation of YOLO-compatible dataset configuration generation.
+- **MLOps foundations:** experiment tracking, metric logging, artifact lineage, and model reference management using lightweight tracking patterns.
+- **Research workflow support:** notebook-oriented experimentation and synthetic dataset generation workflows documented as auxiliary research and dataset engineering paths.
+- **Operational risk analysis:** explicit discussion of synchronous execution, shared storage coupling, GPU contention, artifact governance, and scale-out triggers.
+- **Fit-for-purpose evolution planning:** a roadmap focused on internal reliability, traceability, and controlled operational growth rather than premature distributed infrastructure.
+
+**Positioning:** Internal production-oriented AI vision platform architecture for controlled agricultural and research workflows.
+
+---
+
+## What This Repository Is Not
 
 🚫 **This repository does not contain:**
-- Production source code from the private implementation
-- Actual datasets or training data
-- Real trained model weights
-- Real metrics or performance results
-- Real coordinates, detections, or inference outputs
-- Client, institution, farm, field, or researcher names
-- Credentials, secrets, or API keys
-- Absolute local paths or environment-specific configurations
-- ClearML workspace names or sensitive infrastructure details
-- Real screenshots, generated images, or model outputs
-- Runnable Django, FastAPI, YOLO, SAHI, ClearML, or training code
-- Production Dockerfiles or deployable containers
-- Private IP information or deployment infrastructure
+
+- production source code from the private implementation;
+- actual datasets or training data;
+- real trained model weights;
+- real metrics or performance results;
+- real coordinates, detections, or inference outputs;
+- client, institution, farm, field, or researcher names;
+- credentials, secrets, API keys, or workspace identifiers;
+- absolute local paths or environment-specific configurations;
+- ClearML, CVAT, Roboflow, cloud, or server workspace names;
+- real screenshots, generated images, masks, previews, or model outputs;
+- runnable Django, FastAPI, YOLO, SAHI, SAM, ClearML, Docker, or notebook code;
+- production Dockerfiles or deployable containers;
+- private IP, deployment infrastructure, or operational playbooks.
 
 This repository does not contain the private implementation, datasets, trained weights, real metrics, credentials, or production deployment files.
 
 ---
 
-## Maturity Tier: MVP Architecture
+## Maturity Tier: Internal Production-Oriented Architecture
 
-This repository represents **Phase 1 of a documented production evolution roadmap**:
+This repository documents an architecture designed for a **controlled internal deployment context**, not a public SaaS product, a large-scale multi-tenant platform, or a globally distributed service.
+
+The expected users are a limited group of operational, technical, research, or analysis staff who submit scheduled or occasional training, inference, validation, and research-oriented jobs. In this context, a single-node or small-server deployment using Docker Compose, a dedicated AI service, GPU-backed execution, and shared artifact storage can be sufficient when workloads are predictable and concurrency is low.
 
 | Aspect | Status | Notes |
 |--------|--------|-------|
-| Request handling | Synchronous | Single GPU service instance; HTTP-based request/response |
-| Job queuing | Not implemented | Triggers Phase 2 when queue wait time exceeds 30 minutes |
-| Multi-GPU scaling | Conceptual | Roadmap: Add worker pool when > 3 concurrent jobs observed |
-| Distributed training | Deferred to Phase 3 | DDP pattern documented in roadmap; single GPU sufficient for MVP |
-| Kubernetes orchestration | Future phase | Local Docker Compose sufficient for current phase |
-| Model registry | ClearML artifact registration | Experiment tracking + metric logging implemented; not full registry |
-| Inference serving | Per-request | No inference caching or batch optimization yet |
-| Observability | Partial | Error handling and logging; no distributed tracing or alerting |
-| High-availability | Single node | No failover or redundancy at MVP scale |
+| Deployment context | Internal platform | Designed for controlled organizational use, not public multi-tenant SaaS. |
+| Request handling | Synchronous / controlled | Acceptable when job frequency is low and users understand long-running operations. |
+| Job queuing | Optional future improvement | Needed only if concurrent jobs, request timeouts, or operational contention become frequent. |
+| Training GPU execution | Implemented / evaluated | GPU-backed training can use single-GPU or multi-GPU runtime strategies depending on environment and configuration. |
+| Distributed job orchestration | Not required for current scope | Worker pools and distributed schedulers are unnecessary unless workload volume increases. |
+| Kubernetes orchestration | Not required | Docker Compose or a managed single-server deployment is more appropriate for the current operational scale. |
+| Model registry | Lightweight tracking | Experiment tracking and local artifact references are sufficient unless formal governance requirements increase. |
+| Inference serving | Per-request / batch-oriented | Suitable for scheduled internal analysis, research workflows, and controlled operational review. |
+| Observability | Basic required | Structured logs, job status, storage checks, and GPU health checks are more relevant than distributed tracing at this scale. |
+| High availability | Optional | Redundancy is a business decision; it may not be justified for occasional internal workloads. |
 
-**Philosophy**: Build for current requirements, add complexity only when real bottlenecks appear. Each phase is triggered by specific metrics, not speculation.
+**Philosophy:** Build for the real operational context. For a controlled internal platform, reliability, traceability, usability, and artifact governance are more important than premature distributed infrastructure.
 
 ---
 
-For a comprehensive visual and textual overview of the system architecture, see [**docs/architecture/02-system-architecture.md**](./docs/architecture/02-system-architecture.md).
+## Core Architecture Summary
 
-The system separates web orchestration (Django) from GPU-intensive compute services (FastAPI), enabling independent scaling and clear component responsibilities.
+The system separates web orchestration from GPU-intensive AI processing:
+
+```text
+User / Operator
+      ↓
+Django Web Layer
+      ↓ HTTP
+FastAPI AI Service Layer
+      ↓
+YOLO / SAHI / Training Runtime
+      ↓
+GPU Runtime + Shared Artifact Storage
+      ↓
+Django Result Visualization
+```
+
+For a comprehensive visual and textual overview, see [`docs/architecture/02-system-architecture.md`](./docs/architecture/02-system-architecture.md).
 
 ---
 
 ## Clear Responsibility Boundaries
 
-Explicit responsibility separation prevents architectural complexity and makes failure modes obvious:
+Explicit responsibility separation prevents architectural complexity and makes failure modes easier to reason about.
 
-- **Django**: Web UI, authentication, request history, result visualization → NOT model training
-- **FastAPI**: Training orchestration, inference dispatch, experiment coordination → NOT user authentication
-- **YOLO Training**: Model training with validation-based selection → NOT hyperparameter tuning
-- **SAHI Inference**: High-resolution detection via tiling → NOT post-processing or filtering
-- **ClearML**: Experiment tracking, metrics collection, model lineage → NOT model storage or serving
-- **PostgreSQL**: User data, configuration, request metadata → NOT ML artifact storage
-- **Shared Storage**: Models, checkpoints, training outputs → NOT user data or credentials
+- **Django:** web UI, authentication, request metadata, dataset configuration, result visualization. It should not directly execute GPU-heavy model training.
+- **FastAPI:** AI service boundary for training orchestration, inference dispatch, validation, and experiment coordination. It should not own user authentication or web presentation logic.
+- **YOLO Training Runtime:** model training, validation, metric extraction, and checkpoint production.
+- **SAHI Inference Layer:** high-resolution image tiling, small-object inference, and detection reconstruction.
+- **Experiment Tracking:** run metadata, metric logging, artifact references, and model lineage.
+- **PostgreSQL / Relational Database:** user data, configuration metadata, request records, and system metadata.
+- **Shared Artifact Storage:** checkpoints, generated outputs, previews, reports, and inference artifacts.
 
-This clarity prevents "dependency spaghetti" and makes failure scenarios explicit. For full responsibility matrix and failure handling table, see [**docs/architecture/03-component-responsibilities.md**](./docs/architecture/03-component-responsibilities.md).
+For the full responsibility matrix, see [`docs/architecture/03-component-responsibilities.md`](./docs/architecture/03-component-responsibilities.md).
 
 ---
 
 ## Main Components
 
-For detailed component responsibilities, interactions, and failure modes, see [**docs/architecture/03-component-responsibilities.md**](./docs/architecture/03-component-responsibilities.md).
+### 1. Django Web Application
 
-Key components include:
+Request submission, dataset configuration, project metadata, result visualization, and administrative workflows.
 
-### 1. **Django Web Application**
-   Request submission, result visualization, and user management layer.
+### 2. FastAPI AI Service
 
-### 2. **FastAPI AI Service**
-   Orchestration engine coordinating training, inference, and experiment tracking.
+AI orchestration boundary coordinating training, inference, validation, artifact generation, and experiment tracking.
 
-### 3. **YOLO Training Engine**
-   Multi-seed training with automatic model selection based on validation metrics.
+### 3. YOLO Training Engine
 
-### 4. **Continuous Improvement Training**
-   - Incremental training on new data
-   - Historical baseline comparison
-   - Conditional best model update
-   - Experiment isolation and tracking
+Training workflows using YOLO-based object detection models, multi-seed experimentation, validation-based model selection, and checkpoint management.
 
-### 5. **SAHI Inference Engine**
-   - High-resolution image tiling
-   - Small-object detection
-   - Detection result merging
-   - Output artifact generation
+### 4. Continuous Improvement Training
 
-### 6. **ClearML Experiment Tracking**
-   - Experiment metadata logging
-   - Metrics collection and comparison
-   - Model lineage tracking
-   - Failure isolation and debugging
+Incremental retraining workflow that compares new results against a previous baseline and updates the model reference only when improvement criteria are met.
 
-### 7. **Shared Storage Layer**
-   - Model checkpoints
-   - Best model references
-   - Training artifacts
-   - Inference outputs
+### 5. SAHI Inference Engine
 
-### 8. **GPU Resource Management**
-   - CUDA memory management
-   - DataParallel execution
-   - DDP (Distributed Data Parallel) evaluation
-   - Multi-GPU orchestration
+High-resolution tiled inference for small-object detection, detection reconstruction, and output artifact generation.
+
+### 6. Experiment Tracking Layer
+
+Tracking of experiment metadata, metrics, artifacts, lineage, and failure context using public-safe MLOps documentation patterns.
+
+### 7. Dataset Configuration Layer
+
+Database-backed configuration management for project definitions, detection classes, class sets, dataset configuration files, and training payload preparation.
+
+> Public-safe names are used throughout the repository: `ProjectConfiguration`, `DetectionClass`, `ClassSet`, and `DatasetConfiguration`.
+
+### 8. Synthetic Dataset Generation Workflow
+
+Auxiliary dataset engineering workflow based on SAM-assisted object extraction, RGBA cutout generation, synthetic scene composition, and annotation export.
+
+### 9. GPU Resource Management
+
+CUDA memory management, single-GPU or multi-GPU training runtime strategies, DataParallel support, evaluated DDP patterns, and future resource scheduling considerations.
 
 ---
 
 ## Technology Stack & Integration Patterns
 
 | Layer | Technology | Integration Pattern |
-|-------|-----------|----------------------|
-| **Web** | Django + DRF | Request/response validation, ORM-backed data persistence |
-| **Compute** | FastAPI | Async task delegation via HTTP; long-running training/inference |
-| **Training** | PyTorch + Ultralytics YOLO | Multi-seed experimentation with validation-based model selection |
-| **Inference** | YOLO + SAHI | High-resolution image tiling strategy for small-object detection |
-| **Experiment Tracking** | ClearML | Metadata logging, metrics collection, model lineage management |
-| **Database** | PostgreSQL | User data, request history, configuration metadata |
-| **GPU Execution** | CUDA + PyTorch DataParallel | Single-GPU resource management; DDP deferred to Phase 3 |
-| **Containerization** | Docker Compose | Local development; evolution path to Kubernetes |
-| **Storage** | Shared volumes | Local filesystem; evolution path to S3/blob storage |
+|-------|------------|---------------------|
+| Web | Django + Django REST Framework | Request validation, user workflows, ORM-backed metadata persistence |
+| AI Service | FastAPI | Internal service boundary for GPU-backed training and inference orchestration |
+| Training | PyTorch + Ultralytics YOLO | Multi-seed experimentation, validation-based selection, checkpoint generation |
+| Inference | YOLO + SAHI | High-resolution tiling strategy for small-object detection |
+| Experiment Tracking | ClearML or equivalent tracker | Metadata logging, metric comparison, artifact lineage |
+| Database | PostgreSQL or equivalent relational DB | User data, project metadata, configuration records, request history |
+| GPU Execution | CUDA + PyTorch | GPU-backed training and inference with single-GPU or multi-GPU runtime strategies depending on environment and configuration |
+| Containerization | Docker Compose | Controlled internal deployment; Kubernetes is optional and only justified by operational scale or availability requirements |
+| Storage | Shared volumes | Practical artifact exchange for internal workflows; future storage abstraction is optional if governance becomes difficult |
+| Research Workflow | Jupyter Notebook | Auxiliary experimentation and validation workflow, not the primary production execution path |
+| Synthetic Data | SAM + OpenCV + Pillow + NumPy | Dataset engineering workflow for object extraction, synthetic composition, and annotation export |
 
-**Integration Philosophy**: Keep concerns separated (web, compute, storage, database). Communicate via clear interfaces (HTTP between services, filesystem for artifacts, relational DB for metadata).
-
-### Django Configuration Layer
-
-This architecture includes a Django-based YOLO dataset configuration management layer that centralizes training parameters through ORM models (ProjectConfiguration, ClassSet, DetectionClass, DatasetConfig) with automatic Ultralytics-compatible YAML generation. See [**docs/architecture/08-yolo-dataset-configuration-management.md**](./docs/architecture/08-yolo-dataset-configuration-management.md) for comprehensive documentation.
-
-### Auxiliary: Synthetic Dataset Generation
-
-The broader ecosystem includes an auxiliary synthetic dataset generation pipeline based on SAM (Segment Anything Model) for dataset engineering and research experimentation. This component automates object extraction from annotated images and synthetic scene composition, supporting dataset enrichment workflows. See [**docs/architecture/20-synthetic-dataset-generation-pipeline.md**](./docs/architecture/20-synthetic-dataset-generation-pipeline.md) for details.
+**Integration Philosophy:** keep concerns separated. Use HTTP between services, a relational database for metadata, and artifact storage for generated files. Add queues, workers, object storage, or orchestration only when operational evidence justifies the complexity.
 
 ---
 
 ## What This Repository Demonstrates
 
 ### A. System Design Thinking
-- **Responsibility separation**: Django (stateless web) vs FastAPI (compute tier) prevents cross-cutting concerns
-- **Failure mode analysis**: Each component has explicit handling strategy (see docs/architecture/13-error-handling-and-fallbacks.md)
-- **Synchronous-first pragmatism**: MVP justifies simple HTTP-based communication; documents when async is needed
-- **Scaling philosophy**: Growth is metrics-driven (queue wait time, job concurrency) not speculative
+
+- **Responsibility separation:** Django handles web orchestration; FastAPI isolates GPU-heavy AI processing.
+- **Failure mode analysis:** the architecture documents known failure categories and mitigation strategies.
+- **Synchronous-first pragmatism:** controlled internal workloads can start with direct HTTP-based orchestration when concurrency is low and long-running jobs are expected.
+- **Scale-by-evidence philosophy:** queues, workers, and Kubernetes are optional responses to real bottlenecks, not default requirements.
 
 ### B. AI/ML Architecture Knowledge
-- **Multi-seed experimentation**: Why train multiple seeds for statistical robustness over single-run results
-- **Model selection logic**: Validation metrics drive selection (mAP50), not heuristics or manual selection
-- **High-resolution inference**: SAHI tiling strategy trades compute for detection accuracy on small objects
-- **GPU resource management**: CUDA context handling, DataParallel patterns, DDP deferred to Phase 3
-- **Experiment tracking**: ClearML integration enables reproducibility, comparison, and failure debugging
+
+- **Multi-seed experimentation:** training can be evaluated across multiple runs for more robust model selection.
+- **Model selection logic:** validation metrics drive model reference updates rather than manual checkpoint selection.
+- **High-resolution inference:** SAHI tiling trades compute for better small-object detection in large images.
+- **GPU resource management:** CUDA context handling, memory cleanup, and single-GPU or multi-GPU training runtime strategies.
+- **Experiment tracking:** metric logging and lineage support reproducibility and debugging.
 
 ### C. Backend Integration & Full-Stack Patterns
-- **Web-to-compute communication**: Synchronous HTTP at MVP, designed for queue migration
-- **Shared storage orchestration**: Docker volumes in development; evolution path to object storage
-- **Database schema design**: User data (PostgreSQL) vs ML artifacts (filesystem) separation
-- **Configuration management**: YOLO dataset YAML generation from ORM models; validation pipeline
-- **Error propagation**: Specific failures mapped to HTTP status codes and user-facing messages
+
+- **Web-to-compute communication:** synchronous HTTP is sufficient for controlled internal workflows, with an optional path toward queues if operational pain appears.
+- **Shared storage orchestration:** Docker volumes or equivalent shared storage simplify artifact exchange in internal deployments.
+- **Database and artifact separation:** relational metadata remains separate from ML outputs and generated files.
+- **Configuration management:** dataset and training configuration are represented as structured metadata before execution.
+- **Error propagation:** infrastructure, GPU, storage, and validation failures are mapped to operationally meaningful categories.
 
 ### D. Production Evolution Thinking
-- **Pragmatic MVP**: No Kubernetes, no message queues, no object storage—sufficient for current scale
-- **Growth-triggered phases**: Each evolution phase is triggered by specific bottleneck metrics
-- **Technical decision rationale**: Documents when synchronous fails, when async becomes necessary
-- **Cost awareness**: Complexity is added only when real constraints appear, not pre-emptively
+
+- **Fit-for-purpose deployment:** avoids Kubernetes, distributed queues, and object storage until the operational context actually requires them.
+- **Reliability-first roadmap:** prioritizes preflight validation, job status, logs, storage checks, GPU checks, and artifact manifests before scale-out.
+- **Cost awareness:** complexity is added only when real constraints appear.
 
 ### E. Responsible Public Documentation
-- **Anonymized architecture**: No customer, institution, or project names; no real credentials
-- **Sanitized code examples**: All database URLs, API keys use placeholders; function names are generic
-- **Educational value preserved**: Patterns are reusable; actual implementation remains private
-- **Security discipline**: Pre-commit hooks for credential detection, contributing guidelines, audit reports
 
-### NOT Demonstrated
-- ❌ Production deployment to real cloud infrastructure (conceptual only)
-- ❌ Inference at scale or model serving optimization (future roadmap item)
-- ❌ Advanced MLOps features (no CI/CD, no automated retraining triggers at MVP)
-- ❌ Kubernetes orchestration (documented as Phase 4)
-- ❌ Multi-region or high-availability patterns (Phase 5)
+- **Anonymized architecture:** no customer, institution, field, or private project identifiers.
+- **Public-safe examples:** placeholders are used for paths, payloads, classes, metrics, and outputs.
+- **Educational value preserved:** architecture patterns are reusable while private implementation details remain excluded.
+- **Security discipline:** publication guidance and sanitization checklists are part of the repository.
+
+### Not Demonstrated
+
+- ❌ Public SaaS product architecture.
+- ❌ High-throughput multi-tenant model serving.
+- ❌ Current Kubernetes orchestration requirement.
+- ❌ Multi-region or high-availability architecture for external customers.
+- ❌ Source-code-level implementation of the private system.
+- ❌ Fully automated enterprise MLOps platform.
 
 ---
 
-## 📖 Engineering Case Study: Deep Dive
+## Engineering Case Study
 
-For a comprehensive narrative-driven exploration of the architectural decisions behind this system, see the **[Engineering Case Study](./CASE-STUDY.md)**.
+For a narrative-driven explanation of the architectural decisions, see [`CASE-STUDY.md`](./CASE-STUDY.md), if included in your repository.
 
-**What the case study covers**:
-- **Problem Context**: Why separate web and compute layers? What conflicting requirements exist?
-- **Constraints & Trade-offs**: What are the hard limits? When do we evolve?
-- **Architecture Decision**: The core Django/FastAPI separation and why it matters
-- **Component Design**: What each layer does (and does NOT do)
-- **Data & Artifact Flows**: How requests move through the system
-- **Operational Challenges**: What happens when things break?
-- **Dataset Configuration**: How to manage training data at scale
-- **Trade-offs Explained**: Why certain choices are intentionally "incomplete"
-- **Evolution Roadmap**: Phases 1-5 with trigger metrics and rationale
-- **Lessons Learned**: Principles that generalize beyond this project
-- **Portfolio Relevance**: What this demonstrates in interviews
+Recommended case-study topics:
 
-**Reading time**: 35-45 minutes  
-**Best for**: Architects wanting to understand the reasoning, not just the components
-
-This is the document to share when someone asks: **"Why did you design it this way?"**
+- why Django and FastAPI are separated;
+- why GPU-heavy workloads should not run inside the web layer;
+- why synchronous execution can be acceptable for controlled internal workloads;
+- when a job queue becomes justified;
+- why shared storage is practical but risky;
+- why notebooks are useful for research workflows but insufficient as a production execution model;
+- why Kubernetes is optional, not inevitable.
 
 ---
 
 ## System Flow Summary
 
 ### Training Flow
-1. Django user submits training request
-2. FastAPI receives and validates request
-3. ClearML experiment is initialized
-4. YOLO training engine executes multi-seed training
-5. Best model is selected based on mAP50
-6. Artifacts are stored to shared volume
-7. Results are exposed to Django for visualization
+
+1. A user submits a training request through the Django web layer.
+2. Django validates metadata and prepares a public-safe training request structure.
+3. FastAPI receives the request and delegates to the training runtime.
+4. Training executes on the available GPU runtime.
+5. Validation metrics and checkpoints are persisted as artifacts.
+6. The selected model reference and run metadata are recorded.
+7. Django exposes the result summary for review.
 
 ### Continuous Improvement Training Flow
-1. New data is submitted to CI training pipeline
-2. Previous best model is loaded
-3. Incremental training is performed
-4. New metrics are compared against historical baseline
-5. Best model is updated only if performance improves
-6. ClearML tracks all comparison metrics
+
+1. New data or configuration is submitted for incremental training.
+2. The previous model reference is resolved.
+3. Training executes using the configured baseline.
+4. New metrics are compared against the historical reference.
+5. The model reference is updated only if the improvement rule is satisfied.
+6. Tracking metadata and artifacts are recorded.
 
 ### Inference Flow
-1. Django user submits inference request with image
-2. FastAPI receives request
-3. High-resolution image is processed with SAHI tiling
-4. YOLO inference is applied to each tile
-5. Detection results are merged and deduplicated
-6. Output manifest is generated
-7. Results are returned to Django
+
+1. A user submits images or a batch inference request.
+2. FastAPI receives and validates the request.
+3. High-resolution images are processed using direct YOLO inference or SAHI tiling.
+4. Tile-level detections are reconstructed into image-level outputs.
+5. Output metadata, previews, and artifacts are persisted.
+6. Django renders or links the generated results.
 
 ### Artifact Exposure Flow
-1. FastAPI writes artifacts to shared volume
-2. Django reads artifacts via mounted volume
-3. Results are cached and visualized
-4. Error states are logged to ClearML
+
+1. The AI service writes artifacts to shared storage.
+2. The web layer resolves artifacts through its configured media or artifact access path.
+3. The UI displays previews, summaries, and downloadable outputs.
+4. Error states are surfaced with operational context.
 
 ---
 
 ## Architectural Evolution Path
 
-This repository demonstrates **pragmatic growth thinking**. Instead of building for "infinite scale" from day one, the roadmap shows when and why to evolve each component:
+This repository demonstrates **fit-for-purpose growth thinking**. The architecture is designed for a controlled internal deployment context, not for a public SaaS or large-scale multi-tenant platform.
 
-### Phase 1: MVP (Current Design)
-- Single GPU service instance
-- Synchronous HTTP request/response
-- Shared filesystem storage
-- **Scaling limit**: ~3 concurrent long-running jobs
-- **Trigger for Phase 2**: Average queue wait time > 30 minutes
+The goal is not to add distributed infrastructure by default. The goal is to preserve reliability, traceability, GPU workload isolation, and operational simplicity for a limited group of users running scheduled training, inference, validation, or research-oriented workflows.
 
-### Phase 2: Async Job Queue
-- **When**: 3+ concurrent jobs consistently observed
-- **Add**: Celery/RQ job queue for asynchronous training
-- **Benefit**: Non-blocking user requests; better resource utilization
+### Current State: Internal Production-Oriented Architecture
 
-### Phase 3: Multi-GPU Worker Pool
-- **When**: > 10 concurrent jobs consistently observed
-- **Add**: Multiple GPU service instances with load balancing
-- **Benefit**: Higher throughput; independent job scheduling
+- Django web layer for configuration, request submission, metadata, and result visualization.
+- FastAPI AI service for GPU-backed training, validation, and inference orchestration.
+- Synchronous HTTP request/response between Django and the AI service.
+- Shared artifact storage for model checkpoints, inference outputs, previews, and generated files.
+- GPU-backed execution with single-GPU or multi-GPU training runtime depending on environment and configuration.
+- Experiment tracking and metric logging.
+- Basic error handling and operational diagnostics.
 
-### Phase 4: Kubernetes + Object Storage
-- **When**: Multi-region deployment needed or > 50 concurrent jobs
-- **Add**: Kubernetes orchestration; S3/blob storage for artifacts
-- **Benefit**: Managed scaling; geographic redundancy
+This design can be sufficient for a controlled internal platform when workload volume is predictable, users are limited, and long-running jobs are expected.
 
-### Phase 5: Enterprise Observability
-- **When**: SLA requirements > 99.5% uptime
-- **Add**: Distributed tracing, metrics, alerting, incident management
-- **Benefit**: Production reliability; operational visibility
+### Priority 1: Operational Reliability
 
-**Philosophy**: Add complexity only when real bottlenecks appear, not speculation. For detailed reasoning and trigger metrics, see [**docs/architecture/15-production-evolution-roadmap.md**](./docs/architecture/15-production-evolution-roadmap.md).
+Add these improvements before considering distributed infrastructure:
+
+- preflight validation for datasets, model checkpoints, output directories, storage mounts, and GPU availability;
+- explicit job status records;
+- structured logs with correlation IDs;
+- clearer user-facing error states;
+- storage health checks;
+- GPU memory and availability checks;
+- artifact manifests for generated outputs;
+- backup policy for important datasets, models, and results.
+
+### Priority 2: Controlled Background Execution
+
+Add a lightweight queue only if synchronous execution becomes operationally painful.
+
+Possible triggers:
+
+- users experience repeated HTTP timeouts;
+- more than one long-running job is frequently submitted at the same time;
+- training and inference jobs compete for the same GPU resources;
+- operators need cancellation, retry, progress tracking, or resumability.
+
+Potential additions:
+
+- lightweight queue;
+- single GPU worker;
+- job status polling;
+- controlled retry policy;
+- GPU resource locking.
+
+### Priority 3: Artifact and Model Governance
+
+Improve traceability before scaling infrastructure:
+
+- database-backed model reference tracking;
+- dataset version registry;
+- artifact manifest per execution;
+- immutable run identifiers;
+- retention policy for large outputs;
+- clear separation between raw data, generated outputs, and publishable artifacts.
+
+### Optional Scale-Out Path
+
+Distributed workers, Kubernetes, and object storage are optional future improvements, not mandatory next steps.
+
+They are justified only if the operational context changes, for example:
+
+- multiple concurrent users submit long-running jobs regularly;
+- artifact storage exceeds local operational capacity;
+- uptime requirements become business-critical;
+- deployment must span multiple servers or locations;
+- manual operation becomes too costly or unreliable.
+
+Potential additions:
+
+- GPU worker pool;
+- object storage such as S3, GCS, MinIO, or equivalent;
+- Kubernetes or another orchestrator;
+- centralized monitoring and alerting;
+- distributed tracing.
+
+**Philosophy:** Scale by operational evidence, not by default. For a controlled internal AI platform, simplicity, reliability, and traceability are more valuable than premature distributed infrastructure.
+
+For detailed roadmap reasoning, see [`docs/architecture/15-production-evolution-roadmap.md`](./docs/architecture/15-production-evolution-roadmap.md).
 
 ---
 
 ## Repository Structure
 
-```
+```text
 yolo-training-inference-orchestration-architecture/
-├── README.md                                  # This file
-├── LICENSE                                    # MIT or Apache 2.0
-├── .gitignore                                 # Git ignore rules
-│
-├── docs/                                      # Comprehensive documentation
-│   │
-│   ├── architecture/                          # Core architectural documentation
+├── README.md
+├── LICENSE
+├── .gitignore
+├── docs/
+│   ├── architecture/
 │   │   ├── 01-context-and-problem.md
 │   │   ├── 02-system-architecture.md
 │   │   ├── 03-component-responsibilities.md
@@ -311,277 +382,225 @@ yolo-training-inference-orchestration-architecture/
 │   │   ├── 06-docker-runtime-architecture.md
 │   │   ├── 07-shared-storage-and-artifacts.md
 │   │   ├── 08-yolo-dataset-configuration-management.md
-│   │   ├── 08-yolo-training-engine.md
-│   │   ├── 09-continuous-improvement-training.md
-│   │   ├── 10-sahi-inference-engine.md
-│   │   ├── 11-clearml-experiment-tracking.md
-│   │   ├── 12-gpu-resource-management.md
-│   │   ├── 13-error-handling-and-fallbacks.md
-│   │   ├── 14-limitations-and-risks.md
-│   │   ├── 15-production-evolution-roadmap.md
-│   │   ├── 16-public-release-sanitization.md
-│   │   ├── 17-technical-responsibilities.md
-│   │   ├── 20-synthetic-dataset-generation-pipeline.md
-│   │   └── adr/                               # Architecture Decision Records
-│   │       ├── README.md
-│   │       ├── ADR-001.md through ADR-007.md
-│   │
-│   ├── operations/                            # Operational templates (not core architecture)
-│   │   ├── MLOPS_STATUS_REPORT.md
-│   │   ├── MLOPS_IMPLEMENTATION_ROADMAP.md
-│   │   ├── MLOPS_QUICK_REFERENCE.md
-│   │   ├── MLOPS_DOCUMENTATION_INDEX.md
-│   │   ├── MLOPS_DOCUMENTATION_SUMMARY.md
-│   │   ├── MLOPS_DELIVERY_REPORT.md
-│   │   └── MIGRATION_CLEARML_CLOUD_TO_SELFHOSTED.md
-│   │
-│   └── portfolio/                             # Portfolio & resume materials
-│       ├── PORTFOLIO_RESUME_CONTENT.md
-│       └── PORTFOLIO_IMPLEMENTATION_GUIDE.md
-│
-├── diagrams/                                  # Mermaid architecture diagrams
-│   ├── architecture-overview.mmd
-│   ├── training-flow.mmd
-│   ├── ci-training-flow.mmd
-│   ├── inference-flow.mmd
-│   ├── storage-flow.mmd
-│   └── future-production-architecture.mmd
-│
-├── examples/                                  # Example payloads & configs
-│   ├── api-payloads/
-│   │   ├── training-request.example.json
-│   │   ├── ci-training-request.example.json
-│   │   └── sahi-inference-request.example.json
-│   │
-│   ├── artifact-manifests/
-│   │   ├── training-summary.example.json
-│   │   ├── best-model-reference.example.json
-│   │   └── inference-output-manifest.example.json
-│   │
-│   └── docker/
-│       ├── docker-compose.conceptual.yml
-│       └── environment.example.env
-│
-├── assets/                                    # Supporting materials
-│   └── README.md
-│
-└── PUBLICATION-POLISH-REPORT.md              # Publication review report
+│   │   ├── 09-yolo-training-engine.md
+│   │   ├── 10-continuous-improvement-training.md
+│   │   ├── 11-sahi-inference-engine.md
+│   │   ├── 12-clearml-experiment-tracking.md
+│   │   ├── 13-gpu-resource-management.md
+│   │   ├── 14-error-handling-and-fallbacks.md
+│   │   ├── 15-limitations-and-risks.md
+│   │   ├── 16-production-evolution-roadmap.md
+│   │   ├── 17-public-release-sanitization.md
+│   │   ├── 18-technical-responsibilities.md
+│   │   ├── 19-jupyter-research-workflow.md
+│   │   └── 20-synthetic-dataset-generation-pipeline.md
+│   ├── portfolio/
+│   └── operations/
+├── diagrams/
+├── examples/
+├── assets/
+└── public-safety-checklist.md
 ```
+
+> Adjust the structure to match your actual repository. The important principle is to separate architecture, portfolio material, operational notes, diagrams, and public-safety guidance.
 
 ---
 
 ## Documentation Index
 
-### Core Architecture (docs/architecture/)
+### Core Architecture
 
 | Document | Purpose |
 |----------|---------|
-| **01-context-and-problem.md** | Problem statement, motivation, and business context |
-| **02-system-architecture.md** | Complete system architecture with all layers |
-| **03-component-responsibilities.md** | Detailed responsibilities of each component |
-| **04-system-flow.md** | Request flows, response flows, error handling flows |
-| **05-api-integration-contracts.md** | API payload structures and contracts |
-| **06-docker-runtime-architecture.md** | Container architecture and runtime design |
-| **07-shared-storage-and-artifacts.md** | Storage layer, artifact categories, path mapping |
-| **08-yolo-training-engine.md** | YOLO training implementation details |
-| **09-continuous-improvement-training.md** | CI training pipeline and baseline comparison |
-| **10-sahi-inference-engine.md** | SAHI-based high-resolution inference |
-| **11-clearml-experiment-tracking.md** | ClearML integration and experiment management |
-| **12-gpu-resource-management.md** | GPU orchestration, CUDA management, memory handling |
-| **13-error-handling-and-fallbacks.md** | Error scenarios and mitigation strategies |
-| **14-limitations-and-risks.md** | Current limitations and known risks |
-| **15-production-evolution-roadmap.md** | Future improvements for production readiness |
-| **16-public-release-sanitization.md** | Guidelines for maintaining public safety |
-| **17-technical-responsibilities.md** | Portfolio positioning and technical claims |
-| **adr/ADR-001 through ADR-007** | Architecture Decision Records with full rationale |
-
-### Operations & Deployment Templates (docs/operations/)
-
-| Document | Purpose |
-|----------|---------|
-| **MLOPS_STATUS_REPORT.md** | Current project status and MLOps maturity assessment |
-| **MLOPS_IMPLEMENTATION_ROADMAP.md** | 4-week execution plan for MLOps improvements |
-| **MIGRATION_CLEARML_CLOUD_TO_SELFHOSTED.md** | Step-by-step ClearML migration guide |
-| **MLOPS_QUICK_REFERENCE.md** | Daily operations cheat sheet and common tasks |
-| **MLOPS_DOCUMENTATION_INDEX.md** | Navigation hub organized by role |
-
-### Portfolio & Interview Materials (docs/portfolio/)
-
-| Document | Purpose |
-|----------|---------|
-| **PORTFOLIO_RESUME_CONTENT.md** | Professional resume bullets and LinkedIn descriptions |
-| **PORTFOLIO_IMPLEMENTATION_GUIDE.md** | Platform-specific implementation instructions |
+| `01-context-and-problem.md` | Problem statement, context, and design motivation |
+| `02-system-architecture.md` | High-level system architecture and layer boundaries |
+| `03-component-responsibilities.md` | Responsibilities of each component |
+| `04-system-flow.md` | Training, inference, configuration, and artifact flows |
+| `05-api-integration-contracts.md` | Conceptual API payloads and integration contracts |
+| `06-docker-runtime-architecture.md` | Container and runtime architecture |
+| `07-shared-storage-and-artifacts.md` | Artifact storage, path mapping, and risks |
+| `08-yolo-dataset-configuration-management.md` | Dataset configuration and YAML generation layer |
+| `09-yolo-training-engine.md` | YOLO training runtime and validation strategy |
+| `10-continuous-improvement-training.md` | Incremental training and model reference update logic |
+| `11-sahi-inference-engine.md` | High-resolution SAHI inference pattern |
+| `12-clearml-experiment-tracking.md` | Experiment tracking and lineage |
+| `13-gpu-resource-management.md` | GPU runtime, memory, and multi-GPU considerations |
+| `14-error-handling-and-fallbacks.md` | Error categories and mitigation patterns |
+| `15-limitations-and-risks.md` | Current risks and limitations |
+| `16-production-evolution-roadmap.md` | Internal platform evolution roadmap |
+| `17-public-release-sanitization.md` | Public-safe documentation rules |
+| `18-technical-responsibilities.md` | Portfolio-safe responsibilities |
+| `19-jupyter-research-workflow.md` | Auxiliary notebook-based research workflow |
+| `20-synthetic-dataset-generation-pipeline.md` | Synthetic dataset generation workflow |
 
 ---
 
 ## Current Maturity Level
 
-**Early Production / Advanced Prototype**
+**Internal Production-Oriented / Advanced Internal Platform**
 
-- ✅ Core orchestration engine operational
-- ✅ Multi-service integration working
-- ✅ GPU training and inference functional
-- ✅ ClearML experiment tracking implemented
-- ✅ Basic error handling and fallbacks in place
-- ⚠️ Synchronous long-running tasks (no job queue)
-- ⚠️ File-based model registry (race conditions possible)
-- ⚠️ Limited observability and monitoring
-- ⚠️ No distributed job scheduling
-- ❌ Not production-grade for high-throughput scenarios
+- ✅ Core orchestration pattern documented.
+- ✅ Django/FastAPI separation documented.
+- ✅ GPU training and inference workflows represented.
+- ✅ Experiment tracking and artifact lineage represented.
+- ✅ Dataset configuration and research workflows documented.
+- ✅ Public-safe sanitization policy included.
+- ⚠️ Long-running tasks are synchronous unless future background execution is added.
+- ⚠️ Shared artifact storage requires operational discipline.
+- ⚠️ File-based model references can require stronger governance if concurrency increases.
+- ⚠️ Observability is basic and should focus on logs, job status, GPU/storage checks, and artifact manifests.
+- ❌ Not designed as a public SaaS or high-throughput multi-tenant platform.
 
 ---
 
 ## Key Limitations
 
 ### Current State
-- **No formal job queue** (Celery, Redis, Kafka, RabbitMQ)
-- **Long-running tasks are synchronous** through FastAPI
-- **Single FastAPI GPU service** as potential bottleneck
-- **Shared filesystem coupling** creates tight dependencies
-- **File-based model registry** susceptible to race conditions
-- **No transactional model registry**
-- **Limited observability** (logs, traces, metrics)
-- **No retry logic** with exponential backoff
-- **No health checks or preflight validation**
+
+- No formal job queue in the documented current architecture.
+- Long-running tasks may execute synchronously through the AI service.
+- Shared filesystem coupling can create operational fragility.
+- Lightweight model references may not be sufficient under high concurrency.
+- Observability is limited compared with enterprise distributed systems.
+- Retry, cancellation, and progress tracking may require future background execution.
+- Kubernetes, object storage, and worker pools are optional, not current requirements.
 
 ### Why These Exist
-These limitations reflect pragmatic early-stage design decisions optimized for initial development and validation rather than high-volume production deployment.
+
+These are intentional trade-offs for a controlled internal platform. The architecture prioritizes simplicity, reliability, traceability, and usability for a limited user base over premature distributed infrastructure.
 
 ---
 
 ## Production Evolution Roadmap
 
-### Phase 1: Reliability (Recommended Next Steps)
-- [ ] Implement formal job queue (Celery + Redis)
-- [ ] Add transactional model registry (database-backed)
-- [ ] Implement health checks and service discovery
-- [ ] Add structured logging with correlation IDs
-- [ ] Implement retry logic with exponential backoff
+Recommended next steps focus on internal operational reliability:
 
-### Phase 2: Scalability
-- [ ] Move to object storage (S3, GCS, MinIO)
-- [ ] Implement distributed GPU worker pool
-- [ ] Add job registry and status polling
-- [ ] Implement GPU job scheduling and fairness
+### Priority 1: Reliability
 
-### Phase 3: Observability
-- [ ] Add distributed tracing (Jaeger, DataDog)
-- [ ] Implement comprehensive metrics (Prometheus)
-- [ ] Add performance monitoring and SLO tracking
-- [ ] Implement alerting and anomaly detection
+- [ ] Add preflight validation for datasets, storage, models, outputs, and GPU availability.
+- [ ] Add explicit job status records.
+- [ ] Add structured logs with correlation IDs.
+- [ ] Add artifact manifests for generated outputs.
+- [ ] Add storage and GPU health checks.
+- [ ] Define backup and retention policies.
 
-### Phase 4: Production Hardening
-- [ ] API versioning and backward compatibility
-- [ ] Rate limiting and quota management
-- [ ] Advanced security (RBAC, audit logging)
-- [ ] Multi-region deployment support
-- [ ] Disaster recovery and backup strategies
+### Priority 2: Controlled Background Execution
+
+- [ ] Add a lightweight queue only if synchronous execution causes timeouts or operational contention.
+- [ ] Add a single GPU worker or controlled worker process.
+- [ ] Add job cancellation and retry policy.
+- [ ] Add progress/status polling.
+- [ ] Add GPU resource locking.
+
+### Priority 3: Governance
+
+- [ ] Add a database-backed model reference registry if file-based references become risky.
+- [ ] Add dataset version tracking.
+- [ ] Link training runs to dataset configuration versions.
+- [ ] Validate generated artifacts before visualization or downstream use.
+
+### Optional Scale-Out
+
+- [ ] Add distributed workers only if concurrent long-running workloads exceed current capacity.
+- [ ] Add object storage only if local storage becomes hard to govern.
+- [ ] Add Kubernetes only if multi-server deployment, uptime requirements, or operational complexity justify it.
+
+For details, see [`docs/architecture/15-production-evolution-roadmap.md`](./docs/architecture/15-production-evolution-roadmap.md).
 
 ---
 
 ## Confidentiality Policy
 
-**This repository is designed to be publicly shareable while protecting all private IP and sensitive data.**
+**This repository is designed to be publicly shareable while protecting private IP and sensitive data.**
 
-### Never Commit to This Repository
-- ❌ Source code from the private project
-- ❌ Real datasets or data
-- ❌ Trained model weights (.pt, .pth files)
-- ❌ Real metrics or performance results
-- ❌ Real coordinates, detections, or predictions
-- ❌ Client, institution, farm, field, or researcher names
-- ❌ Credentials, API keys, secrets
-- ❌ Absolute local paths or environment details
-- ❌ ClearML workspace names or infrastructure details
-- ❌ Real screenshots or model outputs
-- ❌ .env files with actual values
+### Never Commit
+
+- ❌ source code from the private project;
+- ❌ real datasets, images, labels, masks, shapefiles, GeoJSON, or generated outputs;
+- ❌ trained model weights or checkpoints;
+- ❌ real metrics or experimental results;
+- ❌ real coordinates or field identifiers;
+- ❌ client, institution, farm, field, or researcher names;
+- ❌ credentials, API keys, tokens, or secrets;
+- ❌ absolute local paths or environment-specific configuration;
+- ❌ workspace identifiers from external tools;
+- ❌ screenshots or visual outputs from private data.
 
 ### Always Use
-- ✅ Placeholder values (PROJECT_NAME_PLACEHOLDER, etc.)
-- ✅ Anonymized examples
-- ✅ Generic architectures
-- ✅ Illustrative diagrams
-- ✅ Conceptual code snippets (documentation only)
+
+- ✅ placeholder values;
+- ✅ anonymized examples;
+- ✅ generic architecture diagrams;
+- ✅ illustrative payloads;
+- ✅ public-safe conceptual descriptions;
+- ✅ documentation-only examples.
 
 ---
 
-## 📚 Learning Resources
+## Suggested Reading Path
 
-**For Understanding the Architecture**:
-- **[Engineering Case Study](./CASE-STUDY.md)** — Narrative-driven deep dive (35-45 min read)
-  - Why Django and FastAPI are separated
-  - How components interact and fail
-  - Evolution roadmap with trigger metrics
-  - Lessons and architectural principles
-  
-- **[Component Responsibilities](./docs/architecture/03-component-responsibilities.md)** — What each part does
-  - Responsibility matrix
-  - IS/IS NOT boundaries
-  - Failure handling strategies
-  
-- **[Production Evolution Roadmap](./docs/architecture/15-production-evolution-roadmap.md)** — Scaling path
-  - Phases 1-5 with trigger metrics
-  - When to add complexity
-  - Cost/benefit analysis
+### Recruiters / Portfolio Reviewers
 
-**For Interview Preparation**:
-- **[Project Positioning](./PROJECT-POSITIONING.md)** — Talking points and Q&A
-  - Elevator pitch (60 seconds)
-  - Common interview questions
-  - Positioning by audience
+1. README.md
+2. `docs/architecture/01-context-and-problem.md`
+3. `docs/architecture/03-component-responsibilities.md`
+4. `docs/architecture/18-technical-responsibilities.md`
 
-- **[Project Positioning](./PROJECT-POSITIONING.md)** — Strategic positioning
-  - What this demonstrates
-  - Red flags to avoid
-  - Interviewer perspective
+### Backend / Platform Engineers
 
-**For Implementation Details**:
-- **[System Architecture](./docs/02-system-architecture.md)** — High-level design overview
-- **[Docker Runtime Architecture](./docs/architecture/06-docker-runtime-architecture.md)** — Deployment setup
-- **[GPU Resource Management](./docs/architecture/12-gpu-resource-management.md)** — GPU orchestration
-- **[Error Handling](./docs/architecture/13-error-handling-and-fallbacks.md)** — Failure scenarios
+1. `docs/architecture/02-system-architecture.md`
+2. `docs/architecture/04-system-flow.md`
+3. `docs/architecture/05-api-integration-contracts.md`
+4. `docs/architecture/06-docker-runtime-architecture.md`
+5. `docs/architecture/16-production-evolution-roadmap.md`
 
----
+### ML / Computer Vision Engineers
 
-## Getting Started
+1. `docs/architecture/09-yolo-training-engine.md`
+2. `docs/architecture/10-continuous-improvement-training.md`
+3. `docs/architecture/11-sahi-inference-engine.md`
+4. `docs/architecture/13-gpu-resource-management.md`
+5. `docs/architecture/20-synthetic-dataset-generation-pipeline.md`
 
-1. **Read first:** `docs/01-context-and-problem.md`
-2. **Understand the design:** `docs/02-system-architecture.md`
-3. **Review the flows:** `docs/architecture/04-system-flow.md`
-4. **Study integration contracts:** `docs/architecture/05-api-integration-contracts.md`
-5. **Explore component details:** `docs/08-12` (specific technologies)
-6. **Review limitations:** `docs/architecture/14-limitations-and-risks.md`
-7. **Check safety:** `public-safety-checklist.md` before any modifications
+### Architecture Reviewers
+
+1. `docs/architecture/02-system-architecture.md`
+2. `docs/architecture/14-error-handling-and-fallbacks.md`
+3. `docs/architecture/15-limitations-and-risks.md`
+4. `docs/architecture/16-production-evolution-roadmap.md`
+5. `docs/architecture/adr/`
 
 ---
 
 ## Contributing
 
 This is a documentation and architecture reference repository. Contributions should:
-- Add accurate, anonymized architecture documentation
-- Maintain confidentiality and public safety
-- Include meaningful diagrams and examples
-- Update the public-safety-checklist before changes
-- Follow the maturity statement precisely
+
+- preserve public-safe documentation standards;
+- avoid implementation leakage;
+- use anonymized examples;
+- keep current-state and future-state architecture clearly separated;
+- avoid overstating production maturity;
+- align roadmap items with operational evidence, not speculation.
 
 ---
 
 ## License
 
-This repository is licensed under the **MIT License**. See LICENSE file for details.
+This repository is licensed under the license defined in `LICENSE`.
 
-The documentation is provided as-is for portfolio, educational, and architectural reference purposes.
+The documentation is provided for portfolio, educational, and architectural reference purposes.
 
 ---
 
 ## Questions & Feedback
 
-For questions about architecture patterns, design decisions, or system integration approaches documented here, please refer to the relevant documentation files or open an issue with specific architectural questions.
+For questions about architecture patterns, design decisions, or system integration approaches documented here, please refer to the relevant documentation files or open an issue with a specific architecture question.
 
 **Important:** This is a documentation repository, not a support channel for the private production system.
 
 ---
 
-**Last Updated:** June 2026
-**Repository Type:** Architecture Documentation (Non-Production)
-**Status:** Public-Safe Release
+**Last Updated:** June 2026  
+**Repository Type:** Architecture Documentation  
+**Status:** Public-Safe Release Candidate
