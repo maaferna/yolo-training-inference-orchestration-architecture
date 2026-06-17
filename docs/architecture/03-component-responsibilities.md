@@ -17,7 +17,7 @@ This document clearly defines what each component is responsible for and what it
 - ✅ Error handling and user-facing error messages
 - ✅ Database persistence of user data
 - ✅ Session management and CSRF protection
-- ✅ Rate limiting and throttling (if implemented)
+- ✅ Rate limiting and throttling (if cker Compose or a managed single-server deployment is sufficient for the documented internal operating conteximplemented)
 - ✅ Link generation to artifacts in shared storage
 
 ### IS NOT RESPONSIBLE FOR
