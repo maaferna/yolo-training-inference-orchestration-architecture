@@ -4,7 +4,7 @@
 
 This system was designed to integrate a web administration layer with a GPU-intensive AI processing service for training and inference of YOLO object detection models on high-resolution images.
 
-### Core Technical Problem
+### Core Technical ProblemModel references become inconsistent	Add database-backed model registry or transactional reference tracking.
 
 The fundamental challenge: implement a unified orchestration system capable of:
 - Training YOLOv8/v11 models with multi-seed statistical rigor
