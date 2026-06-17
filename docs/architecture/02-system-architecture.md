@@ -1,554 +1,639 @@
 # System Architecture
 
-## ⚠️ MVP Single-Instance Deployment (Phase 1)
+## Public-Safe Architecture Notice
 
-**Current Architecture Constraints**:
-- **Single FastAPI Instance**: No replicas or load balancing
-- **Django HTTP Connection**: Remains open for entire job (1-3 hours)
-- **HTTP Timeout Risk**: Typical timeout ~30 minutes; jobs often > 1 hour
-- **No Job Persistence**: Service restart = lost state
-- **Not Multi-Instance Safe**: Cannot scale without job queue (Phase 2)
+This document describes a generalized and anonymized architecture for an internal AI vision platform. It does not include private source code, real datasets, trained weights, production credentials, client names, institutional identifiers, real metrics, real coordinates, or deployment-specific infrastructure details.
 
-**When to Upgrade**:
-- > 3 concurrent jobs observed
-- HTTP timeouts occurring
-- Multi-region deployment needed
-- Job recovery required after failure
+The architecture is documented for professional portfolio and architectural review purposes. It should be read as a public-safe system design reference, not as a production release or implementation guide for a private codebase.
 
-See [docs/15-production-evolution-roadmap.md](./15-production-evolution-roadmap.md) for scaling path.
+---
+
+## Architecture Positioning
+
+This system is best described as an **internal production-oriented AI vision platform architecture**.
+
+It is designed for a controlled organizational environment with a limited number of technical, operational, or research users. It is not designed as a public SaaS product, a large-scale multi-tenant platform, or a globally distributed cloud service.
+
+The architecture prioritizes:
+
+- clear separation between web orchestration and GPU-intensive processing;
+- reproducible training and inference workflows;
+- controlled internal operation;
+- GPU runtime stability;
+- artifact traceability;
+- dataset and model governance;
+- pragmatic deployment cost control;
+- optional scale-out only when operational evidence justifies it.
+
+---
+
+## Current Deployment Model
+
+The current architecture is based on a controlled internal deployment model:
+
+- Django provides the web application, configuration layer, request submission, metadata persistence, and result visualization.
+- FastAPI provides the AI service boundary for GPU-backed training, validation, inference, and experiment coordination.
+- PyTorch/CUDA provides the GPU runtime for YOLO training and inference.
+- Training can use single-GPU or multi-GPU runtime strategies depending on configuration and environment, including DataParallel and evaluated or supported DDP workflows.
+- Shared storage is used for artifact exchange between the web layer and AI service layer.
+- ClearML is used for experiment tracking, metric logging, run comparison, and model artifact references.
+- Docker Compose or a managed single-server deployment is sufficient for the documented internal operating context.
+
+This architecture does **not** require Kubernetes, multi-region deployment, distributed worker pools, or public cloud GPU orchestration by default.
+
+---
+
+## Current Architecture Characteristics
+
+| Aspect | Current Status | Notes |
+|---|---|---|
+| Deployment context | Internal platform | Designed for controlled organizational use, not public SaaS or multi-tenant deployment. |
+| User profile | Limited internal users | Operational, technical, research, or production staff. |
+| Web layer | Django | Handles configuration, metadata, user interaction, history, and result visualization. |
+| AI service layer | FastAPI | Handles GPU-backed training, validation, inference, and experiment coordination. |
+| Request handling | Synchronous / controlled | Acceptable when workload volume is predictable and users understand long-running jobs. |
+| Job queue | Not required by default | Optional if timeouts, concurrency, retry, or cancellation become operationally important. |
+| GPU training runtime | Implemented / evaluated | Supports GPU-backed training, including single-GPU and multi-GPU strategies such as DP/DDP depending on configuration. |
+| Distributed job orchestration | Not implemented | No formal GPU worker pool, scheduler, or distributed job registry in the current architecture. |
+| Storage | Shared artifact storage | Practical for controlled internal workflows; requires path validation and artifact governance. |
+| Experiment tracking | ClearML | Supports metadata, metrics, artifacts, and run comparison, but does not replace a transactional model registry. |
+| Cloud deployment | Optional / selective | Useful for intranet integration, metadata, result visualization, selected inference, or archival workflows. |
+| Kubernetes | Not required | Optional only if operational scale, uptime, or multi-server management justifies it. |
+
+---
+
+## Important Distinction: Multi-GPU Runtime vs Distributed Platform
+
+A key distinction in this architecture is the difference between **multi-GPU training runtime** and **distributed platform orchestration**.
+
+### Multi-GPU Training Runtime
+
+This refers to how a single training workload uses available GPU resources.
+
+Examples:
+
+- single-GPU YOLO training;
+- PyTorch DataParallel execution;
+- PyTorch Distributed Data Parallel execution;
+- CUDA memory management across one or more GPUs;
+- training-time GPU synchronization and cleanup.
+
+This capability belongs to the **training runtime layer**.
+
+### Distributed Job Orchestration
+
+This refers to how multiple independent jobs are scheduled, queued, retried, monitored, cancelled, and assigned to workers.
+
+Examples:
+
+- job queue;
+- background workers;
+- GPU-aware scheduler;
+- job registry;
+- retry with backoff;
+- worker pool;
+- distributed execution across nodes;
+- Kubernetes or another orchestration layer.
+
+This capability belongs to the **platform orchestration layer**.
+
+The current architecture can support multi-GPU training runtime patterns without being a fully distributed job orchestration platform.
 
 ---
 
 ## Architecture Overview
 
-This document describes the complete system architecture including all layers, components, and their relationships.
+```text
+┌──────────────────────────────────────────────────────────────────────┐
+│                         INTERNAL USERS                               │
+│  Operations staff • Production staff • Researchers • Technical users  │
+└───────────────────────────────┬──────────────────────────────────────┘
+                                │
+                                ▼
+┌──────────────────────────────────────────────────────────────────────┐
+│                         DJANGO WEB LAYER                             │
+│                                                                      │
+│  Responsibilities:                                                   │
+│  • project and dataset configuration                                 │
+│  • training/inference request submission                             │
+│  • user authentication and permissions                               │
+│  • metadata persistence                                               │
+│  • result visualization                                               │
+│  • artifact references and history                                    │
+│                                                                      │
+│  Metadata Store: relational database                                  │
+└───────────────────────────────┬──────────────────────────────────────┘
+                                │
+                                │ HTTP / REST API
+                                │ structured request payloads
+                                ▼
+┌──────────────────────────────────────────────────────────────────────┐
+│                       FASTAPI AI SERVICE LAYER                       │
+│                                                                      │
+│  Responsibilities:                                                   │
+│  • request validation                                                 │
+│  • training orchestration                                             │
+│  • continuous improvement training                                    │
+│  • YOLO inference                                                     │
+│  • SAHI tiled inference                                                │
+│  • ClearML experiment coordination                                    │
+│  • artifact generation                                                │
+│  • error handling and fallback coordination                           │
+└───────────────┬───────────────────────────────┬──────────────────────┘
+                │                               │
+                ▼                               ▼
+┌─────────────────────────────┐       ┌───────────────────────────────┐
+│      GPU COMPUTE LAYER      │       │     EXPERIMENT TRACKING       │
+│                             │       │                               │
+│ • PyTorch/CUDA runtime      │       │ • ClearML metadata logging    │
+│ • YOLO training/inference   │       │ • metrics and comparisons     │
+│ • DataParallel / DDP modes  │       │ • model artifact references   │
+│ • CUDA memory cleanup       │       │ • failure analysis context    │
+└───────────────┬─────────────┘       └───────────────┬───────────────┘
+                │                                     │
+                ▼                                     ▼
+┌──────────────────────────────────────────────────────────────────────┐
+│                        SHARED ARTIFACT STORAGE                       │
+│                                                                      │
+│ • model checkpoints                                                   │
+│ • selected best model reference                                       │
+│ • training summaries                                                  │
+│ • inference outputs                                                   │
+│ • compressed previews                                                 │
+│ • reports and manifests                                               │
+│ • GIS-compatible output artifacts, when applicable                    │
+└──────────────────────────────────────────────────────────────────────┘
+```
 
-```
-┌──────────────────────────────────────────────────────────────────┐
-│                     DJANGO WEB APPLICATION                       │
-│  ┌────────────────────────────────────────────────────────────┐  │
-│  │ • Request Submission UI                                    │  │
-│  │ • Result Visualization & Dashboard                         │  │
-│  │ • User Authentication & Authorization                      │  │
-│  │ • Result History & Artifact Browsing                       │  │
-│  └────────────────────────────────────────────────────────────┘  │
-│                                                                    │
-│  PostgreSQL Database: User data, request history, result refs    │
-└──────┬───────────────────────────────────────────────────────────┘
-       │
-       │ HTTP/REST API
-       │ (JSON payloads)
-       │
-┌──────▼───────────────────────────────────────────────────────────┐
-│              FASTAPI AI ORCHESTRATION SERVICE                     │
-│  ┌────────────────────────────────────────────────────────────┐  │
-│  │ API Endpoints & Request Validation                        │  │
-│  │ • /training (POST) - Submit training job                  │  │
-│  │ • /ci-training (POST) - Continuous improvement            │  │
-│  │ • /inference (POST) - Run SAHI inference                  │  │
-│  │ • /status/{job_id} (GET) - Check job status              │  │
-│  └────────────────────────────────────────────────────────────┘  │
-│                                                                    │
-│  ┌────────────────────────────────────────────────────────────┐  │
-│  │ YOLO TRAINING ENGINE                                       │  │
-│  │ • Multi-seed training with random initialization           │  │
-│  │ • Validation & metrics collection                          │  │
-│  │ • Best model selection based on mAP50                      │  │
-│  │ • Checkpoint management                                    │  │
-│  └────────────────────────────────────────────────────────────┘  │
-│                                                                    │
-│  ┌────────────────────────────────────────────────────────────┐  │
-│  │ CONTINUOUS IMPROVEMENT TRAINING PIPELINE                   │  │
-│  │ • Load previous best model                                 │  │
-│  │ • Incremental training on new data                         │  │
-│  │ • Baseline comparison (historical performance)             │  │
-│  │ • Conditional best model update (only if improved)         │  │
-│  └────────────────────────────────────────────────────────────┘  │
-│                                                                    │
-│  ┌────────────────────────────────────────────────────────────┐  │
-│  │ SAHI INFERENCE ENGINE                                      │  │
-│  │ • High-resolution image tiling (slicing)                   │  │
-│  │ • Per-tile YOLO inference                                  │  │
-│  │ • Detection merging & deduplication                        │  │
-│  │ • Output artifact generation                               │  │
-│  └────────────────────────────────────────────────────────────┘  │
-│                                                                    │
-│  ┌────────────────────────────────────────────────────────────┐  │
-│  │ CLEARML EXPERIMENT TRACKING LAYER                          │  │
-│  │ • Experiment initialization & metadata                     │  │
-│  │ • Metrics logging (precision, recall, mAP, etc.)           │  │
-│  │ • Model artifact registration                              │  │
-│  │ • Run comparison & lineage tracking                        │  │
-│  │ • Failure isolation and debugging logs                     │  │
-│  └────────────────────────────────────────────────────────────┘  │
-│                                                                    │
-│  ┌────────────────────────────────────────────────────────────┐  │
-│  │ ERROR HANDLING & FALLBACKS (Partial Coverage)              │  │
-│  │                                                             │  │
-│  │ ✅ Handled:                                                │  │
-│  │ • Ultralytics train() exceptions                           │  │
-│  │ • CUDA OOM detection and recovery                          │  │
-│  │ • DDP initialization errors                                │  │
-│  │ • Graceful error responses to Django                       │  │
-│  │                                                             │  │
-│  │ ⚠️  Degraded (Limited Recovery):                           │  │
-│  │ • HTTP connection timeout (1-3 hour jobs, 30 min timeout)  │  │
-│  │ • No job persistence (restart = lost state)                │  │
-│  │                                                             │  │
-│  │ ❌ Not Handled:                                            │  │
-│  │ • Network failure during training                          │  │
-│  │ • Disk full when writing checkpoints                       │  │
-│  │ • Data loading errors (corrupted files)                    │  │
-│  │ • GPU hang (requires manual restart)                       │  │
-│  │ • ClearML connection loss                                  │  │
-│  │                                                             │  │
-│  │ See docs/13-error-handling-and-fallbacks.md for details    │  │
-│  └────────────────────────────────────────────────────────────┘  │
-└──────┬───────────────────────────────────────────────────────────┘
-       │
-       │ Read/Write via mount path
-       │ (Artifact files)
-       │
-┌──────▼───────────────────────────────────────────────────────────┐
-│              SHARED STORAGE LAYER (Docker Volume)                │
-│  ┌────────────────────────────────────────────────────────────┐  │
-│  │ ARTIFACT CATEGORIES:                                       │  │
-│  │ • Training checkpoints (epoch-based)                       │  │
-│  │ • Best model weights & metadata                            │  │
-│  │ • Training summaries & metrics                             │  │
-│  │ • Inference outputs & detections                           │  │
-│  │ • Preview images & visualizations                          │  │
-│  │ • Error logs & traces                                      │  │
-│  │ • Path mapping:                                            │  │
-│  │   - FastAPI: /app/shared_data/...                          │  │
-│  │   - Django: /data/shared/...                               │  │
-│  └────────────────────────────────────────────────────────────┘  │
-└──────┬───────────────────────────────────────────────────────────┘
-       │
-       │ CUDA Device Access
-       │ (GPU compute)
-       │
-┌──────▼───────────────────────────────────────────────────────────┐
-│                GPU COMPUTE LAYER (NVIDIA CUDA)                   │
-│  ┌────────────────────────────────────────────────────────────┐  │
-│  │ • PyTorch/CUDA runtime                                     │  │
-│  │ • DataParallel (single GPU)                                │  │
-│  │ • DDP (Distributed Data Parallel - deferred to Phase 3)    │  │
-│  │ • Memory management & cleanup                              │  │
-│  │ • CUDA context synchronization                             │  │
-│  └────────────────────────────────────────────────────────────┘  │
-└──────┬───────────────────────────────────────────────────────────┘
-       │
-       │
-┌──────▼───────────────────────────────────────────────────────────┐
-│           DOCKER RUNTIME LAYER (Container Orchestration)         │
-│  ┌────────────────────────────────────────────────────────────┐  │
-│  │ • Django Container (port 8000)                             │  │
-│  │   - Image: custom Django app with DRF                      │  │
-│  │   - Mounts: /data/shared/ (read/write)                     │  │
-│  │                                                             │  │
-│  │ • FastAPI Container (port 8001)                            │  │
-│  │   - Image: custom FastAPI + PyTorch + CUDA                 │  │
-│  │   - GPU support: --gpus all                                │  │
-│  │   - Mounts: /app/shared_data/ (read/write)                 │  │
-│  │                                                             │  │
-│  │ • PostgreSQL Container (port 5432)                         │  │
-│  │   - Image: postgres:15-alpine                              │  │
-│  │   - Mounts: db_data volume                                 │  │
-│  │                                                             │  │
-│  │ • Docker Network: ml_network (bridge)                      │  │
-│  │ • Shared Volume: shared_storage                            │  │
-│  │ • Environment Variables:                                   │  │
-│  │   - FASTAPI_URL for Django                                 │  │
-│  │   - Database connection strings                            │  │
-│  │   - ClearML configuration                                  │  │
-│  │   - GPU device selection                                   │  │
-│  └────────────────────────────────────────────────────────────┘  │
-└──────────────────────────────────────────────────────────────────┘
-```
+---
 
 ## Layer Descriptions
 
-### 1. Django Web Application Layer
+## 1. Django Web Application Layer
 
-**Purpose**: Provides user interface and request management
+### Purpose
 
-**Responsibilities**:
-- Accept training, CI training, and inference requests from users
-- Validate input data and parameters
-- Submit requests to FastAPI service
-- Display results and artifacts to users
-- Maintain request history and audit trail
-- Provide authentication and authorization
-- Cache results for performance
+The Django layer provides the user-facing and administrative side of the platform.
 
-**Key Components**:
-- Django REST Framework API endpoints
-- View functions for request submission
-- Result visualization templates
-- User authentication middleware
-- PostgreSQL database models
-- Task status polling mechanism
+### Responsibilities
 
-**Inputs**:
-- User training parameters (dataset, model size, epochs, etc.)
-- User inference requests (image upload, inference parameters)
-- User query requests (history, results, artifacts)
+- Manage projects, datasets, class definitions, and configuration metadata.
+- Generate or reference dataset configuration artifacts.
+- Submit training, validation, and inference requests to the AI service.
+- Persist request metadata, execution history, and result references.
+- Display results, reports, previews, and artifact links.
+- Provide authentication, authorization, and administrative workflows.
 
-**Outputs**:
-- HTTP responses with job IDs, status, or results
-- Links to artifacts in shared storage
-- Error messages and validation feedback
+### Not Responsible For
 
-### 2. FastAPI AI Orchestration Service Layer
+- Direct GPU execution.
+- YOLO model training.
+- SAHI inference execution.
+- CUDA resource management.
+- Long-running compute execution inside the web process.
 
-**Purpose**: Orchestrates all AI/ML workflows and coordinates with storage
+---
 
-**Responsibilities**:
-- Receive and validate API requests from Django
-- Orchestrate training, CI training, and inference pipelines
-- Manage GPU resources and CUDA context
-- Initialize and manage ClearML experiments
-- Coordinate with shared storage
-- Handle errors and fallbacks
-- Log results and metadata
+## 2. FastAPI AI Service Layer
 
-**Key Components**:
-- FastAPI application instance
-- Pydantic models for request validation
-- Training orchestration logic
-- Inference pipeline logic
-- ClearML integration layer
-- Error handling and recovery
-- Result aggregation and storage
+### Purpose
 
-**Inputs**:
-- REST API requests from Django
-- Configuration files (model paths, hyperparameters)
-- Training data references
-- ClearML credentials and configuration
+The FastAPI layer acts as the service boundary for AI processing. It separates compute-heavy workloads from the web application.
 
-**Outputs**:
-- Training artifacts (checkpoints, best model)
-- Inference results and detections
-- Experiment metadata to ClearML
-- Metrics and performance logs
-- Error traces and debugging information
+### Responsibilities
 
-### 3. YOLO Training Engine
+- Receive structured requests from Django.
+- Validate payloads and required artifact references.
+- Orchestrate YOLO training, CI training, inference, and SAHI workflows.
+- Coordinate GPU-backed execution through PyTorch/CUDA.
+- Register experiment metadata and metrics in ClearML.
+- Write generated artifacts to shared storage.
+- Return structured execution metadata to the web layer.
 
-**Purpose**: Executes YOLOv8/v11 training with multi-seed experimentation
+### Current Execution Model
 
-**Responsibilities**:
-- Load base YOLO model (v8s, v8m, v8l, etc.)
-- Execute multiple training runs with random seeds
-- Collect training and validation metrics
-- Select best model based on mAP50
-- Store checkpoints and best model
-- Handle training failures and recovery
+The current architecture may execute long-running jobs synchronously through the AI service. This can be acceptable in a controlled internal environment where jobs are scheduled, users are limited, and long-running execution is expected.
 
-**Key Features**:
-- Multi-seed training (e.g., 3-5 seeds for statistical significance)
-- Epoch-based training with early stopping
-- Validation after each epoch
-- mAP50-based model selection
-- Checkpoint persistence
-- CUDA memory management between runs
+A background job queue should be introduced only if synchronous execution causes operational pain, such as repeated timeouts, competing jobs, or the need for cancellation/retry/progress tracking.
 
-**Constraints**:
-- Single GPU per training job
-- High memory requirements (varies with model size)
-- Long training time (varies with dataset and hardware)
-- Ultralytics API stability assumption
+---
 
-### 4. Continuous Improvement Training Pipeline
+## 3. YOLO Training Engine
 
-**Purpose**: Enables incremental model improvement with baseline comparison
+### Purpose
 
-**Responsibilities**:
-- Load previous best model from shared storage
-- Prepare new training data
-- Execute incremental training
-- Compare new metrics against historical baseline
-- Decide whether to update best model
-- Log comparison results to ClearML
-- Update best model reference only if improved
+The YOLO training engine executes model training and validation workflows for object detection.
 
-**Key Features**:
-- Baseline loading and metric comparison
-- Performance improvement threshold checking
-- Selective best model updates (prevents degradation)
-- ClearML experiment isolation
-- Historical metric tracking
-- Rollback capability (keep previous best model)
+### Responsibilities
 
-**Constraints**:
-- File-based model registry (race condition risk)
-- Requires baseline metrics in database or file
-- Atomic update mechanism missing
-- Potential concurrent CI training conflicts
+- Load base YOLO model configuration or checkpoint references.
+- Execute training runs with controlled parameters.
+- Support multi-seed experimentation when needed.
+- Collect training and validation metrics.
+- Select model candidates based on validation criteria.
+- Persist checkpoints, summaries, and selected model references.
+- Release GPU memory between runs when needed.
 
-### 5. SAHI Inference Engine
+### GPU Execution
 
-**Purpose**: Performs high-resolution object detection on large images
+Training may run using:
 
-**Responsibilities**:
-- Receive input image and inference parameters
-- Slice/tile image into manageable chunks
-- Run YOLO inference on each tile
-- Merge and deduplicate detections across tiles
-- Apply NMS (Non-Maximum Suppression)
-- Generate output manifest with detections
-- Store inference results to shared storage
+- single-GPU execution;
+- multi-GPU DataParallel execution;
+- Distributed Data Parallel execution when supported by the runtime environment and configuration.
 
-**Key Features**:
-- Automatic image tiling based on model input size
-- Per-tile confidence threshold
-- NMS parameters (IOU threshold, score threshold)
-- Detection merging and deduplication
-- Output manifest generation
-- Performance trade-off: latency vs. accuracy
+This is a training runtime capability. It does not imply that the platform has distributed job orchestration, worker pools, or Kubernetes.
 
-**Constraints**:
-- Inference time proportional to image size
-- Memory requirements increase with image resolution
-- Tile overlap creates redundant computation
-- NMS parameters require tuning
+### Constraints
 
-### 6. ClearML Experiment Tracking Layer
+- Training can be long-running.
+- GPU memory pressure must be managed explicitly.
+- Dataset size and image resolution directly affect runtime and memory usage.
+- DDP/DP stability depends on OS, CUDA, PyTorch, driver versions, and runtime configuration.
+- Concurrent training jobs require explicit scheduling or resource locking if introduced.
 
-**Purpose**: Provides reproducibility, debugging, and model lineage
+---
 
-**Responsibilities**:
-- Initialize task/experiment for each training run
-- Log hyperparameters and configuration
-- Record metrics during training
-- Track model artifacts and checkpoints
-- Maintain model lineage and versioning
-- Enable experiment comparison and analysis
-- Isolate failed runs for debugging
+## 4. Continuous Improvement Training Pipeline
 
-**Key Features**:
-- Automatic metric logging
-- Model artifact registration
-- Experiment comparison UI
-- Run isolation and failure analysis
-- Hyperparameter tracking
-- Resource usage monitoring
-- Selective logging (avoid logging massive artifacts)
+### Purpose
 
-**Integration Points**:
-- Initialize task at training start
-- Log metrics after each validation step
-- Register best model as artifact
-- Close task on completion or failure
+The continuous improvement training pipeline supports incremental model improvement using previous model references and new data.
 
-### 7. Shared Storage Layer
+### Responsibilities
 
-**Purpose**: Persists artifacts and enables data exchange between services
+- Load the previous selected model reference.
+- Execute additional training on new or expanded datasets.
+- Compare new validation metrics against a historical baseline.
+- Update the selected model reference only when improvement criteria are satisfied.
+- Log experiment metadata and comparison context.
+- Preserve traceability between dataset configuration, model artifact, and result summary.
 
-**Responsibilities**:
-- Store training checkpoints
-- Maintain best model reference (JSON file)
-- Store inference outputs and manifests
-- Persist training summaries and metrics
-- Provide consistent path access to both services
-- Manage artifact lifecycle
+### Current Risks
 
-**Artifact Categories**:
-```
-/shared_storage/
+- File-based or lightweight model references can create race conditions if multiple updates occur simultaneously.
+- A transactional model registry is recommended if multiple users or parallel training workflows become common.
+- Model lineage must include dataset configuration, class mapping, model version, training parameters, and validation summary.
+
+---
+
+## 5. SAHI Inference Engine
+
+### Purpose
+
+The SAHI inference engine supports object detection on high-resolution imagery by slicing large images into smaller tiles before inference.
+
+### Responsibilities
+
+- Accept image or batch inference requests.
+- Slice high-resolution images into tiles.
+- Run YOLO inference per tile.
+- Merge and deduplicate detections.
+- Generate detection metadata, previews, and output artifacts.
+- Persist compact results for web visualization.
+
+### Cost and Data Consideration
+
+For full drone campaigns with hundreds of large images, local batch inference may be more cost-effective than uploading all raw imagery to cloud storage. Cloud inference is more appropriate for selected, short-lived, or intranet-integrated workloads.
+
+---
+
+## 6. ClearML Experiment Tracking Layer
+
+### Purpose
+
+ClearML provides experiment tracking, metrics, and artifact references for training and validation workflows.
+
+### Responsibilities
+
+- Log training configuration metadata.
+- Track validation metrics and experiment summaries.
+- Register selected model artifacts or references.
+- Support run comparison and debugging.
+- Preserve model lineage context.
+
+### Boundary
+
+ClearML is used for tracking and experiment visibility. It should not be treated as a complete transactional model registry unless the architecture explicitly defines governance, promotion, rollback, and consistency rules.
+
+---
+
+## 7. Shared Artifact Storage Layer
+
+### Purpose
+
+Shared storage enables controlled exchange of generated artifacts between the web application and AI service.
+
+### Artifact Categories
+
+```text
+SHARED_ARTIFACT_STORAGE/
 ├── models/
-│   ├── best_model.pt           # Latest best model
-│   ├── best_model_ref.json     # Metadata reference
-│   └── checkpoints/            # Training checkpoints
-├── training/
-│   ├── run_001/
-│   │   ├── summary.json        # Training summary
-│   │   ├── metrics.csv         # Epoch metrics
-│   │   └── logs.txt            # Training logs
-│   └── run_002/
-├── inference/
-│   ├── job_001/
-│   │   ├── output_manifest.json # Detection results
-│   │   └── preview.png         # Visualization
-│   └── job_002/
-└── ci_training/
-    ├── run_001/
-    │   ├── comparison.json     # Baseline comparison
-    │   └── decision.log        # Update decision
+│   ├── selected_model_checkpoint
+│   ├── model_reference_metadata
+│   └── checkpoints/
+├── training_runs/
+│   ├── run_identifier/
+│   │   ├── training_summary
+│   │   ├── metric_summary
+│   │   └── execution_log
+├── inference_runs/
+│   ├── job_identifier/
+│   │   ├── output_manifest
+│   │   ├── compressed_preview
+│   │   └── detection_summary
+└── reports/
+    ├── generated_reports
+    └── GIS_or_vector_outputs
 ```
 
-**Path Mapping Between Services**:
-- FastAPI: `/app/shared_data/` (inside container)
-- Django: `/data/shared/` (inside container)
-- Both mount the same Docker volume: `shared_storage`
+### Responsibilities
 
-**Risks**:
-- Path mismatch if volume mounted incorrectly
-- Concurrent writes to same artifact (race condition)
-- File permissions issues
-- Stale data if caching not managed
-- Hardcoded paths reduce portability
+- Store selected model checkpoints and references.
+- Store training and inference summaries.
+- Store compact previews and reports for web visualization.
+- Maintain artifact structure for reproducibility.
+- Provide a consistent path contract between services.
 
-### 8. GPU Compute Layer
+### Risks
 
-**Purpose**: Provides CUDA acceleration for training and inference
+- Path mismatch between containers or host environments.
+- File permission errors.
+- Concurrent writes to the same artifact reference.
+- Stale model references.
+- Unbounded growth of outputs and checkpoints.
+- Tight coupling between service logic and filesystem layout.
 
-**Responsibilities**:
-- Provide CUDA context for PyTorch
-- Manage GPU memory allocation
-- Coordinate between training runs
-- Handle OOM (Out of Memory) errors
-- Synchronize CUDA operations
-- Clean up GPU memory between jobs
+### Recommended Improvements
 
-**Key Technologies**:
-- NVIDIA CUDA runtime
-- PyTorch with CUDA backend
-- nvidia-docker for container GPU access
-- DataParallel for single GPU (current)
-- DDP evaluated for future distributed training
+- Use artifact manifests per run.
+- Add preflight validation for read/write paths.
+- Define retention policies.
+- Move model references to a database-backed registry if concurrency increases.
+- Avoid treating shared storage as a substitute for full artifact governance.
 
-**Memory Management**:
-- Pre-allocate GPU memory if possible
-- Clear CUDA cache between runs
-- Monitor memory usage during execution
-- Handle OOM gracefully (reduce batch size or fallback)
-- Synchronize before memory cleanup
+---
 
-**Constraints**:
-- Single GPU device per training run
-- Limited CUDA memory (e.g., 24GB typical)
-- Context switching overhead
-- No resource sharing between concurrent jobs (currently)
+## 8. Raw Imagery Storage and Data Movement Layer
 
-### 9. Docker Runtime Layer
+### Purpose
 
-**Purpose**: Provides containerized, reproducible execution environment
+Raw drone imagery is a high-volume data asset and should be treated differently from lightweight web artifacts.
 
-**Responsibilities**:
-- Define service containers (Django, FastAPI, PostgreSQL)
-- Manage container lifecycle
-- Configure networking between services
-- Mount volumes for shared storage
-- Configure GPU access
-- Set environment variables
-- Provide health checks
+Drone campaigns may produce hundreds of high-resolution images per flight. Uploading all raw imagery to cloud storage by default can increase bandwidth usage, storage cost, operational complexity, and processing latency.
 
-**Container Specifications**:
+### Recommended Baseline
 
-**Django Container**:
-- Base image: `python:3.11-slim`
-- Dependencies: Django, DRF, psycopg2
-- Port mapping: `8000:8000`
-- Volume mounts: `/data/shared/` (shared storage)
-- Network: `ml_network`
-- No GPU required
+```text
+Raw drone imagery: local by default
+Training datasets: close to local GPU processing
+Heavy batch inference: local when data volume is high
+Selected model artifacts: synchronized to cloud when useful
+Metadata, previews, and reports: synchronized to cloud-hosted intranet
+Historical archive: optional cloud storage with lifecycle policy
+```
 
-**FastAPI Container**:
-- Base image: `nvidia/cuda:12.1-runtime-ubuntu22.04`
-- Dependencies: FastAPI, PyTorch, Ultralytics, SAHI, ClearML
-- Port mapping: `8001:8001`
-- Volume mounts: `/app/shared_data/` (shared storage)
-- GPU support: `--gpus all`
-- Network: `ml_network`
-- Environment: CUDA_VISIBLE_DEVICES, etc.
+### Hybrid Data Flow
 
-**PostgreSQL Container**:
-- Base image: `postgres:15-alpine`
-- Port mapping: `5432:5432`
-- Volume mounts: `db_data` volume
-- Network: `ml_network`
-- Environment: POSTGRES_PASSWORD, POSTGRES_DB
+```text
+Drone Flight
+   ↓
+Local Image Ingestion
+   ↓
+Local Validation / Preprocessing
+   ↓
+Local GPU Training or Heavy Batch Inference
+   ↓
+Selected Artifact Synchronization
+   ├── selected model checkpoint
+   ├── model metadata
+   ├── dataset version summary
+   ├── inference summaries
+   ├── compressed previews
+   ├── reports
+   └── GIS-compatible outputs
+          ↓
+Cloud-hosted Intranet / Metadata / Visualization
+```
 
-**Networking** (example placeholders):
-- Docker bridge network: `ml_network`
-- Service discovery via container names (DNS)
-- Django → FastAPI: `http://[FASTAPI_SERVICE_NAME]:8001`
-- Both → PostgreSQL: `postgresql://[DATABASE_HOST]:[DATABASE_PORT]/[DATABASE_NAME]`
+### Rationale
 
-**Shared Volume**:
-- Volume name: `shared_storage`
-- Type: `local` (or bind mount for development)
-- Mounted in Django: `/data/shared/`
-- Mounted in FastAPI: `/app/shared_data/`
+This approach avoids uploading large raw datasets unless cloud-side processing is required. It supports a hybrid architecture where AWS or another cloud provider can host the existing intranet, metadata, selected model artifacts, and result visualization without becoming the default storage location for every raw image.
 
-**Environment Configuration**:
-- `.env` file with:
-  - `FASTAPI_URL=http://fastapi:8001`
-  - `DATABASE_URL=postgresql://...`
-  - `CLEARML_WORKSPACE=...`
-  - `CUDA_VISIBLE_DEVICES=0`
+---
+
+## 9. GPU Compute Layer
+
+### Purpose
+
+The GPU compute layer provides CUDA acceleration for training, validation, and inference.
+
+### Responsibilities
+
+- Provide CUDA runtime access for PyTorch.
+- Support GPU-backed YOLO training and inference.
+- Support single-GPU and multi-GPU training runtime strategies.
+- Manage CUDA memory and cleanup.
+- Handle GPU memory pressure and OOM conditions.
+- Coordinate model loading and release.
+
+### Key Technologies
+
+- NVIDIA GPU runtime.
+- CUDA.
+- PyTorch CUDA backend.
+- DataParallel, when appropriate.
+- Distributed Data Parallel, when supported by environment and configuration.
+- Docker GPU runtime support.
+
+### Operating System Runtime Decision
+
+Ubuntu is the preferred runtime baseline for this architecture because GPU-heavy workloads involving PyTorch, CUDA, NVIDIA drivers, Docker GPU access, YOLO training, and DDP/DP behavior are sensitive to OS and driver compatibility.
+
+Other operating systems or Linux distributions may work, but they can introduce additional runtime friction. Ubuntu provides a more predictable and commonly supported baseline for GPU-backed computer vision workloads.
+
+### Constraints
+
+- GPU memory is finite and must be actively managed.
+- DDP/DP behavior depends on driver, CUDA, PyTorch, and OS compatibility.
+- Concurrent jobs require resource locking or scheduling.
+- Long-running training jobs can monopolize GPU resources.
+
+---
+
+## 10. Docker Runtime Layer
+
+### Purpose
+
+The Docker runtime layer provides reproducible service boundaries for the web application, AI service, database, and shared storage.
+
+### Responsibilities
+
+- Define service containers.
+- Isolate web and compute dependencies.
+- Provide GPU access to the AI service.
+- Mount shared artifact storage.
+- Configure service networking.
+- Provide environment-based configuration.
+
+### Conceptual Services
+
+| Service | Role | GPU Required |
+|---|---|---|
+| Django web service | UI, metadata, request submission, visualization | No |
+| FastAPI AI service | Training, validation, inference, experiment coordination | Yes |
+| Relational database | User metadata, request records, configuration references | No |
+| Shared storage | Artifact exchange and generated outputs | No |
+
+### Runtime Notes
+
+- Docker Compose or a managed single-server deployment is sufficient for the current internal operating context.
+- Kubernetes is not a required next step.
+- GPU access should be validated through preflight checks.
+- Environment-specific paths should be represented through configuration, not hardcoded values.
 
 ---
 
 ## Data Flow Summary
 
-### Training Request Flow
-```
-Django UI (user input)
-  ↓
-Django REST endpoint (validation)
-  ↓
-POST /training → FastAPI (validation)
-  ↓
-Initialize ClearML task
-  ↓
-YOLO multi-seed training
-  ↓
-Select best model (mAP50)
-  ↓
-Write artifacts → Shared Storage
-  ↓
-ClearML task complete
-  ↓
-Response → Django → UI
-```
+## Training Request Flow
 
-### Inference Request Flow
-```
-Django UI (image upload)
+```text
+User submits training request in Django
   ↓
-Django endpoint → POST /inference to FastAPI
+Django validates project and dataset configuration
   ↓
-Load best model from Shared Storage
+Django sends structured request to FastAPI AI service
   ↓
-SAHI tiling + YOLO inference
+FastAPI validates request and resolves artifacts
   ↓
-Merge/deduplicate detections
+ClearML experiment context is initialized
   ↓
-Generate output manifest
+YOLO training executes on GPU runtime
   ↓
-Write to Shared Storage
+Training metrics and selected checkpoint are generated
   ↓
-Response with result URL
+Artifacts are written to shared storage
   ↓
-Django reads from Shared Storage
+Metadata and result references return to Django
   ↓
-Display results to user
+Django displays status, summaries, and artifacts
 ```
 
-## Assumptions and Constraints
+## Continuous Improvement Flow
 
-### Assumptions
-✓ PostgreSQL always available and healthy
-✓ Shared volume always mounted correctly
-✓ CUDA available in FastAPI container
-✓ Ultralytics API stable and reliable
-✓ ClearML credentials valid and available
-✓ Network latency between services acceptable
-✓ Disk space sufficient for artifacts
+```text
+New dataset or configuration submitted
+  ↓
+Previous selected model reference resolved
+  ↓
+Incremental training executes
+  ↓
+New metrics compared against baseline
+  ↓
+Selected model reference updated only if improvement criteria are met
+  ↓
+Experiment metadata logged
+  ↓
+Django exposes comparison and result summary
+```
 
-### Constraints
-✗ Single GPU per training job (no multi-GPU training)
-✗ No distributed training across multiple GPUs
-✗ Synchronous training (Django client must wait)
-✗ No job queue or task distribution
-✗ Shared filesystem coupling
-✗ File-based model registry (no transactional safety)
-✗ Limited observability (logs only)
+## Inference Flow
+
+```text
+User submits image or batch inference request
+  ↓
+Django sends request to FastAPI AI service
+  ↓
+Selected model reference is resolved
+  ↓
+YOLO or SAHI inference executes
+  ↓
+Detections are merged and summarized
+  ↓
+Compact artifacts are written to shared storage
+  ↓
+Django visualizes previews, summaries, and reports
+```
+
+## Hybrid Deployment Flow
+
+```text
+Raw imagery remains local by default
+  ↓
+Training or heavy batch inference runs near local GPU resources
+  ↓
+Selected artifacts are synchronized to cloud-hosted intranet
+  ↓
+Cloud layer provides metadata, previews, reports, and optional inference
+```
 
 ---
 
-**This architecture provides a functional foundation for AI/ML orchestration while maintaining clear separation of concerns and a pragmatic path to production evolution.**
+## Assumptions
+
+- Users are limited and internal.
+- Workloads are scheduled, occasional, or controlled.
+- Long-running jobs are expected and acceptable within the operational context.
+- Raw drone imagery is high-volume and may be better processed locally.
+- Cloud deployment is useful for intranet integration, metadata, reports, and selected inference, but not necessarily for all raw data and training workloads.
+- Ubuntu is the preferred GPU runtime baseline for CUDA/PyTorch compatibility.
+- Multi-GPU training runtime is available or evaluated independently from distributed platform orchestration.
+
+---
+
+## Current Constraints
+
+- No formal job queue by default.
+- No distributed worker pool by default.
+- No Kubernetes requirement in the current architecture.
+- No multi-region deployment requirement.
+- Synchronous execution may become problematic if long-running jobs are submitted concurrently.
+- Shared filesystem coupling requires validation and governance.
+- Lightweight model references require stronger consistency if concurrency increases.
+- Limited observability compared with enterprise-scale distributed systems.
+- Raw imagery storage and cloud synchronization require explicit cost strategy.
+
+---
+
+## Recommended Near-Term Improvements
+
+Before adding distributed infrastructure, prioritize:
+
+1. Preflight validation for datasets, models, output directories, GPU availability, and storage mounts.
+2. Explicit job status records for long-running operations.
+3. Structured logs with correlation IDs.
+4. Artifact manifests per training or inference run.
+5. Storage lifecycle and retention policies.
+6. Database-backed model reference tracking.
+7. Dataset configuration versioning.
+8. GPU memory and resource health checks.
+9. Raw imagery storage policy.
+10. Optional lightweight queue only if synchronous execution creates real operational pain.
+
+---
+
+## Optional Future Scale-Out
+
+Scale-out infrastructure should be treated as conditional, not inevitable.
+
+Optional additions may include:
+
+- lightweight job queue;
+- single GPU worker process;
+- GPU resource locking;
+- distributed worker pool;
+- object storage;
+- Kubernetes or another orchestrator;
+- centralized monitoring and alerting;
+- distributed tracing.
+
+These should be introduced only if workload volume, uptime requirements, storage pressure, or operational complexity justify them.
+
+---
+
+## Summary
+
+This architecture provides a fit-for-purpose foundation for an internal AI vision platform. It separates web orchestration from GPU-intensive processing, supports GPU-backed YOLO training and inference, documents multi-GPU runtime considerations, and preserves a pragmatic path toward reliability and optional scale-out.
+
+The architecture should evolve by operational evidence, not by default. For the current context, reliability, traceability, artifact governance, GPU runtime stability, and cost-aware data placement are more important than premature distributed infrastructure.
