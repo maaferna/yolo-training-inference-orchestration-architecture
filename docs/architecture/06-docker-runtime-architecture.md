@@ -63,7 +63,7 @@ The system consists of multiple specialized modules:
 |-------|---|
 | **Backend** | Python, Django, Django REST Framework |
 | **Inference** | FastAPI, PyTorch, YOLO, SAHI |
-| **Frontend** | React, JavaScript |
+| **Frontend** | Django Engine, Bootstrap, JavaScript |
 | **Database** | PostgreSQL |
 | **Infrastructure** | Docker, Docker Compose |
 | **GPU Computing** | CUDA, NVIDIA Container Runtime |
@@ -81,7 +81,7 @@ The system runs as a multi-container application using Docker Compose for local 
 ```
                  +------------------+
                  |     Frontend     |
-                 |      React       |
+                 |      Engine       |
                  +--------+---------+
                           |
                           |
@@ -128,7 +128,7 @@ The system runs as a multi-container application using Docker Compose for local 
 
 | Component | Responsibility |
 |-----------|---|
-| **Frontend (React)** | User interface, image upload, configuration, result visualization |
+| **Frontend** | User interface, image upload, configuration, result visualization |
 | **Django Backend** | API management, data persistence, project administration, inference orchestration |
 | **PostgreSQL** | Project metadata, execution history, detection results, configuration storage |
 | **File Storage** | Original images, generated tiles, inference results |
@@ -137,6 +137,8 @@ The system runs as a multi-container application using Docker Compose for local 
 
 # CONCEPTUAL DOCKER COMPOSE STRUCTURE (Non-Production)
 # This is for architectural reference only
+
+```
 version: '3.8'
 
 services:
@@ -713,7 +715,7 @@ healthcheck:
 
 ### Current Limitations
 - Single Django container
-- Single FastAPI container (with single GPU)
+- FastAPI container (GPU)
 - Single PostgreSQL container
 
 ### Path to Multi-Container Deployment
@@ -896,7 +898,7 @@ Complete pipeline: ingestion → segmentation → inference → consolidation �
 
 The system integrates multiple advanced technologies:
 
-* **Frontend**: React-based user interface
+* **Frontend**: Django Engine-based user interface
 * **Backend**: Django with DRF for API management
 * **Inference**: FastAPI with YOLO and SAHI
 * **Database**: PostgreSQL for persistence
