@@ -14,7 +14,7 @@ We've created a comprehensive MLOps documentation suite covering current state, 
 ## 📄 New Documents Created
 
 ### 1. **ADR-007: ClearML Experiment Tracking Alternatives** ✨ NEW
-**File**: `docs/adr/ADR-007-clearml-experiment-tracking.md`
+**File**: `docs/architecture/adr/ADR-007-clearml-experiment-tracking.md`
 
 Detailed comparison of ClearML vs MLflow vs W&B with:
 - Feature matrix (hyperparameter sweeps, model registry, UI quality)
@@ -28,7 +28,7 @@ Detailed comparison of ClearML vs MLflow vs W&B with:
 ---
 
 ### 2. **ADR-006: Notebooks as Auxiliary Research Workflow** ✨ NEW
-**File**: `docs/adr/ADR-006-notebooks-auxiliary-research.md`
+**File**: `docs/architecture/adr/ADR-006-notebooks-auxiliary-research.md`
 
 Establishes the critical boundary:
 - Notebooks = research and exploration ✅
@@ -42,7 +42,7 @@ Establishes the critical boundary:
 ---
 
 ### 3. **ADR-004: UPDATED with Migration Strategy** 🚀
-**File**: `docs/adr/ADR-004-clearml-experiment-tracking.md`
+**File**: `docs/architecture/adr/ADR-004-clearml-experiment-tracking.md`
 
 Enhanced with comprehensive self-hosted migration:
 - Current state analysis (ClearML Cloud)
@@ -163,7 +163,7 @@ Includes:
 ---
 
 ### 8. **ADR README.md: UPDATED** 🔄
-**File**: `docs/adr/README.md`
+**File**: `docs/architecture/adr/README.md`
 
 Enhanced with:
 - Updated ADR table with focus areas

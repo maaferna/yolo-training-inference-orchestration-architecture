@@ -238,7 +238,7 @@ These are entirely optional improvements—not required for publication, but ava
 - ✅ `docs/PORTFOLIO_IMPLEMENTATION_GUIDE.md` - Added safety marker
 
 ### ADR Files (7 files) ✅
-- ✅ `docs/adr/ADR-001.md` through `ADR-007.md` - All decision records clear and well-reasoned; no changes
+- ✅ `docs/architecture/adr/ADR-001.md` through `ADR-007.md` - All decision records clear and well-reasoned; no changes
 
 ---
 

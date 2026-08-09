@@ -211,7 +211,7 @@ STEP 4: Update README Top Section
 STEP 5: Pin Important Documents
 In README, create "Quick Navigation" section:
 - System Overview (docs/02-system-architecture.md)
-- Architecture Decisions (docs/adr/README.md)
+- Architecture Decisions (docs/architecture/adr/README.md)
 - MLOps Strategy (docs/MLOPS_STATUS_REPORT.md)
 - Error Handling (docs/13-error-handling-and-fallbacks.md)
 ```

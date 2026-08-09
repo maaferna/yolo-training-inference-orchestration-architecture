@@ -10,7 +10,6 @@ docs/
 │   ├── 01-context-and-problem.md
 │   ├── 02-system-architecture.md
 │   ├── ... (18 more)
-│   └── adr/              # Architecture Decision Records
 │
 ├── portfolio/            # Portfolio and resume materials
 │   ├── PORTFOLIO_IMPLEMENTATION_GUIDE.md
@@ -24,7 +23,6 @@ docs/
 **For System Architecture Overview:**
 - Start with `architecture/01-context-and-problem.md`
 - Then read `architecture/02-system-architecture.md`
-- Reference `architecture/adr/` for design decisions
 
 **For Portfolio Materials:**
 - See `portfolio/PORTFOLIO_RESUME_CONTENT.md`

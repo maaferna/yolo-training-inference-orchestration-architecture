@@ -272,7 +272,7 @@ Archive: None
 Root: 8-10 essential files
 docs/architecture/: 20 numbered files (organized)
 docs/portfolio/: 2 files
-docs/adr/: ADRs
+docs/architecture/adr/: ADRs
 scripts/: 5 shell scripts
 .github/archive/: 30+ transitory files
 .github/archive/docs/: Transitory docs

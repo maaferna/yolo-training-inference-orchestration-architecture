@@ -637,7 +637,6 @@ For details, see [`docs/architecture/15-production-evolution-roadmap.md`](./docs
 2. `docs/architecture/14-error-handling-and-fallbacks.md`
 3. `docs/architecture/15-limitations-and-risks.md`
 4. `docs/architecture/16-production-evolution-roadmap.md`
-5. `docs/architecture/adr/`
 
 ---
 

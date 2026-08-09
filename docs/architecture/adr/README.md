@@ -125,7 +125,7 @@ You can reference specific ADRs when discussing:
 ## Contributing New ADRs
 
 When proposing new architectural decisions:
-1. Create new ADR file: `docs/adr/ADR-NNN-title.md`
+1. Create new ADR file: `docs/architecture/adr/ADR-NNN-title.md`
 2. Follow the template above
 3. Be specific about context and tradeoffs
 4. Always include a Public-Safe note

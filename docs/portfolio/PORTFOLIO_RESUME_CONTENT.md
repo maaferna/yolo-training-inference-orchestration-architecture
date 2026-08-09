@@ -423,7 +423,7 @@ DOCUMENTATION STRUCTURE:
 docs/01-overview.md                    → High-level system overview
 docs/02-system-architecture.md         → Visual architecture and components
 docs/03-component-responsibilities.md  → Detailed component interactions
-docs/adr/                              → Architecture Decision Records
+docs/architecture/adr/                              → Architecture Decision Records
 docs/MLOPS_*.md                        → MLOps evolution and strategy
 docs/13-error-handling-and-fallbacks   → Failure scenarios and recovery
 

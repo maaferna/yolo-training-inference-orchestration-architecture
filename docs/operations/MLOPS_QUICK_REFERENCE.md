@@ -147,7 +147,6 @@ cloned_task.execute()
 Project Root: <REPOSITORY_ROOT>/
 
 Key Directories:
-├── docs/adr/                    ← Architecture decisions
 ├── docs/MLOPS_STATUS_REPORT.md  ← Current status
 ├── docs/MIGRATION_*             ← Migration guides
 ├── examples/api-payloads/       ← API request examples
@@ -258,8 +257,6 @@ pkill -f training_worker
 
 | Document | Purpose | Location |
 |----------|---------|----------|
-| ADR-004 | ClearML architecture decision | docs/adr/ADR-004 |
-| ADR-007 | Alternative tracking systems | docs/adr/ADR-007 |
 | Migration Guide | Cloud → Self-Hosted | docs/MIGRATION_* |
 | MLOps Status | Current project status | docs/MLOPS_STATUS_REPORT |
 | This Guide | Quick reference | (this file) |
@@ -301,7 +298,7 @@ Before submitting a training job:
 
 ## 📞 Support
 
-**Question**: Check docs/adr/ for architectural decisions  
+**Question**: Check `docs/architecture/` for design documentation  
 **Bug**: Report in GitHub issues  
 **Access**: Contact MLOps team for ClearML credentials  
 **Performance**: Check MLOPS_STATUS_REPORT.md metrics  

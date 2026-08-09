@@ -5,6 +5,8 @@
 **Total Size**: ~103 KB of documentation  
 **Audience**: Researchers, DevOps, Managers, New Members  
 
+> **Note on Architecture Decision Records.** The ADRs listed in this report are **not part of this public repository**. They were removed during the public-safe sanitization because they contain client-specific implementation decisions. The sizes below describe the internal originals, not files you will find here.
+
 ---
 
 ## 🎯 Deliverables Summary
@@ -247,9 +249,7 @@ MLOPS_DOCUMENTATION_INDEX.md (entry point)
     ├─→ MIGRATION_CLEARML_CLOUD_TO_SELFHOSTED.md (execution)
     │   └─→ 4-week implementation
     │
-    └─→ adr/ADR-004 (technical)
-        ├─→ ADR-006 (notebooks policy)
-        └─→ ADR-007 (tool comparison)
+    └─→ Architecture Decision Records (internal only, see note above)
 ```
 
 ---

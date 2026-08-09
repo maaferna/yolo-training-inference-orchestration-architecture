@@ -381,8 +381,8 @@ Current:
 
 ## Documentation References
 
-- **Architecture**: docs/adr/ADR-001 through ADR-007
-- **ClearML Integration**: docs/adr/ADR-004
+- **Architecture**: docs/architecture/adr/ADR-001 through ADR-007
+- **ClearML Integration**: docs/architecture/adr/ADR-004
 - **Migration Guide**: docs/MIGRATION_CLEARML_CLOUD_TO_SELFHOSTED.md
 - **Deployment**: docs/deployment/
 - **API**: examples/api-payloads/
