@@ -5,7 +5,6 @@
 **Total Size**: ~103 KB of documentation  
 **Audience**: Researchers, DevOps, Managers, New Members  
 
-> **Note on Architecture Decision Records.** The ADRs listed in this report are **not part of this public repository**. They were removed during the public-safe sanitization because they contain client-specific implementation decisions. The sizes below describe the internal originals, not files you will find here.
 
 ---
 
