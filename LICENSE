@@ -62,8 +62,11 @@ This repository contains generalized, anonymized architecture documentation only
 It does NOT contain production source code, datasets, trained weights, real metrics,
 credentials, or private implementation details.
 
-The architecture patterns, design decisions, and integration approaches documented
-here are provided for portfolio, educational, and reference purposes.
+Scope
+
+This MIT licence covers the executable content of this repository: the scripts
+under scripts/. The documentation, diagrams and generated images are licensed
+separately under CC BY 4.0; see LICENSE-DOCS.
 
 No proprietary code, confidential information, or private IP is included in this
 repository.

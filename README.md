@@ -1,53 +1,39 @@
 # YOLO Training & Inference Orchestration Architecture
 
-## Technology & Architecture Stack
+> **Documentation only.** Generalized and anonymized architecture for an internal AI vision
+> platform. No source code, datasets, model weights, credentials or measured results. Every
+> number shown is illustrative.
 
-This repository documents an internal production-oriented AI vision platform architecture that combines web orchestration, GPU-backed machine learning services, dataset configuration management, experiment tracking, and research-oriented computer vision workflows.
+An internal platform where a limited group of operators and researchers submit YOLO training and
+high-resolution inference jobs. The design problem is not scale — it is keeping GPU-bound work
+from taking down a web application, and keeping the artifacts it produces traceable.
 
-### Core Platform
+[![System architecture](./assets/diagrams/01-system-architecture.png)](./assets/diagrams/01-system-architecture.png)
 
-![Python](https://img.shields.io/badge/Python-3.x-3776AB?style=for-the-badge&logo=python&logoColor=white)
-![Django](https://img.shields.io/badge/Django-Web%20Application-092E20?style=for-the-badge&logo=django&logoColor=white)
-![FastAPI](https://img.shields.io/badge/FastAPI-AI%20Service-009688?style=for-the-badge&logo=fastapi&logoColor=white)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Metadata%20Store-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
-![REST API](https://img.shields.io/badge/REST%20API-Service%20Integration-005571?style=for-the-badge)
+### What this repository argues
 
-### Machine Learning & Computer Vision
+Most architecture write-ups list what was built. This one is mostly about what was **not** built,
+and why:
 
-![PyTorch](https://img.shields.io/badge/PyTorch-GPU%20Runtime-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white)
-![CUDA](https://img.shields.io/badge/CUDA-GPU%20Acceleration-76B900?style=for-the-badge&logo=nvidia&logoColor=white)
-![YOLO](https://img.shields.io/badge/YOLO-Object%20Detection-111111?style=for-the-badge)
-![SAHI](https://img.shields.io/badge/SAHI-Sliced%20Inference-6A5ACD?style=for-the-badge)
-![OpenCV](https://img.shields.io/badge/OpenCV-Image%20Processing-5C3EE8?style=for-the-badge&logo=opencv&logoColor=white)
-![Segment Anything](https://img.shields.io/badge/SAM-Segmentation-FF6F00?style=for-the-badge)
-![Pillow](https://img.shields.io/badge/Pillow-Image%20Manipulation-8A2BE2?style=for-the-badge)
-![NumPy](https://img.shields.io/badge/NumPy-Numerical%20Processing-013243?style=for-the-badge&logo=numpy&logoColor=white)
+- **No job queue, no worker pool, no Kubernetes** — each is named as a non-goal with the specific
+  operational evidence that would justify it. See [the evolution roadmap](./docs/architecture/16-production-evolution-roadmap.md).
+- **The risks are stated, not hidden** — synchronous execution blocking the request, filesystem
+  coupling between services, a race condition on the file-based model reference, GPU contention.
+  See [limitations and risks](./docs/architecture/15-limitations-and-risks.md).
+- **Cost is an architectural decision** — where training runs and where the application lives are
+  reasoned about separately, from data volume and GPU hours.
+  See [deployment and cost strategy](./docs/architecture/20-deployment-cost-strategy.md).
 
-### MLOps, Experiment Tracking & Data Engineering
+### Start here
 
-![ClearML](https://img.shields.io/badge/ClearML-Experiment%20Tracking-1A73E8?style=for-the-badge)
-![YAML](https://img.shields.io/badge/YAML-Configuration-CB171E?style=for-the-badge&logo=yaml&logoColor=white)
-![JSON](https://img.shields.io/badge/JSON-Artifacts-000000?style=for-the-badge&logo=json&logoColor=white)
-![COCO](https://img.shields.io/badge/COCO-Annotation%20Format-7952B3?style=for-the-badge)
-![YOLO Format](https://img.shields.io/badge/YOLO%20Format-Dataset%20Labels-222222?style=for-the-badge)
-![CVAT](https://img.shields.io/badge/CVAT-Dataset%20Annotation-FF9800?style=for-the-badge)
-![Roboflow](https://img.shields.io/badge/Roboflow-Dataset%20Management-6706CE?style=for-the-badge)
+| If you have | Read |
+|---|---|
+| 30 seconds | The diagram above, and [the poster](./assets/poster/poster-architecture.png) |
+| 5 minutes | [The questions this architecture answers](#the-questions-this-architecture-answers) |
+| An hour | [`01-context-and-problem.md`](./docs/architecture/01-context-and-problem.md) onward, in order |
+| A hiring decision | [Limitations](./docs/architecture/15-limitations-and-risks.md), then the [ADRs](./docs/architecture/adr/) |
 
-### Infrastructure & Runtime
-
-![Docker](https://img.shields.io/badge/Docker-Containerized%20Runtime-2496ED?style=for-the-badge&logo=docker&logoColor=white)
-![Docker Compose](https://img.shields.io/badge/Docker%20Compose-Internal%20Orchestration-2496ED?style=for-the-badge&logo=docker&logoColor=white)
-![Linux](https://img.shields.io/badge/Linux-Operating%20System-FCC624?style=for-the-badge&logo=linux&logoColor=black)
-![Ubuntu](https://img.shields.io/badge/Ubuntu-GPU%20Runtime%20Environment-E95420?style=for-the-badge&logo=ubuntu&logoColor=white)
-![Jupyter](https://img.shields.io/badge/Jupyter-Research%20Workflow-F37626?style=for-the-badge&logo=jupyter&logoColor=white)
-![Shared Storage](https://img.shields.io/badge/Shared%20Storage-Artifact%20Exchange-607D8B?style=for-the-badge)
-
-### Architecture Scope
-
-![Documentation Only](https://img.shields.io/badge/Repository-Documentation%20Only-blue?style=for-the-badge)
-![Public Safe](https://img.shields.io/badge/Public--Safe-Anonymized-green?style=for-the-badge)
-![Internal Platform](https://img.shields.io/badge/Architecture-Internal%20AI%20Platform-purple?style=for-the-badge)
-![Production Oriented](https://img.shields.io/badge/Maturity-Production--Oriented%20Internal%20System-orange?style=for-the-badge)
+---
 
 ## ⚠️ Public-Safe Documentation Repository
 
@@ -171,8 +157,6 @@ Rendered diagrams for reading, presenting and portfolio use. All are generated f
 [`scripts/build_visuals.py`](./scripts/build_visuals.py); the PNGs and the SVGs in `assets/src/`
 are build products, not hand-edited files.
 
-[![System architecture](./assets/diagrams/01-system-architecture.png)](./assets/diagrams/01-system-architecture.png)
-
 | Diagram | What it answers |
 |---|---|
 | [01 · System architecture](./assets/diagrams/01-system-architecture.png) | How the layers separate and what talks to what |
@@ -257,6 +241,57 @@ Auxiliary dataset engineering workflow based on SAM-assisted object extraction, 
 ### 9. GPU Resource Management
 
 CUDA memory management and explicit cleanup between training runs on a single GPU, with multi-GPU strategies and GPU-aware scheduling documented as evaluated future work.
+
+---
+
+## Technology & Architecture Stack
+
+This repository documents an internal production-oriented AI vision platform architecture that combines web orchestration, GPU-backed machine learning services, dataset configuration management, experiment tracking, and research-oriented computer vision workflows.
+
+### Core Platform
+
+![Python](https://img.shields.io/badge/Python-3.x-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![Django](https://img.shields.io/badge/Django-Web%20Application-092E20?style=for-the-badge&logo=django&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-AI%20Service-009688?style=for-the-badge&logo=fastapi&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Metadata%20Store-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
+![REST API](https://img.shields.io/badge/REST%20API-Service%20Integration-005571?style=for-the-badge)
+
+### Machine Learning & Computer Vision
+
+![PyTorch](https://img.shields.io/badge/PyTorch-GPU%20Runtime-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white)
+![CUDA](https://img.shields.io/badge/CUDA-GPU%20Acceleration-76B900?style=for-the-badge&logo=nvidia&logoColor=white)
+![YOLO](https://img.shields.io/badge/YOLO-Object%20Detection-111111?style=for-the-badge)
+![SAHI](https://img.shields.io/badge/SAHI-Sliced%20Inference-6A5ACD?style=for-the-badge)
+![OpenCV](https://img.shields.io/badge/OpenCV-Image%20Processing-5C3EE8?style=for-the-badge&logo=opencv&logoColor=white)
+![Segment Anything](https://img.shields.io/badge/SAM-Segmentation-FF6F00?style=for-the-badge)
+![Pillow](https://img.shields.io/badge/Pillow-Image%20Manipulation-8A2BE2?style=for-the-badge)
+![NumPy](https://img.shields.io/badge/NumPy-Numerical%20Processing-013243?style=for-the-badge&logo=numpy&logoColor=white)
+
+### MLOps, Experiment Tracking & Data Engineering
+
+![ClearML](https://img.shields.io/badge/ClearML-Experiment%20Tracking-1A73E8?style=for-the-badge)
+![YAML](https://img.shields.io/badge/YAML-Configuration-CB171E?style=for-the-badge&logo=yaml&logoColor=white)
+![JSON](https://img.shields.io/badge/JSON-Artifacts-000000?style=for-the-badge&logo=json&logoColor=white)
+![COCO](https://img.shields.io/badge/COCO-Annotation%20Format-7952B3?style=for-the-badge)
+![YOLO Format](https://img.shields.io/badge/YOLO%20Format-Dataset%20Labels-222222?style=for-the-badge)
+![CVAT](https://img.shields.io/badge/CVAT-Dataset%20Annotation-FF9800?style=for-the-badge)
+![Roboflow](https://img.shields.io/badge/Roboflow-Dataset%20Management-6706CE?style=for-the-badge)
+
+### Infrastructure & Runtime
+
+![Docker](https://img.shields.io/badge/Docker-Containerized%20Runtime-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+![Docker Compose](https://img.shields.io/badge/Docker%20Compose-Internal%20Orchestration-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+![Linux](https://img.shields.io/badge/Linux-Operating%20System-FCC624?style=for-the-badge&logo=linux&logoColor=black)
+![Ubuntu](https://img.shields.io/badge/Ubuntu-GPU%20Runtime%20Environment-E95420?style=for-the-badge&logo=ubuntu&logoColor=white)
+![Jupyter](https://img.shields.io/badge/Jupyter-Research%20Workflow-F37626?style=for-the-badge&logo=jupyter&logoColor=white)
+![Shared Storage](https://img.shields.io/badge/Shared%20Storage-Artifact%20Exchange-607D8B?style=for-the-badge)
+
+### Architecture Scope
+
+![Documentation Only](https://img.shields.io/badge/Repository-Documentation%20Only-blue?style=for-the-badge)
+![Public Safe](https://img.shields.io/badge/Public--Safe-Anonymized-green?style=for-the-badge)
+![Internal Platform](https://img.shields.io/badge/Architecture-Internal%20AI%20Platform-purple?style=for-the-badge)
+![Production Oriented](https://img.shields.io/badge/Maturity-Production--Oriented%20Internal%20System-orange?style=for-the-badge)
 
 ---
 
@@ -699,9 +734,18 @@ This is a documentation and architecture reference repository. Contributions sho
 
 ## License
 
-This repository is licensed under the license defined in `LICENSE`.
+Two licences, because this repository holds two kinds of thing:
 
-The documentation is provided for portfolio, educational, and architectural reference purposes.
+| What | Licence | File |
+|---|---|---|
+| Documentation, diagrams and generated images — `docs/`, `diagrams/`, `assets/`, `README.md`, `CONTRIBUTING.md` | CC BY 4.0 | [`LICENSE-DOCS`](./LICENSE-DOCS) |
+| Executable content — `scripts/` | MIT | [`LICENSE`](./LICENSE) |
+
+CC BY 4.0 is the conventional fit for prose and diagrams; MIT's terms are written around
+"the Software" and sit awkwardly on an image. Reuse of the diagrams is welcome under attribution:
+credit this repository and link back to it.
+
+All numeric values in the documentation and diagrams are illustrative, not measured results.
 
 ---
 

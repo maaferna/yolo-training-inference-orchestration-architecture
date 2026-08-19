@@ -89,11 +89,11 @@ self-assessment against the rubric defined at `MLOPS_STATUS_REPORT.md:57`. It is
 |---|---|
 | L1 | ~~Roughly 45 broken internal links inside `.github/archive/`.~~ **Resolved** with C1: the archive is deleted. |
 | L2 | ~~Concrete ports and hostnames mutually inconsistent.~~ **Resolved** with M8: the AI service is `:8001` in all 12 references. The remaining ports (`8008` for ClearML, `8000` for Django, `9200` for Elasticsearch) are that software's documented defaults. |
-| L3 | `deep_learning/deep_learning/` duplicated route appears in two documents. It is documented honestly as a known routing bug, which is a point in the repository's favour; it does expose an internal app naming convention. |
+| L3 | ~~`deep_learning/deep_learning/` duplicated route.~~ **Closed, no action.** After the C2 purge removed the institution prefix, `deep_learning` is an ordinary Django app name with nothing distinguishing about it. The duplicated route is documented as a known bug, which is honest documentation worth keeping; genericizing it to `<app>/<app>` would cost clarity and buy nothing. |
 | L4 | ~~Dangling "Engineering Case Study" section.~~ **Resolved** with M6: replaced by a question-to-document table pointing at the eight documents that carry the reasoning. |
-| L5 | Author-facing template residue in reader-facing text: "Adjust the structure to match your actual repository" (`README.md:473`). |
-| L6 | **The licence does not fit the artefact.** `LICENSE` is MIT — a software licence — for a repository that is 128 Markdown files, 8 generated images and no application code. For prose and diagrams the conventional choice is CC BY 4.0. This matters now that the images are being embedded in a separate portfolio project: MIT's terms are written around "the Software" and its attribution requirement sits oddly on an image tag. |
-| L7 | `README.md` is 711 lines / 40 KB. As the front door for a portfolio reviewer this is long; the strongest material (the non-goals, the risk register, the cost reasoning) sits far below the fold. |
+| L5 | ~~Author-facing template residue.~~ **Resolved** during the renumber in step 3, replaced by a statement that the numbering is the reading order and that gaps and duplicates are treated as defects. |
+| L6 | ~~**The licence does not fit the artefact.**~~ **Resolved.** Split in two: CC BY 4.0 (`LICENSE-DOCS`) for the prose, diagrams and generated images; MIT (`LICENSE`) for the scripts, which are now real executable content. The README states which covers what and invites reuse of the diagrams under attribution. Original finding: ** `LICENSE` is MIT — a software licence — for a repository that is 128 Markdown files, 8 generated images and no application code. For prose and diagrams the conventional choice is CC BY 4.0. This matters now that the images are being embedded in a separate portfolio project: MIT's terms are written around "the Software" and its attribution requirement sits oddly on an image tag. |
+| L7 | ~~`README.md` opens with 50 lines of badges and buries its argument.~~ **Resolved by reordering rather than cutting.** The file still runs long, but a reviewer now meets, in order: a one-line scope disclaimer, the problem in two sentences, the system diagram, the three things the repository actually argues, and a "start here" table routed by how much time the reader has. The badge wall moved down beside the technology table, where it belongs. |
 
 ## Verified clean
 
@@ -150,7 +150,24 @@ adopting is to re-grep for the name of anything deleted before committing the de
    breaks every existing clone. Both are decisions for the repository owner, not defaults.
 6. **M5, M6** — repair the eight broken links.
 7. ~~**M3, M9, M8**~~ — **done.** The gate now reports no leaks and no advisory warnings.
-8. **L1–L7** — hygiene. Of these, **L6** (licence) is worth an early decision because the
-   diagrams are already being reused in a separate project.
+8. ~~**L1-L7**~~ — **done.** L1 and L2 closed with earlier steps, L5 during the renumber, L3 closed
+   as no-action with the reasoning recorded.
 
-Items 1 through 5 are what a technical reviewer is most likely to hit in the first ten minutes.
+---
+
+## Closing state
+
+All 2 critical, 7 high, 10 medium and 7 low findings are closed. `./scripts/validate-sanitization.sh`
+passes every blocking and advisory check.
+
+Two things this audit got wrong, both recorded above rather than quietly amended:
+
+- The original verdict said no critical leak blocked publication. It was reached by grepping for
+  leak patterns, and the worst finding — C1, a mapping table that made the whole sanitization
+  reversible — is not a pattern. Process documents have to be read.
+- The report itself then reproduced that mapping in full while describing the finding, and the
+  commit message describing C1 did the same. Both were redacted in the C2 rewrite. A document may
+  record that a substitution happened; never what it was.
+
+The residual exposure noted under C2 is outside this repository's control and is the one open
+item: old objects stay reachable by direct SHA until GitHub garbage-collects them.
