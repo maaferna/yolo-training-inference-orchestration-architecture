@@ -54,7 +54,24 @@ self-assessment against the rubric defined at `MLOPS_STATUS_REPORT.md:57`. It is
 | C1 | **The archive published the key to the sanitization.** `.github/archive/` was committed and public. It contained the complete before-and-after mapping produced during the public-release cleanup, presented as a table pairing each private identifier — container paths and Django model names — with the generic name that replaced it. Every generic name a reader meets in the live documentation could therefore be reversed to its private original, including an institution acronym the owner is not cleared to publish. The live documents were largely clean; the archive undid them. **Resolved**: the 79-file archive is deleted, and the sanitization is completed in the live documents, which had themselves retained 33 private identifiers the original cleanup missed. This report deliberately does not restate the mapping. | `.github/archive/` (deleted) · 8 live files |
 | C2 | ~~**Git history retained the pre-sanitization documents.**~~ **Resolved.** The commit that generalized the private identifiers left the earlier content reachable through `git log -S` and `git show`, so deleting the archive at `HEAD` was not sufficient. History was rewritten with `git-filter-repo` across all 64 commits, covering file contents, commit messages — three of which spelled the mapping out in prose, including one written during this audit — and every case variant of each identifier. Verified against a fresh clone of the remote: zero occurrences in content, messages and paths. All 64 commits, their authorship and dates are preserved; every SHA changed. | all commits, rewritten `6474480` → `8ac66da` |
 
-**Residual exposure after C2.** Force-pushing replaces the branch but does not immediately erase the old objects from GitHub: commits remain reachable by direct SHA URL until GitHub garbage-collects, and anything already cloned, cached or indexed is outside this repository's control. The repository had no forks at the time of the rewrite, which bounds the exposure. To remove the cached views, ask GitHub Support to purge them, quoting the old head `6474480`.
+**Residual exposure after C2 — measured, not assumed.** Force-pushing repoints the branch but
+does not remove the old objects from GitHub. Checked directly against the API and the raw host:
+
+- All 12 pre-rewrite commits that carried the identifier still resolve at
+  `/repos/{owner}/{repo}/commits/{sha}` (HTTP 200).
+- The deleted archive file is still downloadable at `raw.githubusercontent.com/.../2fab4da/...`,
+  identifiers intact.
+- The commit message of `2fab4da` still contains all eight identifiers, because it described the
+  mapping in prose before that message was rewritten.
+
+`raw.githubusercontent.com` does **not** serve every old path — `eaba2f2` returns 404 — so the
+exposure is partial rather than complete, but it is live.
+
+Closing it requires GitHub Support to purge the cached views; the request is drafted with these
+SHAs as evidence. Switching the repository to private closes public access immediately and is
+the faster mitigation the owner controls, at the cost of breaking the diagram URLs while private.
+No credential was involved, so nothing needs rotating. There were no forks at the time of the
+rewrite, which bounds the exposure.
 
 ## High
 
