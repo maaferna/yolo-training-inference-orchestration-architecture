@@ -315,7 +315,7 @@ Add optional footer disclaimer (Finding #2 above) for legal completeness.
 ### For Long-Term Maintenance
 
 - Add security policy (SECURITY.md) for vulnerability reporting
-- Keep archive/.github/ files but note they're historical
+- ~~Keep archive/.github/ files but note they're historical~~ Superseded: the archive was deleted in August 2026 after it was found to publish the sanitization mapping.
 - Annually verify no new sensitive info has leaked
 
 ---
@@ -346,7 +346,7 @@ Add optional footer disclaimer (Finding #2 above) for legal completeness.
 | docs/* (all 20 files) | Architecture | ✅ None | Safe |
 | examples/* | Templates | ✅ None | Safe |
 | diagrams/* | Visualizations | ✅ None | Safe |
-| .github/archive/ | Historical | ✅ None | Safe (archived process docs) |
+| .github/archive/ | Removed | ❌ Critical | Published the sanitization mapping table; deleted August 2026. See REPOSITORY-AUDIT-2026-08.md finding C1. |
 | .github/public-safety-checklist.md | Operational | ✅ None | Safe |
 
 **Conclusion**: All files cleared for public distribution.

@@ -56,6 +56,22 @@ dron) es una fuga y debe eliminarse.
 Marcadores aceptados como seguros: `PLACEHOLDER_*`, `<...>`, `[..._PLACEHOLDER]`, `example.com`,
 `0.0.0.0`, `127.0.0.1`, `/app/...`, `/data/shared/`, `/host/shared_artifacts`.
 
+### Tablas de correspondencia
+
+El fallo más caro de este repositorio no fue una fuga de patrón, sino una **tabla de
+correspondencias**: un documento de proceso que emparejaba cada identificador privado con su
+reemplazo genérico. Ningún regex lo detecta, y convierte todo el saneamiento en reversible.
+
+Al auditar, buscar documentos que expliquen el saneamiento en lugar de solo aplicarlo:
+
+```bash
+grep -rliE "sanitiz|replacement|before.*after|original.*generic" --include='*.md' . | grep -v '^./.git/'
+```
+
+Leerlos. Si alguno contiene un par original → reemplazo, es un hallazgo crítico aunque el resto
+del repositorio esté impecable. La regla: **un documento puede decir que hubo una sustitución;
+nunca cuál fue.**
+
 ### Nombres propios
 
 Buscar nombres de organizaciones, personas, fincas, campos o proyectos. No hay regex fiable para

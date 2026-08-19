@@ -60,7 +60,7 @@ examples/
   docker/                       Compose conceptual y .env de ejemplo
 scripts/                        validate-sanitization.sh (gate public-safe),
                                 build_visuals.py y render-visuals.sh (visuales)
-.github/                        Revisiones, checklist de seguridad, auditorías, archive/
+.github/                        Revisiones, checklist de seguridad, auditorías
 ```
 
 **Numeración de documentos**: los ficheros de `docs/architecture/` van de `01` a `20`, pero hay
@@ -122,6 +122,17 @@ El sistema de diseño (paleta, tipografía, retícula) está en
 3. Si se tocó la estructura de `docs/`, actualizar el índice del README y `docs/README.md`.
 4. Si se tocó un visual, editar `scripts/build_visuals.py`, ejecutar
    `./scripts/render-visuals.sh` y versionar el SVG y el PNG resultantes.
+
+## Identificadores privados
+
+El saneamiento público sustituyó nombres internos por genéricos. Los nombres válidos son
+`ProjectConfiguration`, `DetectionClass`, `ClassSet`, `DatasetConfig` y las rutas de contenedor
+`/app/compute_service` y `/app/web_service`.
+
+Nunca reintroducir los originales, ni siquiera para explicar la sustitución: publicar la
+correspondencia equivale a deshacer el saneamiento. Fue exactamente el fallo C1, que expuso un
+acrónimo de institución cuya publicación no está autorizada. Si un documento necesita hablar del
+cambio, describe la categoría, nunca el par original-reemplazo.
 
 ## Auditoría vigente
 
