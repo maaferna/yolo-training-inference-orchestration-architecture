@@ -49,8 +49,6 @@ docs/
   portfolio/                    Contenido de CV / LinkedIn / ficha de portafolio
   README.md                     Índice de la carpeta docs
 
-docs/adr/                       ⚠️ carpeta duplicada con 8 ficheros vacíos (ver auditoría)
-
 diagrams/                       Fuentes Mermaid (.mmd)
 assets/
   src/                          Fuentes SVG de los visuales (editables)
@@ -60,7 +58,7 @@ examples/
   api-payloads/                 Payloads conceptuales de request
   artifact-manifests/           Manifiestos de artefactos de ejemplo
   docker/                       Compose conceptual y .env de ejemplo
-scripts/                        Scripts de utilidad (⚠️ los de sanitización están vacíos)
+scripts/                        build_visuals.py y render-visuals.sh (generación de visuales)
 .github/                        Revisiones, checklist de seguridad, auditorías, archive/
 ```
 
@@ -125,7 +123,10 @@ El sistema de diseño (paleta, tipografía, retícula) está en
 
 ## Auditoría vigente
 
-`.github/REPOSITORY-AUDIT-2026-08.md` recoge 16 hallazgos abiertos. Los de mayor impacto:
-cifras sin respaldo presentadas como resultados, el índice del README desincronizado respecto a
-los ficheros reales, la colisión de prefijo `08`, y un diagrama Mermaid que muestra una cola de
-trabajos que la arquitectura declara inexistente. Consultarlo antes de tocar documentación.
+`.github/REPOSITORY-AUDIT-2026-08.md` recoge 16 hallazgos, 2 ya resueltos. Los de mayor impacto
+siguen abiertos: cifras sin respaldo presentadas como resultados, el índice del README
+desincronizado respecto a los ficheros reales, la colisión de prefijo `08`, un diagrama Mermaid
+que muestra una cola de trabajos que la arquitectura declara inexistente, y una ruta absoluta
+real en `docs/operations/MLOPS_QUICK_REFERENCE.md:147`. Consultarlo antes de tocar documentación.
+
+Los ADRs viven solo en `docs/architecture/adr/`; la carpeta `docs/adr/` fue eliminada.

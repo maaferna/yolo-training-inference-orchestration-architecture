@@ -42,7 +42,7 @@ Convenciones:
 
 ## Estructura de un ADR
 
-Los ADRs viven en `docs/architecture/adr/` (la carpeta `docs/adr/` está vacía y no debe usarse).
+Los ADRs viven en `docs/architecture/adr/`. Es la única ubicación válida.
 
 ```markdown
 # ADR-NNN: <Decisión en voz activa>
