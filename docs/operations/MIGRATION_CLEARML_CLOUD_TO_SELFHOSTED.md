@@ -11,7 +11,7 @@
 ## Quick Summary
 
 Migrate from ClearML Cloud (SaaS) to self-hosted ClearML Server to:
-- ✅ Reduce costs (~60% savings after 6 months)
+- ✅ Potentially reduce cost — quantify with the worksheet below before committing
 - ✅ Keep data internal (data sovereignty)
 - ✅ Full control and customization
 - ✅ Zero code changes (same API)
@@ -43,24 +43,38 @@ Migrate from ClearML Cloud (SaaS) to self-hosted ClearML Server to:
 
 ### Cost Analysis
 
+This is a worksheet, not a result. It predicts nothing until real figures are
+substituted, and no saving should be quoted anywhere until they have been.
+
 **Current** (ClearML Cloud):
 ```
-Monthly subscription: $X
-Storage: $Y
-Total/month: $X + $Y
-Annual cost: 12 * ($X + $Y) = $ANNUAL_CLOUD
+Monthly subscription:  CLOUD_SUBSCRIPTION
+Storage:               CLOUD_STORAGE
+Monthly total:         CLOUD_MONTHLY = CLOUD_SUBSCRIPTION + CLOUD_STORAGE
 ```
 
 **After Migration** (Self-Hosted):
 ```
-Server/VM: $Z/month
-Storage: $W/month
-Ops time: 4 hours/month × $rate = $OPS
-Total/month: $Z + $W + $OPS
-Annual cost: 12 * ($Z + $W + $OPS) = $ANNUAL_SELFHOSTED
+Server or VM:          HOST_MONTHLY
+Storage:               STORAGE_MONTHLY
+Operations time:       4 hours/month x HOURLY_RATE = OPS_MONTHLY
+Monthly total:         SELF_MONTHLY = HOST_MONTHLY + STORAGE_MONTHLY + OPS_MONTHLY
 
-ROI breakeven: $ANNUAL_CLOUD / $ANNUAL_SELFHOSTED
+One-off migration:     4 weeks of engineering time = MIGRATION_COST
 ```
+
+**Break-even**:
+```
+monthly_saving = CLOUD_MONTHLY - SELF_MONTHLY
+break_even     = MIGRATION_COST / monthly_saving        (months)
+```
+
+Two things this makes explicit that a raw price comparison hides:
+
+- If `monthly_saving` is zero or negative once operations time is counted, there
+  is no break-even and self-hosting costs more, whatever the subscription line says.
+- Operations time is the term most often left out, and the one most likely to
+  decide the answer for a small internal team.
 
 ---
 

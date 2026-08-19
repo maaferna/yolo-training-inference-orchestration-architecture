@@ -25,13 +25,13 @@ Senior Machine Learning Engineer | Company | 2024-2026
   variance across 3-5 seeds; implemented CUDA memory cleanup strategy 
   enabling clean statistical comparison
   
-• Implemented GPU memory optimization reducing OOM incidents by 80% 
-  through progressive resource scaling (batch size → image size) and 
-  automatic fallback validation without terminating training
+• Implemented GPU memory optimization that recovers from OOM through 
+  progressive resource scaling (batch size → image size) and automatic 
+  fallback validation, degrading the run instead of terminating it
   
 • Designed ClearML experiment tracking integration with comprehensive 
-  metadata capture and multi-phase MLOps roadmap (MVP Level 2/5 → 
-  Enterprise Level 4/5), including self-hosted migration strategy
+  metadata capture and multi-phase MLOps roadmap (self-assessed Level 
+  2/5 → 4/5), including a self-hosted migration plan
 ```
 
 ---
@@ -107,7 +107,7 @@ infrastructure planning—all on public GitHub.
 Key highlights:
 • Microservice separation (Django web + FastAPI compute)
 • Multi-seed training with statistical validation
-• CUDA memory optimization reducing OOM by 80%
+• CUDA memory optimization that recovers from OOM instead of failing
 • ClearML integration with enterprise-scale roadmap
 
 Full architecture: github.com/maaferna/yolo-training-inference-orchestration-architecture
@@ -147,7 +147,8 @@ queue wait times, GPU utilization, and scale accordingly."
 Q: "How do you handle GPU memory issues?"
 Response: "Multi-seed training requires explicit CUDA cleanup. We 
 implemented progressive resource scaling (batch size → image size) and 
-automatic fallback validation reducing OOM by 80%."
+automatic fallback validation, so an OOM degrades the run instead of 
+ending it."
 ```
 
 ---
@@ -239,11 +240,11 @@ Add diagrams showing:
 - SAHI tiling strategy
 - MLOps evolution phases
 
-STEP 4: Incorporate Metrics
-Highlight quantified results:
-- 80% OOM reduction
-- 15-25% mAP improvement on small objects
-- ~60% infrastructure cost reduction (projected)
+STEP 4: Incorporate Outcomes
+Highlight what the design achieves, not invented percentages:
+- OOM recovered rather than fatal
+- Small objects detectable that full-frame inference misses
+- Self-hosted migration decided against an explicit cost model
 
 STEP 5: Link Strategy
 Internal: Link to related projects if any
@@ -412,7 +413,7 @@ This keeps training alive even in constrained environments. Between
 training runs (especially multi-seed), we explicit ly clean CUDA 
 memory to avoid hidden failures.
 
-Result: 80% reduction in OOM-caused training terminations."
+Result: an OOM degrades the run instead of ending it."
 ```
 
 ### Q4: "Why SAHI for inference?"
@@ -432,8 +433,8 @@ How it works:
    enough to detect)
 3. Merge results automatically, removing duplicates
 
-Result: 15-25% mAP improvement on small objects vs single-scale 
-inference.
+Result: objects too small to detect at full-frame scale become 
+detectable inside their tile.
 
 Trade-off: Compute cost increases (N tiles to run detection on), but 
 accuracy improvement is worth it."

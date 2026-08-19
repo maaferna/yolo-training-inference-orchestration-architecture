@@ -135,16 +135,19 @@ Q4 2026: Automated pipelines + job queue
 
 ## 💼 Business Value
 
-### Cost Savings
+### Cost
 ```
-Before:  ClearML Cloud @ $X/month
-After:   ClearML Self-Hosted @ ~40% of cloud cost
-Savings: ~60% annually (after 6-month break-even)
+Before:  ClearML Cloud subscription plus storage
+After:   Server or VM, storage, and recurring operations time
+Method:  Break-even worksheet in MIGRATION_CLEARML_CLOUD_TO_SELFHOSTED.md
 ```
+No saving is claimed here. Self-hosting trades a subscription for infrastructure
+plus operations time, and whether that nets out positive depends on figures this
+repository does not contain.
 
 ### Maturity Improvement
 ```
-Current:  Level 2/5 (Structured Tracking)
+Current:  Level 2/5 (Structured Tracking, self-assessed)
 Q3 2026:  Level 3/5 (Automated Pipelines)
 Q4 2026:  Level 4/5 (CI/CD Integration)
 2027:     Level 5/5 (Full MLOps Platform)

@@ -33,7 +33,7 @@
 ```
 • Implemented CUDA memory management strategy with progressive 
   resource scaling (batch size → image size reduction) and automatic 
-  fallback validation, reducing OOM incidents by 80% without 
+  fallback validation that recovers from OOM instead of 
   terminating training; engineered explicit cleanup between seeds 
   (torch.cuda.empty_cache, memory reset) enabling reliable multi-seed 
   statistical comparison
@@ -52,8 +52,8 @@
   auto-metadata (git commit, environment, packages) and manual logging 
   (hyperparameters, metrics, artifacts); documented multi-phase MLOps 
   evolution roadmap (MVP Level 2/5 → Level 4/5 by end of year) with 
-  migration strategy for transitioning from cloud to self-hosted 
-  infrastructure (~60% cost reduction)
+  migration plan for transitioning from cloud to self-hosted 
+  infrastructure with an explicit cost model for the decision
 ```
 
 **Why this matters**: Shows MLOps thinking beyond just training code.
@@ -192,9 +192,9 @@
   detection, processing large images through configurable overlapping 
   tiles and automatic result merging; documented compute-vs-accuracy 
   trade-offs enabling dynamic strategy selection based on image 
-  characteristics and inference latency requirements, improving 
-  per-object mAP on small objects by up to 15-25% vs single-scale 
-  inference
+  characteristics and inference latency requirements, recovering 
+  small objects that fall below the detector's effective resolution 
+  at full-frame scale
 ```
 
 **Why this matters**: Demonstrates understanding of practical CV challenges on real-world data.
@@ -298,8 +298,8 @@ KEY CONTRIBUTIONS:
 ✓ Designed GPU memory management strategy with multi-seed validation 
   reducing training instability and improving reproducibility
 ✓ Implemented ClearML integration with comprehensive MLOps evolution 
-  roadmap (MVP Level 2/5 → Level 4/5), including 4-week self-hosted 
-  migration strategy with ~60% cost reduction
+  roadmap (self-assessed Level 2/5 → Level 4/5), including a 4-week 
+  self-hosted migration plan and the cost model behind it
 ✓ Documented high-resolution inference patterns using SAHI tiling, 
   enabling small-object detection on large images with compute/accuracy 
   trade-offs
@@ -513,9 +513,9 @@ KEY FEATURES:
 ✅ **Architecture Clarity**: Explicit responsibility boundaries prevent failure coupling  
 ✅ **Reproducibility**: Multi-seed validation + ClearML tracking ensure statistical rigor  
 ✅ **Scalability**: Microservice separation enables independent growth phases  
-✅ **MLOps Foundation**: Roadmap from MVP (Level 2/5) to enterprise (Level 4/5)  
-✅ **GPU Optimization**: CUDA memory strategy reduces OOM incidents 80%  
-✅ **Cost Efficiency**: Self-hosted ClearML migration reduces costs ~60%  
+✅ **MLOps Foundation**: Roadmap from self-assessed Level 2/5 to Level 4/5  
+✅ **GPU Optimization**: Progressive resource scaling recovers from OOM instead of failing  
+✅ **Cost Efficiency**: Self-hosted migration assessed against an explicit cost model  
 
 ### Technical Highlights
 
@@ -535,7 +535,7 @@ SAHI tiling approach for small-object detection:
 Large Image (4K) → Tile into 512x512 regions with overlap
 → Per-tile YOLO detection
 → Automatic result merging with NMS
-→ Per-object accuracy improves 15-25% vs single-scale
+→ Small objects below full-frame detection scale become detectable
 ```
 
 **3. MLOps Evolution**
@@ -648,7 +648,9 @@ these principles apply across domains.
 ### ✅ DO:
 - Adapt bullets to specific job descriptions
 - Emphasize the problems you solved, not just technologies used
-- Use quantified improvements where available (80% OOM reduction, 15-25% mAP improvement)
+- Describe outcomes, not invented numbers. This repository documents architecture, so it
+  cannot evidence a percentage. If you have a measured figure from the private work, it
+  belongs on your CV — never in this public repository, and never sourced back to it
 - Highlight decision-making: *why* multi-seed, *why* microservices
 - Reference the architecture: "See docs/adr for detailed decision rationale"
 - Customize LinkedIn description based on role (ML vs Backend vs CV)

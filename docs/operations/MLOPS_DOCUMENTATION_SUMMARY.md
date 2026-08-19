@@ -229,8 +229,8 @@ docs/
 - Can migrate from Cloud to Self-Hosted with zero code changes
 - Only need to update environment variables
 - Can run parallel for safety (2 weeks)
-- Cost reduction: ~60% after 6 months
-- Break-even: ~6 months
+- Cost impact: computed per-organization with the break-even worksheet
+- Operations time is part of the self-hosted cost, not an extra
 
 ### 3. **Current Maturity is Honest**
 - Level 2/5 in MLOps maturity (structured tracking)
@@ -269,9 +269,9 @@ docs/
 
 ### For Managers
 - ✅ Current state visibility (Status Report)
-- ✅ Maturity assessment (Level 2/5)
+- ✅ Maturity assessment (self-assessed Level 2/5)
 - ✅ Roadmap with timelines (Q3, Q4, 2027)
-- ✅ Cost-benefit analysis (migration reduces costs ~60%)
+- ✅ Cost-benefit method (break-even worksheet, figures to be supplied)
 
 ### For DevOps
 - ✅ Step-by-step migration (4-week plan)

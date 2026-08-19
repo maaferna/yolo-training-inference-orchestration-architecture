@@ -26,11 +26,16 @@ The problems are of a different kind, and there are two clusters of them.
 including one installed as a git pre-commit hook. The enforcement mechanism for the repository's
 central policy was a set of commands that errored out. It is now a single working gate.
 
-**Numbers presented as results have no source.** "80% OOM reduction" and "15-25% mAP improvement"
-appear only in the two portfolio documents and nowhere in the architecture documentation.
-"~60% cost savings" is derived from a cost model whose every input is a placeholder. All three
-are fed into resume bullets, and the portfolio guide's own DO list instructs the reader to use
-them — on the same page where its DON'T list forbids overclaiming.
+~~**Numbers presented as results have no source.**~~ **Resolved** — see H2 and H3. "80% OOM
+reduction" and "15-25% mAP improvement" appeared only in the two portfolio documents and nowhere
+in the architecture documentation. "~60% cost savings" derived from a cost model whose every
+input was a placeholder. All three fed into resume bullets, and the portfolio guide's own DO list
+instructed the reader to use them — on the same page where its DON'T list forbids overclaiming.
+
+The `Level 2/5 → 4/5` maturity claim was **checked and kept**: unlike the others it is a genuine
+self-assessment against the rubric defined at `MLOPS_STATUS_REPORT.md:57`. It is now labelled
+"self-assessed" wherever it appears. Also checked and kept: the `1%` promotion threshold and the
+`50%` batch-size fallback step, which are configuration values, not results.
 
 ---
 
@@ -39,8 +44,8 @@ them — on the same page where its DON'T list forbids overclaiming.
 | # | Finding | Location |
 |---|---|---|
 | H1 | ~~**The documented safety gate is broken.**~~ **Resolved.** Six commands referenced sanitization scripts deleted in `ca58f44`, including one installed as a pre-commit hook that failed silently. Fixed by implementing a single working gate, `scripts/validate-sanitization.sh`, and rewriting the three affected sections of `CONTRIBUTING.md` around it. The gate reproduces M1 and M9 independently. | `CONTRIBUTING.md` · `scripts/validate-sanitization.sh` |
-| H2 | **Unsourced performance claims used in CV material.** "reducing OOM incidents by 80%" appears 8 times and "15-25% mAP improvement on small objects" 5 times, exclusively inside `docs/portfolio/`. Neither number appears in `13-error-handling-and-fallbacks.md`, `12-gpu-resource-management.md`, `10-sahi-inference-engine.md` or anywhere else. They have no derivation in the repository. | `PORTFOLIO_RESUME_CONTENT.md:36,196,517,538,651` · `PORTFOLIO_IMPLEMENTATION_GUIDE.md:28,110,150,244,245,415,435` |
-| H3 | **A cost saving asserted from a model made entirely of placeholders.** The cost analysis reads `Monthly subscription: $X` / `Storage: $Y` / `Server/VM: $Z` / `Ops time: 4 hours × $rate`. Nothing can be computed from it, yet line 14 states "~60% savings after 6 months" as fact, and the delivery report derives it from an equally unsourced "~40% of cloud cost". The claim then propagates to 8 locations including resume bullets. Separately, `ROI breakeven: $ANNUAL_CLOUD / $ANNUAL_SELFHOSTED` is a ratio, not a breakeven — a breakeven is a point in time. | `MIGRATION_CLEARML_CLOUD_TO_SELFHOSTED.md:14,44-62` · `MLOPS_DELIVERY_REPORT.md:141-142` · `MLOPS_DOCUMENTATION_SUMMARY.md:232,274` · `MLOPS_IMPLEMENTATION_ROADMAP.md:521` · both portfolio docs |
+| H2 | ~~**Unsourced performance claims used in CV material.**~~ **Resolved.** "reducing OOM incidents by 80%" (8 occurrences) and "15-25% mAP improvement" (5) existed only in `docs/portfolio/` with no derivation anywhere. All 16 rewritten as outcome statements: OOM is recovered rather than fatal; small objects below full-frame detection scale become detectable. The DO-list instruction that told readers to reuse the numbers now says the opposite. | `PORTFOLIO_RESUME_CONTENT.md:36,196,517,538,651` · `PORTFOLIO_IMPLEMENTATION_GUIDE.md:28,110,150,244,245,415,435` |
+| H3 | ~~**A cost saving asserted from a model made entirely of placeholders.**~~ **Resolved.** The worksheet is now labelled as a worksheet, the placeholders are named after what they hold, `ROI breakeven` is replaced with a real break-even (`MIGRATION_COST / monthly_saving`, in months), and operations time is called out as the term most likely to decide the answer. The eight downstream "~60%" claims are gone. Original finding: ** The cost analysis reads `Monthly subscription: $X` / `Storage: $Y` / `Server/VM: $Z` / `Ops time: 4 hours × $rate`. Nothing can be computed from it, yet line 14 states "~60% savings after 6 months" as fact, and the delivery report derives it from an equally unsourced "~40% of cloud cost". The claim then propagates to 8 locations including resume bullets. Separately, `ROI breakeven: $ANNUAL_CLOUD / $ANNUAL_SELFHOSTED` is a ratio, not a breakeven — a breakeven is a point in time. | `MIGRATION_CLEARML_CLOUD_TO_SELFHOSTED.md:14,44-62` · `MLOPS_DELIVERY_REPORT.md:141-142` · `MLOPS_DOCUMENTATION_SUMMARY.md:232,274` · `MLOPS_IMPLEMENTATION_ROADMAP.md:521` · both portfolio docs |
 | H4 | **The documentation index names files that do not exist.** 11 of 20 entries are wrong (`09-yolo-training-engine.md` … `19-jupyter-research-workflow.md`); the last never existed in any form. Two real documents — `18-inference-result-synchronization.md` and `19-deployment-cost-strategy.md` — are missing from the index entirely. | `README.md:480-501` |
 | H5 | **The repository tree block repeats the same wrong numbering** and places `public-safety-checklist.md` at the root; it lives in `.github/`. | `README.md:441-471,508` |
 | H6 | **Multi-GPU is described two incompatible ways.** README and `02-system-architecture.md` state "Training GPU execution — Implemented / evaluated", "DataParallel support and evaluated DDP patterns". `12-gpu-resource-management.md` states "DataParallel (Current **Single-GPU** Approach)", "Why Single GPU Currently", "Distributed Data Parallel (DDP) — **Deferred to Phase 3**" and "Current: Sequential Training on Same GPU". The front page oversells relative to the document that actually specifies the runtime. | `README.md:70,134,259,297` vs `12-gpu-resource-management.md:120,144,154,376` |
@@ -109,9 +114,8 @@ adopting is to re-grep for the name of anything deleted before committing the de
 1. ~~**H1**~~ — **done.** `scripts/validate-sanitization.sh` implements the gate; `CONTRIBUTING.md`
    documents it. Running it now reports **2 blocking failures — M1 and M9** — which is the gate
    working, not a regression. Those are steps 5 and 7 below and are one line each.
-2. **H2, H3** — qualify or delete the unsourced numbers, and remove the DO-list instruction that
-   tells the reader to reuse them. Highest credibility return in the repository for the least
-   effort.
+2. ~~**H2, H3**~~ — **done.** 16 performance claims rewritten as outcomes, 8 cost claims replaced
+   by a break-even method, the DO-list instruction inverted, the maturity self-assessment labelled.
 3. **H4, H5, M2, M10** — resolve the `08-` collision, then regenerate every index and tree from
    disk. One commit, since renumbering moves filenames and inbound links.
 4. **H6, H7, M4** — reconcile the multi-GPU wording with `12-gpu-resource-management.md`, remove

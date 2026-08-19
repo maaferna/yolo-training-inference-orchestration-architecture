@@ -518,7 +518,8 @@ Estimated savings: $ANNUAL_CLOUD - $ANNUAL_SELFHOSTED annually
 ## ❓ FAQ
 
 ### Q: Why migrate from Cloud to self-hosted?
-**A**: Cost reduction (~60%), data sovereignty, full control, no vendor lock-in
+**A**: Data sovereignty, full control and no vendor lock-in. Cost may also fall, but that
+depends on the break-even worksheet in the migration guide, not on a fixed percentage.
 
 ### Q: Will this disrupt experiments?
 **A**: No. Cloud and self-hosted run in parallel for 2 weeks before switching.
