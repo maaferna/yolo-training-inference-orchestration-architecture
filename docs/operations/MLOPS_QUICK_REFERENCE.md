@@ -11,7 +11,7 @@
 
 ```
 1. Go to http://your-django-ui/train
-2. Select model: YOLO-v8, v8, v5
+2. Select model: a supported YOLO variant (YOLOv8 or YOLOv11)
 3. Select dataset: COCO, Custom Dataset
 4. Set hyperparameters:
    - Learning rate: 0.001
@@ -25,10 +25,10 @@
 ### Via FastAPI (Programmatic)
 
 ```bash
-curl -X POST http://fastapi:8080/train \
+curl -X POST http://fastapi:8001/train \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "yolo_v8",
+    "model": "<YOLO_VARIANT>",
     "dataset": "coco",
     "learning_rate": 0.001,
     "batch_size": 32,
@@ -104,7 +104,7 @@ print(f"Model: {best_task.artifacts['model']['url']}")
 ### Run Model Inference
 
 ```bash
-curl -X POST http://fastapi:8080/infer \
+curl -X POST http://fastapi:8001/infer \
   -H "Content-Type: application/json" \
   -d '{
     "image_path": "/data/image.jpg",
@@ -147,17 +147,15 @@ cloned_task.execute()
 Project Root: <REPOSITORY_ROOT>/
 
 Key Directories:
-├── docs/MLOPS_STATUS_REPORT.md  ← Current status
-├── docs/MIGRATION_*             ← Migration guides
+├── docs/architecture/           ← 21 architecture documents
+├── docs/operations/             ← status, roadmap, migration, this guide
 ├── examples/api-payloads/       ← API request examples
 ├── examples/docker/             ← Docker configs
-└── shared_storage/              ← Shared models & datasets
-    ├── models/
-    │   ├── best.pt
-    │   ├── yolo_v8_*.pt
-    │   └── (versioned models)
-    └── datasets/
-        ├── coco/
+└── /shared_storage/             ← see docs/architecture/07-shared-storage-and-artifacts.md
+    ├── models/                  ← checkpoints and the selected model reference
+    ├── training_runs/           ← per-run summaries and metrics
+    ├── inference_runs/          ← manifests and compressed previews
+    └── reports/
         └── custom/
 ```
 
@@ -257,8 +255,9 @@ pkill -f training_worker
 
 | Document | Purpose | Location |
 |----------|---------|----------|
-| Migration Guide | Cloud → Self-Hosted | docs/MIGRATION_* |
-| MLOps Status | Current project status | docs/MLOPS_STATUS_REPORT |
+| Migration Guide | Cloud → Self-Hosted | `docs/operations/MIGRATION_CLEARML_CLOUD_TO_SELFHOSTED.md` |
+| MLOps Status | Current project status | `docs/operations/MLOPS_STATUS_REPORT.md` |
+| Architecture | System design, 21 documents | `docs/architecture/` |
 | This Guide | Quick reference | (this file) |
 
 ---
@@ -277,8 +276,8 @@ pkill -f training_worker
 
 ### Project Resources
 - Django UI: http://your-domain/
-- FastAPI Docs: http://fastapi-service:8080/docs
-- Shared Storage: /shared_storage/
+- FastAPI Docs: http://fastapi:8001/docs
+- Shared Storage: `/shared_storage/` (see `docs/architecture/07-shared-storage-and-artifacts.md`)
 
 ---
 

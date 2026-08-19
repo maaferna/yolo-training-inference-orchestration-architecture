@@ -362,7 +362,7 @@ curl -s http://localhost:8008/version > /dev/null && \
   echo "✅ Web UI: OK" || echo "❌ Web UI: DOWN"
 
 # 2. MongoDB
-docker exec clearml-mongo mongosh -u clearml -p clearml_password --eval "db.adminCommand('ping')" 2>/dev/null | grep "ok" > /dev/null && \
+docker exec clearml-mongo mongosh -u "$MONGO_ROOT_USER" -p "$MONGO_ROOT_PASSWORD" --eval "db.adminCommand('ping')" 2>/dev/null | grep "ok" > /dev/null && \
   echo "✅ MongoDB: OK" || echo "❌ MongoDB: DOWN"
 
 # 3. Elasticsearch
@@ -459,7 +459,7 @@ docker exec clearml-server ping mongo
 
 ```bash
 # Check MongoDB has data:
-docker exec clearml-mongo mongosh -u clearml -p clearml_password
+docker exec clearml-mongo mongosh -u "$MONGO_ROOT_USER" -p "$MONGO_ROOT_PASSWORD"
 > use clearml
 > db.tasks.count()
 # Should be > 0 after submitting jobs
@@ -481,7 +481,7 @@ df -h /opt/clearml/data
 docker exec clearml-server /opt/clearml/bin/cleanup.sh --days 30
 
 # Or manually remove old experiments:
-docker exec clearml-mongo mongosh -u clearml -p clearml_password
+docker exec clearml-mongo mongosh -u "$MONGO_ROOT_USER" -p "$MONGO_ROOT_PASSWORD"
 > use clearml
 > db.tasks.deleteMany({created: {$lt: new Date(Date.now() - 90*24*60*60*1000)}})
 # Deletes experiments older than 90 days

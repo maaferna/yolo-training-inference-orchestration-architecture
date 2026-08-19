@@ -75,7 +75,7 @@ Roadmap 📋: Q3 2026 migration, Q4 2026 data versioning
 ---
 
 ### 4. **MIGRATION_CLEARML_CLOUD_TO_SELFHOSTED.md** ✨ NEW
-**File**: `docs/MIGRATION_CLEARML_CLOUD_TO_SELFHOSTED.md`
+**File**: `docs/operations/MIGRATION_CLEARML_CLOUD_TO_SELFHOSTED.md`
 
 Step-by-step guide for DevOps team:
 - **Phase 1**: Assessment (Week 1)
@@ -107,7 +107,7 @@ Step-by-step guide for DevOps team:
 ---
 
 ### 5. **MLOPS_STATUS_REPORT.md** ✨ NEW
-**File**: `docs/MLOPS_STATUS_REPORT.md`
+**File**: `docs/operations/MLOPS_STATUS_REPORT.md`
 
 Current project state assessment:
 - **Executive Summary**: Status & next phase
@@ -126,7 +126,7 @@ Current project state assessment:
 ---
 
 ### 6. **MLOPS_QUICK_REFERENCE.md** ✨ NEW
-**File**: `docs/MLOPS_QUICK_REFERENCE.md`
+**File**: `docs/operations/MLOPS_QUICK_REFERENCE.md`
 
 Daily operations cheat sheet:
 - How to submit training job (via Django UI and FastAPI)
@@ -142,7 +142,7 @@ Daily operations cheat sheet:
 ---
 
 ### 7. **MLOPS_DOCUMENTATION_INDEX.md** ✨ NEW
-**File**: `docs/MLOPS_DOCUMENTATION_INDEX.md`
+**File**: `docs/operations/MLOPS_DOCUMENTATION_INDEX.md`
 
 Central navigation hub organized by audience:
 - **For Researchers**: Start → Quick Reference

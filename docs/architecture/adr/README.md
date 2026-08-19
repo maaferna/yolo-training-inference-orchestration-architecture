@@ -25,7 +25,7 @@ Each ADR follows a standard format:
 | 004 | Use ClearML for Experiment Tracking | ✅ Accepted | June 2026 | **MLOps** |
 | 005 | Use SAHI for High-Resolution Small-Object Inference | ✅ Accepted | June 2026 | Inference |
 | 006 | Use Notebooks as Auxiliary Research Workflow | ✅ Accepted | June 2026 | **MLOps** |
-| 007 | ClearML Experiment Tracking Alternatives & Rationale | ✅ Accepted | June 2026 | **MLOps** |
+| 007 | Tracking Tool Evaluation: ClearML over MLflow and W&B | ✅ Accepted (supports ADR-004) | June 2026 | **MLOps** |
 
 ### Reading Guide by Topic
 
@@ -35,13 +35,15 @@ Each ADR follows a standard format:
 - **ADR-003**: Why FastAPI is our compute boundary
 
 #### 📊 MLOps & Experiment Management
-- **ADR-004**: ClearML experiment tracking **[Includes migration strategy to self-hosted]**
+- **ADR-004**: The tracking decision, its architecture and the self-hosted migration strategy — **start here**
+- **ADR-007**: The evaluation behind it — why ClearML over MLflow and Weights & Biases
 - **ADR-006**: Why notebooks are research tools, not production
-- **ADR-007**: Alternative tracking solutions and why ClearML won
 
 #### 🔬 Inference & Models
 - **ADR-005**: Why SAHI for small-object detection
-- **ADR-007** (future): Model registry and production model selection
+
+> A formal model registry has no ADR yet. Model references currently live in shared storage;
+> see finding on race conditions in `../10-continuous-improvement-training.md`.
 
 ## ADR Template
 

@@ -1,8 +1,13 @@
-# ADR-007: Use ClearML for Experiment Tracking and Reproducibility
+# ADR-007: Tracking Tool Evaluation — ClearML over MLflow and Weights & Biases
 
-**Status**: Accepted  
-**Date**: June 2026  
-**Public-Safe**: Yes  
+**Status**: Accepted — supporting evaluation for ADR-004
+**Date**: June 2026
+**Public-Safe**: Yes
+**Relationship**: This ADR records *why* ClearML was chosen: the tool comparison, the
+reproducibility workflow it enables and the governance it does not provide. The decision itself,
+its integration architecture and the migration strategy are in
+[ADR-004](./ADR-004-clearml-experiment-tracking.md). Read ADR-004 first; read this one when the
+question is "why not MLflow or Weights & Biases?".
 
 ---
 

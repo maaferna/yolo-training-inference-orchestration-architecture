@@ -383,7 +383,7 @@ Current:
 
 - **Architecture**: docs/architecture/adr/ADR-001 through ADR-007
 - **ClearML Integration**: docs/architecture/adr/ADR-004
-- **Migration Guide**: docs/MIGRATION_CLEARML_CLOUD_TO_SELFHOSTED.md
+- **Migration Guide**: docs/operations/MIGRATION_CLEARML_CLOUD_TO_SELFHOSTED.md
 - **Deployment**: docs/deployment/
 - **API**: examples/api-payloads/
 

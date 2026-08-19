@@ -1,8 +1,12 @@
 # ADR-004: Use ClearML for Experiment Tracking with Local Artifacts as Source of Truth
 
-**Status**: Accepted  
-**Date**: June 2026  
-**Public-Safe**: Yes  
+**Status**: Accepted — decision of record for experiment tracking
+**Date**: June 2026
+**Public-Safe**: Yes
+**Relationship**: This ADR records the decision, the integration architecture and the
+cloud-to-self-hosted migration strategy. The evaluation that led here — ClearML compared against
+MLflow and Weights & Biases — is in [ADR-007](./ADR-007-clearml-experiment-tracking.md), which
+supports this decision rather than competing with it.
 
 ---
 
@@ -359,6 +363,10 @@ Target Setup (Self-Hosted):
 
 ### Docker Compose Setup (Self-Hosted)
 
+> Credentials are read from the environment and never written into the file. Supply them
+> through a `.env` that is git-ignored, or through your platform's secret store. The default
+> RabbitMQ `guest:guest` account should be replaced before the service is reachable.
+
 ```yaml
 # docker-compose.yml for ClearML Server
 version: '3.8'
@@ -371,8 +379,8 @@ services:
     ports:
       - "27017:27017"
     environment:
-      MONGO_INITDB_ROOT_USERNAME: clearml
-      MONGO_INITDB_ROOT_PASSWORD: clearml_password
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
     volumes:
       - mongo_data:/data/db
     restart: unless-stopped
@@ -398,9 +406,9 @@ services:
       - "8008:8008"  # Web UI + API
       - "8080:8080"  # File server
     environment:
-      MONGO_URL: mongodb://clearml:clearml_password@mongo:27017
+      MONGO_URL: mongodb://${MONGO_ROOT_USER}:${MONGO_ROOT_PASSWORD}@mongo:27017
       ELASTICSEARCH_URL: http://elasticsearch:9200
-      CLEARML_RABBITMQ_URL: amqp://guest:guest@rabbitmq:5672//
+      CLEARML_RABBITMQ_URL: amqp://${RABBITMQ_USER}:${RABBITMQ_PASSWORD}@rabbitmq:5672//
     depends_on:
       - mongo
       - elasticsearch
@@ -530,7 +538,7 @@ Self-Hosted ClearML Server
 curl http://localhost:8008/version
 
 # Check MongoDB
-docker exec clearml-mongo mongosh -u clearml -p clearml_password --eval "db.adminCommand('ping')"
+docker exec clearml-mongo mongosh -u "$MONGO_ROOT_USER" -p "$MONGO_ROOT_PASSWORD" --eval "db.adminCommand('ping')"
 
 # Check Elasticsearch
 curl http://localhost:9200/_cluster/health

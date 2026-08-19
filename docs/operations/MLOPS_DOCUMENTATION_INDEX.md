@@ -307,8 +307,8 @@ See [MLOps Status Report](MLOPS_STATUS_REPORT.md) for detailed metrics.
 
 ### Project Resources
 - Django UI: http://your-domain/ (set in deployment)
-- FastAPI Docs: http://fastapi-service:8080/docs
-- Shared Storage: /shared_storage/
+- FastAPI Docs: http://fastapi:8001/docs
+- Shared Storage: `/shared_storage/` (see `docs/architecture/07-shared-storage-and-artifacts.md`)
 
 ---
 
