@@ -58,7 +58,8 @@ examples/
   api-payloads/                 Payloads conceptuales de request
   artifact-manifests/           Manifiestos de artefactos de ejemplo
   docker/                       Compose conceptual y .env de ejemplo
-scripts/                        build_visuals.py y render-visuals.sh (generación de visuales)
+scripts/                        validate-sanitization.sh (gate public-safe),
+                                build_visuals.py y render-visuals.sh (visuales)
 .github/                        Revisiones, checklist de seguridad, auditorías, archive/
 ```
 
@@ -115,7 +116,8 @@ El sistema de diseño (paleta, tipografía, retícula) está en
 
 ## Al terminar cualquier cambio
 
-1. Ejecutar la skill `public-safe-audit` sobre lo modificado.
+1. Ejecutar `./scripts/validate-sanitization.sh`. Si sale distinto de 0, no se publica.
+   Para un análisis más profundo que los barridos automáticos, usar la skill `public-safe-audit`.
 2. Verificar que los enlaces internos nuevos existen.
 3. Si se tocó la estructura de `docs/`, actualizar el índice del README y `docs/README.md`.
 4. Si se tocó un visual, editar `scripts/build_visuals.py`, ejecutar

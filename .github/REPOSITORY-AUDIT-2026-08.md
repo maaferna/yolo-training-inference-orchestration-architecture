@@ -21,10 +21,10 @@ documents is genuinely good.
 
 The problems are of a different kind, and there are two clusters of them.
 
-**The safety process the repository documents no longer runs.** `CONTRIBUTING.md` still tells
-contributors to execute five sanitization scripts that were deleted in `ca58f44`, including one
-it instructs them to install as a git pre-commit hook. The enforcement mechanism for the
-repository's central policy is now a set of commands that error out.
+~~**The safety process the repository documents no longer runs.**~~ **Resolved** — see H1.
+`CONTRIBUTING.md` told contributors to execute five sanitization scripts deleted in `ca58f44`,
+including one installed as a git pre-commit hook. The enforcement mechanism for the repository's
+central policy was a set of commands that errored out. It is now a single working gate.
 
 **Numbers presented as results have no source.** "80% OOM reduction" and "15-25% mAP improvement"
 appear only in the two portfolio documents and nowhere in the architecture documentation.
@@ -38,7 +38,7 @@ them — on the same page where its DON'T list forbids overclaiming.
 
 | # | Finding | Location |
 |---|---|---|
-| H1 | **The documented safety gate is broken.** Six commands reference the sanitization scripts deleted in `ca58f44`: "Before committing, run `bash validate-sanitization.sh`", "Before pushing, run `bash complete-sanitization-check.sh`", "If either script fails, do not push", and `cp validate-sanitization.sh .git/hooks/pre-commit`. The scripts do not exist, so the hook install fails silently and every check errors with "No such file". A contributor following the documented process gets no sanitization coverage at all. | `CONTRIBUTING.md:63,69,203,204,222,225` |
+| H1 | ~~**The documented safety gate is broken.**~~ **Resolved.** Six commands referenced sanitization scripts deleted in `ca58f44`, including one installed as a pre-commit hook that failed silently. Fixed by implementing a single working gate, `scripts/validate-sanitization.sh`, and rewriting the three affected sections of `CONTRIBUTING.md` around it. The gate reproduces M1 and M9 independently. | `CONTRIBUTING.md` · `scripts/validate-sanitization.sh` |
 | H2 | **Unsourced performance claims used in CV material.** "reducing OOM incidents by 80%" appears 8 times and "15-25% mAP improvement on small objects" 5 times, exclusively inside `docs/portfolio/`. Neither number appears in `13-error-handling-and-fallbacks.md`, `12-gpu-resource-management.md`, `10-sahi-inference-engine.md` or anywhere else. They have no derivation in the repository. | `PORTFOLIO_RESUME_CONTENT.md:36,196,517,538,651` · `PORTFOLIO_IMPLEMENTATION_GUIDE.md:28,110,150,244,245,415,435` |
 | H3 | **A cost saving asserted from a model made entirely of placeholders.** The cost analysis reads `Monthly subscription: $X` / `Storage: $Y` / `Server/VM: $Z` / `Ops time: 4 hours × $rate`. Nothing can be computed from it, yet line 14 states "~60% savings after 6 months" as fact, and the delivery report derives it from an equally unsourced "~40% of cloud cost". The claim then propagates to 8 locations including resume bullets. Separately, `ROI breakeven: $ANNUAL_CLOUD / $ANNUAL_SELFHOSTED` is a ratio, not a breakeven — a breakeven is a point in time. | `MIGRATION_CLEARML_CLOUD_TO_SELFHOSTED.md:14,44-62` · `MLOPS_DELIVERY_REPORT.md:141-142` · `MLOPS_DOCUMENTATION_SUMMARY.md:232,274` · `MLOPS_IMPLEMENTATION_ROADMAP.md:521` · both portfolio docs |
 | H4 | **The documentation index names files that do not exist.** 11 of 20 entries are wrong (`09-yolo-training-engine.md` … `19-jupyter-research-workflow.md`); the last never existed in any form. Two real documents — `18-inference-result-synchronization.md` and `19-deployment-cost-strategy.md` — are missing from the index entirely. | `README.md:480-501` |
@@ -106,9 +106,9 @@ adopting is to re-grep for the name of anything deleted before committing the de
 
 ## Recommended order of work
 
-1. **H1** — repair or remove the safety gate in `CONTRIBUTING.md`. The repository currently
-   documents a control that cannot run. Either reimplement the scripts or replace those sections
-   with the sweeps now held in `.claude/skills/public-safe-audit/SKILL.md`.
+1. ~~**H1**~~ — **done.** `scripts/validate-sanitization.sh` implements the gate; `CONTRIBUTING.md`
+   documents it. Running it now reports **2 blocking failures — M1 and M9** — which is the gate
+   working, not a regression. Those are steps 5 and 7 below and are one line each.
 2. **H2, H3** — qualify or delete the unsourced numbers, and remove the DO-list instruction that
    tells the reader to reuse them. Highest credibility return in the repository for the least
    effort.

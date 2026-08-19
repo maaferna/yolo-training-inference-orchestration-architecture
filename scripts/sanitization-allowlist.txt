@@ -1,0 +1,18 @@
+# Lines the sanitization gate must ignore, matched as fixed substrings against
+# the "path:line:content" the checks emit. Each entry needs a reason.
+#
+# Only policy documents that quote forbidden patterns as examples belong here.
+# Never silence a real finding.
+
+# 16-public-release-sanitization.md lists the forbidden patterns it forbids.
+docs/architecture/16-public-release-sanitization.md:22:
+
+# CONTRIBUTING.md shows what a leaked token looks like so contributors recognise one.
+CONTRIBUTING.md:176:
+
+# CLAUDE.md and the audit skill state the policy, quoting the patterns.
+CLAUDE.md:25:
+.claude/skills/public-safe-audit/SKILL.md:
+
+# The audit report cites the findings it reports, including their content.
+.github/REPOSITORY-AUDIT-2026-08.md:

@@ -10,6 +10,16 @@ daña directamente la credibilidad profesional que el repositorio intenta demost
 tiene dos mitades igual de importantes: **fugas** (¿es seguro publicarlo?) y **consistencia**
 (¿resiste una lectura crítica?).
 
+## Antes de nada: ejecutar el gate
+
+```bash
+./scripts/validate-sanitization.sh
+```
+
+Cubre de forma automática las fugas bloqueantes y tres comprobaciones de consistencia. Esta
+skill empieza donde el script termina: nombres propios, contradicciones entre documentos,
+cifras presentadas como resultados y duplicación de contenido, que ningún regex detecta.
+
 ## Alcance
 
 Por defecto audita todo salvo `.git/`. Incluir siempre `.github/archive/`: está versionado y es

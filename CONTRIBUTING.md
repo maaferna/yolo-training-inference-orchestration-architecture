@@ -55,21 +55,35 @@ When editing documentation:
   "Datasets are in S3 at [S3_BUCKET_PLACEHOLDER]/..."
 ```
 
-### 4. Run Sanitization Checks
+### 4. Run the Sanitization Gate
 
-**Before committing, run the validation script**:
-
-```bash
-bash validate-sanitization.sh
-```
-
-**Before pushing, run the complete check**:
+**Before committing and before pushing, run**:
 
 ```bash
-bash complete-sanitization-check.sh
+./scripts/validate-sanitization.sh
 ```
 
-If either script fails, **do not push**. Fix the issues and re-run.
+It exits `0` when every blocking check passes and `1` otherwise. **If it exits non-zero, do not
+push.** Fix the findings and re-run.
+
+The gate separates two kinds of problem:
+
+- **Blocking checks** are leaks — real absolute paths, credentials carrying a value, routable IP
+  addresses, email addresses, unexpected binary assets, dataset or weight directories. These
+  stop the commit.
+- **Advisory checks** are consistency — unresolved internal links, empty tracked files,
+  duplicate document prefixes. These are reported and never block.
+
+Some documents legitimately quote forbidden patterns as examples; the policy document has to
+show what a leaked token looks like. Those lines are listed in
+`scripts/sanitization-allowlist.txt`, each with the reason it is there. Add an entry only when
+the match is genuinely an example — never to silence a real finding.
+
+To check only what you have staged:
+
+```bash
+./scripts/validate-sanitization.sh --staged
+```
 
 ### 5. Commit and Push
 
@@ -200,11 +214,16 @@ Note: Actual credentials are managed through environment variables.
 Install the pre-commit hook to prevent accidental commits:
 
 ```bash
-chmod +x validate-sanitization.sh
-cp validate-sanitization.sh .git/hooks/pre-commit
+cat > .git/hooks/pre-commit <<'HOOK'
+#!/usr/bin/env bash
+exec ./scripts/validate-sanitization.sh --staged --quiet
+HOOK
+chmod +x .git/hooks/pre-commit
 ```
 
-Now the validation runs automatically before each commit.
+Now the validation runs automatically against your staged changes before each commit. Copying
+the script itself into `.git/hooks/` does not work: it resolves paths relative to the repository
+root and needs to stay where it is.
 
 ## Testing Your Changes
 
@@ -218,11 +237,11 @@ Ask yourself:
 ### Test Sanitization
 
 ```bash
-# Quick check
-bash validate-sanitization.sh
+# Whole repository
+./scripts/validate-sanitization.sh
 
-# Complete check
-bash complete-sanitization-check.sh
+# Staged changes only
+./scripts/validate-sanitization.sh --staged
 ```
 
 ## Common Questions
