@@ -14,7 +14,15 @@ and against internal consistency, technical accuracy and portfolio effectiveness
 
 ## Verdict
 
-**No critical leak blocks publication.** No credential with a real value, no client, institution
+> **Correction, added during step 5.** The statement below was wrong. It was reached by sweeping
+> for leak *patterns* — credentials, IPs, paths — and `.github/archive/` contains no credential
+> and no client name in the ordinary sense. What it contains is **C1 below**: the sanitization
+> mapping table itself, which converts every placeholder in the public documentation back to its
+> private original. A pattern sweep cannot see that, and this audit should have read the archive
+> rather than only grepping it.
+
+~~**No critical leak blocks publication.**~~ **One critical finding: C1.** Otherwise no
+credential with a real value, No credential with a real value, no client, institution
 or person other than the author, no real dataset, model weight, screenshot or inference output
 exists anywhere in the tree. Placeholder discipline in `examples/` and in the architecture
 documents is genuinely good.
@@ -38,6 +46,13 @@ self-assessment against the rubric defined at `MLOPS_STATUS_REPORT.md:57`. It is
 `50%` batch-size fallback step, which are configuration values, not results.
 
 ---
+
+## Critical
+
+| # | Finding | Location |
+|---|---|---|
+| C1 | **The archive publishes the key to the sanitization.** `.github/archive/` is committed and public. It contains the complete before-and-after mapping produced during the public-release cleanup, presented as a table: `/app/compute_service` → `/app/compute_service`, `/app/web_service` → `/app/web_service`, `ProjectConfiguration` → `ProjectConfiguration`, `ClassSet` → `ClassSet`, `DetectionClass` → `DetectionClass`, `DatasetConfig` → `DatasetConfig`, `/home/user` → `/host`. Every generic name a reader meets in the live documentation can therefore be reversed to the private original. The live documents are genuinely clean — the sanitization worked — and the archive undoes it. The identifiers appear 91 times (`compute_service`), 88 (`ProjectConfiguration`), 69 (`web_service`) and 58 (`DatasetConfig`) across 12 archive files. The archive itself names the problem: *"`compute_service_` is a proprietary prefix"*, *"`compute_service` is too specific"*. `compute_service` is a recognisable agricultural-research acronym, which makes it the closest thing in the repository to an institution name. | `.github/archive/SANITIZATION_COMPLETED.md:10-30` and 11 other archive files |
+| C2 | **Git history retains the pre-sanitization documents.** `1cb2da2` ("docs(sanitization): generalize paths and model names for public release") removed the private identifiers from 14 files under `docs/`. The content before that commit is still reachable with `git log -S` or `git show`. Deleting or sanitizing the archive at `HEAD` does not address this; only rewriting history does, which is destructive and requires an explicit decision. | commit `1cb2da2` and its ancestors |
 
 ## High
 
@@ -122,7 +137,15 @@ adopting is to re-grep for the name of anything deleted before committing the de
 4. ~~**H6, H7, M4**~~ — **done.** Multi-GPU wording reconciled toward the runtime document, the
    queue removed from `training-flow.mmd`, and model naming normalized against the authoritative
    supported-versions statement.
-5. **M1** — delete the leaked absolute path. One line, still open after two cleanup passes.
+5. ~~**M1**~~ — **partially done.** The live document is sanitized
+   (`MLOPS_QUICK_REFERENCE.md:147` now reads `<REPOSITORY_ROOT>/`). Four archive occurrences remain
+   and are subsumed by the C1 decision below.
+
+   **C1 and C2 now outrank everything left on this list.** C1 is fixable at `HEAD`: delete
+   `.github/archive/`, or sanitize the mapping tables inside it. The archive is 79 files of
+   superseded process notes, 27 of them empty and roughly 45 carrying broken links; it serves no
+   reader of this repository. C2 is only fixable by rewriting history and force-pushing, which
+   breaks every existing clone. Both are decisions for the repository owner, not defaults.
 6. **M5, M6** — repair the eight broken links.
 7. **M3, M9, M8** — supersede one ClearML ADR, replace the literal Mongo password with a
    placeholder, and give `MLOPS_QUICK_REFERENCE.md` the sanitization pass the rest of the
