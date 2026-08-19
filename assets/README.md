@@ -42,4 +42,4 @@ These diagrams follow the same rules as the documentation: no real paths, creden
 names, infrastructure identifiers or measured metrics. Every numeric value shown is illustrative
 and each canvas carries that notice in its footer.
 
-See `../docs/architecture/16-public-release-sanitization.md` for the complete policy.
+See `../docs/architecture/17-public-release-sanitization.md` for the complete policy.

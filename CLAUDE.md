@@ -18,7 +18,7 @@ y de ML/CV. El repositorio es una **pieza de portafolio**, no un producto.
 ## Regla número uno: seguridad pública (public-safe)
 
 Toda contribución —texto, diagrama, ejemplo JSON, imagen— debe pasar la política de
-`docs/architecture/16-public-release-sanitization.md` y `.github/public-safety-checklist.md`.
+`docs/architecture/17-public-release-sanitization.md` y `.github/public-safety-checklist.md`.
 
 Nunca introducir:
 

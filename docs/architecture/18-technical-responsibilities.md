@@ -530,7 +530,7 @@ Return path to frontend/FastAPI
 
 ## Synthetic Dataset Generation Architecture
 
-For comprehensive documentation, see [**docs/20-synthetic-dataset-generation-pipeline.md**](./docs/20-synthetic-dataset-generation-pipeline.md).
+For comprehensive documentation, see [**docs/21-synthetic-dataset-generation-pipeline.md**](./21-synthetic-dataset-generation-pipeline.md).
 
 **Responsibility**: Designed auxiliary synthetic dataset enrichment pipeline leveraging Segment Anything Model (SAM) for automated object extraction and composition.
 

@@ -610,7 +610,7 @@ Both containers refer to same file via Docker volume mapping
 
 ## Synthetic Dataset Generation Flow (Auxiliary)
 
-For comprehensive documentation, see [**docs/20-synthetic-dataset-generation-pipeline.md**](./docs/20-synthetic-dataset-generation-pipeline.md).
+For comprehensive documentation, see [**docs/21-synthetic-dataset-generation-pipeline.md**](./21-synthetic-dataset-generation-pipeline.md).
 
 ### Happy Path: Generate Synthetic Dataset
 

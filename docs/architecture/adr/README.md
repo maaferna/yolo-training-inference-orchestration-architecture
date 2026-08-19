@@ -120,7 +120,7 @@ You can reference specific ADRs when discussing:
 | **CASE-STUDY.md** | Narrative explanation of full system | When you want the complete story |
 | **LEARNING-PATH.md** | Guided reading by audience | When you need structured guidance |
 | **docs/02-system-architecture.md** | Technical architecture diagram | When you want the current state |
-| **docs/15-production-evolution-roadmap.md** | Future scaling directions | When you want to understand growth |
+| **docs/16-production-evolution-roadmap.md** | Future scaling directions | When you want to understand growth |
 
 ## Contributing New ADRs
 

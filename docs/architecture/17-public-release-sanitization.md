@@ -431,7 +431,7 @@ Before publishing to public GitHub:
 
 ## Synthetic Dataset Generation Pipeline
 
-See [**docs/20-synthetic-dataset-generation-pipeline.md**](./docs/20-synthetic-dataset-generation-pipeline.md) for comprehensive documentation of the auxiliary SAM-based synthetic dataset generation pipeline. This documentation also follows public-safe placeholder standards:
+See [**docs/21-synthetic-dataset-generation-pipeline.md**](./21-synthetic-dataset-generation-pipeline.md) for comprehensive documentation of the auxiliary SAM-based synthetic dataset generation pipeline. This documentation also follows public-safe placeholder standards:
 
 - ✓ SAM checkpoint paths use `SAM_CHECKPOINT_PLACEHOLDER`
 - ✓ Dataset paths use `DATASET_PATH_PLACEHOLDER`, `SYNTHETIC_OUTPUT_DIR_PLACEHOLDER`

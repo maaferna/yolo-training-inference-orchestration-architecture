@@ -230,7 +230,7 @@ This design intentionally accepts limitations:
 | Scaling becomes impossible | High | High | Intentional; Phase 2 redesigns with workers |
 
 **Mitigation Strategy**:
-- Phase 1: Document all limitations clearly (DONE - see docs/14-limitations-and-risks.md)
+- Phase 1: Document all limitations clearly (DONE - see docs/15-limitations-and-risks.md)
 - Phase 2: Implement job queue + worker pattern
 - Phase 3+: Multi-GPU workers, Kubernetes orchestration
 

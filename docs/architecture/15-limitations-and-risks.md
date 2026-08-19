@@ -530,7 +530,7 @@ Django YOLO configuration models (ProjectConfiguration, ClassSet, DatasetConfig)
 
 ## Synthetic Dataset Generation Pipeline Risks
 
-For comprehensive documentation, see [**docs/20-synthetic-dataset-generation-pipeline.md**](./docs/20-synthetic-dataset-generation-pipeline.md).
+For comprehensive documentation, see [**docs/21-synthetic-dataset-generation-pipeline.md**](./21-synthetic-dataset-generation-pipeline.md).
 
 ### Risk 1: Sequential Processing Bottleneck
 

@@ -329,19 +329,21 @@ CUDA memory management, single-GPU or multi-GPU training runtime strategies, Dat
 
 ---
 
-## Engineering Case Study
+## The Questions This Architecture Answers
 
-For a narrative-driven explanation of the architectural decisions, see [`CASE-STUDY.md`](./CASE-STUDY.md), if included in your repository.
+The reasoning is spread across the documents below. If you want the argument rather than the
+specification, these are the questions worth reading for, each with where it is answered:
 
-Recommended case-study topics:
-
-- why Django and FastAPI are separated;
-- why GPU-heavy workloads should not run inside the web layer;
-- why synchronous execution can be acceptable for controlled internal workloads;
-- when a job queue becomes justified;
-- why shared storage is practical but risky;
-- why notebooks are useful for research workflows but insufficient as a production execution model;
-- why Kubernetes is optional, not inevitable.
+| Question | Where |
+|---|---|
+| Why are Django and FastAPI separated at all? | [`ADR-001`](./docs/architecture/adr/ADR-001-separate-web-and-ai-services.md) |
+| Why should GPU work never run inside the web layer? | [`03-component-responsibilities.md`](./docs/architecture/03-component-responsibilities.md) |
+| When is synchronous execution acceptable, and when does it stop being so? | [`15-limitations-and-risks.md`](./docs/architecture/15-limitations-and-risks.md) |
+| What exactly justifies adding a job queue? | [`16-production-evolution-roadmap.md`](./docs/architecture/16-production-evolution-roadmap.md) |
+| Why is shared storage both practical and a liability? | [`07-shared-storage-and-artifacts.md`](./docs/architecture/07-shared-storage-and-artifacts.md) |
+| Why are notebooks useful for research but not as a production execution model? | [`ADR-006`](./docs/architecture/adr/ADR-006-notebooks-auxiliary-research.md) |
+| Why is Kubernetes optional rather than inevitable? | [`16-production-evolution-roadmap.md`](./docs/architecture/16-production-evolution-roadmap.md) |
+| Where should training run, and where should the application live? | [`20-deployment-cost-strategy.md`](./docs/architecture/20-deployment-cost-strategy.md) |
 
 ---
 
@@ -467,7 +469,7 @@ Potential additions:
 
 **Philosophy:** Scale by operational evidence, not by default. For a controlled internal AI platform, simplicity, reliability, and traceability are more valuable than premature distributed infrastructure.
 
-For detailed roadmap reasoning, see [`docs/architecture/15-production-evolution-roadmap.md`](./docs/architecture/15-production-evolution-roadmap.md).
+For detailed roadmap reasoning, see [`docs/architecture/16-production-evolution-roadmap.md`](./docs/architecture/16-production-evolution-roadmap.md).
 
 ---
 
@@ -498,17 +500,21 @@ yolo-training-inference-orchestration-architecture/
 │   │   ├── 16-production-evolution-roadmap.md
 │   │   ├── 17-public-release-sanitization.md
 │   │   ├── 18-technical-responsibilities.md
-│   │   ├── 19-jupyter-research-workflow.md
-│   │   └── 20-synthetic-dataset-generation-pipeline.md
+│   │   ├── 19-inference-result-synchronization.md
+│   │   ├── 20-deployment-cost-strategy.md
+│   │   └── 21-synthetic-dataset-generation-pipeline.md
+│   │   └── adr/
 │   ├── portfolio/
 │   └── operations/
-├── diagrams/
+├── diagrams/          # Mermaid sources
 ├── examples/
-├── assets/
-└── public-safety-checklist.md
+├── assets/            # generated diagrams and poster
+├── scripts/           # sanitization gate and visual build
+└── .github/
+    └── public-safety-checklist.md
 ```
 
-> Adjust the structure to match your actual repository. The important principle is to separate architecture, portfolio material, operational notes, diagrams, and public-safety guidance.
+> Architecture documents are numbered `01` to `21`. The numbering is the reading order; gaps and duplicates are treated as defects.
 
 ---
 
@@ -536,8 +542,9 @@ yolo-training-inference-orchestration-architecture/
 | `16-production-evolution-roadmap.md` | Internal platform evolution roadmap |
 | `17-public-release-sanitization.md` | Public-safe documentation rules |
 | `18-technical-responsibilities.md` | Portfolio-safe responsibilities |
-| `19-jupyter-research-workflow.md` | Auxiliary notebook-based research workflow |
-| `20-synthetic-dataset-generation-pipeline.md` | Synthetic dataset generation workflow |
+| `19-inference-result-synchronization.md` | Synchronizing inference results back to the web layer |
+| `20-deployment-cost-strategy.md` | Local, cloud, and hybrid deployment cost reasoning |
+| `21-synthetic-dataset-generation-pipeline.md` | Synthetic dataset generation workflow |
 
 ---
 
@@ -611,7 +618,7 @@ Recommended next steps focus on internal operational reliability:
 - [ ] Add object storage only if local storage becomes hard to govern.
 - [ ] Add Kubernetes only if multi-server deployment, uptime requirements, or operational complexity justify it.
 
-For details, see [`docs/architecture/15-production-evolution-roadmap.md`](./docs/architecture/15-production-evolution-roadmap.md).
+For details, see [`docs/architecture/16-production-evolution-roadmap.md`](./docs/architecture/16-production-evolution-roadmap.md).
 
 ---
 
@@ -666,7 +673,7 @@ For details, see [`docs/architecture/15-production-evolution-roadmap.md`](./docs
 2. `docs/architecture/10-continuous-improvement-training.md`
 3. `docs/architecture/11-sahi-inference-engine.md`
 4. `docs/architecture/13-gpu-resource-management.md`
-5. `docs/architecture/20-synthetic-dataset-generation-pipeline.md`
+5. `docs/architecture/21-synthetic-dataset-generation-pipeline.md`
 
 ### Architecture Reviewers
 

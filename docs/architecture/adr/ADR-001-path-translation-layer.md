@@ -242,7 +242,7 @@ def wait_for_path(path, timeout=300):
     
     Raises TimeoutError if not stable after timeout seconds.
     """
-    # Implementation in docs/18-inference-result-synchronization.md
+    # Implementation in docs/19-inference-result-synchronization.md
 ```
 
 **Usage in Django view**:
@@ -362,8 +362,8 @@ def test_full_pipeline():
 ## References
 
 **Documentation**:
-- [Inference Result Synchronization Layer](./18-inference-result-synchronization.md)
-- [Docker Runtime Architecture](./06-docker-runtime-architecture.md)
+- [Inference Result Synchronization Layer](../19-inference-result-synchronization.md)
+- [Docker Runtime Architecture](../06-docker-runtime-architecture.md)
 
 **Design Patterns**:
 - Adapter Pattern: Convert between coordinate systems

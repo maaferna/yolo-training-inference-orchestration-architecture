@@ -516,7 +516,7 @@ PostgreSQL Container:
 
 ## Synthetic Dataset Generation Pipeline (Auxiliary)
 
-For comprehensive documentation, see [**docs/20-synthetic-dataset-generation-pipeline.md**](./docs/20-synthetic-dataset-generation-pipeline.md).
+For comprehensive documentation, see [**docs/21-synthetic-dataset-generation-pipeline.md**](./21-synthetic-dataset-generation-pipeline.md).
 
 ### IS RESPONSIBLE FOR
 

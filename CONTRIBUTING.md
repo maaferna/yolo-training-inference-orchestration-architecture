@@ -276,7 +276,7 @@ Report it in an issue immediately.
 
 ## Questions?
 
-See [docs/architecture/architecture/16-public-release-sanitization.md](./docs/architecture/16-public-release-sanitization.md) for comprehensive sanitization guidelines.
+See [docs/architecture/architecture/17-public-release-sanitization.md](./docs/architecture/17-public-release-sanitization.md) for comprehensive sanitization guidelines.
 
 ---
 

@@ -215,7 +215,7 @@ metrics for each scaling phase"
 
 ### ISSUE #6: ClearML Integration Claims
 
-**Location**: docs/11-clearml-experiment-tracking.md, implied title  
+**Location**: docs/12-clearml-experiment-tracking.md, implied title  
 **Current Phrasing**:
 > "ClearML for experiment tracking, lineage management, and model comparison"
 
@@ -351,7 +351,7 @@ Add annotation to diagram:
 
 ### ISSUE #9: Multi-GPU & DDP Mentioned But Not Implemented
 
-**Location**: CASE-STUDY.md section on DDP; docs/12-gpu-resource-management.md  
+**Location**: CASE-STUDY.md section on DDP; docs/13-gpu-resource-management.md  
 **Current Phrasing**:
 > "Distributed training: DDP evaluated; Error handling documented; not required at MVP scale"
 
@@ -390,7 +390,7 @@ DDP pattern documented in roadmap but not implemented."
 
 ### ISSUE #10: "Production Observability" Roadmap Is Missing Major Components
 
-**Location**: docs/15-production-evolution-roadmap.md, Phase 5  
+**Location**: docs/16-production-evolution-roadmap.md, Phase 5  
 **Current Description**:
 > "Phase 5: Enterprise Observability & SLA"
 

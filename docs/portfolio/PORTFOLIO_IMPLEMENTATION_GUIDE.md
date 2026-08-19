@@ -214,7 +214,7 @@ In README, create "Quick Navigation" section:
 - System Overview (docs/02-system-architecture.md)
 - Architecture Decisions (docs/architecture/adr/README.md)
 - MLOps Strategy (docs/MLOPS_STATUS_REPORT.md)
-- Error Handling (docs/13-error-handling-and-fallbacks.md)
+- Error Handling (docs/14-error-handling-and-fallbacks.md)
 ```
 
 ### Portfolio Website Implementation
