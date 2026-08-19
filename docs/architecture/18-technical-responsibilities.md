@@ -178,7 +178,7 @@ T6    -                            Write {"path": "v7"}    {"path": "v7"} ← Wo
 
 ### SAHI Architecture Understanding
 
-**Problem**: YOLOv11 struggles with small objects in high-resolution images.
+**Problem**: YOLO struggles with small objects in high-resolution images.
 
 **SAHI Solution**:
 ```
@@ -190,7 +190,7 @@ Step 1: Slice into tiles
    - Creates ~20 tiles
 
 Step 2: Inference per tile
-   - Run YOLOv11 on each 640×640 tile
+   - Run YOLO on each 640×640 tile
    - Collect detections from all tiles
 
 Step 3: Merge detections

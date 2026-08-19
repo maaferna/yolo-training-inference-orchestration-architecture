@@ -186,7 +186,7 @@ def aggregate_seed_results(all_results):
 
 ### Available Metrics
 
-YOLOv8 provides comprehensive detection metrics:
+Ultralytics provides comprehensive detection metrics:
 
 ```
 Metric              | Range  | Interpretation
@@ -227,7 +227,7 @@ def train_with_metric_logging(dataset_yaml, clearml_task=None):
 ```python
 # results = model.train(...)
 # Access trained model
-model_best = results.model  # YOLOv8 instance with best weights
+model_best = results.model  # Ultralytics model instance with best weights
 
 # Get box metrics (most common)
 print(results.box)

@@ -345,7 +345,7 @@ class DetectionRunRecord(models.Model):
 │ • Load model weights (.pt file) to GPU                              │
 │ • If SAHI enabled:                                                  │
 │   - Slice large images into 640×640 tiles (50% overlap)             │
-│   - Run YOLOv11 on each tile                                        │
+│   - Run YOLO on each tile                                        │
 │   - Merge detections, remove duplicates (NMS)                       │
 │ • Else: Direct YOLO inference on images                             │
 │ • Collect per-image results                                         │

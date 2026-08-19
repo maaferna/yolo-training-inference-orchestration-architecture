@@ -8,9 +8,8 @@ sequenceDiagram
     
     User->>Django: POST /training<br/>(dataset_id, hyperparams)
     Django->>FastAPI: HTTP Request
-    FastAPI->>FastAPI: Queue training job
-    FastAPI-->>Django: Accept (status=QUEUED)
-    Django-->>User: Job ID
+    Note over Django,FastAPI: Synchronous: the request stays open<br/>for the whole training run
+    FastAPI->>FastAPI: Validate payload, resolve dataset
     
     Note over FastAPI,YOLO: For each seed (3-5 runs)
     FastAPI->>YOLO: Start training<br/>(seed=42)

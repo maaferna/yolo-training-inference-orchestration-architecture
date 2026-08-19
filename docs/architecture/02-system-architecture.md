@@ -34,7 +34,7 @@ The current architecture is based on a controlled internal deployment model:
 - Django provides the web application, configuration layer, request submission, metadata persistence, and result visualization.
 - FastAPI provides the AI service boundary for GPU-backed training, validation, inference, and experiment coordination.
 - PyTorch/CUDA provides the GPU runtime for YOLO training and inference.
-- Training can use single-GPU or multi-GPU runtime strategies depending on configuration and environment, including DataParallel and evaluated or supported DDP workflows.
+- Training currently executes on a single GPU. Multi-GPU runtime strategies (DataParallel, DDP) are documented and evaluated, but they are not the current execution model.
 - Shared storage is used for artifact exchange between the web layer and AI service layer.
 - ClearML is used for experiment tracking, metric logging, run comparison, and model artifact references.
 - Docker Compose or a managed single-server deployment is sufficient for the documented internal operating context.
@@ -53,7 +53,7 @@ This architecture does **not** require Kubernetes, multi-region deployment, dist
 | AI service layer | FastAPI | Handles GPU-backed training, validation, inference, and experiment coordination. |
 | Request handling | Synchronous / controlled | Acceptable when workload volume is predictable and users understand long-running jobs. |
 | Job queue | Not required by default | Optional if timeouts, concurrency, retry, or cancellation become operationally important. |
-| GPU training runtime | Implemented / evaluated | Supports GPU-backed training, including single-GPU and multi-GPU strategies such as DP/DDP depending on configuration. |
+| GPU training runtime | Single-GPU | Multi-GPU strategies (DP, DDP) are documented and evaluated; DDP is explicitly deferred. See `13-gpu-resource-management.md`. |
 | Distributed job orchestration | Not implemented | No formal GPU worker pool, scheduler, or distributed job registry in the current architecture. |
 | Storage | Shared artifact storage | Practical for controlled internal workflows; requires path validation and artifact governance. |
 | Experiment tracking | ClearML | Supports metadata, metrics, artifacts, and run comparison, but does not replace a transactional model registry. |
@@ -147,7 +147,7 @@ The current architecture can support multi-GPU training runtime patterns without
 │                             │       │                               │
 │ • PyTorch/CUDA runtime      │       │ • ClearML metadata logging    │
 │ • YOLO training/inference   │       │ • metrics and comparisons     │
-│ • DataParallel / DDP modes  │       │ • model artifact references   │
+│ • Single-GPU execution      │       │ • model artifact references   │
 │ • CUDA memory cleanup       │       │ • failure analysis context    │
 └───────────────┬─────────────┘       └───────────────┬───────────────┘
                 │                                     │
@@ -236,13 +236,13 @@ The YOLO training engine executes model training and validation workflows for ob
 
 ### GPU Execution
 
-Training may run using:
+Training runs on a single GPU today. The documented path beyond that is:
 
-- single-GPU execution;
-- multi-GPU DataParallel execution;
-- Distributed Data Parallel execution when supported by the runtime environment and configuration.
+- single-GPU execution — **current**;
+- multi-GPU DataParallel execution — evaluated, not in use;
+- Distributed Data Parallel execution — deferred, dependent on runtime environment and configuration.
 
-This is a training runtime capability. It does not imply that the platform has distributed job orchestration, worker pools, or Kubernetes.
+Whichever of these is in use, it is a training runtime capability. It does not imply that the platform has distributed job orchestration, worker pools, or Kubernetes.
 
 ### Constraints
 
@@ -432,7 +432,7 @@ The GPU compute layer provides CUDA acceleration for training, validation, and i
 
 - Provide CUDA runtime access for PyTorch.
 - Support GPU-backed YOLO training and inference.
-- Support single-GPU and multi-GPU training runtime strategies.
+- Provide single-GPU execution today, with a documented path to multi-GPU.
 - Manage CUDA memory and cleanup.
 - Handle GPU memory pressure and OOM conditions.
 - Coordinate model loading and release.
@@ -442,8 +442,8 @@ The GPU compute layer provides CUDA acceleration for training, validation, and i
 - NVIDIA GPU runtime.
 - CUDA.
 - PyTorch CUDA backend.
-- DataParallel, when appropriate.
-- Distributed Data Parallel, when supported by environment and configuration.
+- DataParallel — evaluated, not currently in use.
+- Distributed Data Parallel — deferred; see `13-gpu-resource-management.md`.
 - Docker GPU runtime support.
 
 ### Operating System Runtime Decision

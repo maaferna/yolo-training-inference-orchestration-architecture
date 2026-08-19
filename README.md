@@ -67,7 +67,7 @@ It demonstrates:
 
 - **Microservice separation:** a Django-based web and administration layer separated from a FastAPI-based AI processing layer.
 - **GPU-backed AI execution:** YOLO training, validation, inference, SAHI-based high-resolution inference, and experiment workflows executed through a dedicated compute service.
-- **Training runtime flexibility:** single-GPU and multi-GPU training runtime strategies, including DataParallel support and evaluated DDP patterns where applicable.
+- **Training runtime scope:** single-GPU execution is the current training runtime; multi-GPU strategies (DataParallel, DDP) are documented and evaluated but deferred. The distinction between a multi-GPU *runtime* and a distributed *platform* is kept explicit throughout.
 - **Dataset configuration management:** database-backed dataset configuration, label/class metadata, and public-safe documentation of YOLO-compatible dataset configuration generation.
 - **MLOps foundations:** experiment tracking, metric logging, artifact lineage, and model reference management using lightweight tracking patterns.
 - **Research workflow support:** notebook-oriented experimentation and synthetic dataset generation workflows documented as auxiliary research and dataset engineering paths.
@@ -131,7 +131,7 @@ The expected users are a limited group of operational, technical, research, or a
 | Deployment context | Internal platform | Designed for controlled organizational use, not public multi-tenant SaaS. |
 | Request handling | Synchronous / controlled | Acceptable when job frequency is low and users understand long-running operations. |
 | Job queuing | Optional future improvement | Needed only if concurrent jobs, request timeouts, or operational contention become frequent. |
-| Training GPU execution | Implemented / evaluated | GPU-backed training can use single-GPU or multi-GPU runtime strategies depending on environment and configuration. |
+| Training GPU execution | Single-GPU | Multi-GPU strategies (DataParallel, DDP) are documented and evaluated but deferred. See [`13-gpu-resource-management.md`](./docs/architecture/13-gpu-resource-management.md). |
 | Distributed job orchestration | Not required for current scope | Worker pools and distributed schedulers are unnecessary unless workload volume increases. |
 | Kubernetes orchestration | Not required | Docker Compose or a managed single-server deployment is more appropriate for the current operational scale. |
 | Model registry | Lightweight tracking | Experiment tracking and local artifact references are sufficient unless formal governance requirements increase. |
@@ -256,7 +256,7 @@ Auxiliary dataset engineering workflow based on SAM-assisted object extraction, 
 
 ### 9. GPU Resource Management
 
-CUDA memory management, single-GPU or multi-GPU training runtime strategies, DataParallel support, evaluated DDP patterns, and future resource scheduling considerations.
+CUDA memory management and explicit cleanup between training runs on a single GPU, with multi-GPU strategies and GPU-aware scheduling documented as evaluated future work.
 
 ---
 
@@ -270,7 +270,7 @@ CUDA memory management, single-GPU or multi-GPU training runtime strategies, Dat
 | Inference | YOLO + SAHI | High-resolution tiling strategy for small-object detection |
 | Experiment Tracking | ClearML or equivalent tracker | Metadata logging, metric comparison, artifact lineage |
 | Database | PostgreSQL or equivalent relational DB | User data, project metadata, configuration records, request history |
-| GPU Execution | CUDA + PyTorch | GPU-backed training and inference with single-GPU or multi-GPU runtime strategies depending on environment and configuration |
+| GPU Execution | CUDA + PyTorch | Single-GPU training and inference; multi-GPU runtime evaluated but not current |
 | Containerization | Docker Compose | Controlled internal deployment; Kubernetes is optional and only justified by operational scale or availability requirements |
 | Storage | Shared volumes | Practical artifact exchange for internal workflows; future storage abstraction is optional if governance becomes difficult |
 | Research Workflow | Jupyter Notebook | Auxiliary experimentation and validation workflow, not the primary production execution path |
@@ -294,7 +294,7 @@ CUDA memory management, single-GPU or multi-GPU training runtime strategies, Dat
 - **Multi-seed experimentation:** training can be evaluated across multiple runs for more robust model selection.
 - **Model selection logic:** validation metrics drive model reference updates rather than manual checkpoint selection.
 - **High-resolution inference:** SAHI tiling trades compute for better small-object detection in large images.
-- **GPU resource management:** CUDA context handling, memory cleanup, and single-GPU or multi-GPU training runtime strategies.
+- **GPU resource management:** CUDA context handling, memory cleanup between seeds, and a documented path from single-GPU execution to multi-GPU.
 - **Experiment tracking:** metric logging and lineage support reproducibility and debugging.
 
 ### C. Backend Integration & Full-Stack Patterns
@@ -398,7 +398,7 @@ The goal is not to add distributed infrastructure by default. The goal is to pre
 - FastAPI AI service for GPU-backed training, validation, and inference orchestration.
 - Synchronous HTTP request/response between Django and the AI service.
 - Shared artifact storage for model checkpoints, inference outputs, previews, and generated files.
-- GPU-backed execution with single-GPU or multi-GPU training runtime depending on environment and configuration.
+- GPU-backed execution on a single GPU, with training runs executed sequentially across seeds.
 - Experiment tracking and metric logging.
 - Basic error handling and operational diagnostics.
 

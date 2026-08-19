@@ -48,7 +48,7 @@ Automate construction of synthetic datasets for training object detection models
 3. **Applying quality filters**: Ensure objects meet size and quality constraints
 4. **Composing synthetic scenes**: Place objects on configurable backgrounds
 5. **Generating annotations**: Produce COCO/YOLO-compatible labels
-6. **Ensuring format compatibility**: Export for CVAT, Roboflow, YOLOv8
+6. **Ensuring format compatibility**: Export for CVAT, Roboflow, YOLO
 
 ### Expected Outcomes
 
@@ -417,7 +417,7 @@ SYNTHETIC_OUTPUT_DIR_PLACEHOLDER/
 - **Limitations**: File size limits, format strictness
 - **Optimization**: JPEG export to reduce size
 
-#### YOLOv8 / Ultralytics
+#### YOLO / Ultralytics
 - **Role**: Training and inference
 - **Input Format**: YOLO detection (images + labels + dataset.yaml)
 - **Integration**: Direct training after export
@@ -432,7 +432,7 @@ Normalize for platform requirements
     ↓
 [Roboflow] → Manage versions → Train
     ↓
-[YOLOv8] → Train → Evaluate
+[YOLO] → Train → Evaluate
 ```
 
 ---
@@ -453,7 +453,7 @@ Normalize for platform requirements
 
 ### AI/ML Components
 - **Segment Anything Model (SAM)**: Object segmentation
-- **YOLOv8 / Ultralytics**: Training destination
+- **YOLO / Ultralytics**: Training destination
 
 ### Configuration & Serialization
 - **PyYAML**: Configuration file parsing
@@ -578,7 +578,7 @@ Step 9: Format Export (Optional)
   │   ├── Create labels/ directory (YOLO .txt format)
   │   ├── Create dataset.yaml with class definitions
   │   └── Re-emit images to YOLO structure
-  └── Output ready for YOLOv8 training
+  └── Output ready for YOLO training
 
 Step 10: External Platform Integration
   ├── Option A: CVAT Import
@@ -590,7 +590,7 @@ Step 10: External Platform Integration
   │   ├── Create Roboflow-compatible structure
   │   └── Validate platform requirements
   └── Option C: Direct YOLO Training
-      └── Export YOLO format for YOLOv8
+      └── Export YOLO format for training
 ```
 
 ---
@@ -1618,7 +1618,7 @@ Result: Imbalanced synthetic dataset
 
 ### Format Conversion and Interoperability
 
-- Implemented COCO ↔ YOLO format conversion ensuring compatibility with CVAT, Roboflow, and YOLOv8.
+- Implemented COCO ↔ YOLO format conversion ensuring compatibility with CVAT, Roboflow, and Ultralytics training.
 
 - Resolved format mismatches: removed segmentation fields for object detection tasks, normalized file_name references, reindexed categories.
 
