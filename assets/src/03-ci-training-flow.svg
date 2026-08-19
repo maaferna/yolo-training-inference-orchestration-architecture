@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000">
+<defs>
+<marker id="a-m1F2E47" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#1F2E47"/></marker>
+<marker id="a-m35D6D0" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#35D6D0"/></marker>
+<marker id="a-m4FA8FF" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#4FA8FF"/></marker>
+<marker id="a-m63799B" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#63799B"/></marker>
+<marker id="a-m7ED957" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#7ED957"/></marker>
+<marker id="a-m94A6C4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#94A6C4"/></marker>
+<marker id="a-mB98BFF" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#B98BFF"/></marker>
+<marker id="a-mEAF0FA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#EAF0FA"/></marker>
+<marker id="a-mFF6B6B" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#FF6B6B"/></marker>
+<marker id="a-mFF7E8E" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#FF7E8E"/></marker>
+<marker id="a-mFFB13D" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#FFB13D"/></marker>
+<linearGradient id="glow" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#16233A"/><stop offset="1" stop-color="#0C1322"/></linearGradient>
+</defs>
+<rect width="1600" height="1000" fill="#0A101C"/>
+<text x="56" y="58" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="700" fill="#63799B" text-anchor="start" letter-spacing="1.6">CONDITIONAL MODEL PROMOTION</text>
+<text x="56" y="92" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="36" font-weight="700" fill="#EAF0FA" text-anchor="start">Continuous Improvement Training</text>
+<text x="56" y="136" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="15" font-weight="400" fill="#94A6C4" text-anchor="start">New data never silently replaces the production model. The reference moves only when the improvement rule is satisfied.</text>
+<line x1="56" y1="162" x2="1544" y2="162" stroke="#1F2E47" stroke-width="1"/>
+<rect x="100" y="245" width="250" height="170" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip20"><rect x="100" y="245" width="250" height="170" rx="10"/></clipPath>
+<g clip-path="url(#clip20)"><rect x="100" y="245" width="250" height="5" fill="#35D6D0"/></g>
+<text x="118" y="271" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#35D6D0" text-anchor="start" letter-spacing="1.4">INPUT</text>
+<text x="118" y="292" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="17" font-weight="600" fill="#EAF0FA" text-anchor="start">New data</text>
+<text x="118" y="313" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#94A6C4" text-anchor="start">Expanded dataset or</text>
+<text x="118" y="332" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#94A6C4" text-anchor="start">updated configuration</text>
+<text x="118" y="351" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#94A6C4" text-anchor="start">submitted for retraining</text>
+<rect x="390" y="245" width="250" height="170" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip21"><rect x="390" y="245" width="250" height="170" rx="10"/></clipPath>
+<g clip-path="url(#clip21)"><rect x="390" y="245" width="250" height="5" fill="#FF7E8E"/></g>
+<text x="408" y="271" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#FF7E8E" text-anchor="start" letter-spacing="1.4">PREVIOUS STATE</text>
+<text x="408" y="292" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="17" font-weight="600" fill="#EAF0FA" text-anchor="start">Resolve baseline</text>
+<text x="408" y="313" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#94A6C4" text-anchor="start">Read selected model</text>
+<text x="408" y="332" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#94A6C4" text-anchor="start">reference from storage</text>
+<text x="408" y="351" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#94A6C4" text-anchor="start">Capture historical</text>
+<text x="408" y="370" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#94A6C4" text-anchor="start">validation metrics</text>
+<rect x="680" y="245" width="250" height="170" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip22"><rect x="680" y="245" width="250" height="170" rx="10"/></clipPath>
+<g clip-path="url(#clip22)"><rect x="680" y="245" width="250" height="5" fill="#7ED957"/></g>
+<text x="698" y="271" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#7ED957" text-anchor="start" letter-spacing="1.4">GPU RUNTIME</text>
+<text x="698" y="292" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="17" font-weight="600" fill="#EAF0FA" text-anchor="start">Incremental training</text>
+<text x="698" y="313" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#94A6C4" text-anchor="start">Fine-tune from the</text>
+<text x="698" y="332" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#94A6C4" text-anchor="start">previous checkpoint</text>
+<text x="698" y="351" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#94A6C4" text-anchor="start">Validate on the</text>
+<text x="698" y="370" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#94A6C4" text-anchor="start">evaluation split</text>
+<polyline points="352,330 388,330" fill="none" stroke="#FF7E8E" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-mFF7E8E)"/>
+<polyline points="642,330 678,330" fill="none" stroke="#7ED957" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-m7ED957)"/>
+<polyline points="932,330 978,330" fill="none" stroke="#FFB13D" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-mFFB13D)"/>
+<polygon points="1090,246 1198,330 1090,414 982,330" fill="#1B2942" stroke="#FFB13D" stroke-width="2"/>
+<text x="1090" y="325.25" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="15" font-weight="600" fill="#EAF0FA" text-anchor="middle">Improvement</text>
+<text x="1090" y="345.25" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="15" font-weight="400" fill="#94A6C4" text-anchor="middle">rule satisfied?</text>
+<rect x="945.36" y="438" width="289.28000000000003" height="21" rx="999" fill="#FFB13D" stroke="none" opacity="0.16"/><text x="1090.0" y="452.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="700" fill="#FFB13D" text-anchor="middle" letter-spacing="0.7">new metric - baseline  &gt;=  threshold</text>
+<rect x="1250" y="230" width="294" height="96" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip23"><rect x="1250" y="230" width="294" height="96" rx="10"/></clipPath>
+<g clip-path="url(#clip23)"><rect x="1250" y="230" width="294" height="5" fill="#7ED957"/></g>
+<text x="1268" y="266" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="16" font-weight="600" fill="#EAF0FA" text-anchor="start">Promote new model</text>
+<text x="1268" y="287" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Write checkpoint, update the selected</text>
+<text x="1268" y="305.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">model reference, log the improvement</text>
+<rect x="1250" y="350" width="294" height="96" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip24"><rect x="1250" y="350" width="294" height="96" rx="10"/></clipPath>
+<g clip-path="url(#clip24)"><rect x="1250" y="350" width="294" height="5" fill="#94A6C4"/></g>
+<text x="1268" y="386" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="16" font-weight="600" fill="#EAF0FA" text-anchor="start">Keep previous model</text>
+<text x="1268" y="407" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Retain the existing reference, record</text>
+<text x="1268" y="425.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">the run and the rejected comparison</text>
+<polyline points="1198,330 1222,330 1222,278 1248,278" fill="none" stroke="#7ED957" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-m7ED957)"/>
+<rect x="1200.15" y="284.0" width="31.700000000000003" height="17" rx="4" fill="#0A101C" stroke="none"/>
+<text x="1216.0" y="296.0" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="700" fill="#94A6C4" text-anchor="middle">yes</text>
+<polyline points="1198,330 1222,330 1222,398 1248,398" fill="none" stroke="#94A6C4" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-m94A6C4)"/>
+<rect x="1203.1" y="366.0" width="25.8" height="17" rx="4" fill="#0A101C" stroke="none"/>
+<text x="1216.0" y="378.0" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="700" fill="#94A6C4" text-anchor="middle">no</text>
+<rect x="100" y="525" width="1444" height="150" rx="14" fill="#0E1524" stroke="#1F2E47" stroke-width="1.5"/>
+<rect x="101.5" y="539" width="4" height="122" rx="2" fill="#B98BFF" stroke="none" opacity="0.75"/>
+<text x="120" y="552" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="700" fill="#B98BFF" text-anchor="start" letter-spacing="1.5">RECORDED FOR EVERY RUN, PROMOTED OR NOT</text>
+<rect x="116" y="569" width="342" height="90" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip25"><rect x="116" y="569" width="342" height="90" rx="10"/></clipPath>
+<g clip-path="url(#clip25)"><rect x="116" y="569" width="342" height="5" fill="#B98BFF"/></g>
+<text x="134" y="604" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="15" font-weight="600" fill="#EAF0FA" text-anchor="start">Experiment metadata</text>
+<text x="134" y="625" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Run identifier, configuration,</text>
+<text x="134" y="643" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">environment context</text>
+<rect x="472" y="569" width="342" height="90" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip26"><rect x="472" y="569" width="342" height="90" rx="10"/></clipPath>
+<g clip-path="url(#clip26)"><rect x="472" y="569" width="342" height="5" fill="#B98BFF"/></g>
+<text x="490" y="604" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="15" font-weight="600" fill="#EAF0FA" text-anchor="start">Metric comparison</text>
+<text x="490" y="625" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Baseline versus candidate,</text>
+<text x="490" y="643" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">decision and threshold</text>
+<rect x="828" y="569" width="342" height="90" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip27"><rect x="828" y="569" width="342" height="90" rx="10"/></clipPath>
+<g clip-path="url(#clip27)"><rect x="828" y="569" width="342" height="5" fill="#FF7E8E"/></g>
+<text x="846" y="604" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="15" font-weight="600" fill="#EAF0FA" text-anchor="start">Artifact manifest</text>
+<text x="846" y="625" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Checkpoint paths, summaries,</text>
+<text x="846" y="643" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">generated outputs</text>
+<rect x="1184" y="569" width="342" height="90" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip28"><rect x="1184" y="569" width="342" height="90" rx="10"/></clipPath>
+<g clip-path="url(#clip28)"><rect x="1184" y="569" width="342" height="5" fill="#35D6D0"/></g>
+<text x="1202" y="604" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="15" font-weight="600" fill="#EAF0FA" text-anchor="start">Dataset lineage</text>
+<text x="1202" y="625" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Dataset version, class mapping,</text>
+<text x="1202" y="643" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">configuration reference</text>
+<rect x="100" y="730" width="1444" height="116" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip29"><rect x="100" y="730" width="1444" height="116" rx="10"/></clipPath>
+<g clip-path="url(#clip29)"><rect x="100" y="730" width="1444" height="5" fill="#FF6B6B"/></g>
+<text x="118" y="756" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#FF6B6B" text-anchor="start" letter-spacing="1.4">DOCUMENTED LIMITATION</text>
+<text x="118" y="777" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="17" font-weight="600" fill="#EAF0FA" text-anchor="start">Known risk · file-based model reference</text>
+<text x="118" y="798" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#94A6C4" text-anchor="start">Two promotions running at once can race on the same reference file, leaving a checkpoint and its metadata out of sync.</text>
+<text x="118" y="817" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#94A6C4" text-anchor="start">Mitigation path: move the selected-model pointer into the database as a transactional record before parallel training becomes routine.</text>
+<line x1="56" y1="952" x2="1544" y2="952" stroke="#1F2E47" stroke-width="1"/>
+<text x="56" y="974" font-family="'Liberation Mono', 'DejaVu Sans Mono', monospace" font-size="11" font-weight="400" fill="#63799B" text-anchor="start">yolo-training-inference-orchestration-architecture</text>
+<text x="1544" y="974" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="400" fill="#63799B" text-anchor="end">Public-safe architecture documentation · all values illustrative</text>
+</svg>

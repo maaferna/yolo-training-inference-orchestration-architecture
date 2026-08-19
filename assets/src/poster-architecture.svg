@@ -1,0 +1,218 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="1754" viewBox="0 0 1240 1754">
+<defs>
+<marker id="a-m1F2E47" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#1F2E47"/></marker>
+<marker id="a-m35D6D0" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#35D6D0"/></marker>
+<marker id="a-m4FA8FF" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#4FA8FF"/></marker>
+<marker id="a-m63799B" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#63799B"/></marker>
+<marker id="a-m7ED957" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#7ED957"/></marker>
+<marker id="a-m94A6C4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#94A6C4"/></marker>
+<marker id="a-mB98BFF" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#B98BFF"/></marker>
+<marker id="a-mEAF0FA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#EAF0FA"/></marker>
+<marker id="a-mFF6B6B" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#FF6B6B"/></marker>
+<marker id="a-mFF7E8E" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#FF7E8E"/></marker>
+<marker id="a-mFFB13D" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#FFB13D"/></marker>
+<linearGradient id="glow" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#16233A"/><stop offset="1" stop-color="#0C1322"/></linearGradient>
+</defs>
+<rect width="1240" height="1754" fill="#0A101C"/>
+<rect x="0" y="0" width="1240" height="400" rx="10" fill="url(#glow)" stroke="none"/>
+<text x="88" y="104" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="700" fill="#FFB13D" text-anchor="start" letter-spacing="2.2">ARCHITECTURE POSTER · PUBLIC-SAFE DOCUMENTATION</text>
+<text x="88" y="182" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="58" font-weight="800" fill="#EAF0FA" text-anchor="start">YOLO Training &amp; Inference</text>
+<text x="88" y="246" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="58" font-weight="800" fill="#EAF0FA" text-anchor="start">Orchestration Architecture</text>
+<text x="88" y="292" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="16" font-weight="400" fill="#94A6C4" text-anchor="start">An internal AI vision platform that keeps web orchestration and GPU-intensive</text>
+<text x="88" y="316" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="16" font-weight="400" fill="#94A6C4" text-anchor="start">machine learning behind one deliberate, synchronous service boundary.</text>
+<rect x="88" y="342" width="64.88" height="21" rx="999" fill="#4FA8FF" stroke="none" opacity="0.16"/><text x="120.44" y="356.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="700" fill="#4FA8FF" text-anchor="middle" letter-spacing="0.7">Django</text>
+<rect x="160.88" y="342" width="102.28" height="21" rx="999" fill="#4FA8FF" stroke="none" opacity="0.16"/><text x="212.01999999999998" y="356.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="700" fill="#4FA8FF" text-anchor="middle" letter-spacing="0.7">Django REST</text>
+<rect x="271.15999999999997" y="342" width="72.36000000000001" height="21" rx="999" fill="#FFB13D" stroke="none" opacity="0.16"/><text x="307.34" y="356.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="700" fill="#FFB13D" text-anchor="middle" letter-spacing="0.7">FastAPI</text>
+<rect x="351.52" y="342" width="72.36000000000001" height="21" rx="999" fill="#7ED957" stroke="none" opacity="0.16"/><text x="387.7" y="356.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="700" fill="#7ED957" text-anchor="middle" letter-spacing="0.7">PyTorch</text>
+<rect x="431.88" y="342" width="49.92" height="21" rx="999" fill="#7ED957" stroke="none" opacity="0.16"/><text x="456.84" y="356.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="700" fill="#7ED957" text-anchor="middle" letter-spacing="0.7">CUDA</text>
+<rect x="489.8" y="342" width="139.68" height="21" rx="999" fill="#7ED957" stroke="none" opacity="0.16"/><text x="559.64" y="356.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="700" fill="#7ED957" text-anchor="middle" letter-spacing="0.7">Ultralytics YOLO</text>
+<rect x="637.48" y="342" width="49.92" height="21" rx="999" fill="#7ED957" stroke="none" opacity="0.16"/><text x="662.44" y="356.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="700" fill="#7ED957" text-anchor="middle" letter-spacing="0.7">SAHI</text>
+<rect x="695.4" y="342" width="42.44" height="21" rx="999" fill="#B98BFF" stroke="none" opacity="0.16"/><text x="716.62" y="356.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="700" fill="#B98BFF" text-anchor="middle" letter-spacing="0.7">SAM</text>
+<rect x="745.8399999999999" y="342" width="72.36000000000001" height="21" rx="999" fill="#B98BFF" stroke="none" opacity="0.16"/><text x="782.02" y="356.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="700" fill="#B98BFF" text-anchor="middle" letter-spacing="0.7">ClearML</text>
+<rect x="826.1999999999999" y="342" width="94.80000000000001" height="21" rx="999" fill="#FF7E8E" stroke="none" opacity="0.16"/><text x="873.5999999999999" y="356.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="700" fill="#FF7E8E" text-anchor="middle" letter-spacing="0.7">PostgreSQL</text>
+<rect x="929.0" y="342" width="124.72000000000001" height="21" rx="999" fill="#35D6D0" stroke="none" opacity="0.16"/><text x="991.36" y="356.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="700" fill="#35D6D0" text-anchor="middle" letter-spacing="0.7">Docker Compose</text>
+<rect x="1061.72" y="342" width="64.88" height="21" rx="999" fill="#35D6D0" stroke="none" opacity="0.16"/><text x="1094.16" y="356.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="700" fill="#35D6D0" text-anchor="middle" letter-spacing="0.7">Ubuntu</text>
+<rect x="88" y="441" width="5" height="15" rx="2" fill="#4FA8FF" stroke="none"/>
+<text x="104" y="452" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="14" font-weight="700" fill="#EAF0FA" text-anchor="start" letter-spacing="1.4">THE SYSTEM</text>
+<text x="1152" y="452" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#63799B" text-anchor="end">one HTTP boundary · one artifact contract</text>
+<line x1="218.0" y1="447" x2="885.9" y2="447" stroke="#1F2E47" stroke-width="1"/>
+<rect x="88" y="478" width="1064" height="42" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip64"><rect x="88" y="478" width="1064" height="42" rx="10"/></clipPath>
+<g clip-path="url(#clip64)"><rect x="88" y="478" width="1064" height="5" fill="#4FA8FF"/></g>
+<text x="620.0" y="513" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="15" font-weight="600" fill="#EAF0FA" text-anchor="middle">Internal users · operations, research, technical staff</text>
+<polyline points="438.0,522 438.0,536" fill="none" stroke="#4FA8FF" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-m4FA8FF)"/>
+<rect x="88" y="540" width="700" height="104" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip65"><rect x="88" y="540" width="700" height="104" rx="10"/></clipPath>
+<g clip-path="url(#clip65)"><rect x="88" y="540" width="700" height="5" fill="#4FA8FF"/></g>
+<text x="106" y="566" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#4FA8FF" text-anchor="start" letter-spacing="1.4">WEB ORCHESTRATION</text>
+<text x="106" y="589" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="19" font-weight="600" fill="#EAF0FA" text-anchor="start">Django Web Layer</text>
+<text x="106" y="610" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#94A6C4" text-anchor="start">Configuration, authentication, request submission</text>
+<text x="106" y="629" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#94A6C4" text-anchor="start">Metadata persistence and result visualization</text>
+<rect x="812" y="540" width="340" height="104" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip66"><rect x="812" y="540" width="340" height="104" rx="10"/></clipPath>
+<g clip-path="url(#clip66)"><rect x="812" y="540" width="340" height="5" fill="#FF7E8E"/></g>
+<text x="830" y="566" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#FF7E8E" text-anchor="start" letter-spacing="1.4">METADATA</text>
+<text x="830" y="587" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="17" font-weight="600" fill="#EAF0FA" text-anchor="start">Relational Database</text>
+<text x="830" y="608" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Users, projects, permissions</text>
+<text x="830" y="626.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Dataset and class configuration</text>
+<polyline points="790,592 810,592" fill="none" stroke="#FF7E8E" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-mFF7E8E)"/>
+<polyline points="438.0,646 438.0,662" fill="none" stroke="#FFB13D" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-mFFB13D)"/>
+<rect x="398.55" y="636.0" width="78.9" height="17" rx="4" fill="#0A101C" stroke="none"/>
+<text x="438.0" y="648.0" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="700" fill="#94A6C4" text-anchor="middle">HTTP / REST</text>
+<rect x="88" y="666" width="700" height="104" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip67"><rect x="88" y="666" width="700" height="104" rx="10"/></clipPath>
+<g clip-path="url(#clip67)"><rect x="88" y="666" width="700" height="5" fill="#FFB13D"/></g>
+<text x="106" y="692" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#FFB13D" text-anchor="start" letter-spacing="1.4">AI SERVICE BOUNDARY</text>
+<text x="106" y="715" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="19" font-weight="600" fill="#EAF0FA" text-anchor="start">FastAPI AI Service</text>
+<text x="106" y="736" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#94A6C4" text-anchor="start">Validation, training orchestration, inference dispatch</text>
+<text x="106" y="755" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#94A6C4" text-anchor="start">Artifact generation and error propagation</text>
+<rect x="812" y="666" width="340" height="104" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip68"><rect x="812" y="666" width="340" height="104" rx="10"/></clipPath>
+<g clip-path="url(#clip68)"><rect x="812" y="666" width="340" height="5" fill="#B98BFF"/></g>
+<text x="830" y="692" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#B98BFF" text-anchor="start" letter-spacing="1.4">CLEARML</text>
+<text x="830" y="713" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="17" font-weight="600" fill="#EAF0FA" text-anchor="start">Experiment Tracking</text>
+<text x="830" y="734" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Run metadata, metrics, lineage</text>
+<text x="830" y="752.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Not a transactional registry</text>
+<polyline points="790,718 810,718" fill="none" stroke="#B98BFF" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-mB98BFF)"/>
+<polyline points="438.0,772 438.0,788" fill="none" stroke="#7ED957" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-m7ED957)"/>
+<rect x="88" y="792" width="700" height="136" rx="14" fill="#0E1524" stroke="#1F2E47" stroke-width="1.5"/>
+<rect x="89.5" y="806" width="4" height="108" rx="2" fill="#7ED957" stroke="none" opacity="0.75"/>
+<text x="108" y="819" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="700" fill="#7ED957" text-anchor="start" letter-spacing="1.5">GPU COMPUTE RUNTIME</text>
+<rect x="104" y="832" width="214" height="82" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip69"><rect x="104" y="832" width="214" height="82" rx="10"/></clipPath>
+<g clip-path="url(#clip69)"><rect x="104" y="832" width="214" height="5" fill="#7ED957"/></g>
+<text x="122" y="866" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="14" font-weight="600" fill="#EAF0FA" text-anchor="start">YOLO Training</text>
+<text x="122" y="887" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11.5" font-weight="400" fill="#94A6C4" text-anchor="start">Multi-seed runs</text>
+<text x="122" y="904.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11.5" font-weight="400" fill="#94A6C4" text-anchor="start">Validation-based pick</text>
+<rect x="330" y="832" width="214" height="82" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip70"><rect x="330" y="832" width="214" height="82" rx="10"/></clipPath>
+<g clip-path="url(#clip70)"><rect x="330" y="832" width="214" height="5" fill="#7ED957"/></g>
+<text x="348" y="866" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="14" font-weight="600" fill="#EAF0FA" text-anchor="start">CI Training</text>
+<text x="348" y="887" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11.5" font-weight="400" fill="#94A6C4" text-anchor="start">Baseline comparison</text>
+<text x="348" y="904.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11.5" font-weight="400" fill="#94A6C4" text-anchor="start">Conditional promotion</text>
+<rect x="556" y="832" width="214" height="82" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip71"><rect x="556" y="832" width="214" height="82" rx="10"/></clipPath>
+<g clip-path="url(#clip71)"><rect x="556" y="832" width="214" height="5" fill="#7ED957"/></g>
+<text x="574" y="866" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="14" font-weight="600" fill="#EAF0FA" text-anchor="start">SAHI Inference</text>
+<text x="574" y="887" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11.5" font-weight="400" fill="#94A6C4" text-anchor="start">Tiling and merge</text>
+<text x="574" y="904.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11.5" font-weight="400" fill="#94A6C4" text-anchor="start">Small-object recall</text>
+<rect x="812" y="792" width="340" height="136" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5" stroke-dasharray="7 6"/>
+<clipPath id="clip72"><rect x="812" y="792" width="340" height="136" rx="10"/></clipPath>
+<g clip-path="url(#clip72)"><rect x="812" y="792" width="340" height="5" fill="#63799B"/></g>
+<text x="830" y="818" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#63799B" text-anchor="start" letter-spacing="1.4">SCOPED OUT</text>
+<text x="830" y="839" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="17" font-weight="600" fill="#EAF0FA" text-anchor="start">Explicit non-goals</text>
+<text x="830" y="860" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">No job queue or workers</text>
+<text x="830" y="878.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">No GPU scheduler</text>
+<text x="830" y="897.0" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">No Kubernetes</text>
+<text x="830" y="915.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Added on evidence only</text>
+<polyline points="438.0,930 438.0,944" fill="none" stroke="#FF7E8E" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-mFF7E8E)"/>
+<rect x="88" y="948" width="1064" height="62" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip73"><rect x="88" y="948" width="1064" height="62" rx="10"/></clipPath>
+<g clip-path="url(#clip73)"><rect x="88" y="948" width="1064" height="5" fill="#FF7E8E"/></g>
+<text x="106" y="985" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="17" font-weight="600" fill="#EAF0FA" text-anchor="start">Shared Artifact Storage</text>
+<text x="106" y="1006" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">models · training_runs · inference_runs · reports — checkpoints, selected model reference, summaries, previews, manifests</text>
+<rect x="88" y="1051" width="5" height="15" rx="2" fill="#FFB13D" stroke="none"/>
+<text x="104" y="1062" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="14" font-weight="700" fill="#EAF0FA" text-anchor="start" letter-spacing="1.4">THREE EXECUTION FLOWS</text>
+<line x1="323.6" y1="1057" x2="1152" y2="1057" stroke="#1F2E47" stroke-width="1"/>
+<rect x="88" y="1088" width="340" height="212" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip74"><rect x="88" y="1088" width="340" height="212" rx="10"/></clipPath>
+<g clip-path="url(#clip74)"><rect x="88" y="1088" width="340" height="5" fill="#7ED957"/></g>
+<text x="106" y="1127" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="19" font-weight="600" fill="#EAF0FA" text-anchor="start">Training</text>
+<text x="106" y="1148" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#94A6C4" text-anchor="start">1  Django validates and submits</text>
+<text x="106" y="1167" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#94A6C4" text-anchor="start">2  FastAPI resolves the dataset</text>
+<text x="106" y="1186" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#94A6C4" text-anchor="start">3  GPU trains 3-5 seeds</text>
+<text x="106" y="1205" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#94A6C4" text-anchor="start">4  Best run picked by validation</text>
+<text x="106" y="1224" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#94A6C4" text-anchor="start">5  Checkpoint and reference written</text>
+<text x="106" y="1243" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#94A6C4" text-anchor="start">6  Django exposes the summary</text>
+<line x1="106" y1="1256" x2="410" y2="1256" stroke="#1F2E47" stroke-width="1"/>
+<text x="106" y="1280" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13.5" font-weight="700" fill="#7ED957" text-anchor="start">Model ready for review</text>
+<rect x="450" y="1088" width="340" height="212" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip75"><rect x="450" y="1088" width="340" height="212" rx="10"/></clipPath>
+<g clip-path="url(#clip75)"><rect x="450" y="1088" width="340" height="5" fill="#FFB13D"/></g>
+<text x="468" y="1127" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="19" font-weight="600" fill="#EAF0FA" text-anchor="start">Continuous improvement</text>
+<text x="468" y="1148" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#94A6C4" text-anchor="start">1  New data or configuration arrives</text>
+<text x="468" y="1167" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#94A6C4" text-anchor="start">2  Previous baseline is resolved</text>
+<text x="468" y="1186" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#94A6C4" text-anchor="start">3  Incremental fine-tuning runs</text>
+<text x="468" y="1205" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#94A6C4" text-anchor="start">4  New metrics meet the baseline</text>
+<text x="468" y="1224" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#94A6C4" text-anchor="start">5  Reference moves only on gain</text>
+<text x="468" y="1243" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#94A6C4" text-anchor="start">6  Every run is recorded either way</text>
+<line x1="468" y1="1256" x2="772" y2="1256" stroke="#1F2E47" stroke-width="1"/>
+<text x="468" y="1280" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13.5" font-weight="700" fill="#FFB13D" text-anchor="start">Production model protected</text>
+<rect x="812" y="1088" width="340" height="212" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip76"><rect x="812" y="1088" width="340" height="212" rx="10"/></clipPath>
+<g clip-path="url(#clip76)"><rect x="812" y="1088" width="340" height="5" fill="#B98BFF"/></g>
+<text x="830" y="1127" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="19" font-weight="600" fill="#EAF0FA" text-anchor="start">SAHI inference</text>
+<text x="830" y="1148" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#94A6C4" text-anchor="start">1  High-resolution frame arrives</text>
+<text x="830" y="1167" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#94A6C4" text-anchor="start">2  Sliced into overlapping tiles</text>
+<text x="830" y="1186" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#94A6C4" text-anchor="start">3  YOLO runs on every tile</text>
+<text x="830" y="1205" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#94A6C4" text-anchor="start">4  Boxes mapped back to the frame</text>
+<text x="830" y="1224" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#94A6C4" text-anchor="start">5  NMS removes overlap duplicates</text>
+<text x="830" y="1243" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#94A6C4" text-anchor="start">6  Manifest and preview persisted</text>
+<line x1="830" y1="1256" x2="1134" y2="1256" stroke="#1F2E47" stroke-width="1"/>
+<text x="830" y="1280" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13.5" font-weight="700" fill="#B98BFF" text-anchor="start">Small objects recovered</text>
+<rect x="88" y="1341" width="5" height="15" rx="2" fill="#B98BFF" stroke="none"/>
+<text x="104" y="1352" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="14" font-weight="700" fill="#EAF0FA" text-anchor="start" letter-spacing="1.4">DECISIONS THAT DEFINE THE SYSTEM</text>
+<line x1="429.2" y1="1347" x2="1152" y2="1347" stroke="#1F2E47" stroke-width="1"/>
+<rect x="88" y="1378" width="254" height="152" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip77"><rect x="88" y="1378" width="254" height="152" rx="10"/></clipPath>
+<g clip-path="url(#clip77)"><rect x="88" y="1378" width="254" height="5" fill="#4FA8FF"/></g>
+<text x="106" y="1413.5" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="15.5" font-weight="600" fill="#EAF0FA" text-anchor="start">Separated services</text>
+<text x="106" y="1442" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">GPU work never runs inside the</text>
+<text x="106" y="1461" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">web process, so a long</text>
+<text x="106" y="1480" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">training job cannot take the</text>
+<text x="106" y="1499" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">site down.</text>
+<rect x="358" y="1378" width="254" height="152" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip78"><rect x="358" y="1378" width="254" height="152" rx="10"/></clipPath>
+<g clip-path="url(#clip78)"><rect x="358" y="1378" width="254" height="5" fill="#FFB13D"/></g>
+<text x="376" y="1413.5" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="15.5" font-weight="600" fill="#EAF0FA" text-anchor="start">Synchronous on purpose</text>
+<text x="376" y="1442" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">A queue is real complexity. It</text>
+<text x="376" y="1461" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">is deferred until timeouts or</text>
+<text x="376" y="1480" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">GPU contention actually</text>
+<text x="376" y="1499" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">appear.</text>
+<rect x="628" y="1378" width="254" height="152" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip79"><rect x="628" y="1378" width="254" height="152" rx="10"/></clipPath>
+<g clip-path="url(#clip79)"><rect x="628" y="1378" width="254" height="5" fill="#FF7E8E"/></g>
+<text x="646" y="1413.5" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="15.5" font-weight="600" fill="#EAF0FA" text-anchor="start">Storage as a contract</text>
+<text x="646" y="1442" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Shared volumes are practical</text>
+<text x="646" y="1461" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">and coupling. Path validation</text>
+<text x="646" y="1480" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">and manifests are the price.</text>
+<rect x="898" y="1378" width="254" height="152" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip80"><rect x="898" y="1378" width="254" height="152" rx="10"/></clipPath>
+<g clip-path="url(#clip80)"><rect x="898" y="1378" width="254" height="5" fill="#7ED957"/></g>
+<text x="916" y="1413.5" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="15.5" font-weight="600" fill="#EAF0FA" text-anchor="start">Runtime is not a platform</text>
+<text x="916" y="1442" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Multi-GPU DataParallel and DDP</text>
+<text x="916" y="1461" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">are training runtime. Neither</text>
+<text x="916" y="1480" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">makes this a distributed</text>
+<text x="916" y="1499" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">system.</text>
+<rect x="88" y="1561" width="5" height="15" rx="2" fill="#7ED957" stroke="none"/>
+<text x="104" y="1572" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="14" font-weight="700" fill="#EAF0FA" text-anchor="start" letter-spacing="1.4">EVOLUTION PATH</text>
+<text x="1152" y="1572" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#63799B" text-anchor="end">each stage waits for its trigger</text>
+<line x1="256.4" y1="1567" x2="940.8" y2="1567" stroke="#1F2E47" stroke-width="1"/>
+<rect x="88" y="1598" width="254" height="84" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<rect x="88" y="1598" width="4" height="84" rx="2" fill="#7ED957" stroke="none"/>
+<text x="106" y="1620" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#7ED957" text-anchor="start" letter-spacing="1.3">PRIORITY 1</text>
+<text x="106" y="1642" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="15" font-weight="600" fill="#EAF0FA" text-anchor="start">Reliability</text>
+<text x="106" y="1660" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="400" fill="#63799B" text-anchor="start">preflight checks, job status,</text>
+<text x="106" y="1675" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="400" fill="#63799B" text-anchor="start">structured logs</text>
+<rect x="358" y="1598" width="254" height="84" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<rect x="358" y="1598" width="4" height="84" rx="2" fill="#FFB13D" stroke="none"/>
+<text x="376" y="1620" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#FFB13D" text-anchor="start" letter-spacing="1.3">PRIORITY 2</text>
+<text x="376" y="1642" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="15" font-weight="600" fill="#EAF0FA" text-anchor="start">Background exec</text>
+<text x="376" y="1660" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="400" fill="#63799B" text-anchor="start">only once timeouts or contention</text>
+<text x="376" y="1675" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="400" fill="#63799B" text-anchor="start">are routine</text>
+<rect x="628" y="1598" width="254" height="84" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<rect x="628" y="1598" width="4" height="84" rx="2" fill="#B98BFF" stroke="none"/>
+<text x="646" y="1620" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#B98BFF" text-anchor="start" letter-spacing="1.3">PRIORITY 3</text>
+<text x="646" y="1642" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="15" font-weight="600" fill="#EAF0FA" text-anchor="start">Governance</text>
+<text x="646" y="1660" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="400" fill="#63799B" text-anchor="start">model reference and dataset</text>
+<text x="646" y="1675" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="400" fill="#63799B" text-anchor="start">versions in the DB</text>
+<rect x="898" y="1598" width="254" height="84" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5" stroke-dasharray="7 6"/>
+<rect x="898" y="1598" width="4" height="84" rx="2" fill="#63799B" stroke="none"/>
+<text x="916" y="1620" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#63799B" text-anchor="start" letter-spacing="1.3">OPTIONAL</text>
+<text x="916" y="1642" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="15" font-weight="600" fill="#EAF0FA" text-anchor="start">Scale-out</text>
+<text x="916" y="1660" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="400" fill="#63799B" text-anchor="start">queue pool, object storage,</text>
+<text x="916" y="1675" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="400" fill="#63799B" text-anchor="start">orchestrator</text>
+<line x1="88" y1="1706" x2="1152" y2="1706" stroke="#1F2E47" stroke-width="1"/>
+<text x="88" y="1728" font-family="'Liberation Mono', 'DejaVu Sans Mono', monospace" font-size="12" font-weight="400" fill="#63799B" text-anchor="start">github.com/maaferna/yolo-training-inference-orchestration-architecture</text>
+<text x="1152" y="1728" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#63799B" text-anchor="end">Public-safe · no code, datasets, weights, credentials or real metrics · all values illustrative</text>
+</svg>

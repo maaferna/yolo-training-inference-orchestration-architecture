@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000">
+<defs>
+<marker id="a-m1F2E47" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#1F2E47"/></marker>
+<marker id="a-m35D6D0" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#35D6D0"/></marker>
+<marker id="a-m4FA8FF" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#4FA8FF"/></marker>
+<marker id="a-m63799B" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#63799B"/></marker>
+<marker id="a-m7ED957" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#7ED957"/></marker>
+<marker id="a-m94A6C4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#94A6C4"/></marker>
+<marker id="a-mB98BFF" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#B98BFF"/></marker>
+<marker id="a-mEAF0FA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#EAF0FA"/></marker>
+<marker id="a-mFF6B6B" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#FF6B6B"/></marker>
+<marker id="a-mFF7E8E" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#FF7E8E"/></marker>
+<marker id="a-mFFB13D" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#FFB13D"/></marker>
+<linearGradient id="glow" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#16233A"/><stop offset="1" stop-color="#0C1322"/></linearGradient>
+</defs>
+<rect width="1600" height="1000" fill="#0A101C"/>
+<text x="56" y="58" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="700" fill="#63799B" text-anchor="start" letter-spacing="1.6">SCALE BY EVIDENCE, NOT BY DEFAULT</text>
+<text x="56" y="92" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="36" font-weight="700" fill="#EAF0FA" text-anchor="start">Production Evolution Roadmap</text>
+<text x="56" y="136" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="15" font-weight="400" fill="#94A6C4" text-anchor="start">Every stage names the operational evidence that justifies it. Nothing on this path is scheduled; each item waits for its trigger.</text>
+<line x1="56" y1="162" x2="1544" y2="162" stroke="#1F2E47" stroke-width="1"/>
+<rect x="100" y="230" width="280" height="310" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip58"><rect x="100" y="230" width="280" height="310" rx="10"/></clipPath>
+<g clip-path="url(#clip58)"><rect x="100" y="230" width="280" height="5" fill="#4FA8FF"/></g>
+<text x="118" y="256" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#4FA8FF" text-anchor="start" letter-spacing="1.4">TODAY</text>
+<text x="118" y="278" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="18" font-weight="600" fill="#EAF0FA" text-anchor="start">Current state</text>
+<text x="118" y="299" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#94A6C4" text-anchor="start">Django web layer</text>
+<text x="118" y="318" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#94A6C4" text-anchor="start">FastAPI AI service</text>
+<text x="118" y="337" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#94A6C4" text-anchor="start">Synchronous HTTP boundary</text>
+<text x="118" y="356" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#94A6C4" text-anchor="start">Shared artifact storage</text>
+<text x="118" y="375" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#94A6C4" text-anchor="start">GPU-backed training runtime</text>
+<text x="118" y="394" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#94A6C4" text-anchor="start">Experiment tracking and manifests</text>
+<text x="118" y="413" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#94A6C4" text-anchor="start">Docker Compose on a single node</text>
+<text x="118" y="432" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#94A6C4" text-anchor="start">Ubuntu GPU runtime baseline</text>
+<text x="118" y="522" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11.5" font-weight="400" fill="#63799B" text-anchor="start">Sufficient while volume is predictable</text>
+<rect x="420" y="230" width="264" height="310" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip59"><rect x="420" y="230" width="264" height="310" rx="10"/></clipPath>
+<g clip-path="url(#clip59)"><rect x="420" y="230" width="264" height="5" fill="#7ED957"/></g>
+<text x="438" y="256" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#7ED957" text-anchor="start" letter-spacing="1.4">PRIORITY 1</text>
+<text x="438" y="276" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="16" font-weight="600" fill="#EAF0FA" text-anchor="start">Operational reliability</text>
+<text x="438" y="297" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Preflight checks: dataset,</text>
+<text x="438" y="315.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">checkpoint, storage, GPU</text>
+<text x="438" y="334.0" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Explicit job status records</text>
+<text x="438" y="352.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Structured logs, correlation IDs</text>
+<text x="438" y="371.0" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Artifact manifest per run</text>
+<line x1="438" y1="468" x2="666" y2="468" stroke="#1F2E47" stroke-width="1"/>
+<text x="438" y="490" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11.5" font-weight="400" fill="#63799B" text-anchor="start">Do this first. It costs little and</text>
+<text x="438" y="507" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11.5" font-weight="400" fill="#63799B" text-anchor="start">removes most silent failures.</text>
+<polyline points="686,385 702,385" fill="none" stroke="#FFB13D" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-mFFB13D)"/>
+<rect x="706" y="230" width="264" height="310" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip60"><rect x="706" y="230" width="264" height="310" rx="10"/></clipPath>
+<g clip-path="url(#clip60)"><rect x="706" y="230" width="264" height="5" fill="#FFB13D"/></g>
+<text x="724" y="256" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#FFB13D" text-anchor="start" letter-spacing="1.4">PRIORITY 2</text>
+<text x="724" y="276" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="16" font-weight="600" fill="#EAF0FA" text-anchor="start">Background execution</text>
+<text x="724" y="297" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Lightweight queue</text>
+<text x="724" y="315.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Single GPU worker</text>
+<text x="724" y="334.0" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Job status polling</text>
+<text x="724" y="352.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Retry policy, GPU locking</text>
+<line x1="724" y1="451" x2="952" y2="451" stroke="#1F2E47" stroke-width="1"/>
+<text x="724" y="473" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11.5" font-weight="400" fill="#63799B" text-anchor="start">Trigger: repeated timeouts, jobs</text>
+<text x="724" y="490" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11.5" font-weight="400" fill="#63799B" text-anchor="start">competing for the GPU,</text>
+<text x="724" y="507" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11.5" font-weight="400" fill="#63799B" text-anchor="start">cancellation needed.</text>
+<polyline points="972,385 988,385" fill="none" stroke="#B98BFF" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-mB98BFF)"/>
+<rect x="992" y="230" width="264" height="310" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip61"><rect x="992" y="230" width="264" height="310" rx="10"/></clipPath>
+<g clip-path="url(#clip61)"><rect x="992" y="230" width="264" height="5" fill="#B98BFF"/></g>
+<text x="1010" y="256" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#B98BFF" text-anchor="start" letter-spacing="1.4">PRIORITY 3</text>
+<text x="1010" y="276" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="16" font-weight="600" fill="#EAF0FA" text-anchor="start">Artifact governance</text>
+<text x="1010" y="297" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Model reference in the database</text>
+<text x="1010" y="315.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Dataset version registry</text>
+<text x="1010" y="334.0" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Immutable run identifiers</text>
+<text x="1010" y="352.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Retention policy for outputs</text>
+<line x1="1010" y1="468" x2="1238" y2="468" stroke="#1F2E47" stroke-width="1"/>
+<text x="1010" y="490" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11.5" font-weight="400" fill="#63799B" text-anchor="start">Trigger: lineage questions become</text>
+<text x="1010" y="507" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11.5" font-weight="400" fill="#63799B" text-anchor="start">hard to answer from storage alone.</text>
+<polyline points="1258,385 1274,385" fill="none" stroke="#63799B" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-m63799B)"/>
+<rect x="1278" y="230" width="264" height="310" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5" stroke-dasharray="7 6"/>
+<clipPath id="clip62"><rect x="1278" y="230" width="264" height="310" rx="10"/></clipPath>
+<g clip-path="url(#clip62)"><rect x="1278" y="230" width="264" height="5" fill="#63799B"/></g>
+<text x="1296" y="256" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#63799B" text-anchor="start" letter-spacing="1.4">OPTIONAL</text>
+<text x="1296" y="276" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="16" font-weight="600" fill="#EAF0FA" text-anchor="start">Scale-out</text>
+<text x="1296" y="297" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">GPU worker pool</text>
+<text x="1296" y="315.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Object storage</text>
+<text x="1296" y="334.0" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Kubernetes or equivalent</text>
+<text x="1296" y="352.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Centralized monitoring</text>
+<line x1="1296" y1="434" x2="1524" y2="434" stroke="#1F2E47" stroke-width="1"/>
+<text x="1296" y="456" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11.5" font-weight="400" fill="#63799B" text-anchor="start">Trigger: concurrent long-running</text>
+<text x="1296" y="473" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11.5" font-weight="400" fill="#63799B" text-anchor="start">jobs, storage beyond local</text>
+<text x="1296" y="490" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11.5" font-weight="400" fill="#63799B" text-anchor="start">capacity, uptime becomes</text>
+<text x="1296" y="507" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11.5" font-weight="400" fill="#63799B" text-anchor="start">business-critical.</text>
+<polyline points="382,385 416,385" fill="none" stroke="#7ED957" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-m7ED957)"/>
+<rect x="100" y="596" width="1444" height="150" rx="14" fill="#0E1524" stroke="#1F2E47" stroke-width="1.5"/>
+<rect x="101.5" y="610" width="4" height="122" rx="2" fill="#FF6B6B" stroke="none" opacity="0.75"/>
+<text x="120" y="623" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="700" fill="#FF6B6B" text-anchor="start" letter-spacing="1.5">WHEN NOT TO ADD DISTRIBUTED INFRASTRUCTURE</text>
+<text x="132" y="654" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#FF6B6B" text-anchor="start">✕</text>
+<text x="154" y="654" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13.5" font-weight="400" fill="#94A6C4" text-anchor="start">Workload volume is predictable and low</text>
+<text x="132" y="690" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#FF6B6B" text-anchor="start">✕</text>
+<text x="154" y="690" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13.5" font-weight="400" fill="#94A6C4" text-anchor="start">Users understand that jobs run long</text>
+<text x="612" y="654" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#FF6B6B" text-anchor="start">✕</text>
+<text x="634" y="654" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13.5" font-weight="400" fill="#94A6C4" text-anchor="start">One GPU is not yet contended</text>
+<text x="612" y="690" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#FF6B6B" text-anchor="start">✕</text>
+<text x="634" y="690" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13.5" font-weight="400" fill="#94A6C4" text-anchor="start">No uptime commitment exists yet</text>
+<text x="1092" y="654" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#FF6B6B" text-anchor="start">✕</text>
+<text x="1114" y="654" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13.5" font-weight="400" fill="#94A6C4" text-anchor="start">Traceability is the real gap, not throughput</text>
+<text x="1092" y="690" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#FF6B6B" text-anchor="start">✕</text>
+<text x="1114" y="690" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13.5" font-weight="400" fill="#94A6C4" text-anchor="start">The team cannot operate a scheduler today</text>
+<rect x="100" y="800" width="1444" height="64" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip63"><rect x="100" y="800" width="1444" height="64" rx="10"/></clipPath>
+<g clip-path="url(#clip63)"><rect x="100" y="800" width="1444" height="5" fill="#4FA8FF"/></g>
+<text x="822.0" y="835" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="15" font-weight="600" fill="#EAF0FA" text-anchor="middle">Reliability, traceability and artifact governance return more, at this scale, than any distributed component added ahead of the evidence for it.</text>
+<line x1="56" y1="952" x2="1544" y2="952" stroke="#1F2E47" stroke-width="1"/>
+<text x="56" y="974" font-family="'Liberation Mono', 'DejaVu Sans Mono', monospace" font-size="11" font-weight="400" fill="#63799B" text-anchor="start">yolo-training-inference-orchestration-architecture</text>
+<text x="1544" y="974" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="400" fill="#63799B" text-anchor="end">Public-safe architecture documentation · all values illustrative</text>
+</svg>

@@ -165,6 +165,43 @@ For a comprehensive visual and textual overview, see [`docs/architecture/02-syst
 
 ---
 
+## Architecture Diagrams
+
+Rendered diagrams for reading, presenting and portfolio use. All are generated from
+[`scripts/build_visuals.py`](./scripts/build_visuals.py); the PNGs and the SVGs in `assets/src/`
+are build products, not hand-edited files.
+
+[![System architecture](./assets/diagrams/01-system-architecture.png)](./assets/diagrams/01-system-architecture.png)
+
+| Diagram | What it answers |
+|---|---|
+| [01 · System architecture](./assets/diagrams/01-system-architecture.png) | How the layers separate and what talks to what |
+| [02 · Training request flow](./assets/diagrams/02-training-flow.png) | What happens between a submitted request and a selected model |
+| [03 · Continuous improvement](./assets/diagrams/03-ci-training-flow.png) | How the system decides whether a new model replaces the old one |
+| [04 · SAHI tiled inference](./assets/diagrams/04-sahi-inference.png) | Why tiling recovers small objects, and what it costs |
+| [05 · Deployment and cost strategy](./assets/diagrams/05-deployment-strategy.png) | Local, cloud or hybrid — and the reasoning behind the choice |
+| [06 · Synthetic dataset generation](./assets/diagrams/06-synthetic-dataset.png) | How scarce annotated data is expanded into a usable dataset |
+| [07 · Production evolution roadmap](./assets/diagrams/07-evolution-roadmap.png) | What gets added first, and which trigger justifies it |
+
+### One-page poster
+
+A single A2 sheet covering the system, the three execution flows, the defining decisions and the
+evolution path — sized for print at A2/150 dpi or A3/212 dpi, and for use as a portfolio or
+presentation asset.
+
+[![Architecture poster](./assets/poster/poster-architecture.png)](./assets/poster/poster-architecture.png)
+
+To regenerate everything after a documentation change:
+
+```bash
+./scripts/render-visuals.sh          # all diagrams and the poster
+./scripts/render-visuals.sh poster   # only what matches "poster"
+```
+
+Requires `python3` and `rsvg-convert` (`librsvg2-tools` on Fedora, `librsvg2-bin` on Debian/Ubuntu).
+
+---
+
 ## Clear Responsibility Boundaries
 
 Explicit responsibility separation prevents architectural complexity and makes failure modes easier to reason about.

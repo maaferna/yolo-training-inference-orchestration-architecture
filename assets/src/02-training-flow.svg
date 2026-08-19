@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000">
+<defs>
+<marker id="a-m1F2E47" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#1F2E47"/></marker>
+<marker id="a-m35D6D0" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#35D6D0"/></marker>
+<marker id="a-m4FA8FF" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#4FA8FF"/></marker>
+<marker id="a-m63799B" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#63799B"/></marker>
+<marker id="a-m7ED957" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#7ED957"/></marker>
+<marker id="a-m94A6C4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#94A6C4"/></marker>
+<marker id="a-mB98BFF" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#B98BFF"/></marker>
+<marker id="a-mEAF0FA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#EAF0FA"/></marker>
+<marker id="a-mFF6B6B" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#FF6B6B"/></marker>
+<marker id="a-mFF7E8E" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#FF7E8E"/></marker>
+<marker id="a-mFFB13D" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#FFB13D"/></marker>
+<linearGradient id="glow" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#16233A"/><stop offset="1" stop-color="#0C1322"/></linearGradient>
+</defs>
+<rect width="1600" height="1000" fill="#0A101C"/>
+<text x="56" y="58" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="700" fill="#63799B" text-anchor="start" letter-spacing="1.6">MULTI-SEED TRAINING · VALIDATION-BASED SELECTION</text>
+<text x="56" y="92" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="36" font-weight="700" fill="#EAF0FA" text-anchor="start">Training Request Flow</text>
+<text x="56" y="136" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="15" font-weight="400" fill="#94A6C4" text-anchor="start">From a submitted request to a selected model reference. Django blocks for the duration: the request is synchronous by design.</text>
+<line x1="56" y1="162" x2="1544" y2="162" stroke="#1F2E47" stroke-width="1"/>
+<rect x="56" y="192" width="1488" height="136" rx="14" fill="#0E1524" stroke="#1F2E47" stroke-width="1.5"/>
+<rect x="57.5" y="206" width="4" height="108" rx="2" fill="#4FA8FF" stroke="none" opacity="0.75"/>
+<text x="76" y="222" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="700" fill="#4FA8FF" text-anchor="start" letter-spacing="1.3">DJANGO</text>
+<text x="76" y="240" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="700" fill="#63799B" text-anchor="start" letter-spacing="1.3">WEB LAYER</text>
+<rect x="56" y="368" width="1488" height="136" rx="14" fill="#0E1524" stroke="#1F2E47" stroke-width="1.5"/>
+<rect x="57.5" y="382" width="4" height="108" rx="2" fill="#FFB13D" stroke="none" opacity="0.75"/>
+<text x="76" y="398" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="700" fill="#FFB13D" text-anchor="start" letter-spacing="1.3">FASTAPI</text>
+<text x="76" y="416" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="700" fill="#63799B" text-anchor="start" letter-spacing="1.3">AI SERVICE</text>
+<rect x="56" y="544" width="1488" height="156" rx="14" fill="#0E1524" stroke="#1F2E47" stroke-width="1.5"/>
+<rect x="57.5" y="558" width="4" height="128" rx="2" fill="#7ED957" stroke="none" opacity="0.75"/>
+<text x="76" y="574" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="700" fill="#7ED957" text-anchor="start" letter-spacing="1.3">GPU RUNTIME</text>
+<text x="76" y="592" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="700" fill="#63799B" text-anchor="start" letter-spacing="1.3">PYTORCH · CUDA · YOLO</text>
+<rect x="56" y="740" width="1488" height="136" rx="14" fill="#0E1524" stroke="#1F2E47" stroke-width="1.5"/>
+<rect x="57.5" y="754" width="4" height="108" rx="2" fill="#FF7E8E" stroke="none" opacity="0.75"/>
+<text x="76" y="770" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="700" fill="#FF7E8E" text-anchor="start" letter-spacing="1.3">ARTIFACTS</text>
+<text x="76" y="788" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="700" fill="#63799B" text-anchor="start" letter-spacing="1.3">STORAGE · TRACKING</text>
+<rect x="240" y="200" width="200" height="120" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip12"><rect x="240" y="200" width="200" height="120" rx="10"/></clipPath>
+<g clip-path="url(#clip12)"><rect x="240" y="200" width="200" height="5" fill="#4FA8FF"/></g>
+<text x="258" y="226" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#4FA8FF" text-anchor="start" letter-spacing="1.4">STEP 1</text>
+<text x="258" y="246" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="16" font-weight="600" fill="#EAF0FA" text-anchor="start">Submit request</text>
+<text x="258" y="267" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Validate project and</text>
+<text x="258" y="285.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">dataset configuration</text>
+<text x="258" y="304.0" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Persist request metadata</text>
+<rect x="460" y="376" width="200" height="120" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip13"><rect x="460" y="376" width="200" height="120" rx="10"/></clipPath>
+<g clip-path="url(#clip13)"><rect x="460" y="376" width="200" height="5" fill="#FFB13D"/></g>
+<text x="478" y="402" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#FFB13D" text-anchor="start" letter-spacing="1.4">STEP 2</text>
+<text x="478" y="422" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="16" font-weight="600" fill="#EAF0FA" text-anchor="start">Dispatch</text>
+<text x="478" y="443" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Validate payload</text>
+<text x="478" y="461.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Resolve dataset and paths</text>
+<text x="478" y="480.0" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Initialize tracking run</text>
+<rect x="680" y="552" width="200" height="140" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip14"><rect x="680" y="552" width="200" height="140" rx="10"/></clipPath>
+<g clip-path="url(#clip14)"><rect x="680" y="552" width="200" height="5" fill="#7ED957"/></g>
+<text x="698" y="578" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#7ED957" text-anchor="start" letter-spacing="1.4">STEP 3</text>
+<text x="698" y="598" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="16" font-weight="600" fill="#EAF0FA" text-anchor="start">Train per seed</text>
+<text x="698" y="619" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Loop over 3-5 seeds</text>
+<text x="698" y="637.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Epoch loop and validation</text>
+<text x="698" y="656.0" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Save checkpoint per run</text>
+<text x="698" y="674.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Release CUDA memory</text>
+<rect x="900" y="376" width="200" height="120" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip15"><rect x="900" y="376" width="200" height="120" rx="10"/></clipPath>
+<g clip-path="url(#clip15)"><rect x="900" y="376" width="200" height="5" fill="#FFB13D"/></g>
+<text x="918" y="402" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#FFB13D" text-anchor="start" letter-spacing="1.4">STEP 4</text>
+<text x="918" y="422" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="16" font-weight="600" fill="#EAF0FA" text-anchor="start">Select model</text>
+<text x="918" y="443" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Aggregate metrics</text>
+<text x="918" y="461.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">across seeds</text>
+<text x="918" y="480.0" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Pick best by validation</text>
+<rect x="680" y="748" width="200" height="120" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip16"><rect x="680" y="748" width="200" height="120" rx="10"/></clipPath>
+<g clip-path="url(#clip16)"><rect x="680" y="748" width="200" height="5" fill="#B98BFF"/></g>
+<text x="698" y="774" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#B98BFF" text-anchor="start" letter-spacing="1.4">CONTINUOUS</text>
+<text x="698" y="794" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="16" font-weight="600" fill="#EAF0FA" text-anchor="start">Log experiment</text>
+<text x="698" y="815" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Per-epoch metrics</text>
+<text x="698" y="833.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Configuration and lineage</text>
+<text x="698" y="852.0" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Run comparison context</text>
+<rect x="1120" y="748" width="200" height="120" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip17"><rect x="1120" y="748" width="200" height="120" rx="10"/></clipPath>
+<g clip-path="url(#clip17)"><rect x="1120" y="748" width="200" height="5" fill="#FF7E8E"/></g>
+<text x="1138" y="774" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#FF7E8E" text-anchor="start" letter-spacing="1.4">STEP 5</text>
+<text x="1138" y="794" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="16" font-weight="600" fill="#EAF0FA" text-anchor="start">Persist artifacts</text>
+<text x="1138" y="815" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Checkpoint and summary</text>
+<text x="1138" y="833.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Selected model reference</text>
+<text x="1138" y="852.0" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Run identifier and manifest</text>
+<rect x="1340" y="200" width="200" height="120" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip18"><rect x="1340" y="200" width="200" height="120" rx="10"/></clipPath>
+<g clip-path="url(#clip18)"><rect x="1340" y="200" width="200" height="5" fill="#4FA8FF"/></g>
+<text x="1358" y="226" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#4FA8FF" text-anchor="start" letter-spacing="1.4">STEP 6</text>
+<text x="1358" y="246" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="16" font-weight="600" fill="#EAF0FA" text-anchor="start">Expose results</text>
+<text x="1358" y="267" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Status and metric summary</text>
+<text x="1358" y="285.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Artifact links and previews</text>
+<text x="1358" y="304.0" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Execution history entry</text>
+<polyline points="340,322 340,346 560,346 560,372" fill="none" stroke="#FFB13D" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-mFFB13D)"/>
+<rect x="407.6" y="327.0" width="84.80000000000001" height="17" rx="4" fill="#0A101C" stroke="none"/>
+<text x="450.0" y="339.0" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="700" fill="#94A6C4" text-anchor="middle">HTTP request</text>
+<polyline points="560,498 560,522 740,522 740,548" fill="none" stroke="#7ED957" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-m7ED957)"/>
+<rect x="601.7" y="503.0" width="96.60000000000001" height="17" rx="4" fill="#0A101C" stroke="none"/>
+<text x="650.0" y="515.0" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="700" fill="#94A6C4" text-anchor="middle">start training</text>
+<polyline points="820,548 820,514 1000,514 1000,502" fill="none" stroke="#FFB13D" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-mFFB13D)"/>
+<rect x="855.8" y="495.0" width="108.4" height="17" rx="4" fill="#0A101C" stroke="none"/>
+<text x="910.0" y="507.0" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="700" fill="#94A6C4" text-anchor="middle">metrics per seed</text>
+<polyline points="1000,498 1000,520 1220,520 1220,744" fill="none" stroke="#FF7E8E" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-mFF7E8E)"/>
+<rect x="1198.25" y="541.32" width="43.5" height="17" rx="4" fill="#0A101C" stroke="none"/>
+<text x="1220.0" y="553.32" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="700" fill="#94A6C4" text-anchor="middle">write</text>
+<polyline points="780,694 780,744" fill="none" stroke="#B98BFF" stroke-width="2" stroke-linejoin="round" stroke-dasharray="6 5" marker-end="url(#a-mB98BFF)"/>
+<polyline points="1320,808 1400,808 1400,326" fill="none" stroke="#4FA8FF" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-m4FA8FF)"/>
+<rect x="1396.85" y="501.1600000000001" width="114.30000000000001" height="17" rx="4" fill="#0A101C" stroke="none"/>
+<text x="1454.0" y="513.1600000000001" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="700" fill="#94A6C4" text-anchor="middle">result references</text>
+<rect x="56" y="890" width="1488" height="56" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip19"><rect x="56" y="890" width="1488" height="56" rx="10"/></clipPath>
+<g clip-path="url(#clip19)"><rect x="56" y="890" width="1488" height="5" fill="#FF6B6B"/></g>
+<text x="800.0" y="924" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="14" font-weight="600" fill="#EAF0FA" text-anchor="middle">Synchronous boundary: the HTTP request stays open for the whole training run. Acceptable for scheduled internal jobs; a queue is justified once timeouts, concurrency or cancellation become routine.</text>
+<line x1="56" y1="952" x2="1544" y2="952" stroke="#1F2E47" stroke-width="1"/>
+<text x="56" y="974" font-family="'Liberation Mono', 'DejaVu Sans Mono', monospace" font-size="11" font-weight="400" fill="#63799B" text-anchor="start">yolo-training-inference-orchestration-architecture</text>
+<text x="1544" y="974" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="400" fill="#63799B" text-anchor="end">Public-safe architecture documentation · all values illustrative</text>
+</svg>

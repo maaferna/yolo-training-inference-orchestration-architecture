@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000">
+<defs>
+<marker id="a-m1F2E47" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#1F2E47"/></marker>
+<marker id="a-m35D6D0" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#35D6D0"/></marker>
+<marker id="a-m4FA8FF" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#4FA8FF"/></marker>
+<marker id="a-m63799B" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#63799B"/></marker>
+<marker id="a-m7ED957" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#7ED957"/></marker>
+<marker id="a-m94A6C4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#94A6C4"/></marker>
+<marker id="a-mB98BFF" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#B98BFF"/></marker>
+<marker id="a-mEAF0FA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#EAF0FA"/></marker>
+<marker id="a-mFF6B6B" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#FF6B6B"/></marker>
+<marker id="a-mFF7E8E" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#FF7E8E"/></marker>
+<marker id="a-mFFB13D" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#FFB13D"/></marker>
+<linearGradient id="glow" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#16233A"/><stop offset="1" stop-color="#0C1322"/></linearGradient>
+</defs>
+<rect width="1600" height="1000" fill="#0A101C"/>
+<text x="56" y="58" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="700" fill="#63799B" text-anchor="start" letter-spacing="1.6">HIGH-RESOLUTION SMALL-OBJECT DETECTION</text>
+<text x="56" y="92" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="36" font-weight="700" fill="#EAF0FA" text-anchor="start">SAHI Tiled Inference</text>
+<text x="56" y="136" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="15" font-weight="400" fill="#94A6C4" text-anchor="start">A small object covering a few pixels of a 4K frame is nearly invisible to a 640-pixel detector. Tiling restores its apparent scale.</text>
+<line x1="56" y1="162" x2="1544" y2="162" stroke="#1F2E47" stroke-width="1"/>
+<rect x="100" y="240" width="420" height="340" rx="14" fill="#0E1524" stroke="#1F2E47" stroke-width="1.5"/>
+<rect x="101.5" y="254" width="4" height="312" rx="2" fill="#35D6D0" stroke="none" opacity="0.75"/>
+<text x="120" y="267" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="700" fill="#35D6D0" text-anchor="start" letter-spacing="1.5">1 · SLICE</text>
+<rect x="190" y="306" width="240" height="240" rx="6" fill="#101A2C" stroke="#2A3B58" stroke-width="1.5"/>
+<line x1="250" y1="306" x2="250" y2="546" stroke="#1F2E47" stroke-width="1"/>
+<line x1="190" y1="366" x2="430" y2="366" stroke="#1F2E47" stroke-width="1"/>
+<line x1="310" y1="306" x2="310" y2="546" stroke="#1F2E47" stroke-width="1"/>
+<line x1="190" y1="426" x2="430" y2="426" stroke="#1F2E47" stroke-width="1"/>
+<line x1="370" y1="306" x2="370" y2="546" stroke="#1F2E47" stroke-width="1"/>
+<line x1="190" y1="486" x2="430" y2="486" stroke="#1F2E47" stroke-width="1"/>
+<rect x="220" y="366" width="120" height="120" rx="4" fill="#35D6D0" stroke="#35D6D0" stroke-width="2" opacity="0.1"/>
+<rect x="220" y="366" width="120" height="120" rx="4" fill="none" stroke="#35D6D0" stroke-width="2"/>
+<rect x="280" y="366" width="120" height="120" rx="4" fill="#7ED957" stroke="#7ED957" stroke-width="2" opacity="0.1"/>
+<rect x="280" y="366" width="120" height="120" rx="4" fill="none" stroke="#7ED957" stroke-width="2"/>
+<rect x="280" y="366" width="60" height="120" rx="0" fill="#FFB13D" stroke="none" opacity="0.2"/>
+<circle cx="308" cy="424" r="4.5" fill="#FF6B6B"/>
+<circle cx="325" cy="458" r="4.5" fill="#FF6B6B"/>
+<circle cx="366" cy="398" r="4.5" fill="#FF6B6B"/>
+<circle cx="254" cy="482" r="4.5" fill="#FF6B6B"/>
+<circle cx="398" cy="456" r="4.5" fill="#FF6B6B"/>
+<text x="310" y="566" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11.5" font-weight="400" fill="#94A6C4" text-anchor="middle">overlap keeps boundary objects whole in at least one tile</text>
+<text x="310" y="292" font-family="'Liberation Mono', 'DejaVu Sans Mono', monospace" font-size="12" font-weight="400" fill="#63799B" text-anchor="middle">4096 px frame  ·  640 px tiles  ·  50% overlap</text>
+<rect x="560" y="240" width="380" height="340" rx="14" fill="#0E1524" stroke="#1F2E47" stroke-width="1.5"/>
+<rect x="561.5" y="254" width="4" height="312" rx="2" fill="#7ED957" stroke="none" opacity="0.75"/>
+<text x="580" y="267" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="700" fill="#7ED957" text-anchor="start" letter-spacing="1.5">2 · DETECT</text>
+<rect x="576" y="286" width="348" height="128" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip30"><rect x="576" y="286" width="348" height="128" rx="10"/></clipPath>
+<g clip-path="url(#clip30)"><rect x="576" y="286" width="348" height="5" fill="#7ED957"/></g>
+<text x="594" y="322" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="16" font-weight="600" fill="#EAF0FA" text-anchor="start">Per-tile YOLO inference</text>
+<text x="594" y="343" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Each tile is resized to the model</text>
+<text x="594" y="361.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">input and inferred independently</text>
+<text x="594" y="380.0" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">A 20 px object in the frame becomes</text>
+<text x="594" y="398.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">a well-sized object inside its tile</text>
+<rect x="576" y="430" width="348" height="134" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip31"><rect x="576" y="430" width="348" height="134" rx="10"/></clipPath>
+<g clip-path="url(#clip31)"><rect x="576" y="430" width="348" height="5" fill="#FF6B6B"/></g>
+<text x="594" y="466" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="16" font-weight="600" fill="#EAF0FA" text-anchor="start">Cost of the strategy</text>
+<text x="594" y="487" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Tile count grows with overlap:</text>
+<text x="594" y="505.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">50% overlap on a 2x2 grid means</text>
+<text x="594" y="524.0" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">roughly 4x the forward passes</text>
+<text x="594" y="542.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">GPU memory stays flat, time does not</text>
+<rect x="980" y="240" width="564" height="340" rx="14" fill="#0E1524" stroke="#1F2E47" stroke-width="1.5"/>
+<rect x="981.5" y="254" width="4" height="312" rx="2" fill="#FFB13D" stroke="none" opacity="0.75"/>
+<text x="1000" y="267" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="700" fill="#FFB13D" text-anchor="start" letter-spacing="1.5">3 · RECONSTRUCT</text>
+<rect x="996" y="286" width="532" height="128" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip32"><rect x="996" y="286" width="532" height="128" rx="10"/></clipPath>
+<g clip-path="url(#clip32)"><rect x="996" y="286" width="532" height="5" fill="#FFB13D"/></g>
+<text x="1014" y="322" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="16" font-weight="600" fill="#EAF0FA" text-anchor="start">Merge and deduplicate</text>
+<text x="1014" y="343" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Tile-local coordinates are mapped back to full-frame coordinates,</text>
+<text x="1014" y="361.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">then detections from overlapping tiles are merged with NMS over IoU</text>
+<text x="1014" y="380.0" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">so the same object seen in two tiles is reported once.</text>
+<rect x="996" y="430" width="532" height="134" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip33"><rect x="996" y="430" width="532" height="134" rx="10"/></clipPath>
+<g clip-path="url(#clip33)"><rect x="996" y="430" width="532" height="5" fill="#FF7E8E"/></g>
+<text x="1014" y="466" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="16" font-weight="600" fill="#EAF0FA" text-anchor="start">Output artifacts</text>
+<text x="1014" y="487" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Detection manifest: class, confidence, box, tile provenance</text>
+<text x="1014" y="505.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Compressed preview for web visualization</text>
+<text x="1014" y="524.0" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Run summary and counts per class</text>
+<text x="1014" y="542.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">GIS-compatible vector output when applicable</text>
+<polyline points="522,410 558,410" fill="none" stroke="#7ED957" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-m7ED957)"/>
+<polyline points="942,410 978,410" fill="none" stroke="#FFB13D" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-mFFB13D)"/>
+<rect x="100" y="620" width="1444" height="180" rx="14" fill="#0E1524" stroke="#1F2E47" stroke-width="1.5"/>
+<rect x="101.5" y="634" width="4" height="152" rx="2" fill="#FFB13D" stroke="none" opacity="0.75"/>
+<text x="120" y="647" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="700" fill="#FFB13D" text-anchor="start" letter-spacing="1.5">CONFIGURATION TRADE-OFF</text>
+<text x="1524" y="647" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#63799B" text-anchor="end">direction of effect only · no measured values</text>
+<rect x="116" y="664" width="461" height="120" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip34"><rect x="116" y="664" width="461" height="120" rx="10"/></clipPath>
+<g clip-path="url(#clip34)"><rect x="116" y="664" width="461" height="5" fill="#35D6D0"/></g>
+<text x="134" y="700" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="16" font-weight="600" fill="#EAF0FA" text-anchor="start">Throughput first</text>
+<text x="134" y="721" font-family="'Liberation Mono', 'DejaVu Sans Mono', monospace" font-size="12.0" font-weight="400" fill="#63799B" text-anchor="start">1024 px tiles · 25% overlap</text>
+<text x="134" y="739.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Fewest forward passes, lowest latency</text>
+<text x="134" y="758.0" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Weakest recall on the smallest objects</text>
+<rect x="591" y="664" width="461" height="120" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip35"><rect x="591" y="664" width="461" height="120" rx="10"/></clipPath>
+<g clip-path="url(#clip35)"><rect x="591" y="664" width="461" height="5" fill="#7ED957"/></g>
+<text x="609" y="700" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="16" font-weight="600" fill="#EAF0FA" text-anchor="start">Balanced</text>
+<text x="609" y="721" font-family="'Liberation Mono', 'DejaVu Sans Mono', monospace" font-size="12.0" font-weight="400" fill="#63799B" text-anchor="start">800 px tiles · 33% overlap</text>
+<text x="609" y="739.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Documented starting point for batch work</text>
+<text x="609" y="758.0" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Tune from measurements, not from defaults</text>
+<rect x="1066" y="664" width="461" height="120" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip36"><rect x="1066" y="664" width="461" height="120" rx="10"/></clipPath>
+<g clip-path="url(#clip36)"><rect x="1066" y="664" width="461" height="5" fill="#B98BFF"/></g>
+<text x="1084" y="700" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="16" font-weight="600" fill="#EAF0FA" text-anchor="start">Recall first</text>
+<text x="1084" y="721" font-family="'Liberation Mono', 'DejaVu Sans Mono', monospace" font-size="12.0" font-weight="400" fill="#63799B" text-anchor="start">640 px tiles · 50% overlap</text>
+<text x="1084" y="739.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Strongest small-object recall</text>
+<text x="1084" y="758.0" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Highest compute cost per frame</text>
+<rect x="100" y="830" width="1444" height="76" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip37"><rect x="100" y="830" width="1444" height="76" rx="10"/></clipPath>
+<g clip-path="url(#clip37)"><rect x="100" y="830" width="1444" height="5" fill="#FF6B6B"/></g>
+<text x="822.0" y="864" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="14" font-weight="600" fill="#EAF0FA" text-anchor="middle">Tile size and overlap are the only two knobs that matter, and they trade compute against small-object recall. Measure on the real image distribution before fixing them.</text>
+<line x1="56" y1="952" x2="1544" y2="952" stroke="#1F2E47" stroke-width="1"/>
+<text x="56" y="974" font-family="'Liberation Mono', 'DejaVu Sans Mono', monospace" font-size="11" font-weight="400" fill="#63799B" text-anchor="start">yolo-training-inference-orchestration-architecture</text>
+<text x="1544" y="974" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="400" fill="#63799B" text-anchor="end">Public-safe architecture documentation · all values illustrative</text>
+</svg>

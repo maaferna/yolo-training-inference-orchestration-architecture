@@ -1,0 +1,142 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000">
+<defs>
+<marker id="a-m1F2E47" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#1F2E47"/></marker>
+<marker id="a-m35D6D0" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#35D6D0"/></marker>
+<marker id="a-m4FA8FF" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#4FA8FF"/></marker>
+<marker id="a-m63799B" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#63799B"/></marker>
+<marker id="a-m7ED957" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#7ED957"/></marker>
+<marker id="a-m94A6C4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#94A6C4"/></marker>
+<marker id="a-mB98BFF" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#B98BFF"/></marker>
+<marker id="a-mEAF0FA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#EAF0FA"/></marker>
+<marker id="a-mFF6B6B" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#FF6B6B"/></marker>
+<marker id="a-mFF7E8E" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#FF7E8E"/></marker>
+<marker id="a-mFFB13D" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#FFB13D"/></marker>
+<linearGradient id="glow" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#16233A"/><stop offset="1" stop-color="#0C1322"/></linearGradient>
+</defs>
+<rect width="1600" height="1000" fill="#0A101C"/>
+<text x="56" y="58" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="700" fill="#63799B" text-anchor="start" letter-spacing="1.6">DATASET ENGINEERING · AUXILIARY RESEARCH WORKFLOW</text>
+<text x="56" y="92" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="36" font-weight="700" fill="#EAF0FA" text-anchor="start">Synthetic Dataset Generation</text>
+<text x="56" y="136" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="15" font-weight="400" fill="#94A6C4" text-anchor="start">When annotated examples of a class are scarce, cut real objects out of the images that exist and recompose them into new labelled scenes.</text>
+<line x1="56" y1="162" x2="1544" y2="162" stroke="#1F2E47" stroke-width="1"/>
+<rect x="100" y="245" width="272" height="170" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip44"><rect x="100" y="245" width="272" height="170" rx="10"/></clipPath>
+<g clip-path="url(#clip44)"><rect x="100" y="245" width="272" height="5" fill="#35D6D0"/></g>
+<text x="118" y="271" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#35D6D0" text-anchor="start" letter-spacing="1.4">STEP 1</text>
+<text x="118" y="290.5" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="15.5" font-weight="600" fill="#EAF0FA" text-anchor="start">Load configuration</text>
+<text x="118" y="311.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Read the YAML contract:</text>
+<text x="118" y="329.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">paths, classes, parameters</text>
+<text x="118" y="347.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Create the version directory</text>
+<polyline points="374,330 390,330" fill="none" stroke="#35D6D0" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-m35D6D0)"/>
+<rect x="392" y="245" width="272" height="170" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip45"><rect x="392" y="245" width="272" height="170" rx="10"/></clipPath>
+<g clip-path="url(#clip45)"><rect x="392" y="245" width="272" height="5" fill="#35D6D0"/></g>
+<text x="410" y="271" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#35D6D0" text-anchor="start" letter-spacing="1.4">STEP 2</text>
+<text x="410" y="290.5" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="15.5" font-weight="600" fill="#EAF0FA" text-anchor="start">Resolve dataset</text>
+<text x="410" y="311.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Detect the YOLO layout</text>
+<text x="410" y="329.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Count images and labels</text>
+<text x="410" y="347.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Map class IDs to names</text>
+<polyline points="666,330 682,330" fill="none" stroke="#35D6D0" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-m35D6D0)"/>
+<rect x="684" y="245" width="272" height="170" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip46"><rect x="684" y="245" width="272" height="170" rx="10"/></clipPath>
+<g clip-path="url(#clip46)"><rect x="684" y="245" width="272" height="5" fill="#B98BFF"/></g>
+<text x="702" y="271" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#B98BFF" text-anchor="start" letter-spacing="1.4">STEP 3</text>
+<text x="702" y="290.5" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="15.5" font-weight="600" fill="#EAF0FA" text-anchor="start">Box to mask</text>
+<text x="702" y="311.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">SAM turns each bounding box</text>
+<text x="702" y="329.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">into a segmentation mask</text>
+<text x="702" y="347.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Save binary and colour masks</text>
+<polyline points="958,330 974,330" fill="none" stroke="#B98BFF" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-mB98BFF)"/>
+<rect x="976" y="245" width="272" height="170" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip47"><rect x="976" y="245" width="272" height="170" rx="10"/></clipPath>
+<g clip-path="url(#clip47)"><rect x="976" y="245" width="272" height="5" fill="#B98BFF"/></g>
+<text x="994" y="271" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#B98BFF" text-anchor="start" letter-spacing="1.4">STEP 4</text>
+<text x="994" y="290.5" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="15.5" font-weight="600" fill="#EAF0FA" text-anchor="start">Extract shapes</text>
+<text x="994" y="311.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Apply the mask to the source</text>
+<text x="994" y="329.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Recrop to the tight rectangle</text>
+<text x="994" y="347.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Save an RGBA cutout per object</text>
+<polyline points="1250,330 1266,330" fill="none" stroke="#B98BFF" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-mB98BFF)"/>
+<rect x="1268" y="245" width="272" height="170" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip48"><rect x="1268" y="245" width="272" height="170" rx="10"/></clipPath>
+<g clip-path="url(#clip48)"><rect x="1268" y="245" width="272" height="5" fill="#FF6B6B"/></g>
+<text x="1286" y="271" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#FF6B6B" text-anchor="start" letter-spacing="1.4">STEP 5</text>
+<text x="1286" y="290.5" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="15.5" font-weight="600" fill="#EAF0FA" text-anchor="start">Filter quality</text>
+<text x="1286" y="311.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Drop objects below the</text>
+<text x="1286" y="329.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">minimum size, cap the</text>
+<text x="1286" y="347.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">maximum area fraction</text>
+<rect x="100" y="485" width="272" height="170" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip49"><rect x="100" y="485" width="272" height="170" rx="10"/></clipPath>
+<g clip-path="url(#clip49)"><rect x="100" y="485" width="272" height="5" fill="#7ED957"/></g>
+<text x="118" y="511" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#7ED957" text-anchor="start" letter-spacing="1.4">STEP 6</text>
+<text x="118" y="530.5" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="15.5" font-weight="600" fill="#EAF0FA" text-anchor="start">Prepare backgrounds</text>
+<text x="118" y="551.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Load and validate the</text>
+<text x="118" y="569.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">background pool</text>
+<text x="118" y="587.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Cache for random selection</text>
+<polyline points="374,570 390,570" fill="none" stroke="#7ED957" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-m7ED957)"/>
+<rect x="392" y="485" width="272" height="170" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip50"><rect x="392" y="485" width="272" height="170" rx="10"/></clipPath>
+<g clip-path="url(#clip50)"><rect x="392" y="485" width="272" height="5" fill="#7ED957"/></g>
+<text x="410" y="511" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#7ED957" text-anchor="start" letter-spacing="1.4">STEP 7</text>
+<text x="410" y="530.5" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="15.5" font-weight="600" fill="#EAF0FA" text-anchor="start">Compose scenes</text>
+<text x="410" y="551.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Scale, rotate and jitter</text>
+<text x="410" y="569.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Check bounds and overlap</text>
+<text x="410" y="587.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Alpha blend onto background</text>
+<polyline points="666,570 682,570" fill="none" stroke="#7ED957" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-m7ED957)"/>
+<rect x="684" y="485" width="272" height="170" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip51"><rect x="684" y="485" width="272" height="170" rx="10"/></clipPath>
+<g clip-path="url(#clip51)"><rect x="684" y="485" width="272" height="5" fill="#FFB13D"/></g>
+<text x="702" y="511" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#FFB13D" text-anchor="start" letter-spacing="1.4">STEP 8</text>
+<text x="702" y="530.5" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="15.5" font-weight="600" fill="#EAF0FA" text-anchor="start">Normalize labels</text>
+<text x="702" y="551.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Emit COCO annotations</text>
+<text x="702" y="569.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Validate image and annotation</text>
+<text x="702" y="587.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">correspondence</text>
+<polyline points="958,570 974,570" fill="none" stroke="#FFB13D" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-mFFB13D)"/>
+<rect x="976" y="485" width="272" height="170" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip52"><rect x="976" y="485" width="272" height="170" rx="10"/></clipPath>
+<g clip-path="url(#clip52)"><rect x="976" y="485" width="272" height="5" fill="#FFB13D"/></g>
+<text x="994" y="511" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#FFB13D" text-anchor="start" letter-spacing="1.4">STEP 9</text>
+<text x="994" y="530.5" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="15.5" font-weight="600" fill="#EAF0FA" text-anchor="start">Export formats</text>
+<text x="994" y="551.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">COCO to YOLO conversion</text>
+<text x="994" y="569.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Generate dataset.yaml</text>
+<text x="994" y="587.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Re-emit the image tree</text>
+<polyline points="1250,570 1266,570" fill="none" stroke="#FFB13D" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-mFFB13D)"/>
+<rect x="1268" y="485" width="272" height="170" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip53"><rect x="1268" y="485" width="272" height="170" rx="10"/></clipPath>
+<g clip-path="url(#clip53)"><rect x="1268" y="485" width="272" height="5" fill="#FF7E8E"/></g>
+<text x="1286" y="511" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#FF7E8E" text-anchor="start" letter-spacing="1.4">STEP 10</text>
+<text x="1286" y="530.5" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="15.5" font-weight="600" fill="#EAF0FA" text-anchor="start">Hand off</text>
+<text x="1286" y="551.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">CVAT for review</text>
+<text x="1286" y="569.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Roboflow for management</text>
+<text x="1286" y="587.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">or straight into training</text>
+<polyline points="1372,417 1372,450 236,450 236,483" fill="none" stroke="#7ED957" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-m7ED957)"/>
+<rect x="773.4" y="431.0" width="61.2" height="17" rx="4" fill="#0A101C" stroke="none"/>
+<text x="804.0" y="443.0" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="700" fill="#94A6C4" text-anchor="middle">continue</text>
+<rect x="100" y="700" width="1444" height="160" rx="14" fill="#0E1524" stroke="#1F2E47" stroke-width="1.5"/>
+<rect x="101.5" y="714" width="4" height="132" rx="2" fill="#35D6D0" stroke="none" opacity="0.75"/>
+<text x="120" y="727" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="700" fill="#35D6D0" text-anchor="start" letter-spacing="1.5">INPUTS AND OUTPUTS</text>
+<rect x="116" y="744" width="342" height="100" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip54"><rect x="116" y="744" width="342" height="100" rx="10"/></clipPath>
+<g clip-path="url(#clip54)"><rect x="116" y="744" width="342" height="5" fill="#35D6D0"/></g>
+<text x="134" y="779" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="15" font-weight="600" fill="#EAF0FA" text-anchor="start">Input</text>
+<text x="134" y="800" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">A small real dataset in YOLO</text>
+<text x="134" y="818" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">format plus a background pool</text>
+<rect x="472" y="744" width="342" height="100" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip55"><rect x="472" y="744" width="342" height="100" rx="10"/></clipPath>
+<g clip-path="url(#clip55)"><rect x="472" y="744" width="342" height="5" fill="#B98BFF"/></g>
+<text x="490" y="779" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="15" font-weight="600" fill="#EAF0FA" text-anchor="start">Intermediate</text>
+<text x="490" y="800" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">SAM masks and an album of</text>
+<text x="490" y="818" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">RGBA object cutouts by class</text>
+<rect x="828" y="744" width="342" height="100" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip56"><rect x="828" y="744" width="342" height="100" rx="10"/></clipPath>
+<g clip-path="url(#clip56)"><rect x="828" y="744" width="342" height="5" fill="#7ED957"/></g>
+<text x="846" y="779" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="15" font-weight="600" fill="#EAF0FA" text-anchor="start">Output</text>
+<text x="846" y="800" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Synthetic images with COCO</text>
+<text x="846" y="818" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">and YOLO annotations</text>
+<rect x="1184" y="744" width="342" height="100" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip57"><rect x="1184" y="744" width="342" height="100" rx="10"/></clipPath>
+<g clip-path="url(#clip57)"><rect x="1184" y="744" width="342" height="5" fill="#FF6B6B"/></g>
+<text x="1202" y="779" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="15" font-weight="600" fill="#EAF0FA" text-anchor="start">Boundary</text>
+<text x="1202" y="800" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Auxiliary research path, not</text>
+<text x="1202" y="818" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">the production execution model</text>
+<line x1="56" y1="952" x2="1544" y2="952" stroke="#1F2E47" stroke-width="1"/>
+<text x="56" y="974" font-family="'Liberation Mono', 'DejaVu Sans Mono', monospace" font-size="11" font-weight="400" fill="#63799B" text-anchor="start">yolo-training-inference-orchestration-architecture</text>
+<text x="1544" y="974" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="400" fill="#63799B" text-anchor="end">Public-safe architecture documentation · all values illustrative</text>
+</svg>
