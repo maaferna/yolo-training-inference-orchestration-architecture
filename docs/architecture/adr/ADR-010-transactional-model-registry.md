@@ -29,7 +29,8 @@ Two further forces:
 
 Model versions are rows in the web database: name and version unique together, a SHA-256
 fingerprint of the weights, a stage (candidate, serving, retired), family, size, input
-resolution, a dataset configuration reference and an optional external tracking identifier.
+resolution, a dataset configuration reference, the validation summary the validation job
+produced (provenance, not a benchmark) and an optional external tracking identifier.
 Promotion and rollback are single transactions that demote the previous serving version and
 write a promotion event naming the previous version, the user and a reason. Promotion is
 performed by a person; the selection score is displayed, never acted on automatically. The
