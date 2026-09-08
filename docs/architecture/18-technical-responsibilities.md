@@ -14,7 +14,7 @@ This document describes the technical responsibilities demonstrated in this arch
 
 1. **System Design**: Decomposed complex AI pipeline into microservices
 2. **Technology Selection**: Chose appropriate frameworks for web and compute layers
-3. **Scalability Planning**: Documented evolution from MVP to enterprise scale
+3. **Scalability Planning**: Documented an evolution path gated by operational triggers, not a calendar
 4. **Risk Management**: Identified and documented architectural constraints and mitigation strategies
 
 ---
@@ -35,7 +35,7 @@ This document describes the technical responsibilities demonstrated in this arch
 
 ### Portfolio Language
 
-> "Designed microservice architecture separating web server (Django/DRF) from AI compute service (FastAPI) to enable independent scaling and workload isolation. Documented multi-phase evolution strategy for transitioning from synchronous task execution to distributed job queue infrastructure."
+> "Designed a two-service architecture separating the web layer (Django) from the AI compute service (FastAPI) to isolate GPU workloads from the web process. Documented an evolution strategy in which a queue is a non-goal until a named trigger fires; when timeouts fired, the answer was submit/poll with durable job records, not a broker (ADR-009)."
 
 ---
 
@@ -82,7 +82,7 @@ def train_with_cleanup():
 
 ### Multi-Seed Training Logic
 
-**Decision Logic**:
+**Decision Logic** (illustrative values):
 ```
 Inputs: 3-5 training runs with different random seeds
 Output: Single best model (highest mAP50)
@@ -218,13 +218,15 @@ Result: Better small-object detection than single-pass inference
 
 ### Portfolio Language
 
-> "Integrated SAHI (Sliced Aided Hyper Inference) for high-resolution object detection. Designed tiling strategy with configurable overlap (25%-75%) to balance inference speed vs. accuracy. Documented detection merging logic using NMS (Non-Maximum Suppression) for deduplication. Demonstrated trade-off analysis: 50% overlap provides optimal accuracy for small-object preservation without excessive slowdown."
+> "Specified SAHI (Slicing Aided Hyper Inference) tiling for high-resolution object detection, with configurable overlap to trade inference time against boundary loss; documented 50% as the illustrative default. Documented detection merging across tiles with non-maximum suppression, and kept SAHI's merge strategy as a design decision (ADR-005)."
 
 ---
 
 ## Experiment Tracking and Metadata Management
 
-**Responsibility**: Designed ClearML integration for experiment tracking (separate from artifact storage).
+**Responsibility**: Designed experiment tracking with local artifacts as the source of truth (ClearML in the initial iteration).
+
+> Initial iteration only. The tool was withdrawn in a later revision on data-egress grounds and a self-hosted tracking-only server was decided and not deployed; see [ADR-012](./adr/ADR-012-experiment-tracking-revised.md).
 
 ### ClearML Role Understanding
 
@@ -266,7 +268,7 @@ Separate system (shared storage) tracks:
 
 ## Storage Architecture and Data Persistence
 
-**Responsibility**: Designed shared storage layer with 7 artifact categories and risk mitigation.
+**Responsibility**: Designed the shared storage layer, its artifact categories and their risk mitigation.
 
 ### Artifact Categories
 
@@ -309,7 +311,7 @@ Separate system (shared storage) tracks:
 
 ### Portfolio Language
 
-> "Designed shared storage layer for artifact persistence across microservices. Documented 7 artifact categories and 6 operational risks with mitigation strategies. Demonstrated systems thinking: identified race conditions in concurrent model updates, path fragility across containers, and disk lifecycle management. Proposed phased evolution: local filesystem → atomic operations → database registry → object storage."
+> "Designed a shared storage layer for artifact persistence across the two services. Documented eight artifact categories and six operational risks with mitigation strategies, including the race condition in concurrent model updates that a later revision closed with a transactional registry (ADR-010)."
 
 ---
 
@@ -320,7 +322,7 @@ Separate system (shared storage) tracks:
 ### Container Strategy
 
 **Designed separation**:
-- **Django Container**: Python 3.11 slim, port 8000, 2GB RAM
+- **Django Container**: Python 3.11 slim, port 8000
 - **FastAPI Container**: NVIDIA CUDA base, port 8001, GPU access
 - **PostgreSQL Container**: Port 5432, persistent volume
 - **Shared Volume**: Named Docker volume mounted to both services
@@ -386,7 +388,7 @@ Benefit: Training completes even with seed failures
 
 ### Portfolio Language
 
-> "Designed comprehensive error handling strategy covering 6 common failure scenarios. Designed partial-failure resilience: multi-seed training continues even if individual seeds fail, ensuring statistical significance. Documented recovery patterns: exponential backoff for transient errors, fallback validation when training() returns None, progressive resource scaling for OOM. Demonstrated production-grade reliability thinking."
+> "Designed an error handling strategy covering six common failure scenarios. Designed partial-failure resilience: multi-seed training continues even if individual seeds fail. Documented recovery patterns: fallback validation when training returns nothing, progressive resource scaling for out-of-memory errors, and backoff for transient errors as a recommendation not implemented in the initial iteration. A later revision replaced error prose with one envelope and a code catalog."
 
 ---
 
@@ -404,7 +406,6 @@ Benefit: Training completes even with seed failures
 | Job status and polling | Submit/poll with durable job records, no broker | Operators need progress; timeouts appear |
 | Controlled worker | One GPU worker with admission control | Jobs compete for the device |
 | Broker and pool | Queue with several workers | Retry, cancellation and multi-worker dispatch become requirements |
-| 5 | Observability + SLA | Enterprise | Production |
 
 ### Evolution Principles
 
@@ -416,7 +417,7 @@ Benefit: Training completes even with seed failures
 
 ### Portfolio Language
 
-> "Designed multi-phase production evolution roadmap from MVP synchronous orchestration to enterprise-scale Kubernetes infrastructure. Documented decision criteria for each phase transition. Proposed incremental additions: Phase 2 adds Redis queue when concurrent job count exceeds 3, Phase 3 introduces GPU worker pool when queue throughput becomes bottleneck, Phase 4 migrates to Kubernetes when geographic distribution needed. Demonstrates pragmatic infrastructure strategy: start simple, add complexity when justified by scale."
+> "Designed an evolution roadmap gated by operational triggers rather than a calendar: job status records and polling as soon as operators need progress, a controlled GPU worker when jobs compete for the device, a broker only when retry, cancellation and multi-worker dispatch become requirements. When the first trigger fired, submit/poll with durable job records was enough; a queue and Kubernetes were never triggered, and the ledger says so."
 
 ---
 
@@ -426,7 +427,7 @@ Benefit: Training completes even with seed failures
 - ✓ Identified race conditions in concurrent model updates
 - ✓ Designed separation of concerns (metadata vs. artifacts)
 - ✓ Understood trade-offs (speed vs. accuracy, cost vs. capability)
-- ✓ Documented multi-layer architecture (9 layers total)
+- ✓ Documented the layered architecture from web layer to GPU runtime
 
 ### GPU Computing Knowledge
 - ✓ CUDA memory management (empty_cache, reset_peak, gc.collect)
@@ -436,15 +437,15 @@ Benefit: Training completes even with seed failures
 
 ### Software Architecture
 - ✓ Microservice decomposition (Django + FastAPI)
-- ✓ Communication patterns (HTTP, async queues)
+- ✓ Communication patterns (synchronous HTTP, then submit/poll)
 - ✓ Database design (PostgreSQL models, transaction safety)
-- ✓ Scalability planning (single service → distributed cluster)
+- ✓ Scalability planning by trigger (queue, worker pool and orchestrator as non-goals until evidence)
 
 ### DevOps and Containers
 - ✓ Docker containerization strategy
 - ✓ Volume mount risk mitigation
 - ✓ GPU passthrough to containers
-- ✓ Service orchestration planning (Docker Compose → Kubernetes)
+- ✓ Service orchestration with Docker Compose; Kubernetes documented as optional and not triggered
 
 ### Machine Learning Systems
 - ✓ Model selection strategy (multi-seed approach)
@@ -464,7 +465,7 @@ Benefit: Training completes even with seed failures
 
 **Responsibility**: Designed centralized YOLO configuration management through Django ORM models with automatic YAML generation.
 
-For comprehensive documentation, see [**docs/08-yolo-dataset-configuration-management.md**](./08-yolo-dataset-configuration-management.md).
+For comprehensive documentation, see [**docs/architecture/08-yolo-dataset-configuration-management.md**](./08-yolo-dataset-configuration-management.md).
 
 ### Domain Model Design
 
@@ -472,7 +473,7 @@ For comprehensive documentation, see [**docs/08-yolo-dataset-configuration-manag
 1. **ProjectConfiguration**: Project-level aggregation of datasets and label sets
 2. **DetectionClass**: Individual class definition (name, color, metadata)
 3. **ClassSet**: Reusable grouping of detection classes for multi-project sharing
-4. **DatasetConfig**: Automated YAML generation from ORM state
+4. **DatasetConfiguration**: Automated YAML generation from ORM state
 
 ### YAML Generation Pipeline
 
@@ -524,13 +525,13 @@ Return path to frontend/FastAPI
 
 ### Portfolio Language
 
-> "Designed Django ORM-based configuration management layer for YOLO training parameters. Specified automatic YAML generation with custom PyYAML serialization to ensure Ultralytics compatibility. Solved the multi-container path mapping challenge through environment-variable-aware path resolution, enabling single shared volume to be accessed via different mount points in different containers. Created full-stack integration from Bootstrap UI through Django forms to AJAX endpoints to FastAPI payload generation."
+> "Designed Django ORM-based configuration management layer for YOLO training parameters. Specified automatic YAML generation with custom PyYAML serialization to ensure Ultralytics compatibility. Documented environment-variable-aware path resolution for a shared volume mounted at different points in different containers, later superseded by a same-path invariant (ADR-011). Specified the full-stack flow from Bootstrap UI through Django forms to AJAX endpoints to FastAPI payload generation."
 
 ---
 
 ## Synthetic Dataset Generation Architecture
 
-For comprehensive documentation, see [**docs/21-synthetic-dataset-generation-pipeline.md**](./21-synthetic-dataset-generation-pipeline.md).
+For comprehensive documentation, see [**docs/architecture/21-synthetic-dataset-generation-pipeline.md**](./21-synthetic-dataset-generation-pipeline.md).
 
 **Responsibility**: Designed auxiliary synthetic dataset enrichment pipeline leveraging Segment Anything Model (SAM) for automated object extraction and composition.
 
@@ -596,7 +597,7 @@ For comprehensive documentation, see [**docs/21-synthetic-dataset-generation-pip
 
 ### Portfolio Language
 
-> "Architected synthetic dataset generation pipeline integrating Segment Anything Model (SAM) for automated object extraction. Designed RGBA compositing system with blending algorithms for natural-looking synthetic images. Specified dual-format annotation export (COCO/YOLO) with platform-specific validation, solving format compatibility challenges with external tools. Designed versioned artifact storage with manifest-based provenance tracking, enabling reproducibility of specific dataset versions used in model training. Solved 10 identified engineering problems including canvas bounds validation, object placement overflow handling, and quality filtering strategies."
+> "Designed a synthetic dataset generation pipeline integrating Segment Anything Model (SAM) for automated object extraction. Designed RGBA compositing system with blending algorithms for natural-looking synthetic images. Specified dual-format annotation export (COCO/YOLO) with platform-specific validation, solving format compatibility challenges with external tools. Designed versioned artifact storage with manifest-based provenance tracking, enabling reproducibility of specific dataset versions used in model training. Documented ten engineering problems and their resolutions, including canvas bounds validation, object placement overflow handling, and quality filtering strategies."
 
 ---
 
@@ -604,7 +605,7 @@ For comprehensive documentation, see [**docs/21-synthetic-dataset-generation-pip
 
 ### When Asked: "Tell me about a complex system you designed"
 
-> "I designed a GPU-accelerated model training and inference orchestration system with microservice architecture. The system separates Django web server from FastAPI compute service, enabling independent scaling. I implemented multi-seed training strategy for statistical rigor and designed a continuous improvement pipeline with baseline comparison. A key achievement was identifying a subtle race condition in concurrent model updates and proposing atomic operation solutions. I documented an evolution path from a synchronous baseline to background execution and artifact governance, each stage gated by operational evidence rather than a calendar."
+> "I designed a GPU-accelerated model training and inference orchestration system with microservice architecture. The system separates Django web server from FastAPI compute service, enabling independent scaling. I designed a multi-seed training strategy for statistical rigor and designed a continuous improvement pipeline with baseline comparison. A key achievement was identifying a subtle race condition in concurrent model updates and proposing atomic operation solutions. I documented an evolution path from a synchronous baseline to background execution and artifact governance, each stage gated by operational evidence rather than a calendar."
 
 ### When Asked: "How do you approach scalability?"
 
@@ -622,16 +623,16 @@ For comprehensive documentation, see [**docs/21-synthetic-dataset-generation-pip
 - Designed microservice architecture separating web (Django) and compute (FastAPI) layers
 - Designed multi-seed training strategy for statistical model selection
 - Designed continuous improvement pipeline with baseline comparison
-- Documented 5-phase production evolution from MVP to Kubernetes enterprise scale
+- Documented a trigger-gated evolution path; recorded which triggers fired and which never did
 
 **GPU Computing**:
 - Designed CUDA memory management for multi-seed training
 - Designed SAHI integration for high-resolution object detection
-- Handled OOM errors with progressive resource scaling
+- Documented OOM recovery through progressive resource scaling
 
 **Systems & DevOps**:
 - Designed Docker Compose orchestration with GPU support
-- Identified and mitigated 6 volume mount risks in containerized architecture
+- Documented six shared-storage risks and their mitigations in the containerized architecture
 - Documented race condition in concurrent model updates with atomic operation solutions
 
 **ML Engineering**:
@@ -643,5 +644,5 @@ For comprehensive documentation, see [**docs/21-synthetic-dataset-generation-pip
 
 ## Key Takeaway
 
-This architecture demonstrates **systems thinking**: the ability to design coherent, scalable systems while managing complexity, trade-offs, and risks. It shows willingness to document limitations, propose pragmatic solutions, and plan evolution paths. This is senior-level engineering thinking.
+This architecture demonstrates **systems thinking**: the ability to design coherent, scalable systems while managing complexity, trade-offs, and risks. It shows willingness to document limitations, propose pragmatic solutions, and plan evolution paths.
 

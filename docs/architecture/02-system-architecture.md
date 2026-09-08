@@ -442,7 +442,7 @@ The GPU compute layer provides CUDA acceleration for training, validation, and i
 - NVIDIA GPU runtime.
 - CUDA.
 - PyTorch CUDA backend.
-- DataParallel — evaluated, not currently in use.
+- DataParallel across two GPUs — the training runtime of the reference implementation.
 - Distributed Data Parallel — deferred; see `13-gpu-resource-management.md`.
 - Docker GPU runtime support.
 

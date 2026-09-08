@@ -546,4 +546,4 @@ def monitor_gpu_training():
 
 ---
 
-**GPU resource management is critical for ML training efficiency. Current single-GPU approach is pragmatic; future multi-GPU support enables significant speedups.**
+**GPU resource management is critical for ML training efficiency. DataParallel across two GPUs with a single-GPU fallback is the pragmatic runtime; DDP is the documented next step, deferred until the runtime audit allows it.**
