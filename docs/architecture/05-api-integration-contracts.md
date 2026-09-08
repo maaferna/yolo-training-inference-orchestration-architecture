@@ -1,5 +1,10 @@
 # API Integration Contracts
 
+> **Initial iteration.** These payloads describe the synchronous boundary. A later revision
+> added a run identifier on submit, a batched status query, one error envelope, per-run
+> manifests and service authentication; see
+> [`docs/evolution/03-service-contracts.md`](../evolution/03-service-contracts.md).
+
 This document describes the API contracts between Django and FastAPI services. These are conceptual specifications - no actual endpoint code is included in this documentation repository.
 
 ## Design Principles

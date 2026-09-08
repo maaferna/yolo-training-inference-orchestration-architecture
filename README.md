@@ -31,7 +31,7 @@ and why:
 | 30 seconds | The diagram above, and [the poster](./assets/poster/poster-architecture.png) |
 | 5 minutes | [The questions this architecture answers](#the-questions-this-architecture-answers) |
 | An hour | [`01-context-and-problem.md`](./docs/architecture/01-context-and-problem.md) onward, in order |
-| A hiring decision | [Limitations](./docs/architecture/15-limitations-and-risks.md), then the [ADRs](./docs/architecture/adr/) |
+| A hiring decision | [Limitations](./docs/architecture/15-limitations-and-risks.md), then [what a later revision did about them](./docs/evolution/00-what-came-next.md), then the [ADRs](./docs/architecture/adr/) |
 
 ---
 
@@ -226,7 +226,7 @@ High-resolution tiled inference for small-object detection, detection reconstruc
 
 ### 6. Experiment Tracking Layer
 
-Tracking of experiment metadata, metrics, artifacts, lineage, and failure context using public-safe MLOps documentation patterns.
+Tracking of experiment metadata, metrics, artifacts, lineage, and failure context, with local artifacts as the source of truth. The tracking tool of the initial iteration was withdrawn in a later revision; see [ADR-012](./docs/architecture/adr/ADR-012-experiment-tracking-revised.md).
 
 ### 7. Dataset Configuration Layer
 
@@ -269,7 +269,7 @@ This repository documents an internal production-oriented AI vision platform arc
 
 ### MLOps, Experiment Tracking & Data Engineering
 
-![ClearML](https://img.shields.io/badge/ClearML-Experiment%20Tracking-1A73E8?style=for-the-badge)
+![Experiment Tracking](https://img.shields.io/badge/Experiment%20Tracking-manifests%20first-1A73E8?style=for-the-badge)
 ![YAML](https://img.shields.io/badge/YAML-Configuration-CB171E?style=for-the-badge&logo=yaml&logoColor=white)
 ![JSON](https://img.shields.io/badge/JSON-Artifacts-000000?style=for-the-badge&logo=json&logoColor=white)
 ![COCO](https://img.shields.io/badge/COCO-Annotation%20Format-7952B3?style=for-the-badge)
@@ -303,7 +303,7 @@ This repository documents an internal production-oriented AI vision platform arc
 | AI Service | FastAPI | Internal service boundary for GPU-backed training and inference orchestration |
 | Training | PyTorch + Ultralytics YOLO | Multi-seed experimentation, validation-based selection, checkpoint generation |
 | Inference | YOLO + SAHI | High-resolution tiling strategy for small-object detection |
-| Experiment Tracking | ClearML or equivalent tracker | Metadata logging, metric comparison, artifact lineage |
+| Experiment Tracking | Run manifests; a tracker as metadata only | ClearML in the initial iteration, withdrawn later (ADR-012); local artifacts remain the source of truth |
 | Database | PostgreSQL or equivalent relational DB | User data, project metadata, configuration records, request history |
 | GPU Execution | CUDA + PyTorch | Single-GPU baseline with DataParallel exercised on two devices; DDP deferred |
 | Containerization | Docker Compose | Controlled internal deployment; Kubernetes is optional and only justified by operational scale or availability requirements |
@@ -379,6 +379,10 @@ specification, these are the questions worth reading for, each with where it is 
 | Why are notebooks useful for research but not as a production execution model? | [`ADR-006`](./docs/architecture/adr/ADR-006-notebooks-auxiliary-research.md) |
 | Why is Kubernetes optional rather than inevitable? | [`16-production-evolution-roadmap.md`](./docs/architecture/16-production-evolution-roadmap.md) |
 | Where should training run, and where should the application live? | [`20-deployment-cost-strategy.md`](./docs/architecture/20-deployment-cost-strategy.md) |
+| What happened when the triggers actually fired? | [`docs/evolution/07-roadmap-realised.md`](./docs/evolution/07-roadmap-realised.md) |
+| How do you replace a synchronous request without adding a queue? | [`docs/evolution/01-submit-poll-execution.md`](./docs/evolution/01-submit-poll-execution.md), [`ADR-009`](./docs/architecture/adr/ADR-009-submit-poll-in-process-execution.md) |
+| How was the model-reference race condition closed? | [`docs/evolution/02-model-registry-and-promotion.md`](./docs/evolution/02-model-registry-and-promotion.md), [`ADR-010`](./docs/architecture/adr/ADR-010-transactional-model-registry.md) |
+| How is a platform like this tested without a GPU? | [`docs/evolution/06-testing-and-ci-strategy.md`](./docs/evolution/06-testing-and-ci-strategy.md) |
 
 ---
 
@@ -581,6 +585,39 @@ yolo-training-inference-orchestration-architecture/
 | `20-deployment-cost-strategy.md` | Local, cloud, and hybrid deployment cost reasoning |
 | `21-synthetic-dataset-generation-pipeline.md` | Synthetic dataset generation workflow |
 
+### Evolution: a later revision of the same architecture
+
+The initial iteration confessed its limitations and named the triggers that would justify
+change. `docs/evolution/` records what a later revision did when those triggers fired: no queue
+and no Kubernetes, but job records, a registry, contracts, tests, metrology and an operator
+console. Training left the platform in that revision and its GPU path was not validated; both
+are stated in the first document.
+
+| Document | Purpose |
+|----------|---------|
+| [`00-what-came-next.md`](./docs/evolution/00-what-came-next.md) | What stayed, what changed, what left the platform, what was not validated |
+| [`01-submit-poll-execution.md`](./docs/evolution/01-submit-poll-execution.md) | Submit returns a run identifier; in-process pools; durable job records; no broker |
+| [`02-model-registry-and-promotion.md`](./docs/evolution/02-model-registry-and-promotion.md) | Versions with fingerprints, human promotion in one transaction, rollback |
+| [`03-service-contracts.md`](./docs/evolution/03-service-contracts.md) | One error envelope, one run manifest, authentication, same-path invariant |
+| [`04-detection-metrology.md`](./docs/evolution/04-detection-metrology.md) | From pixel boxes to physical size, foci, coverage and density, with gates |
+| [`05-operator-console.md`](./docs/evolution/05-operator-console.md) | Batches with progress, GeoJSON on an interactive map, localisation with a guard test |
+| [`06-testing-and-ci-strategy.md`](./docs/evolution/06-testing-and-ci-strategy.md) | Mock/real runtime seam, contract tests, CI on a throwaway Compose stack |
+| [`07-roadmap-realised.md`](./docs/evolution/07-roadmap-realised.md) | The roadmap of `16`, trigger by trigger: realised, not triggered, discarded |
+
+Decision records of the revision: [ADR-009](./docs/architecture/adr/ADR-009-submit-poll-in-process-execution.md) execution,
+[ADR-010](./docs/architecture/adr/ADR-010-transactional-model-registry.md) registry,
+[ADR-011](./docs/architecture/adr/ADR-011-single-mount-path-invariant.md) storage path,
+[ADR-012](./docs/architecture/adr/ADR-012-experiment-tracking-revised.md) tracking,
+[ADR-013](./docs/architecture/adr/ADR-013-metrology-in-the-ai-service.md) metrology placement.
+
+### Companion repository
+
+The script-level pipelines this platform orchestrates — YOLO and SAHI inference with geospatial
+export, COCO evaluation, video tracking, dataset validation and benchmarking, and the
+single-GPU / DataParallel / DDP training runtime — are documented in
+[`agridrone-vision-evaluation-pipeline`](https://github.com/maaferna/agridrone-vision-evaluation-pipeline).
+This repository covers the orchestration around them and links there rather than repeating them.
+
 ---
 
 ## Current Maturity Level
@@ -626,26 +663,26 @@ Recommended next steps focus on internal operational reliability:
 ### Priority 1: Reliability
 
 - [ ] Add preflight validation for datasets, storage, models, outputs, and GPU availability.
-- [ ] Add explicit job status records.
+- [x] Add explicit job status records. *Realised in a later revision; see [`07-roadmap-realised.md`](./docs/evolution/07-roadmap-realised.md).*
 - [ ] Add structured logs with correlation IDs.
-- [ ] Add artifact manifests for generated outputs.
+- [x] Add artifact manifests for generated outputs. *Realised.*
 - [ ] Add storage and GPU health checks.
 - [ ] Define backup and retention policies.
 
 ### Priority 2: Controlled Background Execution
 
-- [ ] Add a lightweight queue only if synchronous execution causes timeouts or operational contention.
+- [x] ~~Add a lightweight queue~~ Timeouts arrived; the response was submit/poll on in-process pools, **not a queue**. *Realised differently.*
 - [ ] Add a single GPU worker or controlled worker process.
 - [ ] Add job cancellation and retry policy.
-- [ ] Add progress/status polling.
+- [x] Add progress/status polling. *Realised.*
 - [ ] Add GPU resource locking.
 
 ### Priority 3: Governance
 
-- [ ] Add a database-backed model reference registry if file-based references become risky.
+- [x] Add a database-backed model reference registry if file-based references become risky. *Realised; ADR-010.*
 - [ ] Add dataset version tracking.
 - [ ] Link training runs to dataset configuration versions.
-- [ ] Validate generated artifacts before visualization or downstream use.
+- [x] Validate generated artifacts before visualization or downstream use. *Realised through the manifest contract.*
 
 ### Optional Scale-Out
 

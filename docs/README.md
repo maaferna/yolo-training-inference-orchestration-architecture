@@ -10,6 +10,11 @@ docs/
 │   ├── 01-context-and-problem.md
 │   ├── 02-system-architecture.md
 │   ├── ... (19 more)
+│   └── adr/               # ADR-001..008 (initial iteration), ADR-009..013 (revision)
+│
+├── evolution/            # A later revision of the same architecture (8 documents)
+│   ├── 00-what-came-next.md
+│   └── ... (7 more)
 │
 ├── portfolio/            # Portfolio and resume materials
 │   ├── PORTFOLIO_IMPLEMENTATION_GUIDE.md
@@ -41,6 +46,10 @@ Architecture files are numbered `01` to `21`; the numbering is the reading order
 - **09-13**: Training engine, continuous improvement, SAHI inference, experiment tracking, GPU management
 - **14-18**: Error handling, limitations, evolution roadmap, sanitization policy, responsibilities
 - **19-21**: Result synchronization, deployment cost strategy, synthetic dataset generation
+
+`evolution/` is read after `architecture/`: `00` explains what stayed and what changed, `01-06`
+describe the revision by topic, `07` is the ledger of the roadmap. ADRs marked `revision`
+supersede or amend the ones marked `initial`; the ADR index says which.
 
 The full index with one-line purposes is in the root `README.md`.
 

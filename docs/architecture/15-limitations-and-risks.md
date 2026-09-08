@@ -803,12 +803,12 @@ These are not bugs or oversights. They reflect **pragmatic engineering decisions
 
 **Recommended sequence**:
 
-1. **Phase 1 (Now)**: Validate basic orchestration
-2. **Phase 2 (1-3 months)**: Add job queue when > 3 concurrent jobs needed
-3. **Phase 3 (3-6 months)**: Distributed GPU workers
-4. **Phase 4 (6+ months)**: Object storage and Kubernetes
-5. **Phase 5**: Enterprise-scale multi-region deployment
+1. **Now**: preflight checks, job status records, manifests, structured logs.
+2. **When timeouts or the need for progress appear**: submit/poll with durable job records, no broker.
+3. **When jobs compete for the device**: a single GPU admission lane.
+4. **When lineage questions cannot be answered from storage**: a transactional model registry.
+5. **Only on evidence of concurrent long-running load or governance failure**: workers, object storage, an orchestrator.
 
 ---
 
-**This architecture is pragmatically scoped for early-stage development and validation. Production scale evolution is addressed in the roadmap.**
+**This architecture is pragmatically scoped for a controlled internal platform. The evolution path is in `16-production-evolution-roadmap.md`; what a later revision actually did about each limitation listed here is recorded in [`docs/evolution/00-what-came-next.md`](../evolution/00-what-came-next.md) and, trigger by trigger, in [`docs/evolution/07-roadmap-realised.md`](../evolution/07-roadmap-realised.md).**

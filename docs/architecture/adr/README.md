@@ -21,12 +21,17 @@ Each ADR follows a standard format:
 |---|-------|--------|------|-------|
 | 001 | Separate Django Web Orchestration from FastAPI AI Processing | ✅ Accepted | initial | Architecture |
 | 002 | Use Shared Artifact Storage as Initial Integration Mechanism | ✅ Accepted | initial | Storage |
-| 003 | Use FastAPI as GPU-Backed AI Service Boundary | ✅ Accepted | initial | Compute |
-| 004 | Use ClearML for Experiment Tracking | ✅ Accepted | initial | **MLOps** |
+| 003 | Use FastAPI as GPU-Backed AI Service Boundary | ✅ Accepted (amended by 009) | initial | Compute |
+| 004 | Use ClearML for Experiment Tracking | ⤴ Superseded by 012 | initial | **MLOps** |
 | 005 | Use SAHI for High-Resolution Small-Object Inference | ✅ Accepted | initial | Inference |
 | 006 | Use Notebooks as Auxiliary Research Workflow | ✅ Accepted | initial | **MLOps** |
-| 007 | Tracking Tool Evaluation: ClearML over MLflow and W&B | ✅ Accepted (supports ADR-004) | initial | **MLOps** |
-| 008 | Path Translation Layer for Multi-Container Artifact Synchronization | ✅ Accepted | initial | Storage |
+| 007 | Tracking Tool Evaluation: ClearML over MLflow and W&B | ⤴ Superseded by 012 | initial | **MLOps** |
+| 008 | Path Translation Layer for Multi-Container Artifact Synchronization | ⤴ Superseded by 011 | initial | Storage |
+| 009 | Execute Jobs as Submit/Poll on In-Process Pools, Without a Broker | ✅ Accepted (amends 003) | revision | Compute |
+| 010 | Keep the Model Reference in a Transactional Registry with Human Promotion | ✅ Accepted | revision | **MLOps** |
+| 011 | Mount Shared Storage at the Same Path in Every Container | ✅ Accepted (supersedes 008) | revision | Storage |
+| 012 | Withdraw the SaaS-Default Tracking Tool; Self-Hosted Tracking-Only, Not Deployed | ✅ Accepted — not implemented (supersedes 004, 007) | revision | **MLOps** |
+| 013 | Compute Detection Metrology as a Job Type of the AI Service | ✅ Accepted | revision | Compute |
 
 ### Reading Guide by Topic
 
@@ -34,18 +39,25 @@ Each ADR follows a standard format:
 - **ADR-001**: Why we separate web (Django) from compute (FastAPI)
 - **ADR-002**: Where models and artifacts live (shared storage)
 - **ADR-003**: Why FastAPI is our compute boundary
-- **ADR-008**: How container paths become web-visible URLs for inference results
+- **ADR-008**: How container paths became web-visible URLs in the initial iteration (superseded)
+- **ADR-011**: Why the later revision mounts one path everywhere and translates nothing
+- **ADR-009**: Why the later revision answered timeouts with submit/poll on in-process pools, not a queue
+- **ADR-013**: Why detection metrology is a job type of the AI service
 
 #### 📊 MLOps & Experiment Management
-- **ADR-004**: The tracking decision, its architecture and the self-hosted migration strategy — **start here**
-- **ADR-007**: The evaluation behind it — why ClearML over MLflow and Weights & Biases
+- **ADR-012**: The tracking decision as it stands — the initial tool withdrawn, a self-hosted tracking-only server decided and not deployed — **start here**
+- **ADR-004**: The initial tracking decision and its architecture (superseded)
+- **ADR-007**: The evaluation behind it — why ClearML over MLflow and Weights & Biases (superseded)
+- **ADR-010**: The model registry: versions, fingerprints, human promotion, one transaction
 - **ADR-006**: Why notebooks are research tools, not production
 
 #### 🔬 Inference & Models
 - **ADR-005**: Why SAHI for small-object detection
 
-> A formal model registry has no ADR yet. Model references currently live in shared storage;
-> see finding on race conditions in `../10-continuous-improvement-training.md`.
+> The race condition on the file-based model reference documented in
+> `../10-continuous-improvement-training.md` is closed by ADR-010. The reading order across
+> iterations is `initial` ADRs first, then `docs/evolution/00-what-came-next.md`, then the
+> `revision` ADRs.
 
 ## ADR Template
 

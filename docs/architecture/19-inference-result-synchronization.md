@@ -1,5 +1,11 @@
 # Inference Result Synchronization Layer
 
+> **Initial iteration.** The path-translation approach described here was replaced in a later
+> revision by a same-path mount invariant and relative paths in run manifests. See
+> [ADR-011](./adr/ADR-011-single-mount-path-invariant.md) and
+> [`docs/evolution/03-service-contracts.md`](../evolution/03-service-contracts.md). The problem
+> analysis remains the reason the invariant exists.
+
 > **Status**: System-level integration component  
 > **Complexity**: High  
 > **Portfolio Value**: ⭐⭐⭐⭐⭐ (Demonstrates system-level problem-solving)

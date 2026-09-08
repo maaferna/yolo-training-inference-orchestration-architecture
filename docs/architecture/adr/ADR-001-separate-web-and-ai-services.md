@@ -173,7 +173,7 @@ All specific details (port numbers, service names, etc.) are generic and non-rev
 
 - **ADR-002**: Use Shared Artifact Storage as Integration Mechanism
 - **ADR-003**: Use FastAPI as GPU-Backed AI Service Boundary
-- **ADR-009**: Future Migration Toward Job Queues (when Phase 2 needed)
+- **ADR-009**: Submit/poll execution on in-process pools — what the later revision did when the timeouts arrived, instead of a queue
 
 ---
 

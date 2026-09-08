@@ -335,3 +335,6 @@ For the current internal deployment model, the most valuable improvements are li
 - better GPU and storage diagnostics.
 
 The absence of Kubernetes, a distributed queue, or a large worker pool is not necessarily a weakness. In this context, it can be an intentional architectural trade-off.
+
+What happened when the triggers fired is recorded item by item in
+[`docs/evolution/07-roadmap-realised.md`](../evolution/07-roadmap-realised.md).

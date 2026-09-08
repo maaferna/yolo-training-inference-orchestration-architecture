@@ -1,5 +1,11 @@
 # ClearML Experiment Tracking
 
+> **Initial iteration.** The tool described here was withdrawn in a later revision on
+> data-egress grounds, and a self-hosted tracking-only alternative was decided and not deployed.
+> See [ADR-012](./adr/ADR-012-experiment-tracking-revised.md). The principle this document
+> establishes — local artifacts as the source of truth, tracking as metadata only — is what made
+> the withdrawal cheap, and still holds.
+
 This document describes ClearML integration for experiment tracking, metric logging, model artifact registration, and failure isolation.
 
 ## ClearML Role in Architecture

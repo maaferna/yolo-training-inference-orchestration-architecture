@@ -57,7 +57,9 @@ LICENSE-DOCS                    CC BY 4.0, cubre prosa, diagramas e imágenes ge
 docs/
   README.md                     Índice de la carpeta docs
   architecture/                 01..21 documentos de arquitectura (fuente de verdad técnica)
-    adr/                        README + ADR-001..ADR-008 (registros de decisión)
+    adr/                        README + ADR-001..008 (iteración inicial), ADR-009..013 (revisión)
+  evolution/                    00..07: revisión posterior de la misma arquitectura, a nivel
+                                de categoría; sin fechas ni vocabulario de sucesión
   operations/                   Solo README.md: calendario operativo retirado y adónde fue
   portfolio/                    PORTFOLIO_RESUME_CONTENT.md, PORTFOLIO_IMPLEMENTATION_GUIDE.md
 
@@ -101,6 +103,10 @@ La numeración `01`..`21` es el orden de lectura y no tiene huecos ni duplicados
   ADR-005 SAHI · ADR-006 notebooks como investigación auxiliar · ADR-007 evaluación de
   herramientas de tracking (complementa a ADR-004, no lo duplica) · ADR-008 capa de
   traducción de rutas entre contenedores.
+- Revisión: ADR-009 submit/poll en pools en proceso (enmienda 003) · ADR-010 registro
+  transaccional con promoción humana · ADR-011 misma ruta de montaje (supersede 008) ·
+  ADR-012 tracking retirado, MLflow decidido y no desplegado (supersede 004 y 007) ·
+  ADR-013 metrología como tipo de trabajo del servicio de IA.
 - El validador solo detecta prefijos duplicados en `docs/architecture/`, no en `adr/`. Al
   añadir un ADR, tomar el siguiente número libre y registrarlo en `adr/README.md`.
 

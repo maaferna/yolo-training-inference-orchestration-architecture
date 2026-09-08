@@ -1,6 +1,6 @@
 # ADR-008: Path Translation Layer for Multi-Container Artifact Synchronization
 
-**Status**: Accepted (Implemented Phase 1)  
+**Status**: Superseded by [ADR-011](./ADR-011-single-mount-path-invariant.md) — a later revision mounts the volume at the same path in every container and needs no translation  
 **Iteration**: initial
 **Deciders**: Architecture team  
 **Affects**: Inference result synchronization, artifact management, Django-FastAPI integration

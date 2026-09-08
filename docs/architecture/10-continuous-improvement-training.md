@@ -1,5 +1,12 @@
 # Continuous Improvement Training
 
+> **Initial iteration.** The race condition on the file-based model reference documented below
+> was closed in a later revision by a transactional registry with human promotion
+> ([ADR-010](./adr/ADR-010-transactional-model-registry.md),
+> [`docs/evolution/02-model-registry-and-promotion.md`](../evolution/02-model-registry-and-promotion.md)).
+> In that revision training itself runs outside the platform and weights are imported with a
+> fingerprint; the loop described here was exercised in the initial iteration only.
+
 This document describes the continuous improvement training pipeline, incremental training on new data, and baseline comparison logic.
 
 ## Continuous Improvement Motivation

@@ -612,7 +612,7 @@ For comprehensive documentation, see [**docs/21-synthetic-dataset-generation-pip
 
 ### When Asked: "Describe a time you found and fixed a bug"
 
-> "While designing the continuous improvement pipeline, I discovered a race condition: concurrent CI training jobs could corrupt the best_model_ref.json file. The issue occurred because two processes could read the same baseline, then write conflicting results. I documented the detailed timeline of when corruption occurs, then proposed mitigation: serialize CI jobs or use atomic file operations. This discovery led to recommending a transactional database registry, which a later revision of the platform adopted. It demonstrates the importance of reasoning about concurrent systems even in synchronous architectures."
+> "While designing the continuous improvement pipeline, I discovered a race condition: concurrent CI training jobs could corrupt the best_model_ref.json file. The issue occurred because two processes could read the same baseline, then write conflicting results. I documented the detailed timeline of when corruption occurs, then proposed mitigation: serialize CI jobs or use atomic file operations. This discovery led to recommending a transactional database registry, which a later revision of the platform adopted (ADR-010). It demonstrates the importance of reasoning about concurrent systems even in synchronous architectures."
 
 ---
 

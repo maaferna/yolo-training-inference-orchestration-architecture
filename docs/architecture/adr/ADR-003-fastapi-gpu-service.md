@@ -1,6 +1,6 @@
 # ADR-003: Use FastAPI as GPU-Backed AI Service Boundary
 
-**Status**: Accepted  
+**Status**: Accepted — amended by [ADR-009](./ADR-009-submit-poll-in-process-execution.md): the boundary stands, the synchronous execution mode described below was replaced by submit/poll in a later revision  
 **Iteration**: initial
 **Public-Safe**: Yes  
 

@@ -1,6 +1,6 @@
 # ADR-007: Tracking Tool Evaluation — ClearML over MLflow and Weights & Biases
 
-**Status**: Accepted — supporting evaluation for ADR-004
+**Status**: Superseded by [ADR-012](./ADR-012-experiment-tracking-revised.md) together with ADR-004; kept as the evaluation of the initial iteration
 **Iteration**: initial
 **Public-Safe**: Yes
 **Relationship**: This ADR records *why* ClearML was chosen: the tool comparison, the

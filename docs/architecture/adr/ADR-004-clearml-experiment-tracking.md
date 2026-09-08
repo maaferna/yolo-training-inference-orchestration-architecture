@@ -1,6 +1,6 @@
 # ADR-004: Use ClearML for Experiment Tracking with Local Artifacts as Source of Truth
 
-**Status**: Accepted — decision of record for experiment tracking
+**Status**: Superseded by [ADR-012](./ADR-012-experiment-tracking-revised.md) — the tool was withdrawn in a later revision on data-egress grounds; this record is kept as the decision of the initial iteration
 **Iteration**: initial
 **Public-Safe**: Yes
 **Relationship**: This ADR records the decision, the integration architecture and the
