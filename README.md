@@ -16,7 +16,7 @@ from taking down a web application, and keeping the artifacts it produces tracea
 
 [![System architecture](./assets/diagrams/01-system-architecture.png)](./assets/diagrams/01-system-architecture.png)
 
-### What this repository argues
+## What this repository argues
 
 Most architecture write-ups list what was built. This one is mostly about what was **not** built,
 and why:
@@ -30,7 +30,7 @@ and why:
   reasoned about separately, from data volume and GPU hours.
   See [deployment and cost strategy](./docs/architecture/20-deployment-cost-strategy.md).
 
-### Start here
+## Start here
 
 | If you have | Read |
 |---|---|
