@@ -1,5 +1,11 @@
 # Component Responsibilities
 
+> **Initial iteration.** Ownership below is that of the initial iteration: file-based model
+> reference, ClearML as the tracker, a synchronous boundary. Polling for job status is listed as a
+> web-layer duty by design; the reference implementation blocked on the request instead. A later
+> revision changed the execution mode, the registry, the tracker and the contracts; see
+> [`docs/evolution/00-what-came-next.md`](../evolution/00-what-came-next.md).
+
 ## Component Ownership Matrix
 
 This document clearly defines what each component is responsible for and what it is NOT responsible for.
@@ -17,7 +23,7 @@ This document clearly defines what each component is responsible for and what it
 - ✅ Error handling and user-facing error messages
 - ✅ Database persistence of user data
 - ✅ Session management and CSRF protection
-- ✅ Rate limiting and throttling (if cker Compose or a managed single-server deployment is sufficient for the documented internal operating conteximplemented)
+- ✅ Rate limiting and throttling (if implemented)
 - ✅ Link generation to artifacts in shared storage
 
 ### IS NOT RESPONSIBLE FOR

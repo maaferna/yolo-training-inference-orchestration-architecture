@@ -158,7 +158,7 @@ FastAPI Service Layer
 **Why not chosen**:
 - Adds Redis or RabbitMQ to infrastructure (more to deploy/maintain)
 - Celery complexity upfront (task definitions, worker management)
-- MVP doesn't need it yet; single GPU sufficient
+- The initial iteration does not need it yet; one host is sufficient
 - Delayed to Phase 2 when concurrent jobs observed
 - "Build complexity only when you need it" principle
 
@@ -270,7 +270,7 @@ This ADR describes framework selection rationale for building GPU service bounda
 
 - **ADR-001**: Service separation that enables FastAPI specialization
 - **ADR-004**: ClearML for metadata coordination with FastAPI
-- **ADR-009**: Future job queue pattern (Phase 2)
+- **ADR-009**: Submit/poll on in-process pools — the execution mode that amended this ADR in the later revision
 
 ---
 

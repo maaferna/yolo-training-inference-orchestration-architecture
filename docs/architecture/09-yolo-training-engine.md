@@ -2,6 +2,10 @@
 
 This document details the YOLO training implementation, multi-seed strategy, metric collection, and error handling.
 
+> **Initial iteration.** Training ran inside the platform in this iteration, with DataParallel
+> across two GPUs. A later revision moved training out of the platform and imports weights
+> through a registry; see [`docs/evolution/00-what-came-next.md`](../evolution/00-what-came-next.md).
+
 ## YOLOv8/YOLOv11 Training Overview
 
 ### Base Model Selection

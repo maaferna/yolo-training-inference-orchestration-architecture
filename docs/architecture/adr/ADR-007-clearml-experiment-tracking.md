@@ -515,11 +515,5 @@ The detailed self-hosted plan was retired together with the operational calendar
 - **ADR-003**: FastAPI as orchestration point (ClearML integrates here)
 - **ADR-004**: ClearML architecture with local artifacts as source of truth
 - **ADR-006**: Notebooks import results from ClearML for analysis
-- **ADR-008** (future): Model registry and production model selection
-- **ADR-009** (future): Data versioning integration with ClearML
-
-## Migration Documentation
-
-- **ADR-004**: Detailed self-hosted migration strategy included
-- **MIGRATION_CLEARML_CLOUD_TO_SELFHOSTED.md**: Step-by-step 4-week plan
-- **MLOPS_STATUS_REPORT.md**: Current project status and roadmap
+- **ADR-010**: The model registry the later revision adopted, outside any tracking tool
+- **ADR-012**: The later revision of this decision, which withdrew the tool evaluated here

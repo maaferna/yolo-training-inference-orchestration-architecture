@@ -2,6 +2,9 @@
 
 This document details the shared storage architecture, artifact categories, path mapping, and risks.
 
+> **Initial iteration.** The path mapping described here was replaced by a same-path invariant
+> (ADR-011) and the file-based registry by a transactional one (ADR-010) in a later revision.
+
 ## Shared Storage Purpose
 
 The shared storage layer serves as the **single source of truth** for all artifacts generated during training and inference. It enables:
@@ -617,7 +620,7 @@ model_path = Path(SHARED_STORAGE_PATH) / 'models' / 'best.pt'
 
 ## Future Storage Evolution
 
-### Current: File-Based Registry
+### Initial iteration: File-Based Registry
 - ✓ Simple to implement
 - ❌ Race conditions possible
 - ❌ Limited querying capability
@@ -629,7 +632,7 @@ model_path = Path(SHARED_STORAGE_PATH) / 'models' / 'best.pt'
 - ❌ Still file-based
 - Estimated effort: 1-2 days
 
-### Recommended Phase 2: Database Registry
+### Recommended Phase 2: Database Registry — *realized in a later revision (ADR-010)*
 - ✓ ACID transactions
 - ✓ Rich querying
 - ✓ Model lineage tracking

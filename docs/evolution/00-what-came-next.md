@@ -47,6 +47,7 @@ describes the response.
 | Tracking tool chosen for its SaaS convenience (ADR-004, ADR-007) | Data leaving the premises by default | Tool withdrawn; a self-hosted alternative decided and **not** deployed | ADR-012 |
 | Detections stop at pixel boxes | Operators asked for physical quantities | A detection-metrology job type in the AI service | [`04`](./04-detection-metrology.md), ADR-013 |
 | Results shown as image previews only | Operators asked "where" | GeoJSON per batch rendered on an interactive map in the console | [`05`](./05-operator-console.md) |
+| The AI service ran on the host, outside Docker (`06`) | Driver stack drift between host and containers | The AI service is containerized; GPU passthrough is configured explicitly and off by default | [`06`](./06-testing-and-ci-strategy.md) |
 | No automated tests, no CI (`15`) | Every change was a manual check | A mock/real runtime seam and a CPU test suite on the order of two thousand tests; CI on a throwaway Compose stack | [`06`](./06-testing-and-ci-strategy.md) |
 
 The full trigger-by-trigger reconciliation against `16` is in

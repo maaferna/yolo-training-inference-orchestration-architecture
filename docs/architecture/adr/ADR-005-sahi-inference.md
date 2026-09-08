@@ -178,4 +178,4 @@ This ADR describes SAHI (open-source library) and the decision to use it for til
 ## Related ADRs
 
 - **ADR-003**: FastAPI integration point for SAHI inference
-- **ADR-009**: Phase 3 optimization opportunities
+- **ADR-013**: Detection metrology, which consumes SAHI's reconstructed full-image detections in the later revision

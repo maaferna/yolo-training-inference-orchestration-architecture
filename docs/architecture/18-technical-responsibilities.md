@@ -365,7 +365,7 @@ volumes:
 |-------|-----------|----------|
 | train() returns None | Check return value | Fallback to manual validation |
 | CUDA OOM | torch.cuda.OutOfMemoryError | Reduce batch size or image size |
-| DDP communication error | Process hangs | Timeout and retry |
+| DDP communication error (anticipated; DDP deferred) | Process hangs | Timeout and retry |
 | Corrupted settings.json | JSON decode error | Regenerate from template |
 | Path mismatch | FileNotFoundError | Log error, request correction |
 | Django 404 | HTTP 404 | Verify endpoint URL |

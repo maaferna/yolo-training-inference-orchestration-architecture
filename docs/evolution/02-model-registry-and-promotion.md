@@ -10,8 +10,8 @@
 The initial iteration kept "the current best model" as a reference file in shared storage,
 rewritten by whichever training run scored higher (`10-continuous-improvement-training.md`,
 `07-shared-storage-and-artifacts.md`). The race condition that design admits was the most
-discussed finding of this repository, and `adr/README.md` noted that a formal registry had no
-decision record. This document describes the registry the revision adopted, and ADR-010 records
+discussed finding of this repository, and the ADR index of the initial iteration noted that a formal
+registry had no decision record. This document describes the registry the revision adopted, and ADR-010 records
 the decision.
 
 ## Context

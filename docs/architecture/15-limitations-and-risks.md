@@ -773,6 +773,20 @@ For comprehensive documentation, see [**docs/21-synthetic-dataset-generation-pip
 
 ---
 
+## No Automated Tests and No Continuous Integration
+
+The initial iteration has no automated test suite and no continuous integration: the only way to
+exercise the AI service is to load real weights on a real device, and the web layer's calls to
+the service are checked by running both. Every change is validated by running a job and looking
+at the result.
+
+**Consequence**: regressions in coordinate reconstruction, artifact naming or the service
+contract are found by operators, not by a build.
+
+**Trigger for change**: any second contributor, or any change to the service boundary. A later
+revision addressed this with a mock/real runtime seam and a CPU-only suite; see
+[`docs/evolution/06-testing-and-ci-strategy.md`](../evolution/06-testing-and-ci-strategy.md).
+
 ## Summary of Limitations
 
 | Category | Current | Gap | Impact |

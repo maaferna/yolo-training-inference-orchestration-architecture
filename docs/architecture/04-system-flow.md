@@ -1,5 +1,10 @@
 # System Flows
 
+> **Initial iteration.** The flows below show the request row, the `202 Accepted` and the polling
+> step as the design intent of the initial iteration; its reference implementation held the HTTP
+> request open for the whole job (ADR-003, `15`). A later revision realized the submit/poll
+> pattern drawn here; see [`docs/evolution/01-submit-poll-execution.md`](../evolution/01-submit-poll-execution.md).
+
 This document describes the complete request/response flows, error handling flows, and data movement through the system.
 
 ## Training Request Flow

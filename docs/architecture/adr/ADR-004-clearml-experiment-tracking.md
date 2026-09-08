@@ -643,7 +643,7 @@ This ADR describes the decision to use ClearML (open-source tool) for experiment
 - **ADR-003**: FastAPI logs experiments to ClearML
 - **ADR-006**: Notebooks use ClearML results for visualization and analysis
 - **ADR-007**: Alternative tracking architecture (ClearML vs alternatives)
-- **ADR-009**: Phase 2 could extend this with data versioning
+- **ADR-012**: The later revision of this decision — tool withdrawn, self-hosted tracking-only server decided and not deployed
 
 ---
 

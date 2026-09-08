@@ -2,6 +2,9 @@
 
 This document describes error scenarios, recovery mechanisms, and mitigation strategies.
 
+> **Initial iteration.** A later revision replaced error prose with one envelope and a code
+> catalog; see [`docs/evolution/03-service-contracts.md`](../evolution/03-service-contracts.md).
+
 ## Common Error Scenarios
 
 ### 1. Ultralytics train() Returns None

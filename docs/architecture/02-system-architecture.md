@@ -1,5 +1,10 @@
 # System Architecture
 
+> **Initial iteration.** This is the source of truth for the layer boundaries, which a later
+> revision kept unchanged. Its execution mode (synchronous), tracker (ClearML), model reference
+> (file-based) and path mapping were changed in that revision; see
+> [`docs/evolution/00-what-came-next.md`](../evolution/00-what-came-next.md) and ADR-009 to ADR-013.
+
 ## Public-Safe Architecture Notice
 
 This document describes a generalized and anonymized architecture for an internal AI vision platform. It does not include private source code, real datasets, trained weights, production credentials, client names, institutional identifiers, real metrics, real coordinates, or deployment-specific infrastructure details.

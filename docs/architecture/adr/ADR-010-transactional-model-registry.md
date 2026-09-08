@@ -3,8 +3,8 @@
 **Status**: Accepted
 **Iteration**: revision
 **Public-Safe**: Yes
-**Closes**: the gap noted in [the ADR index](./README.md) — "a formal model registry has no
-ADR yet" — and the race condition documented in
+**Closes**: the gap the [ADR index](./README.md) noted in the initial iteration — no decision
+record for a model registry — and the race condition documented in
 [`10-continuous-improvement-training.md`](../10-continuous-improvement-training.md).
 
 ---

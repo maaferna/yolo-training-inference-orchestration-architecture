@@ -464,7 +464,8 @@ This design can be sufficient for a controlled internal platform when workload v
 
 ### Priority 1: Operational Reliability
 
-Add these improvements before considering distributed infrastructure:
+Add these improvements before considering distributed infrastructure (the checklist under
+[Production Evolution Roadmap](#production-evolution-roadmap) marks which were realized):
 
 - preflight validation for datasets, model checkpoints, output directories, storage mounts, and GPU availability;
 - explicit job status records;
@@ -535,41 +536,28 @@ For detailed roadmap reasoning, see [`docs/architecture/16-production-evolution-
 
 ```text
 yolo-training-inference-orchestration-architecture/
-├── README.md
-├── LICENSE
-├── .gitignore
+├── README.md                        Argument, start-here table, index
+├── CONTRIBUTING.md                  Contribution rules and the sanitization gate
+├── LICENSE                          MIT, for the scripts
+├── LICENSE-DOCS                     CC BY 4.0, for prose, diagrams and images
 ├── docs/
-│   ├── architecture/
-│   │   ├── 01-context-and-problem.md
-│   │   ├── 02-system-architecture.md
-│   │   ├── 03-component-responsibilities.md
-│   │   ├── 04-system-flow.md
-│   │   ├── 05-api-integration-contracts.md
-│   │   ├── 06-docker-runtime-architecture.md
-│   │   ├── 07-shared-storage-and-artifacts.md
-│   │   ├── 08-yolo-dataset-configuration-management.md
-│   │   ├── 09-yolo-training-engine.md
-│   │   ├── 10-continuous-improvement-training.md
-│   │   ├── 11-sahi-inference-engine.md
-│   │   ├── 12-clearml-experiment-tracking.md
-│   │   ├── 13-gpu-resource-management.md
-│   │   ├── 14-error-handling-and-fallbacks.md
-│   │   ├── 15-limitations-and-risks.md
-│   │   ├── 16-production-evolution-roadmap.md
-│   │   ├── 17-public-release-sanitization.md
-│   │   ├── 18-technical-responsibilities.md
-│   │   ├── 19-inference-result-synchronization.md
-│   │   ├── 20-deployment-cost-strategy.md
-│   │   └── 21-synthetic-dataset-generation-pipeline.md
-│   │   └── adr/
-│   ├── portfolio/
-│   └── operations/
-├── diagrams/          # Mermaid sources
+│   ├── README.md                    Index of the docs folder
+│   ├── architecture/                01..21 architecture documents (initial iteration)
+│   │   └── adr/                     ADR-001..008 (initial), ADR-009..013 (revision)
+│   ├── evolution/                   00..07: what a later revision did when the triggers fired
+│   ├── operations/                  README.md only: the operational calendar was retired
+│   └── portfolio/                   Resume, LinkedIn and interview material
+├── diagrams/                        Mermaid sources (.mmd)
+├── assets/
+│   ├── src/                         Generated SVG sources (do not edit)
+│   ├── diagrams/                    Rendered PNG diagrams 01..11
+│   └── poster/                      Two rendered posters
 ├── examples/
-├── assets/            # generated diagrams and poster
-├── scripts/           # sanitization gate and visual build
-└── .github/
-    └── public-safety-checklist.md
+│   ├── api-payloads/                Conceptual request payloads
+│   ├── artifact-manifests/          Example artifact manifests
+│   └── docker/                      Conceptual compose file and example env
+├── scripts/                         validate-sanitization.sh (gate), build_visuals.py, render-visuals.sh
+└── .github/                         Safety checklist, audits, critical review
 ```
 
 > Architecture documents are numbered `01` to `21`. The numbering is the reading order; gaps and duplicates are treated as defects.
@@ -643,6 +631,8 @@ This repository covers the orchestration around them and links there rather than
 
 **Internal Production-Oriented / Advanced Internal Platform**
 
+The items below describe the initial iteration; [`docs/evolution/`](./docs/evolution/00-what-came-next.md) records what a later revision did about each warning.
+
 - ✅ Core orchestration pattern documented.
 - ✅ Django/FastAPI separation documented.
 - ✅ GPU training and inference workflows represented.
@@ -658,6 +648,8 @@ This repository covers the orchestration around them and links there rather than
 ---
 
 ## Key Limitations
+
+> Limitations of the initial iteration. Their outcome is in [`docs/evolution/07-roadmap-realized.md`](./docs/evolution/07-roadmap-realized.md).
 
 ### Current State
 

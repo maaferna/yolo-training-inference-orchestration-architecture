@@ -52,7 +52,7 @@ Current characteristics:
 - FastAPI AI service for GPU-backed training, validation, inference, and experiment coordination;
 - synchronous HTTP communication between Django and FastAPI;
 - shared filesystem artifact exchange;
-- GPU-backed training and inference with single-GPU or multi-GPU runtime strategies depending on environment and configuration;
+- GPU-backed training and inference: DataParallel across two GPUs in the reference implementation, single-GPU as the fallback, DDP deferred;
 - experiment tracking and metric logging;
 - basic error handling and operational diagnostics;
 - public-safe architecture documentation without private implementation code.
