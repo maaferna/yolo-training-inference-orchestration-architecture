@@ -38,34 +38,63 @@ Los valores numéricos que aparecen en ejemplos (mAP50, tiempos, tamaños de til
 ## Estructura real
 
 ```text
-README.md                       Portada, stack, resumen de arquitectura, índice
+README.md                       Portada, argumento, "start here", stack, índice de documentos
 CONTRIBUTING.md                 Reglas de contribución y sanitización
-LICENSE
+LICENSE                         MIT, cubre los scripts
+LICENSE-DOCS                    CC BY 4.0, cubre prosa, diagramas e imágenes generadas
 
 docs/
-  architecture/                 01..20 documentos de arquitectura (fuente de verdad técnica)
-    adr/                        ADR-001..ADR-007 (registros de decisión, contenido real)
-  operations/                   MLOps: roadmap, estado, migración, referencia rápida
-  portfolio/                    Contenido de CV / LinkedIn / ficha de portafolio
   README.md                     Índice de la carpeta docs
+  architecture/                 01..21 documentos de arquitectura (fuente de verdad técnica)
+    adr/                        README + ADR-001..ADR-007 (registros de decisión)
+  operations/                   7 documentos MLOps: estado, roadmap, migración ClearML,
+                                referencia rápida, índice, resumen, informe de entrega
+  portfolio/                    PORTFOLIO_RESUME_CONTENT.md, PORTFOLIO_IMPLEMENTATION_GUIDE.md
 
-diagrams/                       Fuentes Mermaid (.mmd)
+diagrams/                       Fuentes Mermaid: architecture-overview, training-flow,
+                                inference-flow, ci-training-flow (.mmd)
 assets/
-  src/                          Fuentes SVG de los visuales (editables)
+  src/                          Fuentes SVG de los visuales (generadas, no editar)
   diagrams/                     PNG de diagramas renderizados
   poster/                       PNG del póster renderizado
 examples/
-  api-payloads/                 Payloads conceptuales de request
-  artifact-manifests/           Manifiestos de artefactos de ejemplo
-  docker/                       Compose conceptual y .env de ejemplo
-scripts/                        validate-sanitization.sh (gate public-safe),
-                                build_visuals.py y render-visuals.sh (visuales)
-.github/                        Revisiones, checklist de seguridad, auditorías
+  api-payloads/                 training, ci-training y sahi-inference (.example.json)
+  artifact-manifests/           best-model-reference, training-summary,
+                                inference-output-manifest (.example.json)
+  docker/                       docker-compose.conceptual.md, environment.example.env
+scripts/                        validate-sanitization.sh (gate public-safe) y su
+                                sanitization-allowlist.txt; build_visuals.py y
+                                render-visuals.sh (visuales)
+.github/                        public-safety-checklist.md, REPOSITORY-AUDIT-2026-08.md,
+                                ARCHITECTURE-CRITICAL-REVIEW.md,
+                                PUBLIC-RELEASE-SECURITY-AUDIT.md
+.claude/skills/                 architecture-doc, diagram-studio, portfolio-pack,
+                                public-safe-audit
 ```
 
-**Numeración de documentos**: los ficheros de `docs/architecture/` van de `01` a `20`, pero hay
-**dos ficheros con prefijo `08`** y el índice del README está desincronizado. Antes de citar un
-documento por número, verificar el nombre real en disco.
+### Documentos de arquitectura (`docs/architecture/`)
+
+La numeración `01`..`21` es el orden de lectura y no tiene huecos ni duplicados:
+
+| Rango | Contenido |
+|---|---|
+| 01-05 | Contexto y problema, arquitectura del sistema, responsabilidades, flujo, contratos de API |
+| 06-08 | Runtime Docker, almacenamiento compartido y artefactos, configuración de datasets YOLO |
+| 09-13 | Motor de entrenamiento, mejora continua, inferencia SAHI, ClearML, gestión de GPU |
+| 14-18 | Errores y fallbacks, limitaciones y riesgos, roadmap de evolución, sanitización pública, responsabilidades técnicas |
+| 19-21 | Sincronización de resultados de inferencia, estrategia de despliegue y coste, generación de datasets sintéticos |
+
+### ADRs (`docs/architecture/adr/`)
+
+- ADR-001 separar web y IA · ADR-002 almacenamiento compartido · ADR-003 FastAPI como
+  frontera GPU · ADR-004 ClearML (decisión, arquitectura, migración; **leer primero**) ·
+  ADR-005 SAHI · ADR-006 notebooks como investigación auxiliar · ADR-007 evaluación de
+  herramientas de tracking (complementa a ADR-004, no lo duplica).
+- **Hay dos ficheros con prefijo `ADR-001`**: `ADR-001-separate-web-and-ai-services.md` es
+  el ADR-001 oficial e indexado; `ADR-001-path-translation-layer.md` está fuera del índice del
+  README de ADRs y cita como "futuros" un ADR-002 y ADR-003 que no coinciden con los reales.
+  El validador solo detecta prefijos duplicados en `docs/architecture/`, no en `adr/`. Antes
+  de citar un ADR por número, verificar el nombre real en disco.
 
 ## Convenciones de documentación
 
@@ -136,10 +165,23 @@ cambio, describe la categoría, nunca el par original-reemplazo.
 
 ## Auditoría vigente
 
-`.github/REPOSITORY-AUDIT-2026-08.md` recoge 16 hallazgos, 2 ya resueltos. Los de mayor impacto
-siguen abiertos: cifras sin respaldo presentadas como resultados, el índice del README
-desincronizado respecto a los ficheros reales, la colisión de prefijo `08`, un diagrama Mermaid
-que muestra una cola de trabajos que la arquitectura declara inexistente, y una ruta absoluta
-real en `docs/operations/MLOPS_QUICK_REFERENCE.md:147`. Consultarlo antes de tocar documentación.
+`.github/REPOSITORY-AUDIT-2026-08.md` recoge los hallazgos de la auditoría de agosto de 2026
+(críticos C1-C2, altos H1-H7, medios M1-M10, bajos L1-L7). A fecha de septiembre de 2026 casi
+todos están cerrados: archivo eliminado e historia reescrita, gate `validate-sanitization.sh`
+operativo, cifras sin respaldo retiradas, índice del README y `docs/README.md` regenerados desde
+disco, documentos renumerados `01`..`21`, diagrama de cola corregido, YOLOv8/v11 unificado,
+credenciales de ejemplo leídas del entorno, licencia dual.
+
+Residuos que quedan y conviene no reintroducir:
+
+- **M1**: la ruta absoluta de `docs/operations/MLOPS_QUICK_REFERENCE.md:147` ya es
+  `<REPOSITORY_ROOT>/`, pero la fila del informe no está marcada como resuelta.
+- **M5**: `docs/portfolio/PORTFOLIO_RESUME_CONTENT.md:655` sigue diciendo "See docs/adr";
+  la ruta correcta es `docs/architecture/adr/`.
+- `docs/README.md` aún indica "(20 documents)" en el árbol aunque hay 21.
+- La colisión `ADR-001` descrita arriba no figura como hallazgo.
+
+`./scripts/validate-sanitization.sh` pasa en limpio (todas las comprobaciones bloqueantes y
+advisory). Consultar el informe antes de tocar documentación.
 
 Los ADRs viven solo en `docs/architecture/adr/`; la carpeta `docs/adr/` fue eliminada.
