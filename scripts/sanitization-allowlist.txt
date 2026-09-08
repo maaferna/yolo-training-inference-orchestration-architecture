@@ -16,3 +16,14 @@ CLAUDE.md:25:
 
 # The audit report cites the findings it reports, including their content.
 .github/REPOSITORY-AUDIT-2026-08.md:
+
+# Audit records and the operating guide are dated by nature: they date the audit,
+# not the project. Every other file is dated by iteration only.
+.github/
+CLAUDE.md:
+scripts/sanitization-allowlist.txt:
+
+# The policy documents and the gate itself quote the succession vocabulary they forbid.
+docs/architecture/17-public-release-sanitization.md:
+CONTRIBUTING.md:
+scripts/validate-sanitization.sh:

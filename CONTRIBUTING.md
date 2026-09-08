@@ -69,8 +69,9 @@ push.** Fix the findings and re-run.
 The gate separates two kinds of problem:
 
 - **Blocking checks** are leaks — real absolute paths, credentials carrying a value, routable IP
-  addresses, email addresses, unexpected binary assets, dataset or weight directories. These
-  stop the commit.
+  addresses, email addresses, unexpected binary assets, dataset or weight directories, absolute
+  dates, system-succession vocabulary, and any token from the private token list. These stop
+  the commit.
 - **Advisory checks** are consistency — unresolved internal links, empty tracked files,
   duplicate document prefixes. These are reported and never block.
 
@@ -78,6 +79,11 @@ Some documents legitimately quote forbidden patterns as examples; the policy doc
 show what a leaked token looks like. Those lines are listed in
 `scripts/sanitization-allowlist.txt`, each with the reason it is there. Add an entry only when
 the match is genuinely an example — never to silence a real finding.
+
+The private token list (organisation, crop, place and person names) lives **outside** the
+repository, by default at `~/.config/public-safe/yolo-orchestration.tokens`, one token per
+line. The gate prints only `path:line` for a hit. Without the list the sweep is skipped with a
+warning; with `PUBLIC_SAFE_STRICT=1` its absence blocks, which is how the hook below runs.
 
 To check only what you have staged:
 
@@ -161,12 +167,22 @@ git push origin feature/your-feature-name
 - CHECKPOINT_PATH_PLACEHOLDER
 ```
 
-### Category E: Suspicious Patterns
+### Category E: Dates and Succession Vocabulary
+
+- No absolute dates: no years, quarters, month-and-year stamps or "last updated" footers.
+  Decisions carry `**Iteration**: initial` or `revision`; prose says "a later revision".
+  Illustrative timestamps use a neutral year such as `2000-01-01`.
+- No system-succession vocabulary: "legacy system", "the new platform", "successor",
+  "second organisation", "previous employer". This repository documents one reference
+  architecture and its revisions. A tool migration (cloud to self-hosted) is fine to name.
+- No application-field identifiers: crop, species, pest, site, region, country, sensor,
+  aircraft, real thresholds. Use `DetectionClass` and "illustrative".
+
+### Category F: Suspicious Patterns
 
 The validation script automatically flags:
 - Long hex strings (40+ characters) - potential tokens
 - Email addresses from internal domains
-- Phone numbers
 - AWS key patterns
 
 **If flagged, explain in comments why it's safe** or remove it.
@@ -216,7 +232,7 @@ Install the pre-commit hook to prevent accidental commits:
 ```bash
 cat > .git/hooks/pre-commit <<'HOOK'
 #!/usr/bin/env bash
-exec ./scripts/validate-sanitization.sh --staged --quiet
+PUBLIC_SAFE_STRICT=1 exec ./scripts/validate-sanitization.sh --staged --quiet
 HOOK
 chmod +x .git/hooks/pre-commit
 ```

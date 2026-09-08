@@ -15,7 +15,7 @@ docs/
 │   ├── PORTFOLIO_IMPLEMENTATION_GUIDE.md
 │   └── PORTFOLIO_RESUME_CONTENT.md
 │
-└── operations/          # MLOps status, roadmap, migration, quick reference (7 documents)
+└── operations/          # Retired operational calendar; README explains where its content went
 ```
 
 ## Quick Start
@@ -28,9 +28,9 @@ docs/
 - See `portfolio/PORTFOLIO_RESUME_CONTENT.md`
 - Implementation guide: `portfolio/PORTFOLIO_IMPLEMENTATION_GUIDE.md`
 
-**For Operational Details:**
-- Start with `operations/MLOPS_STATUS_REPORT.md`
-- Then `operations/MLOPS_IMPLEMENTATION_ROADMAP.md`
+**For the Evolution Path:**
+- Start with `architecture/16-production-evolution-roadmap.md`
+- Then `evolution/` for the later revision of the architecture
 
 ## Navigation
 

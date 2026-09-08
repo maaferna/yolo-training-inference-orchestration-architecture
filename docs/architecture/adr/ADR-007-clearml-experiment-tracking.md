@@ -506,7 +506,7 @@ This ADR describes using ClearML, a standard open-source MLOps tool used widely 
 **Phase at the time of the decision**: ClearML Cloud (SaaS)  
 **Planned next phase**: self-hosted tracking server  
 
-See MIGRATION_CLEARML_CLOUD_TO_SELFHOSTED.md for detailed migration plan.
+The detailed self-hosted plan was retired together with the operational calendar; the decision itself was later revised (see the ADR index).
 
 ---
 

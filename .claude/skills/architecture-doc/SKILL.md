@@ -7,11 +7,13 @@ description: Crea o modifica documentos de arquitectura y ADRs en este repositor
 
 ## Antes de escribir
 
-1. Listar `docs/architecture/` y comprobar el siguiente número libre. **Hay prefijos duplicados**
-   (dos `08-`): no asumir que el número más alto más uno está libre, verificarlo en disco.
-2. Comprobar si el tema ya está cubierto. La duplicación es el defecto crónico de este repositorio
-   (dos ADR de ClearML, dos documentos `08`). Ampliar un documento existente es preferible a
-   crear uno nuevo.
+1. Listar `docs/architecture/` (o `docs/evolution/`, o `docs/architecture/adr/`) y comprobar el
+   siguiente número libre en disco. El validador solo detecta duplicados en `docs/architecture/`.
+2. Comprobar si el tema ya está cubierto. La duplicación fue el defecto crónico de este
+   repositorio. Ampliar un documento existente es preferible a crear uno nuevo.
+   Los documentos de `docs/evolution/` describen una **revisión posterior** de la misma
+   arquitectura: a nivel de categoría, sin nombres de módulo ni de tabla, sin fechas, sin
+   vocabulario de sucesión ("legacy", "new platform", "migration" entre sistemas).
 3. Leer `docs/architecture/02-system-architecture.md`: es la fuente de verdad sobre las fronteras
    entre capas. Un documento nuevo no puede contradecirla sin justificarlo explícitamente.
 
@@ -47,9 +49,10 @@ Los ADRs viven en `docs/architecture/adr/`. Es la única ubicación válida.
 ```markdown
 # ADR-NNN: <Decisión en voz activa>
 
-**Status**: Proposed | Accepted | Superseded by ADR-NNN
-**Date**: <Mes Año>
+**Status**: Proposed | Accepted | Accepted — not implemented | Superseded by ADR-NNN
+**Iteration**: initial | revision
 **Public-Safe**: Yes
+**Supersedes** / **Amends**: ADR-NNN (cuando aplique; nunca una fecha)
 
 ## Context
 El problema, las fuerzas en juego y las restricciones. Sin nombrar la solución todavía.

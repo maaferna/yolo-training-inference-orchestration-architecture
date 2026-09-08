@@ -9,7 +9,7 @@
 # Exit status: 0 when every blocking check passes, 1 otherwise.
 #
 # Blocking checks cover the leaks defined in
-# docs/architecture/16-public-release-sanitization.md. Consistency problems
+# docs/architecture/17-public-release-sanitization.md. Consistency problems
 # (broken links, stale indexes) are reported as warnings and never block.
 #
 # Some documents legitimately quote forbidden patterns as policy examples.
@@ -115,6 +115,35 @@ run_check "no unexpected binary assets" block "$(
 # 6 · Model and dataset directories that should never be committed.
 run_check "no dataset or weight directories" block "$(
   git ls-files | grep -iE '^(datasets?|weights?|runs|models|media|shared_storage)/' || true)"
+
+# 7 · Absolute dates. Decisions are dated by iteration, never by calendar: two dated
+#     timelines plus a sector are enough to identify an organisation.
+run_check "no absolute dates" block "$(
+  echo "$FILES" | xargs -r grep -nE '\b20[2-3][0-9]\b|\bQ[1-4][ -]?20[0-9]{2}\b|\b(January|February|March|April|May|June|July|August|September|October|November|December) 20[0-9]{2}\b|Last [Uu]pdated' 2>/dev/null \
+    | filter_allowed)"
+
+# 8 · Vocabulary that frames the documentation as two systems from two organisations.
+#     A tool migration (cloud to self-hosted) is fine; system succession is not.
+run_check "no system-succession vocabulary" block "$(
+  echo "$FILES" | xargs -r grep -nEi '\b(legacy (system|platform|code|codebase|implementation|project)|successor (system|platform)|(second|previous|new|another) (organi[sz]ation|employer|client|company|team)|the (new|old) platform|migrated (from|to) the (old|new|legacy))\b' 2>/dev/null \
+    | filter_allowed)"
+
+# 9 · Private token list: organisation, crop, place and person names. Kept OUTSIDE the
+#     repository so the list itself is never published. Only path:line is printed.
+TOKENS="${PUBLIC_SAFE_TOKENS:-$HOME/.config/public-safe/yolo-orchestration.tokens}"
+if [ -f "$TOKENS" ]; then
+  pat="$(grep -vE '^\s*(#|$)' "$TOKENS" | paste -sd'|' -)"
+  hits=""
+  if [ -n "$pat" ]; then
+    hits="$(echo "$FILES" | xargs -r grep -nEio "(^|[^a-z0-9])($pat)([^a-z0-9]|$)" 2>/dev/null \
+      | cut -d: -f1,2 | sort -u | filter_allowed)"
+  fi
+  run_check "no private tokens (list outside the repository)" block "$hits"
+elif [ "${PUBLIC_SAFE_STRICT:-0}" = "1" ]; then
+  run_check "private token list present" block "missing token list (set PUBLIC_SAFE_TOKENS or create the default file)"
+else
+  run_check "private token list present" warn "token sweep skipped: no list found (PUBLIC_SAFE_STRICT=1 makes this blocking)"
+fi
 
 say ""
 say "${B}Advisory checks${N}"

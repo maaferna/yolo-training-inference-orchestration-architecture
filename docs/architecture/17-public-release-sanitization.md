@@ -62,6 +62,39 @@ This document outlines the sanitization process for preparing this repository fo
 - Proprietary processes or algorithms (e.g., "EnhancedAugmentation-3", "ProprietaryNMS")
 - Use: `PROPRIETARY_ALGORITHM_PLACEHOLDER`
 
+❌ **Absolute Dates**
+- Years, quarters, month-and-year stamps, "last updated" footers (e.g., "June 2025", "Q3 2025")
+- Why: a dated timeline plus a sector plus a public profile is enough to identify an organisation
+- Use: iteration order only — `**Iteration**: initial` / `revision`, "a later revision", "the
+  initial iteration". Illustrative timestamps in payloads use a neutral year (`2000-01-01`)
+
+❌ **System-Succession Vocabulary**
+- Phrases that frame the documentation as two systems from two organisations: "legacy system",
+  "the new platform", "successor platform", "second organisation", "previous employer"
+- Why: the repository documents one reference architecture and its revisions, not a migration
+  between employers. A tool migration (cloud to self-hosted) is fine; system succession is not
+- Use: "the initial iteration", "a later revision", "the reference implementation"
+
+❌ **Domain Identifiers From the Application Field**
+- Crop, species, pest, site, region, country, sensor or aircraft names, real ground-sampling
+  distances, real thresholds and gate values
+- Use: `DetectionClass`, `<REGION>`, `GPU_PLACEHOLDER`, "illustrative"
+
+### The Private Token List
+
+The automated gate cannot know the real names it must reject without being told, and a list of
+those names inside a public repository would itself be the leak (that mistake has been made
+elsewhere). The gate therefore reads an **external** list:
+
+```text
+~/.config/public-safe/yolo-orchestration.tokens     # default; override with PUBLIC_SAFE_TOKENS
+```
+
+One token per line, matched case-insensitively at word boundaries. The gate prints only
+`path:line` for a hit, never the matched text, so neither a terminal log nor a CI log reproduces
+the list. When the list is absent the sweep is skipped with a warning; `PUBLIC_SAFE_STRICT=1`
+turns the absence into a blocking failure, which is how the local pre-commit hook runs it.
+
 ---
 
 ## Allowed Placeholder Examples

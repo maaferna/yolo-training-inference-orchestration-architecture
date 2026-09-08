@@ -4,7 +4,6 @@
 
 **Portfolio-Safe Resume Bullets and LinkedIn Descriptions**  
 **Generated from**: YOLO Training & Inference Orchestration Architecture  
-**Date**: June 12, 2026
 
 ---
 
@@ -540,11 +539,11 @@ Large Image (4K) → Tile into 512x512 regions with overlap
 
 **3. MLOps Evolution**
 ```
-Phase 1 (MVP):        Single GPU, synchronous HTTP
-Phase 2 (Q3):         Job queue, ClearML self-hosted
-Phase 3 (Q4):         Multi-GPU workers, distributed training
-Phase 4 (2027):       Kubernetes orchestration
-Phase 5 (Future):     Multi-region, high-availability
+Baseline:            Synchronous HTTP, one or two GPUs
+Job status:          Submit/poll with durable job records, no broker
+Governance:          Transactional model registry with promotion events
+Controlled worker:   Only once jobs compete for the GPU
+Scale-out:           Only on operational evidence, never on a calendar
 ```
 
 ### Documentation & Code
@@ -600,8 +599,8 @@ these principles apply across domains.
 
 **Full Repository**: github.com/maaferna/yolo-training-inference-orchestration-architecture  
 **Architecture Overview**: docs/02-system-architecture.md  
-**MLOps Strategy**: docs/MLOPS_STATUS_REPORT.md  
-**Migration Guide**: docs/MIGRATION_CLEARML_CLOUD_TO_SELFHOSTED.md
+**Decision Records**: docs/architecture/adr/  
+**Later Revision**: docs/evolution/
 ```
 
 ---
@@ -672,6 +671,5 @@ documentation focuses on architectural principles."
 
 ---
 
-**Generated**: June 12, 2026  
 **Source Repository**: github.com/maaferna/yolo-training-inference-orchestration-architecture  
 **Status**: Public-Safe Portfolio Content ✅

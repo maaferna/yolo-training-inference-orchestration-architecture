@@ -3,7 +3,6 @@
 > **This document is portfolio-safe**: All guidance uses publicly-shareable language and best practices. No real credentials, institutions, or projects are referenced. Safe to follow in hiring, interviews, and professional networking.
 
 **How to Use the Generated Content Across Different Platforms**  
-**Date**: June 12, 2026
 
 ---
 
@@ -19,7 +18,7 @@
 ```
 PROFESSIONAL EXPERIENCE
 
-Senior Machine Learning Engineer | Company | 2024-2026
+Senior Machine Learning Engineer | Company | <dates>
 • Architected multi-seed training framework with validation-based model 
   selection, improving model robustness by capturing initialization 
   variance across 3-5 seeds; implemented CUDA memory cleanup strategy 
@@ -483,7 +482,7 @@ When you update the resume/portfolio content, track changes:
 
 | Version | Date | Changes | Where Used |
 |---------|------|---------|-----------|
-| 1.0 | June 2026 | Initial creation | - |
+| 1.0 | initial | Initial creation | - |
 | | | Added all platforms | - |
 | 1.1 | [Date] | [Changes] | LinkedIn, Portfolio |
 | 1.2 | [Date] | [Changes] | Resume, GitHub |
@@ -508,6 +507,5 @@ how you think about building systems that work at scale.
 
 ---
 
-**Document Date**: June 12, 2026  
 **Associated Content**: PORTFOLIO_RESUME_CONTENT.md  
 **Status**: Ready to use ✅

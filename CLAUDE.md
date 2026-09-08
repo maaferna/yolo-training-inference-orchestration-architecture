@@ -27,7 +27,18 @@ Nunca introducir:
 - credenciales, tokens, claves, nombres de workspace de ClearML/CVAT/Roboflow;
 - IPs, hostnames o identificadores de infraestructura reales;
 - métricas reales de producción, coordenadas, detecciones o resultados reales;
-- capturas de pantalla, imágenes generadas, máscaras o previews reales.
+- capturas de pantalla, imágenes generadas, máscaras o previews reales;
+- fechas absolutas (años, trimestres, mes y año, "last updated"): las decisiones se datan por
+  iteración (`**Iteration**: initial` / `revision`), nunca por calendario;
+- vocabulario de sucesión de sistemas ("legacy system", "the new platform", "successor",
+  "second organisation"): el repositorio documenta una arquitectura de referencia y sus
+  revisiones, no una migración entre organizaciones;
+- nombres de cultivo, especie, plaga, lugar, país, sensor o aeronave, y umbrales reales.
+
+La lista de tokens privados que el gate rechaza vive **fuera** del repositorio
+(`~/.config/public-safe/yolo-orchestration.tokens`, una entrada por línea). El gate solo
+imprime `fichero:línea`. El hook local de pre-commit ejecuta el gate con
+`PUBLIC_SAFE_STRICT=1`, que bloquea si la lista falta.
 
 Usar siempre marcadores genéricos: `PLACEHOLDER_*`, `/app/shared/`, `<PROJECT_NAME>`,
 `ProjectConfiguration`, `DetectionClass`, `ClassSet`, `DatasetConfiguration`.
@@ -47,8 +58,7 @@ docs/
   README.md                     Índice de la carpeta docs
   architecture/                 01..21 documentos de arquitectura (fuente de verdad técnica)
     adr/                        README + ADR-001..ADR-008 (registros de decisión)
-  operations/                   7 documentos MLOps: estado, roadmap, migración ClearML,
-                                referencia rápida, índice, resumen, informe de entrega
+  operations/                   Solo README.md: calendario operativo retirado y adónde fue
   portfolio/                    PORTFOLIO_RESUME_CONTENT.md, PORTFOLIO_IMPLEMENTATION_GUIDE.md
 
 diagrams/                       Fuentes Mermaid: architecture-overview, training-flow,

@@ -6,6 +6,10 @@ Before publishing this repository to public GitHub, verify all items below.
 
 ### Documentation Review
 
+- [ ] No absolute dates anywhere (years, quarters, month-year, "last updated"); ADRs carry an iteration
+- [ ] No system-succession vocabulary ("legacy system", "the new platform", "second organisation")
+- [ ] No crop, species, pest, site, region, country, sensor or aircraft names; no real thresholds
+- [ ] Private token list present and the gate run with `PUBLIC_SAFE_STRICT=1`
 - [ ] All docs/ files: No real company names
 - [ ] All docs/ files: No real client or institution names  
 - [ ] All docs/ files: No real researcher or farm names
