@@ -34,7 +34,7 @@ The current architecture is based on a controlled internal deployment model:
 - Django provides the web application, configuration layer, request submission, metadata persistence, and result visualization.
 - FastAPI provides the AI service boundary for GPU-backed training, validation, inference, and experiment coordination.
 - PyTorch/CUDA provides the GPU runtime for YOLO training and inference.
-- Training executes on a single GPU as the documented baseline; the reference implementation also exercised DataParallel across two devices. DistributedDataParallel is documented but remained blocked pending a runtime audit.
+- Training executes with DataParallel across two GPUs in the reference implementation; single-GPU execution is the fallback configuration. DistributedDataParallel was evaluated and deferred pending a runtime audit.
 - Shared storage is used for artifact exchange between the web layer and AI service layer.
 - ClearML is used for experiment tracking, metric logging, run comparison, and model artifact references.
 - Docker Compose or a managed single-server deployment is sufficient for the documented internal operating context.
@@ -53,7 +53,7 @@ This architecture does **not** require Kubernetes, multi-region deployment, dist
 | AI service layer | FastAPI | Handles GPU-backed training, validation, inference, and experiment coordination. |
 | Request handling | Synchronous / controlled | Acceptable when workload volume is predictable and users understand long-running jobs. |
 | Job queue | Not required by default | Optional if timeouts, concurrency, retry, or cancellation become operationally important. |
-| GPU training runtime | Single-GPU baseline; DataParallel exercised | DataParallel on two devices was exercised by the reference implementation; DDP is explicitly deferred. See `13-gpu-resource-management.md`. |
+| GPU training runtime | DataParallel on two GPUs | Single-GPU is the fallback configuration; DDP is explicitly deferred. See `13-gpu-resource-management.md`. |
 | Distributed job orchestration | Not implemented | No formal GPU worker pool, scheduler, or distributed job registry in the current architecture. |
 | Storage | Shared artifact storage | Practical for controlled internal workflows; requires path validation and artifact governance. |
 | Experiment tracking | ClearML | Supports metadata, metrics, artifacts, and run comparison, but does not replace a transactional model registry. |
@@ -72,7 +72,7 @@ This refers to how a single training workload uses available GPU resources.
 
 Examples:
 
-- YOLO training on one device, or two under DataParallel;
+- YOLO training with DataParallel across two GPUs;
 - PyTorch DataParallel execution;
 - PyTorch Distributed Data Parallel execution;
 - CUDA memory management across one or more GPUs;
@@ -236,10 +236,10 @@ The YOLO training engine executes model training and validation workflows for ob
 
 ### GPU Execution
 
-Training runs on a single GPU as the documented baseline; the reference implementation also exercised DataParallel across two devices. The documented path is:
+Training runs with DataParallel across two GPUs in the reference implementation. The documented path is:
 
-- single-GPU execution — **baseline**;
-- multi-GPU DataParallel execution — **exercised on two devices** in the reference implementation;
+- single-GPU execution — **fallback** when only one device is present;
+- multi-GPU DataParallel execution — **the training runtime**, one process, two devices;
 - Distributed Data Parallel execution — deferred, dependent on runtime environment and configuration.
 
 Whichever of these is in use, it is a training runtime capability. It does not imply that the platform has distributed job orchestration, worker pools, or Kubernetes.
@@ -432,7 +432,7 @@ The GPU compute layer provides CUDA acceleration for training, validation, and i
 
 - Provide CUDA runtime access for PyTorch.
 - Support GPU-backed YOLO training and inference.
-- Provide single-GPU execution as the baseline, DataParallel on two devices where available, and a documented path to DDP.
+- Train with DataParallel across two GPUs, fall back to a single device where only one exists, and keep a documented path to DDP.
 - Manage CUDA memory and cleanup.
 - Handle GPU memory pressure and OOM conditions.
 - Coordinate model loading and release.

@@ -14,7 +14,7 @@ strongest and most verifiable story the repository has.
 One scope statement to carry into every platform: in the later revision, training runs outside
 the platform and enters through a fingerprinted import, and the revision's GPU path was not
 validated. The initial iteration is the one that orchestrated training on the GPU, with
-single-GPU as the baseline and DataParallel exercised on two devices.
+DataParallel across two GPUs as the training runtime and single-GPU as the fallback.
 
 ---
 
@@ -307,7 +307,7 @@ triggered, and that is on record."
 
 ```
 "By trigger, not by calendar. The initial iteration ran synchronously
-on one or two GPUs, which fit a predictable internal workload. The
+with DataParallel on two GPUs, which fit a predictable internal workload. The
 roadmap named what would justify each addition: job status and
 polling once operators need progress; a controlled GPU worker once
 jobs compete for the device; a broker only once retry, cancellation

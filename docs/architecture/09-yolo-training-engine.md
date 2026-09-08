@@ -358,14 +358,14 @@ def select_best_model(all_results, copy_to_shared_storage=True):
 
 ## Multi-GPU Considerations
 
-### Baseline: single GPU; DataParallel exercised on two devices
+### Training runtime: DataParallel across two GPUs; single-GPU fallback
 
 ```python
-# Baseline: one device
+# Fallback: one device
 model = YOLO('yolov8s.pt')
 results = model.train(device=0, ...)
 
-# Exercised in the reference implementation: DataParallel across two devices
+# Training runtime of the reference implementation: DataParallel across two devices
 results = model.train(device=[0, 1], ...)
 ```
 

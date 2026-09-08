@@ -117,16 +117,16 @@ def train_multiple_seeds():
 
 ---
 
-## Single-GPU Baseline and DataParallel
+## DataParallel Across Two GPUs, Single-GPU Fallback
 
-### Baseline: one device
+### Fallback: one device
 
 ```python
 import torch
 from ultralytics import YOLO
 
 def train_single_device(model_size='s'):
-    """Baseline: one GPU, Ultralytics handles the device internally."""
+    """Fallback: one GPU, Ultralytics handles the device internally."""
     model = YOLO(f'yolov8{model_size}.pt')
     return model.train(
         data='dataset.yaml',
@@ -136,15 +136,15 @@ def train_single_device(model_size='s'):
     )
 ```
 
-### Exercised: DataParallel across two devices
+### Training runtime: DataParallel across two devices
 
-The reference implementation ran training with `device=[0, 1]`, which makes Ultralytics
+The reference implementation trains with `device=[0, 1]`, which makes Ultralytics
 wrap the model in `torch.nn.DataParallel`: one process, one Python interpreter, the batch
 split across both devices and gradients reduced on the primary device.
 
 ```python
 def train_dataparallel(model_size='s'):
-    """Exercised in the reference implementation: two devices, one process."""
+    """Training runtime of the reference implementation: two devices, one process."""
     model = YOLO(f'yolov8{model_size}.pt')
     return model.train(
         data='dataset.yaml',
@@ -157,13 +157,18 @@ def train_dataparallel(model_size='s'):
 DataParallel is a training-runtime capability. It does not change the platform: one
 FastAPI process, one job at a time, no scheduler.
 
-### Why single GPU remains the baseline
+### Why a single-GPU fallback is kept
 
-- **Simplicity**: no synchronisation overhead, no primary-device bottleneck
-- **Debugging**: easier to trace issues
-- **Development**: faster iteration
-- **Portability**: the documented runtime must work on a one-GPU workstation
-- **Scalability**: foundation for a DDP upgrade when the runtime audit allows it
+- **Portability**: the same job must run on a one-GPU workstation for development and debugging
+- **Simplicity**: no synchronisation overhead, no primary-device bottleneck when tracing an issue
+- **Isolation**: a device can be reserved for inference while training uses the other
+
+### Why DataParallel and not DDP
+
+DataParallel is one process and one interpreter: it needs no launcher, no rendezvous and no
+change to the FastAPI process model. DDP would multiply processes inside the service and
+requires a runtime audit of the multiprocessing behaviour under the container; it was evaluated
+and deferred, not rejected.
 
 ---
 
@@ -511,7 +516,7 @@ def monitor_gpu_training():
 
 ### Current Optimization Strategy
 
-1. **Single GPU baseline; DataParallel when two devices are available** ✓
+1. **DataParallel across two GPUs; single-GPU fallback** ✓
    - Use imgsz=640-800 for balance
    - Batch size 16-32 on a GPU_PLACEHOLDER-class device (illustrative)
    - Cleanup between seeds rigorously

@@ -173,7 +173,7 @@ For detailed architecture of the Django configuration layer, see [**docs/08-yolo
 ## System Constraints and Assumptions
 
 ### GPU Constraints
-- One or two GPUs per training run (single-GPU baseline, DataParallel exercised)
+- Two GPUs per training run under DataParallel; single-GPU fallback when only one device is present
 - Limited CUDA memory (illustrative budget in the tens of GB)
 - CUDA context management required
 - Memory cleanup between runs essential

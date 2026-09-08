@@ -45,7 +45,7 @@ This document describes the technical responsibilities demonstrated in this arch
 
 ### Technical Decisions
 
-1. **Single GPU per training job as baseline, DataParallel exercised on two devices**: pragmatic for the initial iteration
+1. **DataParallel across two GPUs per training job, single-GPU fallback**: pragmatic for the initial iteration
 2. **Multi-seed training strategy**: Statistical rigor with 3-5 seeds
 3. **CUDA memory management**: Explicit cleanup between seeds
 4. **Error recovery**: Fallback when train() returns None, OOM handling
@@ -400,7 +400,7 @@ Benefit: Training completes even with seed failures
 
 | Stage | Architecture | Trigger |
 |-------|--------------|---------|
-| Baseline | Synchronous HTTP, one or two GPUs | Predictable internal workload |
+| Baseline | Synchronous HTTP, DataParallel on two GPUs | Predictable internal workload |
 | Job status and polling | Submit/poll with durable job records, no broker | Operators need progress; timeouts appear |
 | Controlled worker | One GPU worker with admission control | Jobs compete for the device |
 | Broker and pool | Queue with several workers | Retry, cancellation and multi-worker dispatch become requirements |
@@ -608,7 +608,7 @@ For comprehensive documentation, see [**docs/21-synthetic-dataset-generation-pip
 
 ### When Asked: "How do you approach scalability?"
 
-> "I design for the current scale but plan the evolution path. For this system, the initial iteration uses synchronous execution on one or two GPUs, appropriate for a predictable internal workload. I documented the triggers instead of a calendar: job status records and polling as soon as operators need progress; a controlled GPU worker when jobs compete for the device; a broker only when retry, cancellation and multi-worker dispatch become real requirements. This avoids over-engineering while keeping the path explicit, and each step is reversible."
+> "I design for the current scale but plan the evolution path. For this system, the initial iteration uses synchronous execution with DataParallel on two GPUs, appropriate for a predictable internal workload. I documented the triggers instead of a calendar: job status records and polling as soon as operators need progress; a controlled GPU worker when jobs compete for the device; a broker only when retry, cancellation and multi-worker dispatch become real requirements. This avoids over-engineering while keeping the path explicit, and each step is reversible."
 
 ### When Asked: "Describe a time you found and fixed a bug"
 
@@ -636,7 +636,7 @@ For comprehensive documentation, see [**docs/21-synthetic-dataset-generation-pip
 
 **ML Engineering**:
 - Designed experiment tracking with metadata/artifact separation (ClearML in the initial iteration)
-- Documented the multi-GPU runtime path (DataParallel exercised → DDP deferred) and kept it distinct from distributed orchestration
+- Documented the multi-GPU runtime path (DataParallel on two GPUs → DDP evaluated and deferred) and kept it distinct from distributed orchestration
 - Documented error handling patterns for 6 failure scenarios
 
 ---

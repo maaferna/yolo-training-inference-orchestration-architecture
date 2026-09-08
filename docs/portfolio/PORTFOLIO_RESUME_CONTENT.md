@@ -18,8 +18,8 @@ below is built on one of those pairs, so each claim can be traced to a document.
 One statement of scope, so that nothing below overclaims: **in the later revision, training
 runs outside the platform** and enters through an import step that fingerprints the weights,
 and **the revision's GPU path was not validated** (its test suite runs on CPU with a mock
-runtime). The initial iteration is the one that orchestrated training on the GPU: single-GPU
-as the baseline, DataParallel exercised on two devices, DDP deferred. See
+runtime). The initial iteration is the one that orchestrated training on the GPU: DataParallel
+across two GPUs as the runtime, single-GPU as the fallback, DDP deferred. See
 `docs/evolution/00-what-came-next.md`.
 
 Verbs are design verbs throughout — *designed, documented, specified, proposed, evaluated* —
@@ -154,8 +154,8 @@ stated honestly.
 
 ```
 • Designed the AI service boundary that owns YOLO training, validation
-  and inference on CUDA; documented single-GPU execution as the
-  baseline, DataParallel exercised on two devices and DDP deferred
+  and inference on CUDA; documented DataParallel across two GPUs as
+  the training runtime, single-GPU as the fallback and DDP deferred
   pending a runtime audit, keeping multi-GPU runtime distinct from
   distributed job orchestration throughout
 ```
@@ -327,8 +327,8 @@ THE INITIAL ITERATION
 • Django web layer (metadata, configuration, visualisation) separated
   from a FastAPI AI service that owns the GPU runtime
 • Multi-seed YOLO training with validation-based selection and CUDA
-  cleanup between seeds; single-GPU baseline, DataParallel exercised
-  on two devices, DDP deferred
+  cleanup between seeds; DataParallel across two GPUs, single-GPU
+  fallback, DDP deferred
 • SAHI tiled inference for small objects in high-resolution images
 • Tracking with local artifacts as the source of truth
 • Limitations stated in writing: the request stays open for the whole
@@ -490,7 +490,7 @@ down a web application, and keeping its artifacts traceable.
 In the later revision, training runs outside the platform and enters
 through a fingerprinted import; the revision's GPU path was not
 validated. The initial iteration orchestrated training on the GPU:
-single-GPU baseline, DataParallel exercised on two devices, DDP
+DataParallel across two GPUs, single-GPU fallback, DDP evaluated and
 deferred.
 
 ### Technical highlights
@@ -511,7 +511,7 @@ Large image → overlapping tiles → per-tile YOLO detection
 
 **Evolution by trigger**
 ```
-Baseline:      synchronous HTTP, one or two GPUs
+Baseline:      synchronous HTTP, DataParallel on two GPUs
 Trigger fired: timeouts → submit/poll, job records (no broker)
 Trigger fired: lineage questions → registry with promotion events
 Open trigger:  jobs compete for the device → single admission lane
