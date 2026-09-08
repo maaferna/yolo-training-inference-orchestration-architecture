@@ -157,6 +157,10 @@ Initially, all workloads (web requests and GPU-intensive ML tasks) were managed 
 - Phase 2 (Future): Add job queue (Redis) to decouple request/response
 - Phase 3+: Can evolve integration pattern as needs grow
 
+> **Outcome.** When the timeouts arrived, the later revision decoupled request and execution
+> with submit/poll on in-process pools and durable job records, not with a queue. See
+> [ADR-009](./ADR-009-submit-poll-in-process-execution.md).
+
 ---
 
 ## Public-Safe Note

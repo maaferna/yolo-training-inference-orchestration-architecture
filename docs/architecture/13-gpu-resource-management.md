@@ -431,8 +431,8 @@ for seed, gpu_id in seeds_per_gpu:
 for p in processes:
     p.join()
 
-# Stage 2: Use job queue (Celery + Redis)
-# Stage 3: Kubernetes with GPU node affinity
+# Next, only when jobs compete for the device: a single GPU admission lane
+# A broker or an orchestrator only if a second host appears (see 16)
 ```
 
 ---
@@ -532,17 +532,16 @@ def monitor_gpu_training():
 
 ### Future Improvements
 
-1. **Multi-GPU Training** (Phase 2)
-   - DDP for 4+ GPUs
-   - Parallel seed training
+1. **DDP training** — when the runtime audit of multiprocessing under the container is done
+   and more than two devices are available; parallel seed training follows from it
 
-2. **GPU Scheduling** (Phase 2)
-   - Job queue (Celery + Redis)
-   - Fair allocation across users
+2. **GPU scheduling** — a single admission lane for device-bound jobs when they compete for
+   the device; fair allocation across users only if that lane becomes contended
 
-3. **Heterogeneous GPUs** (Phase 3)
-   - Support mixed GPU types
-   - Adaptive batching
+3. **Heterogeneous GPUs** — mixed device types and adaptive batching, no trigger yet
+
+A later revision reached the first trigger (jobs competing for the device) without solving it;
+the admission lane is its named next step (`../evolution/01-submit-poll-execution.md`).
 
 ---
 

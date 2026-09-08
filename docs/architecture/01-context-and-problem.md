@@ -220,13 +220,18 @@ This architecture successfully addresses:
 
 ## Evolution Path
 
-This architecture establishes the foundation for future improvements:
+This architecture establishes the foundation for improvements that wait for their trigger
+(`16-production-evolution-roadmap.md`):
 
-1. **Phase 1: Job Queue** - Add Celery + Redis for async task execution
-2. **Phase 2: Distributed Workers** - Multiple GPU-backed FastAPI instances
-3. **Phase 3: Model Registry** - Database-backed transactional registry
-4. **Phase 4: Object Storage** - S3-based artifact management
-5. **Phase 5: Observability** - Distributed tracing and structured logging
+1. **Job status records and polling** - when operators need progress or timeouts appear
+2. **Transactional model registry** - when lineage cannot be answered from storage
+3. **Controlled GPU worker** - when jobs compete for the device
+4. **Broker, worker pool, object storage** - only on evidence of concurrent long-running load or governance failure
+5. **Observability** - structured logs and correlation identifiers first; tracing has no trigger at this scale
+
+What a later revision did about each is recorded in
+[`docs/evolution/07-roadmap-realized.md`](../evolution/07-roadmap-realized.md): the first two
+were realized, the queue was never triggered.
 
 ---
 

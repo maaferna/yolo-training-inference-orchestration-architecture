@@ -203,7 +203,8 @@ This design intentionally accepts limitations:
 1. **No concurrent training jobs**
    - If second request arrives during training, must wait
    - This is accepted at MVP scale (~1-2 jobs per day)
-   - Phase 2: Add Redis queue for concurrency
+   - Phase 2: Add Redis queue for concurrency — *outcome: the later revision answered with
+     submit/poll on in-process pools, not a queue (ADR-009)*
 
 2. **No job persistence**
    - Service restart = lost job
