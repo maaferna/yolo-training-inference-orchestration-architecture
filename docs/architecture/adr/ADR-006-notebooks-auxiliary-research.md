@@ -1,7 +1,7 @@
 # ADR-006: Use Notebooks as Auxiliary Research Workflow, Not Production Path
 
 **Status**: Accepted  
-**Date**: June 2026  
+**Iteration**: initial
 **Public-Safe**: Yes  
 
 ---

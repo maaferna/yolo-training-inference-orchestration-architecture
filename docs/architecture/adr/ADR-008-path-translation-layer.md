@@ -1,7 +1,7 @@
 # ADR-008: Path Translation Layer for Multi-Container Artifact Synchronization
 
 **Status**: Accepted (Implemented Phase 1)  
-**Date**: June 2026  
+**Iteration**: initial
 **Deciders**: Architecture team  
 **Affects**: Inference result synchronization, artifact management, Django-FastAPI integration
 
@@ -377,7 +377,7 @@ def test_full_pipeline():
 
 | Aspect | Details |
 |--------|---------|
-| Date | June 2026 |
+| Iteration | initial |
 | Status | Accepted & Implemented |
 | Risk Level | Low (well-understood problem, proven solution) |
 | Complexity | Medium (requires careful configuration) |

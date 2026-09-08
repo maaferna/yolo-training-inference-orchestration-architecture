@@ -1,7 +1,7 @@
 # ADR-002: Use Shared Artifact Storage as Initial Integration Mechanism
 
 **Status**: Accepted  
-**Date**: June 2026  
+**Iteration**: initial
 **Public-Safe**: Yes  
 
 ---

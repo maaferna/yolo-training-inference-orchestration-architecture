@@ -17,16 +17,16 @@ Each ADR follows a standard format:
 
 ## ADRs in This Repository
 
-| # | Title | Status | Date | Focus |
+| # | Title | Status | Iteration | Focus |
 |---|-------|--------|------|-------|
-| 001 | Separate Django Web Orchestration from FastAPI AI Processing | ✅ Accepted | June 2026 | Architecture |
-| 002 | Use Shared Artifact Storage as Initial Integration Mechanism | ✅ Accepted | June 2026 | Storage |
-| 003 | Use FastAPI as GPU-Backed AI Service Boundary | ✅ Accepted | June 2026 | Compute |
-| 004 | Use ClearML for Experiment Tracking | ✅ Accepted | June 2026 | **MLOps** |
-| 005 | Use SAHI for High-Resolution Small-Object Inference | ✅ Accepted | June 2026 | Inference |
-| 006 | Use Notebooks as Auxiliary Research Workflow | ✅ Accepted | June 2026 | **MLOps** |
-| 007 | Tracking Tool Evaluation: ClearML over MLflow and W&B | ✅ Accepted (supports ADR-004) | June 2026 | **MLOps** |
-| 008 | Path Translation Layer for Multi-Container Artifact Synchronization | ✅ Accepted | June 2026 | Storage |
+| 001 | Separate Django Web Orchestration from FastAPI AI Processing | ✅ Accepted | initial | Architecture |
+| 002 | Use Shared Artifact Storage as Initial Integration Mechanism | ✅ Accepted | initial | Storage |
+| 003 | Use FastAPI as GPU-Backed AI Service Boundary | ✅ Accepted | initial | Compute |
+| 004 | Use ClearML for Experiment Tracking | ✅ Accepted | initial | **MLOps** |
+| 005 | Use SAHI for High-Resolution Small-Object Inference | ✅ Accepted | initial | Inference |
+| 006 | Use Notebooks as Auxiliary Research Workflow | ✅ Accepted | initial | **MLOps** |
+| 007 | Tracking Tool Evaluation: ClearML over MLflow and W&B | ✅ Accepted (supports ADR-004) | initial | **MLOps** |
+| 008 | Path Translation Layer for Multi-Container Artifact Synchronization | ✅ Accepted | initial | Storage |
 
 ### Reading Guide by Topic
 
@@ -55,7 +55,7 @@ Each ADR follows this structure:
 # ADR-XXX: [Title]
 
 **Status**: Accepted | Proposed | Deprecated | Superseded  
-**Date**: YYYY-MM-DD  
+**Iteration**: initial | revision  
 **Public-Safe**: Yes | Annotated
 
 ## Context
@@ -121,10 +121,9 @@ You can reference specific ADRs when discussing:
 | Document | Purpose | When to Read |
 |----------|---------|--------------|
 | **ADR (this directory)** | Document architectural decisions | When you want to understand the "why" |
-| **CASE-STUDY.md** | Narrative explanation of full system | When you want the complete story |
-| **LEARNING-PATH.md** | Guided reading by audience | When you need structured guidance |
-| **docs/02-system-architecture.md** | Technical architecture diagram | When you want the current state |
-| **docs/16-production-evolution-roadmap.md** | Future scaling directions | When you want to understand growth |
+| **../../../README.md** | Argument, start-here table and full index | When you want the complete story |
+| **../02-system-architecture.md** | Technical architecture diagram | When you want the baseline |
+| **../16-production-evolution-roadmap.md** | Evidence-triggered evolution path | When you want to understand growth |
 
 ## Contributing New ADRs
 

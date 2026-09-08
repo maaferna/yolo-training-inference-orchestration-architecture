@@ -1,7 +1,7 @@
 # ADR-007: Tracking Tool Evaluation — ClearML over MLflow and Weights & Biases
 
 **Status**: Accepted — supporting evaluation for ADR-004
-**Date**: June 2026
+**Iteration**: initial
 **Public-Safe**: Yes
 **Relationship**: This ADR records *why* ClearML was chosen: the tool comparison, the
 reproducibility workflow it enables and the governance it does not provide. The decision itself,
@@ -503,9 +503,8 @@ This ADR describes using ClearML, a standard open-source MLOps tool used widely 
 
 ## Current Implementation Status
 
-**Timeline**: June 2026  
-**Current Phase**: ClearML Cloud (SaaS)  
-**Next Phase**: ClearML Self-Hosted (Q3 2026)  
+**Phase at the time of the decision**: ClearML Cloud (SaaS)  
+**Planned next phase**: self-hosted tracking server  
 
 See MIGRATION_CLEARML_CLOUD_TO_SELFHOSTED.md for detailed migration plan.
 

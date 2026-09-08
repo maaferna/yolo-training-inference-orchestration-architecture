@@ -1,7 +1,7 @@
 # ADR-005: Use SAHI for High-Resolution Small-Object Inference
 
 **Status**: Accepted  
-**Date**: June 2026  
+**Iteration**: initial
 **Public-Safe**: Yes  
 
 ---

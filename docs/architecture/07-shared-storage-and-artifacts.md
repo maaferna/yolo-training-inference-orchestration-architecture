@@ -86,7 +86,7 @@ logs.txt                   # Training output logs
 ```json
 {
   "run_id": "run_001",
-  "timestamp": "2026-06-09T10:30:00Z",
+  "timestamp": "2000-01-01T10:30:00Z",
   "model_size": "s",
   "total_epochs": 100,
   "num_seeds": 3,
@@ -134,8 +134,8 @@ epoch,train_loss,val_loss,mAP50,mAP75,precision,recall
   "seed": 42,
   "epochs_trained": 100,
   "model_size": "s",
-  "training_timestamp": "2026-06-09T10:30:00Z",
-  "last_updated": "2026-06-09T12:00:00Z",
+  "training_timestamp": "2000-01-01T10:30:00Z",
+  "last_updated": "2000-01-01T12:00:00Z",
   "training_type": "initial",
   "clearml_task_id": "task_123456",
   "dataset_yaml": "datasets/PROJECT_PLACEHOLDER/data.yaml"
@@ -180,7 +180,7 @@ preview.png                # Visualization of detections (optional)
 ```json
 {
   "job_id": "inf_12345",
-  "timestamp": "2026-06-09T11:30:00Z",
+  "timestamp": "2000-01-01T11:30:00Z",
   "image_shape": [3072, 4096, 3],
   "image_hash": "sha256_hash_placeholder",
   "model_used": "/shared_storage/models/best.pt",
@@ -246,18 +246,18 @@ new_model_experimental.pt  # Experimental new model (not best)
 ```json
 {
   "run_id": "ci_train_001",
-  "timestamp": "2026-06-09T11:00:00Z",
+  "timestamp": "2000-01-01T11:00:00Z",
   "baseline": {
     "mAP50": 0.85,
     "precision": 0.88,
     "recall": 0.82,
-    "timestamp": "2026-06-09T10:30:00Z"
+    "timestamp": "2000-01-01T10:30:00Z"
   },
   "new_metrics": {
     "mAP50": 0.87,
     "precision": 0.89,
     "recall": 0.84,
-    "timestamp": "2026-06-09T11:00:00Z"
+    "timestamp": "2000-01-01T11:00:00Z"
   },
   "improvement": {
     "mAP50_absolute": 0.02,
@@ -271,15 +271,15 @@ new_model_experimental.pt  # Experimental new model (not best)
 
 **Decision Log**:
 ```
-2026-06-09 11:00:00 - CI Training Started
-2026-06-09 11:15:00 - Loading baseline: best_model_ref.json
-2026-06-09 11:15:02 - Baseline mAP50: 0.85
-2026-06-09 11:15:05 - Loading new data from datasets/NEW_DATA_PLACEHOLDER/
-2026-06-09 11:30:00 - Training completed
-2026-06-09 11:30:05 - New metrics: mAP50=0.87
-2026-06-09 11:30:10 - Improvement: 0.02 (+2.35%)
-2026-06-09 11:30:15 - Decision: APPROVED - Updating best_model_ref.json
-2026-06-09 11:30:20 - CI Training Completed Successfully
+2000-01-01 11:00:00 - CI Training Started
+2000-01-01 11:15:00 - Loading baseline: best_model_ref.json
+2000-01-01 11:15:02 - Baseline mAP50: 0.85
+2000-01-01 11:15:05 - Loading new data from datasets/NEW_DATA_PLACEHOLDER/
+2000-01-01 11:30:00 - Training completed
+2000-01-01 11:30:05 - New metrics: mAP50=0.87
+2000-01-01 11:30:10 - Improvement: 0.02 (+2.35%)
+2000-01-01 11:30:15 - Decision: APPROVED - Updating best_model_ref.json
+2000-01-01 11:30:20 - CI Training Completed Successfully
 ```
 
 **Size**: JSON 1-5 KB, decision log 1-10 KB
@@ -304,15 +304,15 @@ error_20260609_110500.log  # Inference failure logs
 
 **Content**:
 ```
-2026-06-09 10:30:00 - ERROR - CUDA out of memory error
-2026-06-09 10:30:01 - Traceback (most recent call last):
+2000-01-01 10:30:00 - ERROR - CUDA out of memory error
+2000-01-01 10:30:01 - Traceback (most recent call last):
   File "training.py", line 45, in run_training
     model.train(...)
 RuntimeError: CUDA out of memory. Tried to allocate 1.23 GiB
 
-2026-06-09 10:30:02 - Recovery: Reducing batch size from 32 to 16
-2026-06-09 10:30:03 - Retrying training with reduced parameters
-2026-06-09 10:31:00 - Training completed successfully after retry
+2000-01-01 10:30:02 - Recovery: Reducing batch size from 32 to 16
+2000-01-01 10:30:03 - Retrying training with reduced parameters
+2000-01-01 10:31:00 - Training completed successfully after retry
 ```
 
 **Size**: 1-100 KB each (depends on error detail)

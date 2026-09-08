@@ -30,7 +30,7 @@ This document describes the technical responsibilities demonstrated in this arch
   - AI compute layer (FastAPI): Isolated GPU workloads, independent scaling
   - Benefit: Each can scale independently based on workload
 
-- **Communication pattern**: Synchronous HTTP in Phase 1, async job queue in Phase 2
+- **Communication pattern**: synchronous HTTP in the initial iteration; job status polling is the documented next step, a broker only on operational evidence
 - **Trade-offs documented**: Explained why synchronous is appropriate for MVP
 
 ### Portfolio Language
@@ -45,7 +45,7 @@ This document describes the technical responsibilities demonstrated in this arch
 
 ### Technical Decisions
 
-1. **Single GPU per training job**: Pragmatic for Phase 1
+1. **Single GPU per training job as baseline, DataParallel exercised on two devices**: pragmatic for the initial iteration
 2. **Multi-seed training strategy**: Statistical rigor with 3-5 seeds
 3. **CUDA memory management**: Explicit cleanup between seeds
 4. **Error recovery**: Fallback when train() returns None, OOM handling
@@ -72,7 +72,7 @@ def train_with_cleanup():
 
 ### Portfolio Language
 
-> "Implemented GPU memory management strategy ensuring clean state between multi-seed training runs. Designed CUDA error recovery patterns including automatic fallback validation when training() returns None, and progressive resource scaling (batch size, image size) for OOM recovery without terminating training."
+> "Designed a GPU memory management strategy ensuring clean state between multi-seed training runs. Designed CUDA error recovery patterns including automatic fallback validation when training() returns None, and progressive resource scaling (batch size, image size) for OOM recovery without terminating training."
 
 ---
 
@@ -104,7 +104,7 @@ Process:
 
 ### Portfolio Language
 
-> "Designed multi-seed training strategy to ensure statistical significance of model selection. Implemented metrics aggregation across 3-5 training runs with different random initializations, reducing bias from single-run random seed variance. Documented trade-offs: 5× compute for robust baseline comparison."
+> "Designed multi-seed training strategy to ensure statistical significance of model selection. Specified metrics aggregation across 3-5 training runs with different random initializations, reducing bias from single-run random seed variance. Documented trade-offs: 5× compute for robust baseline comparison."
 
 ---
 
@@ -386,7 +386,7 @@ Benefit: Training completes even with seed failures
 
 ### Portfolio Language
 
-> "Designed comprehensive error handling strategy covering 6 common failure scenarios. Implemented partial failure resilience: multi-seed training continues even if individual seeds fail, ensuring statistical significance. Documented recovery patterns: exponential backoff for transient errors, fallback validation when training() returns None, progressive resource scaling for OOM. Demonstrated production-grade reliability thinking."
+> "Designed comprehensive error handling strategy covering 6 common failure scenarios. Designed partial-failure resilience: multi-seed training continues even if individual seeds fail, ensuring statistical significance. Documented recovery patterns: exponential backoff for transient errors, fallback validation when training() returns None, progressive resource scaling for OOM. Demonstrated production-grade reliability thinking."
 
 ---
 
@@ -398,12 +398,12 @@ Benefit: Training completes even with seed failures
 
 **Documented progression**:
 
-| Phase | Architecture | Scale | Trigger |
-|-------|--------------|-------|---------|
-| 1 | Synchronous single GPU | 1-2 jobs | MVP |
-| 2 | Redis queue + workers | 5-10 jobs | > 3 concurrent |
-| 3 | Multi-GPU cluster | 20-50 jobs | > 10 concurrent |
-| 4 | Kubernetes + object storage | 100-500 jobs | > 50 concurrent |
+| Stage | Architecture | Trigger |
+|-------|--------------|---------|
+| Baseline | Synchronous HTTP, one or two GPUs | Predictable internal workload |
+| Job status and polling | Submit/poll with durable job records, no broker | Operators need progress; timeouts appear |
+| Controlled worker | One GPU worker with admission control | Jobs compete for the device |
+| Broker and pool | Queue with several workers | Retry, cancellation and multi-worker dispatch become requirements |
 | 5 | Observability + SLA | Enterprise | Production |
 
 ### Evolution Principles
@@ -468,7 +468,7 @@ For comprehensive documentation, see [**docs/08-yolo-dataset-configuration-manag
 
 ### Domain Model Design
 
-**Domain Models Implemented**:
+**Domain Models Designed**:
 1. **ProjectConfiguration**: Project-level aggregation of datasets and label sets
 2. **DetectionClass**: Individual class definition (name, color, metadata)
 3. **ClassSet**: Reusable grouping of detection classes for multi-project sharing
@@ -524,7 +524,7 @@ Return path to frontend/FastAPI
 
 ### Portfolio Language
 
-> "Designed Django ORM-based configuration management layer for YOLO training parameters. Implemented automatic YAML generation with custom PyYAML serialization to ensure Ultralytics compatibility. Solved multi-container path mapping challenge by implementing environment-variable-aware path resolution, enabling single shared volume to be accessed via different mount points in different containers. Created full-stack integration from Bootstrap UI through Django forms to AJAX endpoints to FastAPI payload generation."
+> "Designed Django ORM-based configuration management layer for YOLO training parameters. Specified automatic YAML generation with custom PyYAML serialization to ensure Ultralytics compatibility. Solved the multi-container path mapping challenge through environment-variable-aware path resolution, enabling single shared volume to be accessed via different mount points in different containers. Created full-stack integration from Bootstrap UI through Django forms to AJAX endpoints to FastAPI payload generation."
 
 ---
 
@@ -596,7 +596,7 @@ For comprehensive documentation, see [**docs/21-synthetic-dataset-generation-pip
 
 ### Portfolio Language
 
-> "Architected synthetic dataset generation pipeline integrating Segment Anything Model (SAM) for automated object extraction. Designed RGBA compositing system with blending algorithms for natural-looking synthetic images. Implemented dual-format annotation export (COCO/YOLO) with platform-specific validation, solving format compatibility challenges with external tools. Designed versioned artifact storage with manifest-based provenance tracking, enabling reproducibility of specific dataset versions used in model training. Solved 10 identified engineering problems including canvas bounds validation, object placement overflow handling, and quality filtering strategies."
+> "Architected synthetic dataset generation pipeline integrating Segment Anything Model (SAM) for automated object extraction. Designed RGBA compositing system with blending algorithms for natural-looking synthetic images. Specified dual-format annotation export (COCO/YOLO) with platform-specific validation, solving format compatibility challenges with external tools. Designed versioned artifact storage with manifest-based provenance tracking, enabling reproducibility of specific dataset versions used in model training. Solved 10 identified engineering problems including canvas bounds validation, object placement overflow handling, and quality filtering strategies."
 
 ---
 
@@ -604,15 +604,15 @@ For comprehensive documentation, see [**docs/21-synthetic-dataset-generation-pip
 
 ### When Asked: "Tell me about a complex system you designed"
 
-> "I designed a GPU-accelerated model training and inference orchestration system with microservice architecture. The system separates Django web server from FastAPI compute service, enabling independent scaling. I implemented multi-seed training strategy for statistical rigor and designed a continuous improvement pipeline with baseline comparison. A key achievement was identifying a subtle race condition in concurrent model updates and proposing atomic operation solutions. I documented a multi-phase evolution strategy from synchronous single-GPU MVP to distributed Kubernetes infrastructure with enterprise-scale observability."
+> "I designed a GPU-accelerated model training and inference orchestration system with microservice architecture. The system separates Django web server from FastAPI compute service, enabling independent scaling. I implemented multi-seed training strategy for statistical rigor and designed a continuous improvement pipeline with baseline comparison. A key achievement was identifying a subtle race condition in concurrent model updates and proposing atomic operation solutions. I documented an evolution path from a synchronous baseline to background execution and artifact governance, each stage gated by operational evidence rather than a calendar."
 
 ### When Asked: "How do you approach scalability?"
 
-> "I design for the current scale but plan the evolution path. For this system, Phase 1 uses synchronous execution on single GPU—appropriate for MVP. I documented clear metrics: when concurrent job count exceeds 3, trigger Phase 2 with Redis job queue. When queue throughput becomes bottleneck (> 10 jobs), Phase 3 adds multiple GPU workers. This pragmatic approach avoids over-engineering while maintaining a clear roadmap. Each phase maintains backward compatibility and allows rollback if needed."
+> "I design for the current scale but plan the evolution path. For this system, the initial iteration uses synchronous execution on one or two GPUs, appropriate for a predictable internal workload. I documented the triggers instead of a calendar: job status records and polling as soon as operators need progress; a controlled GPU worker when jobs compete for the device; a broker only when retry, cancellation and multi-worker dispatch become real requirements. This avoids over-engineering while keeping the path explicit, and each step is reversible."
 
 ### When Asked: "Describe a time you found and fixed a bug"
 
-> "While designing the continuous improvement pipeline, I discovered a race condition: concurrent CI training jobs could corrupt the best_model_ref.json file. The issue occurred because two processes could read the same baseline, then write conflicting results. I documented the detailed timeline of when corruption occurs, then proposed mitigation: serialize CI jobs or use atomic file operations. This discovery led to recommending a transactional database registry for Phase 3. It demonstrates the importance of reasoning about concurrent systems even in synchronous architectures."
+> "While designing the continuous improvement pipeline, I discovered a race condition: concurrent CI training jobs could corrupt the best_model_ref.json file. The issue occurred because two processes could read the same baseline, then write conflicting results. I documented the detailed timeline of when corruption occurs, then proposed mitigation: serialize CI jobs or use atomic file operations. This discovery led to recommending a transactional database registry, which a later revision of the platform adopted. It demonstrates the importance of reasoning about concurrent systems even in synchronous architectures."
 
 ---
 
@@ -620,12 +620,12 @@ For comprehensive documentation, see [**docs/21-synthetic-dataset-generation-pip
 
 **Architecture & Design**:
 - Designed microservice architecture separating web (Django) and compute (FastAPI) layers
-- Implemented multi-seed training strategy for statistical model selection
+- Designed multi-seed training strategy for statistical model selection
 - Designed continuous improvement pipeline with baseline comparison
 - Documented 5-phase production evolution from MVP to Kubernetes enterprise scale
 
 **GPU Computing**:
-- Implemented CUDA memory management for multi-seed training
+- Designed CUDA memory management for multi-seed training
 - Designed SAHI integration for high-resolution object detection
 - Handled OOM errors with progressive resource scaling
 
@@ -635,8 +635,8 @@ For comprehensive documentation, see [**docs/21-synthetic-dataset-generation-pip
 - Documented race condition in concurrent model updates with atomic operation solutions
 
 **ML Engineering**:
-- Implemented experiment tracking (ClearML) with metadata/artifact separation
-- Designed multi-GPU scaling strategy (DataParallel → DDP → distributed)
+- Designed experiment tracking with metadata/artifact separation (ClearML in the initial iteration)
+- Documented the multi-GPU runtime path (DataParallel exercised → DDP deferred) and kept it distinct from distributed orchestration
 - Documented error handling patterns for 6 failure scenarios
 
 ---

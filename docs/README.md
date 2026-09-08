@@ -44,6 +44,3 @@ Architecture files are numbered `01` to `21`; the numbering is the reading order
 
 The full index with one-line purposes is in the root `README.md`.
 
----
-
-Last updated: August 19, 2026

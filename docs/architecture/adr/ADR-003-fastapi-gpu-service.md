@@ -1,7 +1,7 @@
 # ADR-003: Use FastAPI as GPU-Backed AI Service Boundary
 
 **Status**: Accepted  
-**Date**: June 2026  
+**Iteration**: initial
 **Public-Safe**: Yes  
 
 ---

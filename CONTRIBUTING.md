@@ -182,7 +182,7 @@ Our system trains YOLO models for ACME Corporation's street view project.
 
 Infrastructure:
 - Training nodes: gpu-prod-01.company.internal, gpu-prod-02.company.internal
-- Dataset: s3://company-ai-models-prod/street-view-data-2024
+- Dataset: s3://company-ai-models-prod/street-view-data-2000
 - Model storage: /mnt/company-nfs/models/
 - Metrics: mAP50=0.89 on ACME's private test set
 

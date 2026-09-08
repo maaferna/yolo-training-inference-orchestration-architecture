@@ -89,12 +89,13 @@ These popular message queue systems are **not implemented**:
 - **Trigger 3**: Multiple GPU workers needed
 - **Trigger 4**: Multi-user contention
 
-### Implementation Timeline
+### Evolution Criterion
 
-**Phase 1** (Current): Synchronous, single GPU
-**Phase 2** (Future): Add Redis + basic queue
-**Phase 3** (Future): Full Celery infrastructure
-**Phase 4** (Future): Kafka for event streaming
+There is no scheduled ladder from synchronous execution to a broker. Each addition waits for
+its trigger, as defined in `16-production-evolution-roadmap.md`: job status records and
+polling first; a controlled GPU worker only once timeouts or GPU contention are routine; a
+broker only if retry, cancellation and multi-worker dispatch become operational requirements.
+Event streaming has no trigger in this context.
 
 ---
 

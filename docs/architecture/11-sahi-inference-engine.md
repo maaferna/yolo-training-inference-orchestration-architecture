@@ -391,7 +391,7 @@ SAHI inference (tiles):
 ```json
 {
   "job_id": "inf_12345",
-  "timestamp": "2026-06-09T11:30:00Z",
+  "timestamp": "2000-01-01T11:30:00Z",
   "image_info": {
     "shape": [3072, 4096, 3],
     "hash": "sha256_placeholder"

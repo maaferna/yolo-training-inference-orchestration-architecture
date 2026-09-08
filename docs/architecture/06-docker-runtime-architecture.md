@@ -297,6 +297,11 @@ deploy:
           capabilities: [gpu]
 ```
 
+> **Reference implementation note.** In the reference implementation the AI service ran on the
+> host inside a conda environment, outside Docker, so that the driver, CUDA and PyTorch stack was
+> used directly. The containerised GPU service shown in this document is the target runtime, and
+> containerising the service was one of the first changes of the later revision.
+
 **Environment Variables**:
 ```env
 CUDA_VISIBLE_DEVICES=0

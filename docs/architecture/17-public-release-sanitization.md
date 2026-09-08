@@ -35,7 +35,7 @@ This document outlines the sanitization process for preparing this repository fo
 - Use: `MODEL_NAME_PLACEHOLDER`, `CUSTOM_DETECTION_MODEL`
 
 ❌ **Real Dataset Names**
-- Proprietary datasets (e.g., "StreetView-2024", "InternalInventory")
+- Proprietary datasets (e.g., "StreetView-2000", "InternalInventory")
 - Use: `DATASET_NAME_PLACEHOLDER`, `PROPRIETARY_TRAINING_DATA`
 
 ❌ **Credentials**
@@ -84,7 +84,7 @@ This document outlines the sanitization process for preparing this repository fo
 {
   "dataset_id": "DATASET_PLACEHOLDER_001",
   "model_name": "yolo_v11",
-  "training_date": "2024-01-15",
+  "training_date": "2000-01-15",
   "metrics": {
     "mAP50": 0.85
   }
@@ -94,9 +94,9 @@ This document outlines the sanitization process for preparing this repository fo
 **Bad** (contains internal data):
 ```json
 {
-  "dataset_id": "acme-corp-street-view-2024",
+  "dataset_id": "acme-corp-street-view-2000",
   "model_name": "OmniDetect-v3-proprietary",
-  "training_date": "2024-01-15",
+  "training_date": "2000-01-15",
   "metrics": {
     "mAP50": 0.85
   }
@@ -384,7 +384,7 @@ Before publishing to public GitHub:
 
 ```json
 {
-  "customer_id": "acme-corp-2024",
+  "customer_id": "acme-corp-2000",
   "dataset_name": "StreetView-Manhattan-Q1",
   "model_version": "OmniDetect-v3-proprietary",
   "s3_bucket": "company-ai-models-prod",

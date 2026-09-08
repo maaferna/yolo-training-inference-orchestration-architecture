@@ -69,7 +69,7 @@ Response Codes:
   "estimated_duration_seconds": 3600,
   "polling_url": "/training/status/train_req_12345",
   "result_url": "/training/results/train_req_12345",
-  "timestamp": "2026-06-09T10:30:00Z"
+  "timestamp": "2000-01-01T10:30:00Z"
 }
 ```
 
@@ -97,7 +97,7 @@ Response Codes:
     "batch_size": "Must be between 8 and 128",
     "epochs": "Must be at least 1"
   },
-  "timestamp": "2026-06-09T10:30:00Z"
+  "timestamp": "2000-01-01T10:30:00Z"
 }
 ```
 
@@ -109,7 +109,7 @@ Response Codes:
   "message": "GPU device not available",
   "details": "Device 0 is busy or offline",
   "suggestion": "Try device 1 or retry in a few moments",
-  "timestamp": "2026-06-09T10:30:00Z"
+  "timestamp": "2000-01-01T10:30:00Z"
 }
 ```
 
@@ -122,7 +122,7 @@ Response Codes:
   "details": "CUDA out of memory error",
   "request_id": "req_12345",
   "job_id": "train_req_12345",
-  "timestamp": "2026-06-09T10:30:00Z"
+  "timestamp": "2000-01-01T10:30:00Z"
 }
 ```
 
@@ -236,7 +236,7 @@ Response Codes: Same as training endpoint
   "decision_reason": "Model improved - updating best model",
   "model_path": "/shared/models/best.pt",
   "result_url": "/ci-training/results/ci_train_12345",
-  "timestamp": "2026-06-09T11:00:00Z"
+  "timestamp": "2000-01-01T11:00:00Z"
 }
 ```
 
@@ -316,7 +316,7 @@ Response Codes: Same as training endpoint
   "manifest_path": "/shared/inference/job_12345/output_manifest.json",
   "preview_image_url": "/shared/inference/job_12345/preview.png",
   "result_url": "/inference/results/inf_12345",
-  "timestamp": "2026-06-09T11:30:00Z"
+  "timestamp": "2000-01-01T11:30:00Z"
 }
 ```
 
@@ -357,7 +357,7 @@ Response Codes:
   "estimated_remaining_seconds": 2200,
   "current_step": "training",
   "message": "Training epoch 45/100",
-  "timestamp": "2026-06-09T11:00:00Z"
+  "timestamp": "2000-01-01T11:00:00Z"
 }
 ```
 
@@ -375,7 +375,7 @@ Response Codes:
     "num_epochs_run": 100
   },
   "result_url": "/training/results/train_req_12345",
-  "timestamp": "2026-06-09T12:00:00Z"
+  "timestamp": "2000-01-01T12:00:00Z"
 }
 ```
 
@@ -393,7 +393,7 @@ Response Codes:
     "type": "RuntimeError",
     "message": "CUDA out of memory"
   },
-  "timestamp": "2026-06-09T11:45:00Z"
+  "timestamp": "2000-01-01T11:45:00Z"
 }
 ```
 
@@ -412,7 +412,7 @@ All error responses follow this standard structure:
   "details": "Additional context or debugging information",
   "request_id": "req_12345",
   "job_id": "optional_if_available",
-  "timestamp": "2026-06-09T10:30:00Z",
+  "timestamp": "2000-01-01T10:30:00Z",
   "suggestion": "Optional: what to try next"
 }
 ```

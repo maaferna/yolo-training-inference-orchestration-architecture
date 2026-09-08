@@ -1,7 +1,7 @@
 # ADR-004: Use ClearML for Experiment Tracking with Local Artifacts as Source of Truth
 
 **Status**: Accepted — decision of record for experiment tracking
-**Date**: June 2026
+**Iteration**: initial
 **Public-Safe**: Yes
 **Relationship**: This ADR records the decision, the integration architecture and the
 cloud-to-self-hosted migration strategy. The evaluation that led here — ClearML compared against
@@ -35,7 +35,7 @@ We need to track ML experiments for reproducibility and comparison:
 - Local artifacts (models) must remain authoritative
 - Integration with ClearML server (can be self-hosted)
 
-### Current Project Status (June 2026)
+### Project Status at the Time of the Decision
 - **Current Setup**: ClearML Cloud (SaaS platform account)
 - **Stage**: MVP with production-ready MLOps
 - **Team Maturity**: Structured experiment tracking in place
@@ -669,6 +669,6 @@ This decision aligns with:
 - Cost analysis vs Cloud subscription
 
 **Roadmap** 📋
-- Q3 2026: Deploy ClearML Self-Hosted
-- Q3 2026: Migrate experiments to self-hosted
-- Q4 2026: Data versioning integration (ADR-009)
+- Deploy a self-hosted tracking server
+- Move experiments to it
+- Data versioning integration (no ADR yet)

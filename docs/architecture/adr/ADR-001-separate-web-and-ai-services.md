@@ -1,7 +1,7 @@
 # ADR-001: Separate Django Web Orchestration from FastAPI AI Processing
 
 **Status**: Accepted  
-**Date**: June 2026  
+**Iteration**: initial
 **Public-Safe**: Yes  
 
 ---

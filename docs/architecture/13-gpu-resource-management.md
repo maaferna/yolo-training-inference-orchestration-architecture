@@ -7,7 +7,7 @@ This document details GPU orchestration, CUDA memory management, multi-GPU strat
 ### GPU Memory Structure
 
 ```
-GPU Memory (e.g., 24GB A100):
+GPU Memory (illustrative budget for a GPU_PLACEHOLDER device):
 
 ┌─────────────────────────┐
 │ CUDA Runtime Context    │ ~100 MB
@@ -117,37 +117,53 @@ def train_multiple_seeds():
 
 ---
 
-## DataParallel (Current Single-GPU Approach)
+## Single-GPU Baseline and DataParallel
 
-### Current Implementation
+### Baseline: one device
 
 ```python
 import torch
 from ultralytics import YOLO
 
-def train_with_dataparallel(model_size='s'):
-    """Train using single GPU (no DataParallel needed)"""
-    
-    # Ultralytics handles device internally
+def train_single_device(model_size='s'):
+    """Baseline: one GPU, Ultralytics handles the device internally."""
     model = YOLO(f'yolov8{model_size}.pt')
-    
-    results = model.train(
+    return model.train(
         data='dataset.yaml',
-        device=0,  # Single GPU
+        device=0,
         batch=32,
         epochs=100
     )
-    
-    return results
 ```
 
-### Why Single GPU Currently
+### Exercised: DataParallel across two devices
 
-- **Simplicity**: No synchronization overhead
-- **Debugging**: Easier to trace issues
-- **Development**: Faster iteration
-- **Cost**: Efficient resource utilization
-- **Scalability**: Foundation for DDP upgrade
+The reference implementation ran training with `device=[0, 1]`, which makes Ultralytics
+wrap the model in `torch.nn.DataParallel`: one process, one Python interpreter, the batch
+split across both devices and gradients reduced on the primary device.
+
+```python
+def train_dataparallel(model_size='s'):
+    """Exercised in the reference implementation: two devices, one process."""
+    model = YOLO(f'yolov8{model_size}.pt')
+    return model.train(
+        data='dataset.yaml',
+        device=[0, 1],
+        batch=32,
+        epochs=100
+    )
+```
+
+DataParallel is a training-runtime capability. It does not change the platform: one
+FastAPI process, one job at a time, no scheduler.
+
+### Why single GPU remains the baseline
+
+- **Simplicity**: no synchronisation overhead, no primary-device bottleneck
+- **Debugging**: easier to trace issues
+- **Development**: faster iteration
+- **Portability**: the documented runtime must work on a one-GPU workstation
+- **Scalability**: foundation for a DDP upgrade when the runtime audit allows it
 
 ---
 
@@ -495,9 +511,9 @@ def monitor_gpu_training():
 
 ### Current Optimization Strategy
 
-1. **Single GPU Training** ✓
+1. **Single GPU baseline; DataParallel when two devices are available** ✓
    - Use imgsz=640-800 for balance
-   - Batch size 16-32 on standard GPUs (24GB)
+   - Batch size 16-32 on a GPU_PLACEHOLDER-class device (illustrative)
    - Cleanup between seeds rigorously
 
 2. **Memory Management** ✓
@@ -506,7 +522,7 @@ def monitor_gpu_training():
    - Clear cache between jobs
 
 3. **Multi-Seed Efficiency** ✓
-   - Sequential on single GPU (current)
+   - Sequential across seeds on the same device(s) (baseline)
    - 3-5 seeds for statistical significance
 
 ### Future Improvements

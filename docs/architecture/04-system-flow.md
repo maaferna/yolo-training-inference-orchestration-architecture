@@ -78,7 +78,7 @@ This document describes the complete request/response flows, error handling flow
 │          "model_path": "/shared/models/best.pt",       │
 │          "mAP50": 0.85,                                │
 │          "seed": 42,                                   │
-│          "timestamp": "2026-06-09T10:30:00Z"           │
+│          "timestamp": "2000-01-01T10:30:00Z"           │
 │        }                                               │
 │                                                          │
 └────────────────────┬──────────────────────────────────┘
@@ -267,7 +267,7 @@ Django:
 │        "mAP50": 0.87,  # improved from 0.85            │
 │        "previous_mAP50": 0.85,                         │
 │        "improvement": "0.02",                          │
-│        "timestamp": "2026-06-09T11:00:00Z",            │
+│        "timestamp": "2000-01-01T11:00:00Z",            │
 │        "training_type": "CI",                          │
 │        "data_source": "new_dataset_placeholder"        │
 │      }                                                 │
@@ -407,7 +407,7 @@ PREVENTION (future):
 │                                                          │
 │  8. Generate output manifest                           │
 │     manifest = {                                       │
-│       "timestamp": "2026-06-09T11:30:00Z",             │
+│       "timestamp": "2000-01-01T11:30:00Z",             │
 │       "image_shape": [3072, 4096, 3],                  │
 │       "tile_config": {                                 │
 │         "tile_size": 640,                              │
@@ -713,20 +713,20 @@ For comprehensive documentation, see [**docs/21-synthetic-dataset-generation-pip
 │                                                          │
 │  11. Store artifacts with versioning                   │
 │      SYNTHETIC_OUTPUT_DIR_PLACEHOLDER/                 │
-│      ├── version_1_2026-06-09_103000/                  │
+│      ├── version_1_2000-01-01_103000/                  │
 │      │   ├── images/                                   │
 │      │   ├── labels/                                   │
 │      │   ├── annotations.json (COCO)                   │
 │      │   ├── annotations.xml (CVAT)                    │
 │      │   └── manifest.json (versioning metadata)       │
 │      │                                                  │
-│      └── version_2_2026-06-10_091500/                  │
+│      └── version_2_2000-06-10_091500/                  │
 │          └── [same structure]                          │
 │                                                          │
 │  12. Generate manifest                                 │
 │      {                                                 │
 │        "version": 1,                                   │
-│        "timestamp": "2026-06-09T10:30:00Z",            │
+│        "timestamp": "2000-01-01T10:30:00Z",            │
 │        "source_dataset": "original_dataset_v1",        │
 │        "num_images": 450,                              │
 │        "num_objects": 1200,                            │
@@ -806,7 +806,7 @@ Result: Versioned synthetic dataset ready for training pipelines
 │    "message": "GPU memory exhausted",                   │
 │    "details": "Reduce batch size or image size",       │
 │    "job_id": "req_12345",                              │
-│    "timestamp": "2026-06-09T11:45:00Z"                 │
+│    "timestamp": "2000-01-01T11:45:00Z"                 │
 │  }                                                      │
 │                                                          │
 └────────────────────┬──────────────────────────────────┘
