@@ -1,0 +1,147 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000">
+<defs>
+<marker id="a-m1F2E47" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#1F2E47"/></marker>
+<marker id="a-m35D6D0" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#35D6D0"/></marker>
+<marker id="a-m4FA8FF" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#4FA8FF"/></marker>
+<marker id="a-m63799B" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#63799B"/></marker>
+<marker id="a-m7ED957" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#7ED957"/></marker>
+<marker id="a-m94A6C4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#94A6C4"/></marker>
+<marker id="a-mB98BFF" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#B98BFF"/></marker>
+<marker id="a-mEAF0FA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#EAF0FA"/></marker>
+<marker id="a-mFF6B6B" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#FF6B6B"/></marker>
+<marker id="a-mFF7E8E" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#FF7E8E"/></marker>
+<marker id="a-mFFB13D" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#FFB13D"/></marker>
+<linearGradient id="glow" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#16233A"/><stop offset="1" stop-color="#0C1322"/></linearGradient>
+</defs>
+<rect width="1600" height="1000" fill="#0A101C"/>
+<text x="56" y="58" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="700" fill="#63799B" text-anchor="start" letter-spacing="1.6">LATER REVISION · ADR-010 · TWO RECORDS, ONE TRANSACTION</text>
+<text x="56" y="92" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="36" font-weight="700" fill="#EAF0FA" text-anchor="start">Model Registry and Promotion</text>
+<text x="56" y="136" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="15" font-weight="400" fill="#94A6C4" text-anchor="start">The model reference stops being a file any training run could rewrite. It becomes a version row with a fingerprint, a stage and a promotion event that names who decided and why.</text>
+<line x1="56" y1="162" x2="1544" y2="162" stroke="#1F2E47" stroke-width="1"/>
+<rect x="100" y="200" width="760" height="350" rx="14" fill="#0E1524" stroke="#1F2E47" stroke-width="1.5"/>
+<rect x="101.5" y="214" width="4" height="322" rx="2" fill="#FF7E8E" stroke="none" opacity="0.75"/>
+<text x="120" y="227" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="700" fill="#FF7E8E" text-anchor="start" letter-spacing="1.5">MODEL VERSION LIFECYCLE · STAGE STATE MACHINE</text>
+<rect x="116" y="244" width="220" height="128" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip93"><rect x="116" y="244" width="220" height="128" rx="10"/></clipPath>
+<g clip-path="url(#clip93)"><rect x="116" y="244" width="220" height="5" fill="#4FA8FF"/></g>
+<text x="134" y="270" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#4FA8FF" text-anchor="start" letter-spacing="1.4">SIDE ENTRY</text>
+<text x="134" y="290" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="16" font-weight="600" fill="#EAF0FA" text-anchor="start">Import weights</text>
+<text x="134" y="311" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Weights trained outside</text>
+<text x="134" y="329.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Fingerprint on arrival</text>
+<text x="134" y="348.0" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Family, size, resolution</text>
+<text x="134" y="366.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Registered as candidate</text>
+<rect x="372" y="262" width="130" height="60" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip94"><rect x="372" y="262" width="130" height="60" rx="10"/></clipPath>
+<g clip-path="url(#clip94)"><rect x="372" y="262" width="130" height="5" fill="#FF7E8E"/></g>
+<text x="437.0" y="298" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="16" font-weight="600" fill="#EAF0FA" text-anchor="middle">candidate</text>
+<rect x="540" y="262" width="130" height="60" rx="10" fill="#1B2942" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip95"><rect x="540" y="262" width="130" height="60" rx="10"/></clipPath>
+<g clip-path="url(#clip95)"><rect x="540" y="262" width="130" height="5" fill="#FF7E8E"/></g>
+<text x="605.0" y="298" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="16" font-weight="600" fill="#EAF0FA" text-anchor="middle">serving</text>
+<rect x="708" y="262" width="130" height="60" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5" stroke-dasharray="7 6"/>
+<clipPath id="clip96"><rect x="708" y="262" width="130" height="60" rx="10"/></clipPath>
+<g clip-path="url(#clip96)"><rect x="708" y="262" width="130" height="5" fill="#FF7E8E"/></g>
+<text x="773.0" y="298" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="16" font-weight="600" fill="#EAF0FA" text-anchor="middle">retired</text>
+<polyline points="338,292 370,292" fill="none" stroke="#FF7E8E" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-mFF7E8E)"/>
+<polyline points="504,292 538,292" fill="none" stroke="#FF7E8E" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-mFF7E8E)"/>
+<rect x="493.35" y="240.0" width="55.300000000000004" height="17" rx="4" fill="#0A101C" stroke="none"/>
+<text x="521.0" y="252.0" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="700" fill="#94A6C4" text-anchor="middle">promote</text>
+<polyline points="672,292 706,292" fill="none" stroke="#FF7E8E" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-mFF7E8E)"/>
+<rect x="661.35" y="240.0" width="55.300000000000004" height="17" rx="4" fill="#0A101C" stroke="none"/>
+<text x="689.0" y="252.0" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="700" fill="#94A6C4" text-anchor="middle">demoted</text>
+<polyline points="605,324 605,356 437,356 437,324" fill="none" stroke="#FF7E8E" stroke-width="2" stroke-linejoin="round" stroke-dasharray="6 5" marker-end="url(#a-mFF7E8E)"/>
+<rect x="384.2" y="360.0" width="273.6" height="17" rx="4" fill="#0A101C" stroke="none"/>
+<text x="521.0" y="372.0" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="700" fill="#94A6C4" text-anchor="middle">rollback · same transaction, kind = rollback</text>
+<rect x="116" y="396" width="728" height="138" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip97"><rect x="116" y="396" width="728" height="138" rx="10"/></clipPath>
+<g clip-path="url(#clip97)"><rect x="116" y="396" width="728" height="5" fill="#FF7E8E"/></g>
+<text x="134" y="422" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#FF7E8E" text-anchor="start" letter-spacing="1.4">THE RULE</text>
+<text x="134" y="442" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="16" font-weight="600" fill="#EAF0FA" text-anchor="start">One transaction, one event, promotion is a human act</text>
+<text x="134" y="463" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Promoting a version demotes the previous serving version and writes the promotion event inside a</text>
+<text x="134" y="481.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">single database transaction; rollback is the same operation with the roles reversed.</text>
+<text x="134" y="500.0" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">The selection score is computed and shown, never acted on. There is no state in which two versions</text>
+<text x="134" y="518.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">are serving, or none.</text>
+<rect x="890" y="200" width="315" height="236" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip98"><rect x="890" y="200" width="315" height="236" rx="10"/></clipPath>
+<g clip-path="url(#clip98)"><rect x="890" y="200" width="315" height="5" fill="#FF7E8E"/></g>
+<text x="908" y="226" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#FF7E8E" text-anchor="start" letter-spacing="1.4">RECORD · WEB DATABASE</text>
+<text x="908" y="247" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="17" font-weight="600" fill="#EAF0FA" text-anchor="start">Model version</text>
+<text x="908" y="268" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">name + version · unique together</text>
+<text x="908" y="286.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">weights fingerprint · SHA-256</text>
+<text x="908" y="305.0" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">stage · candidate | serving | retired</text>
+<text x="908" y="323.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">family · size · input resolution</text>
+<text x="908" y="342.0" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">dataset configuration reference</text>
+<text x="908" y="360.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">tracking run id · optional</text>
+<text x="908" y="379.0" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">immutable once registered</text>
+<rect x="1229" y="200" width="315" height="236" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip99"><rect x="1229" y="200" width="315" height="236" rx="10"/></clipPath>
+<g clip-path="url(#clip99)"><rect x="1229" y="200" width="315" height="5" fill="#FF7E8E"/></g>
+<text x="1247" y="226" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#FF7E8E" text-anchor="start" letter-spacing="1.4">RECORD · WEB DATABASE</text>
+<text x="1247" y="247" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="17" font-weight="600" fill="#EAF0FA" text-anchor="start">Promotion event</text>
+<text x="1247" y="268" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">model version promoted</text>
+<text x="1247" y="286.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">previous serving version · nullable</text>
+<text x="1247" y="305.0" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">decided by · user</text>
+<text x="1247" y="323.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">reason · free text, required</text>
+<text x="1247" y="342.0" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">kind · promote | rollback</text>
+<text x="1247" y="360.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">written inside the transaction</text>
+<rect x="890" y="456" width="654" height="94" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip100"><rect x="890" y="456" width="654" height="94" rx="10"/></clipPath>
+<g clip-path="url(#clip100)"><rect x="890" y="456" width="654" height="5" fill="#FF6B6B"/></g>
+<text x="908" y="491" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="15" font-weight="600" fill="#EAF0FA" text-anchor="start">Closes the file-reference race of the initial iteration (doc 10)</text>
+<text x="908" y="512" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">No shared mutable reference is left to race for: no lock was added, the thing two runs used</text>
+<text x="908" y="530.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">to rewrite no longer decides anything.</text>
+<rect x="100" y="590" width="1444" height="230" rx="14" fill="#0E1524" stroke="#1F2E47" stroke-width="1.5"/>
+<rect x="101.5" y="604" width="4" height="202" rx="2" fill="#FFB13D" stroke="none" opacity="0.75"/>
+<text x="120" y="617" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="700" fill="#FFB13D" text-anchor="start" letter-spacing="1.5">HOW THE REGISTRY REACHES THE AI SERVICE</text>
+<text x="1524" y="617" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#63799B" text-anchor="end">the AI service holds no database · a file it can trust</text>
+<rect x="116" y="634" width="420" height="160" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip101"><rect x="116" y="634" width="420" height="160" rx="10"/></clipPath>
+<g clip-path="url(#clip101)"><rect x="116" y="634" width="420" height="5" fill="#4FA8FF"/></g>
+<text x="134" y="660" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#4FA8FF" text-anchor="start" letter-spacing="1.4">WEB LAYER · SOURCE OF TRUTH</text>
+<text x="134" y="680" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="16" font-weight="600" fill="#EAF0FA" text-anchor="start">Registry in the web database</text>
+<text x="134" y="701" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Version rows and promotion event rows</text>
+<text x="134" y="719.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Export triggered by the promotion itself</text>
+<text x="134" y="738.0" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Hashes at registration and at export</text>
+<text x="134" y="756.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Small window between promotion and export</text>
+<rect x="580" y="634" width="420" height="160" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip102"><rect x="580" y="634" width="420" height="160" rx="10"/></clipPath>
+<g clip-path="url(#clip102)"><rect x="580" y="634" width="420" height="5" fill="#B98BFF"/></g>
+<text x="598" y="660" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#B98BFF" text-anchor="start" letter-spacing="1.4">ARTIFACT ON THE SHARED VOLUME</text>
+<text x="598" y="680" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="16" font-weight="600" fill="#EAF0FA" text-anchor="start">Exported serving list</text>
+<text x="598" y="701" font-family="'Liberation Mono', 'DejaVu Sans Mono', monospace" font-size="12.0" font-weight="400" fill="#63799B" text-anchor="start">models/serving.json</text>
+<text x="598" y="719.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">identifier · path under the volume</text>
+<text x="598" y="738.0" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">fingerprint · input resolution</text>
+<text x="598" y="756.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">The only list the AI service may load from</text>
+<rect x="1044" y="634" width="484" height="160" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip103"><rect x="1044" y="634" width="484" height="160" rx="10"/></clipPath>
+<g clip-path="url(#clip103)"><rect x="1044" y="634" width="484" height="5" fill="#FFB13D"/></g>
+<text x="1062" y="660" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#FFB13D" text-anchor="start" letter-spacing="1.4">AI SERVICE · NO DATABASE</text>
+<text x="1062" y="680" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="16" font-weight="600" fill="#EAF0FA" text-anchor="start">AI service resolver</text>
+<text x="1062" y="701" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Resolves a model only through the list</text>
+<text x="1062" y="719.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Verifies the fingerprint; a mismatch is refused</text>
+<text x="1062" y="738.0" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Refuses unknown paths and directory walks</text>
+<text x="1062" y="756.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Fingerprint actually used goes into the run manifest</text>
+<polyline points="538,714 578,714" fill="none" stroke="#B98BFF" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-mB98BFF)"/>
+<rect x="533.3" y="693.0" width="49.400000000000006" height="17" rx="4" fill="#0A101C" stroke="none"/>
+<text x="558.0" y="705.0" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="700" fill="#94A6C4" text-anchor="middle">export</text>
+<polyline points="1002,714 1042,714" fill="none" stroke="#FFB13D" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-mFFB13D)"/>
+<rect x="1003.2" y="693.0" width="37.6" height="17" rx="4" fill="#0A101C" stroke="none"/>
+<text x="1022.0" y="705.0" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="700" fill="#94A6C4" text-anchor="middle">read</text>
+<rect x="100" y="846" width="1444" height="60" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip104"><rect x="100" y="846" width="1444" height="60" rx="10"/></clipPath>
+<g clip-path="url(#clip104)"><rect x="100" y="846" width="1444" height="5" fill="#FF7E8E"/></g>
+<text x="822.0" y="880" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="14" font-weight="600" fill="#EAF0FA" text-anchor="middle">One serving version per model name · the registry is a web-layer concern · the validation summary stored with a version is provenance, not a benchmark</text>
+<rect x="100" y="930" width="11" height="11" rx="3" fill="#FF7E8E" stroke="none"/>
+<text x="118" y="939" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Records · web database</text>
+<rect x="280.8" y="930" width="11" height="11" rx="3" fill="#4FA8FF" stroke="none"/>
+<text x="298.8" y="939" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Web layer</text>
+<rect x="378.4" y="930" width="11" height="11" rx="3" fill="#B98BFF" stroke="none"/>
+<text x="396.4" y="939" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Exported artifact</text>
+<rect x="527.2" y="930" width="11" height="11" rx="3" fill="#FFB13D" stroke="none"/>
+<text x="545.2" y="939" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">AI service</text>
+<rect x="631.2" y="930" width="11" height="11" rx="3" fill="#FF6B6B" stroke="none"/>
+<text x="649.2" y="939" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Race condition closed</text>
+<line x1="56" y1="952" x2="1544" y2="952" stroke="#1F2E47" stroke-width="1"/>
+<text x="56" y="974" font-family="'Liberation Mono', 'DejaVu Sans Mono', monospace" font-size="11" font-weight="400" fill="#63799B" text-anchor="start">yolo-training-inference-orchestration-architecture</text>
+<text x="1544" y="974" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="400" fill="#63799B" text-anchor="end">Public-safe architecture documentation · all values illustrative</text>
+</svg>

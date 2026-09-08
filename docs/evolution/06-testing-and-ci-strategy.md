@@ -4,6 +4,8 @@
 > of a later revision. Test counts are given as an order of magnitude only; no runner host,
 > access path or hardware is described.
 
+[![Testing and CI without a GPU](../../assets/diagrams/11-testing-and-ci.png)](../../assets/diagrams/11-testing-and-ci.png)
+
 ## Purpose
 
 `15-limitations-and-risks.md` lists, under reproducibility and testing, that the initial

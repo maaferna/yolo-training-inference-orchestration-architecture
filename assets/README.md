@@ -21,7 +21,11 @@ assets/
 | `diagrams/06-synthetic-dataset.png` | Synthetic dataset generation pipeline |
 | `diagrams/07-evolution-roadmap.png` | Evolution priorities, their triggers and the outcome per stage |
 | `diagrams/08-submit-poll-lifecycle.png` | Submit/poll execution of the later revision: run identifier, job record, batched polling |
+| `diagrams/09-model-registry-promotion.png` | Model version state machine, the two registry records, human promotion and the exported serving list the AI service trusts |
+| `diagrams/10-detection-metrology.png` | Six-stage metrology pipeline from pixel boxes to physical quantities, with the measured / estimated / withheld status |
+| `diagrams/11-testing-and-ci.png` | Mock/real runtime seam, the test suites, the throwaway Compose CI pipeline and what is deliberately not tested |
 | `poster/poster-architecture.png` | One-page architecture poster |
+| `poster/poster-what-came-next.png` | One-page poster of the later revision: what stayed, limitation to resolution, new capabilities, what was not done |
 
 ## Regenerating
 

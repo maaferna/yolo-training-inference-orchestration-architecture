@@ -1295,6 +1295,503 @@ def poster_architecture() -> str:
 
 
 # --------------------------------------------------------------------------
+# 09 · Registro de modelos y promocion (revision posterior)
+# --------------------------------------------------------------------------
+
+
+def diagram_model_registry() -> str:
+    c = Canvas(1600, 1000,
+               title="Model Registry and Promotion",
+               subtitle="The model reference stops being a file any training run could rewrite. "
+                        "It becomes a version row with a fingerprint, a stage and a promotion "
+                        "event that names who decided and why.",
+               kicker="Later revision · ADR-010 · two records, one transaction")
+    c.header()
+
+    # -- ciclo de vida de una version -------------------------------------
+    c.add(band(100, 200, 760, 350, "Model version lifecycle · stage state machine", STORE))
+
+    c.add(box(116, 244, 220, 128, WEB, "Import weights", tag="side entry", lines=[
+        "Weights trained outside",
+        "Fingerprint on arrival",
+        "Family, size, resolution",
+        "Registered as candidate",
+    ], title_size=16, line_size=12.5))
+
+    SY, SH, SW = 262, 60, 130
+    c.add(box(372, SY, SW, SH, STORE, "candidate", title_size=16, centered=True))
+    c.add(box(540, SY, SW, SH, STORE, "serving", title_size=16, centered=True, fill=PANEL2))
+    c.add(box(708, SY, SW, SH, STORE, "retired", title_size=16, centered=True, dashed=True))
+
+    c.add(arrow([(338, 292), (370, 292)], STORE))
+    c.add(arrow([(504, 292), (538, 292)], STORE, label="promote", label_dy=-40))
+    c.add(arrow([(672, 292), (706, 292)], STORE, label="demoted", label_dy=-40))
+    c.add(arrow([(605, 324), (605, 356), (437, 356), (437, 324)], STORE, dashed=True,
+                label="rollback · same transaction, kind = rollback", label_dy=16))
+
+    c.add(box(116, 396, 728, 138, STORE,
+              "One transaction, one event, promotion is a human act", tag="the rule",
+              lines=_wrap("Promoting a version demotes the previous serving version and "
+                          "writes the promotion event inside a single database transaction; "
+                          "rollback is the same operation with the roles reversed.", 100)
+              + _wrap("The selection score is computed and shown, never acted on. There is "
+                      "no state in which two versions are serving, or none.", 100),
+              title_size=16, line_size=12.5))
+
+    # -- los dos registros -------------------------------------------------
+    c.add(box(890, 200, 315, 236, STORE, "Model version", tag="record · web database", lines=[
+        "name + version · unique together",
+        "weights fingerprint · SHA-256",
+        "stage · candidate | serving | retired",
+        "family · size · input resolution",
+        "dataset configuration reference",
+        "tracking run id · optional",
+        "immutable once registered",
+    ], title_size=17, line_size=12.5))
+    c.add(box(1229, 200, 315, 236, STORE, "Promotion event", tag="record · web database", lines=[
+        "model version promoted",
+        "previous serving version · nullable",
+        "decided by · user",
+        "reason · free text, required",
+        "kind · promote | rollback",
+        "written inside the transaction",
+    ], title_size=17, line_size=12.5))
+
+    c.add(box(890, 456, 654, 94, WARN,
+              "Closes the file-reference race of the initial iteration (doc 10)",
+              lines=_wrap("No shared mutable reference is left to race for: no lock was "
+                          "added, the thing two runs used to rewrite no longer decides "
+                          "anything.", 92),
+              title_size=15, line_size=12.5))
+
+    # -- como llega al servicio de IA -------------------------------------
+    c.add(band(100, 590, 1444, 230, "How the registry reaches the AI service", API,
+               note="the AI service holds no database · a file it can trust"))
+    c.add(box(116, 634, 420, 160, WEB, "Registry in the web database",
+              tag="web layer · source of truth", lines=[
+                  "Version rows and promotion event rows",
+                  "Export triggered by the promotion itself",
+                  "Hashes at registration and at export",
+                  "Small window between promotion and export",
+              ], title_size=16, line_size=12.5))
+    c.add(box(580, 634, 420, 160, TRACK, "Exported serving list",
+              tag="artifact on the shared volume", lines=[
+                  "`models/serving.json`",
+                  "identifier · path under the volume",
+                  "fingerprint · input resolution",
+                  "The only list the AI service may load from",
+              ], title_size=16, line_size=12.5))
+    c.add(box(1044, 634, 484, 160, API, "AI service resolver",
+              tag="ai service · no database", lines=[
+                  "Resolves a model only through the list",
+                  "Verifies the fingerprint; a mismatch is refused",
+                  "Refuses unknown paths and directory walks",
+                  "Fingerprint actually used goes into the run manifest",
+              ], title_size=16, line_size=12.5))
+    c.add(arrow([(538, 714), (578, 714)], TRACK, label="export", label_dy=-9))
+    c.add(arrow([(1002, 714), (1042, 714)], API, label="read", label_dy=-9))
+
+    c.add(box(100, 846, 1444, 60, STORE,
+              "One serving version per model name · the registry is a web-layer concern · "
+              "the validation summary stored with a version is provenance, not a benchmark",
+              title_size=14, centered=True))
+
+    c.add(legend(100, 938, [
+        (STORE, "Records · web database"), (WEB, "Web layer"),
+        (TRACK, "Exported artifact"), (API, "AI service"),
+        (WARN, "Race condition closed"),
+    ]))
+    c.footer()
+    return c.render()
+
+
+# --------------------------------------------------------------------------
+# 10 · Metrologia de detecciones (revision posterior)
+# --------------------------------------------------------------------------
+
+
+def diagram_detection_metrology() -> str:
+    c = Canvas(1600, 1000,
+               title="Detection Metrology",
+               subtitle="From pixel boxes to physical quantities, using only the detections and "
+                        "the image metadata. Every quantity says whether it was measured, "
+                        "estimated or withheld.",
+               kicker="Later revision · ADR-013 · a CPU job type of the AI service")
+    c.header()
+
+    # -- entradas ----------------------------------------------------------
+    c.add(box(100, 200, 460, 78, DATA, "Image metadata", tag="input", lines=[
+        "Height above ground · focal length · sensor size",
+    ], title_size=16, line_size=12.5))
+    c.add(box(590, 200, 954, 78, DATA, "Detections in pixel coordinates", tag="input", lines=[
+        "Boxes per DetectionClass in the original image frame · sliced inference is "
+        "reconstructed to full-image coordinates first",
+    ], title_size=16, line_size=12.5))
+
+    # -- las seis etapas ---------------------------------------------------
+    stages = [
+        (DATA, "Scale", ["Height above ground,", "focal length, sensor width",
+                         "→ ground sampling distance", "(physical length per pixel)"]),
+        (DATA, "Size", ["Box width, height × GSD", "→ physical size per",
+                        "DetectionClass instance", "Per image: count, distribution"]),
+        (TRACK, "Foci", ["Density-based clustering", "of detection centres",
+                         "→ clusters with extent,", "member count, centroid"]),
+        (TRACK, "Coverage", ["Grid over the image footprint", "→ occupied cells,",
+                             "occupancy fraction,", "per-cell counts"]),
+        (TRACK, "Density", ["Count per unit area,", "per image and per batch",
+                            "→ only where the footprint", "is known"]),
+        (API, "Gates", ["Uncertainty checks that", "refuse to extrapolate",
+                        "→ every quantity carries", "a status and its reason"]),
+    ]
+    STAGE_Y, STAGE_H, STAGE_W, STEP = 316, 176, 218, 245
+    for i, (col, title_, ls) in enumerate(stages):
+        x = 100 + i * STEP
+        c.add(box(x, STAGE_Y, STAGE_W, STAGE_H, col, title_, tag=f"stage {i + 1}", lines=ls,
+                  title_size=16, line_size=12))
+        if i < 5:
+            c.add(arrow([(x + STAGE_W + 2, STAGE_Y + 88), (x + STEP - 2, STAGE_Y + 88)],
+                        stages[i + 1][0]))
+
+    c.add(arrow([(209, 278), (209, 314)], DATA, label="scale inputs", label_dx=52, label_dy=4))
+    c.add(arrow([(700, 278), (700, 298), (454, 298), (454, 314)], DATA))
+
+    # -- nivel sin escala y estados ----------------------------------------
+    c.add(arrow([(209, 492), (209, 546)], DIM, dashed=True,
+                label="metadata missing", label_dx=64, label_dy=4))
+    c.add(box(100, 548, 464, 100, DIM, "Scale-free tier", tag="no typical value is assumed",
+              dashed=True, lines=_wrap("Counts, relative sizes and clustering are still "
+                                       "produced; physical sizes and densities are withheld "
+                                       "and marked as such.", 64),
+              title_size=16, line_size=12.5))
+
+    c.add(band(590, 548, 710, 100, "Status carried by every quantity", API))
+    states = [
+        (GPU, "measured", "every input it depends on was present"),
+        (API, "estimated", "a documented fallback was used"),
+        (FAINT, "withheld", "not supported; the reason is recorded"),
+    ]
+    for i, (col, name, note) in enumerate(states):
+        x = 606 + i * 230
+        c.add(chip(x, 588, name, col))
+        c.add(text(x, 626, note, 11.5, DIM, family=BODY))
+
+    # -- salidas -----------------------------------------------------------
+    c.add(arrow([(1434, 492), (1434, 674)], STORE, label="outputs", label_dx=36, label_dy=4))
+    outs = [
+        ("Per-image and per-batch tables", ["Sizes, foci, coverage, density; each value",
+                                            "with its status, so a reader can filter"]),
+        ("GeoJSON per batch", ["Detections and foci with physical attributes;",
+                               "rendered on the console map (doc 05)"]),
+        ("Manifest entries", ["Detection run consumed, parameters, gate outcomes;",
+                              "clustering is deterministic and replayable"]),
+    ]
+    for i, (title_, ls) in enumerate(outs):
+        c.add(box(100 + i * 490, 676, 464, 92, STORE, title_, lines=ls,
+                  title_size=16, line_size=12.5))
+
+    # -- donde corre y lo que falta ---------------------------------------
+    c.add(box(100, 796, 900, 114, API, "Runs as a CPU job type of the AI service",
+              tag="adr-013 · placement", lines=[
+                  "Submitted, tracked and manifested like inference; reads a batch's detections "
+                  "from the shared volume and writes beside them",
+                  "Own CPU pool, never touches the device; the web layer renders what the "
+                  "manifest lists and computes nothing",
+              ], title_size=16, line_size=12.5))
+    c.add(box(1024, 796, 520, 114, WARN, "Ground-truth validation pending",
+              tag="open item", lines=[
+                  "No field measurement has confirmed the sizes or densities",
+                  "reported: every value is computed, with a documented",
+                  "derivation, and the repository says so",
+              ], title_size=16, line_size=12.5))
+
+    c.add(legend(100, 938, [
+        (DATA, "Inputs and scale"), (TRACK, "Spatial statistics"), (API, "AI service · gates"),
+        (STORE, "Output artifacts"), (WARN, "Open item"),
+    ]))
+    c.footer()
+    return c.render()
+
+
+# --------------------------------------------------------------------------
+# 11 · Pruebas y CI sin GPU (revision posterior)
+# --------------------------------------------------------------------------
+
+
+def diagram_testing_ci() -> str:
+    c = Canvas(1600, 1000,
+               title="Testing and CI Without a GPU",
+               subtitle="A runtime seam with a deterministic mock, wire-level contracts between "
+                        "the two services and a throwaway Compose stack make the platform "
+                        "reviewable on any machine.",
+               kicker="Later revision · what is tested, and what deliberately is not")
+    c.header()
+
+    # -- costura de runtime ------------------------------------------------
+    c.add(band(100, 200, 700, 560, "The runtime seam", API))
+    c.add(box(116, 244, 668, 64, API, "Feature code", centered=True, title_size=16, lines=[
+        "inference · sliced inference · validation · training · metrology",
+    ], line_size=12.5))
+    c.add(arrow([(450, 310), (450, 334)], API))
+    c.add(box(116, 336, 668, 64, API, "Runtime protocol", centered=True, title_size=16, lines=[
+        "`load(model_ref) · predict(image, params) · train(config) · device()`",
+    ], line_size=12.5))
+    c.add(arrow([(450, 402), (450, 416), (277, 416), (277, 428)], DATA))
+    c.add(arrow([(450, 402), (450, 416), (623, 416), (623, 428)], GPU))
+    c.add(box(116, 430, 322, 136, DATA, "Mock runtime", tag="tests · ci", lines=[
+        "Deterministic boxes from image size",
+        "and parameters; no weights, no device",
+        "Health endpoint and every manifest",
+        "record which runtime produced a result",
+    ], title_size=16, line_size=12.5))
+    c.add(box(462, 430, 322, 136, GPU, "Real runtime", tag="deployment", lines=[
+        "The deep-learning library",
+        "Device injected from configuration,",
+        "never probed by the code",
+        "CPU fallback when none is configured",
+    ], title_size=16, line_size=12.5))
+
+    c.add(text(116, 592, "SUITES", 11, API, family=BODY, weight=700, spacing=1.4))
+    c.add(text(784, 592, "CPU only · on the order of two thousand tests · minutes",
+               11.5, FAINT, family=BODY, anchor="end"))
+    suites = [
+        ("Unit", "coordinate reconstruction, naming, manifests, registry transactions, "
+                 "metrology stages"),
+        ("Contract, wire level", "client and routes agree on every payload and error envelope, "
+                                 "over real HTTP with the mock"),
+        ("Purity and fences", "no framework in the service client, no database driver in the "
+                              "AI service, no cross-imports"),
+        ("Document guards", "Compose chain consistent, README claims true, every error code "
+                            "in the catalogue"),
+        ("Console", "every view renders, every string is translated, permissions hold per group"),
+        ("Mutation-checked subsets", "coordinate and registry code: the tests fail when the "
+                                     "logic is broken"),
+    ]
+    for i, (name, what) in enumerate(suites):
+        y = 618 + i * 23
+        c.add(text(116, y, name, 12.5, TEXT, family=BODY, weight=700))
+        c.add(text(300, y, what, 12, DIM, family=BODY))
+
+    # -- integracion continua ----------------------------------------------
+    c.add(band(830, 200, 714, 560, "Continuous integration", GPU,
+               note="advisory, not yet blocking"))
+    steps = [
+        (WEB, "push", "any branch, every commit"),
+        (WEB, "lint", "style and static checks"),
+        (WEB, "compose-chain guard", "the Compose file chain is consistent"),
+        (GPU, "build both images", "web and AI, from the checkout"),
+        (GPU, "throwaway Compose project", "own name, own volumes, mock runtime"),
+        (GPU, "both suites in containers", "the image that would ship, not a dev tree"),
+        (STORE, "tear down", "delete the volumes; nothing shared with a local stack"),
+    ]
+    for i, (col, title_, note) in enumerate(steps):
+        y = 244 + i * 72
+        c.add(box(846, y, 380, 61, col, title_, lines=[note], title_size=14.5, line_size=11.5))
+        if i < 6:
+            c.add(arrow([(1036, y + 62), (1036, y + 71)], steps[i + 1][0]))
+
+    notes = [
+        (GPU, "Same definitions as a deployment",
+         "The CI job uses the same Compose files as a deployment, so what is tested is "
+         "the image that would ship."),
+        (STORE, "Nothing survives the run",
+         "The project is named per run and its volumes are removed afterwards; no state "
+         "leaks between runs or into a local stack."),
+        (FAINT, "Advisory by decision",
+         "It reports, it does not block merges. Branch protection is deferred until more "
+         "than one person commits. The runner is self-managed and not described."),
+    ]
+    for i, (col, title_, body) in enumerate(notes):
+        y = 244 + i * 172
+        c.add(box(1250, y, 278, 152, col, title_, lines=_wrap(body, 36),
+                  title_size=14.5, line_size=12, dashed=(col is FAINT)))
+
+    # -- lo que deliberadamente no se prueba ------------------------------
+    c.add(band(100, 800, 1444, 100, "Deliberately not tested", WARN,
+               note="the boundary of the confidence is stated, not hidden"))
+    nots = [
+        "The real runtime on a device · no GPU in CI",
+        "Model accuracy on real images · no images or weights",
+        "SAHI border behaviour with real boxes · synthetic cases only",
+        "The browser · views render, interactions are not scripted",
+        "Metrology against ground truth · arithmetic only (doc 04)",
+    ]
+    for i, txt_ in enumerate(nots):
+        col_, row_ = divmod(i, 2)
+        x = 132 + col_ * 470
+        y = 850 + row_ * 32
+        c.add(text(x, y, "✕", 13, WARN, family=BODY))
+        c.add(text(x + 22, y, txt_, 13, DIM, family=BODY))
+
+    c.add(legend(100, 938, [
+        (API, "Feature code and protocol"), (DATA, "Mock runtime"), (GPU, "Real runtime · CI build"),
+        (WEB, "CI checks"), (STORE, "Tear down"), (WARN, "Not covered"),
+    ]))
+    c.footer()
+    return c.render()
+
+
+# --------------------------------------------------------------------------
+# Poster · lo que vino despues (revision posterior)
+# --------------------------------------------------------------------------
+
+
+def poster_what_came_next() -> str:
+    c = Canvas(1240, 1754, title="", pad=88)
+    X, W = 88, 1064
+
+    # -- cabecera ----------------------------------------------------------
+    c.add(rect(0, 0, 1240, 400, "url(#glow)"))
+    c.add(text(X, 104, "LATER REVISION · PUBLIC-SAFE DOCUMENTATION", 13, API,
+               family=BODY, weight=700, spacing=2.2))
+    c.add(text(X, 182, "What Came Next", 58, TEXT, family=DISPLAY, weight=800))
+    c.add(text(X, 246, "Same Architecture, Triggers Fired", 58, TEXT, family=DISPLAY,
+               weight=800))
+    c.add(text(X, 292, "The initial iteration named its limitations and their triggers. "
+                       "This is what a later revision did when they fired:", 16, DIM,
+               family=BODY))
+    c.add(text(X, 316, "no queue, no Kubernetes — records, a registry, contracts and tests.",
+               16, DIM, family=BODY))
+    chip_row(c, X, 342, W, [
+        (WEB, "Django"), (API, "FastAPI"), (GPU, "PyTorch"), (GPU, "Ultralytics YOLO"),
+        (GPU, "SAHI"), (STORE, "PostgreSQL"), (DATA, "Docker Compose"),
+        (TRACK, "Run manifests"), (STORE, "Model registry"), (DATA, "GeoJSON"),
+        (DATA, "Metrology"), (GPU, "CI without GPU"),
+    ], gap=6)
+
+    # -- seccion A · lo que se mantuvo ------------------------------------
+    section(c, 452, "What stayed", WEB, note="every structural decision still holds")
+    kept = [
+        (WEB, "Separate services", ["Web layer and AI service,", "HTTP + JSON between them",
+                                    "ADR-001"]),
+        (STORE, "Shared storage", ["Artifacts as the integration", "mechanism; same path",
+                                   "ADR-002 · ADR-011"]),
+        (API, "FastAPI boundary", ["In front of the runtime;", "execution mode amended",
+                                   "ADR-003 · ADR-009"]),
+        (GPU, "SAHI", ["Small objects in large", "images: tiles, merge, NMS", "ADR-005"]),
+        (FAINT, "No broker, no Kubernetes", ["Compose on one node; the", "web layer owns the DB",
+                                             "doc 16 · doc 03"]),
+    ]
+    for i, (col, title_, ls) in enumerate(kept):
+        x = X + i * 216
+        c.add(box(x, 478, 200, 106, col, title_, title_size=13.5, dashed=(col is FAINT)))
+        for j, ln in enumerate(ls):
+            colour = FAINT if j == len(ls) - 1 else DIM
+            c.add(text(x + 18, 534 + j * 16, ln, 11, colour, family=BODY))
+
+    # -- seccion B · limitacion → resolucion ------------------------------
+    section(c, 626, "Limitation → resolution", API,
+            note="confessed in the initial iteration · answered in the revision")
+    rows = [
+        (API, "The HTTP request stays open for the whole job", "doc 15 · ADR-003",
+         "Submit returns a run identifier; the job runs on an in-process pool; the console polls",
+         "evolution 01 · ADR-009"),
+        (STORE, "No job status records, no recovery after a restart", "doc 15 · doc 08",
+         "Durable job record per run plus a job-history table; startup reconciliation",
+         "evolution 01 · ADR-009"),
+        (STORE, "File-based model reference with a race condition", "doc 10 · doc 07",
+         "Transactional registry with promotion events; promotion is a human act",
+         "evolution 02 · ADR-010"),
+        (STORE, "Path translation across four coordinate systems", "doc 19 · ADR-008",
+         "One mount path in both containers; the invariant is tested",
+         "evolution 03 · ADR-011"),
+        (WEB, "No service-to-service authentication", "doc 05",
+         "Hashed service tokens and a service key; web sessions with groups and lockout",
+         "evolution 03"),
+        (API, "Error handling as prose that callers parse", "doc 14",
+         "One error envelope with stable codes; a catalogue kept with the contract",
+         "evolution 03"),
+        (TRACK, "Tracking tool chosen for its SaaS convenience", "ADR-004 · ADR-007",
+         "Tool withdrawn; a self-hosted, tracking-only alternative decided and not deployed",
+         "ADR-012"),
+        (GPU, "No automated tests, no continuous integration", "doc 15",
+         "Mock/real runtime seam; about two thousand CPU tests; CI on a throwaway Compose stack",
+         "evolution 06"),
+    ]
+    CW, CH, CG = 520, 104, 12
+    for i, (col, lim, lim_ref, res, res_ref) in enumerate(rows):
+        colidx, rowidx = divmod(i, 4)
+        x = X + colidx * (CW + 24)
+        y = 652 + rowidx * (CH + CG)
+        c.add(rect(x, y, CW, CH, PANEL, STROKE, rx=10))
+        c.add(rect(x, y, 4, CH, col, rx=2))
+        c.add(text(x + 18, y + 22, "LIMITATION", 9.5, FAINT, family=BODY, weight=700,
+                   spacing=1.3))
+        for j, ln in enumerate(_wrap(lim, 34)[:3]):
+            c.add(text(x + 18, y + 41 + j * 15, ln, 11.5, DIM, family=BODY))
+        c.add(text(x + 18, y + 92, lim_ref, 10, FAINT, family=MONO))
+        c.add(text(x + 258, y + 64, "→", 20, col, family=BODY, weight=700, anchor="middle"))
+        c.add(text(x + 282, y + 22, "RESOLUTION", 9.5, col, family=BODY, weight=700,
+                   spacing=1.3))
+        for j, ln in enumerate(_wrap(res, 36)[:3]):
+            c.add(text(x + 282, y + 41 + j * 15, ln, 11.5, TEXT, family=BODY))
+        c.add(text(x + 282, y + 92, res_ref, 10, FAINT, family=MONO))
+
+    # -- seccion C · capacidades nuevas -----------------------------------
+    section(c, 1146, "New capabilities", DATA, note="what the initial iteration did not have")
+    caps = [
+        (DATA, "Detection metrology", [
+            "Pixel boxes → physical size, foci,",
+            "coverage and density; explicit gates:",
+            "measured | estimated | withheld",
+        ], "evolution 04 · ADR-013"),
+        (WEB, "Operator console", [
+            "GeoJSON per batch on an interactive",
+            "map; a localisation guard on every",
+            "string; permissions per group",
+        ], "evolution 05"),
+        (STORE, "Batch lifecycle", [
+            "Batches own their runs and outputs;",
+            "retention is a batch-level cascade,",
+            "not a sweep of the volume",
+        ], "evolution 01 · evolution 05"),
+    ]
+    for i, (col, title_, ls, ref) in enumerate(caps):
+        x = X + i * 360
+        c.add(box(x, 1172, 344, 122, col, title_, lines=ls, title_size=15, line_size=12))
+        c.add(text(x + 18, 1282, ref, 10, FAINT, family=MONO))
+
+    # -- seccion D · lo que la revision no hizo ---------------------------
+    section(c, 1354, "What the revision did not do", WARN,
+            note="a ledger that lists only wins is a brochure")
+    c.add(band(X, 1372, W, 172, "Stated plainly", WARN))
+    nots = [
+        "Training stayed outside the platform; weights enter through an import step that "
+        "fingerprints them (ADR-012 addendum)",
+        "The GPU path was not validated: every test runs on CPU with a mock runtime, "
+        "and the device is injected, never probed",
+        "Admission on the device is not controlled — that is the next trigger, "
+        "and a single admission lane is the recommendation",
+        "No broker, no worker pool, no object storage, no Kubernetes — and that is the point",
+        "Metrology is not validated against ground truth; every value is computed with a "
+        "documented derivation",
+        "CI is advisory and not yet blocking; branch protection waits for a second contributor",
+    ]
+    for i, txt_ in enumerate(nots):
+        colidx, rowidx = divmod(i, 3)
+        x = X + 32 + colidx * 528
+        y = 1420 + rowidx * 40
+        c.add(text(x, y, "✕", 12, WARN, family=BODY))
+        for j, ln in enumerate(_wrap(txt_, 74)[:2]):
+            c.add(text(x + 20, y + j * 15, ln, 11.5, DIM, family=BODY))
+
+    c.add(box(X, 1580, W, 96, WEB, "The thesis of the roadmap held", tag="doc 16 · evolution 07",
+              lines=[
+                  "When the triggers fired, the answer was not a broker and not Kubernetes: "
+                  "job records, polling, a registry, contracts and tests.",
+                  "The one capability given up, in-platform training, is stated so that the "
+                  "title of the repository stays honest.",
+              ], title_size=16, line_size=12.5))
+
+    # -- pie ---------------------------------------------------------------
+    c.add(line(X, 1714, X + W, 1714, STROKE_SOFT, 1))
+    c.add(text(X, 1734, "github.com/maaferna/" + REPO, 12, FAINT, family=MONO))
+    c.add(text(X + W, 1734, "Public-safe · no code, datasets, weights, credentials or "
+                            "real metrics · all values illustrative", 12, FAINT,
+               family=BODY, anchor="end"))
+    return c.render()
+
+
+# --------------------------------------------------------------------------
 # Registro y punto de entrada
 # --------------------------------------------------------------------------
 
@@ -1308,6 +1805,12 @@ DIAGRAMS = [
     ("diagrams", "07-evolution-roadmap", diagram_evolution_roadmap),
     ("diagrams", "08-submit-poll-lifecycle", diagram_submit_poll_lifecycle),
     ("poster", "poster-architecture", poster_architecture),
+    # Revision posterior. Registrados despues del poster original para que los
+    # identificadores de clipPath de los SVG ya publicados no cambien.
+    ("diagrams", "09-model-registry-promotion", diagram_model_registry),
+    ("diagrams", "10-detection-metrology", diagram_detection_metrology),
+    ("diagrams", "11-testing-and-ci", diagram_testing_ci),
+    ("poster", "poster-what-came-next", poster_what_came_next),
 ]
 
 

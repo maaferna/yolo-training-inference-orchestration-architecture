@@ -3,6 +3,8 @@
 > Public-safe documentation. Design-level description of a later revision. Field names are
 > descriptive, not the real schema; the selection weights are illustrative.
 
+[![Model registry and promotion](../../assets/diagrams/09-model-registry-promotion.png)](../../assets/diagrams/09-model-registry-promotion.png)
+
 ## Purpose
 
 The initial iteration kept "the current best model" as a reference file in shared storage,

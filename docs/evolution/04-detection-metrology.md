@@ -5,6 +5,8 @@
 > real threshold, scale or result. `DetectionClass` stands for whatever is being detected.
 > Ground-truth validation of the method is explicitly pending.
 
+[![Detection metrology](../../assets/diagrams/10-detection-metrology.png)](../../assets/diagrams/10-detection-metrology.png)
+
 ## Purpose
 
 The initial iteration ended at detections: bounding boxes in pixel coordinates, drawn on a

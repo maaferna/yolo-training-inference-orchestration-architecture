@@ -1,0 +1,167 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000">
+<defs>
+<marker id="a-m1F2E47" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#1F2E47"/></marker>
+<marker id="a-m35D6D0" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#35D6D0"/></marker>
+<marker id="a-m4FA8FF" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#4FA8FF"/></marker>
+<marker id="a-m63799B" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#63799B"/></marker>
+<marker id="a-m7ED957" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#7ED957"/></marker>
+<marker id="a-m94A6C4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#94A6C4"/></marker>
+<marker id="a-mB98BFF" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#B98BFF"/></marker>
+<marker id="a-mEAF0FA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#EAF0FA"/></marker>
+<marker id="a-mFF6B6B" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#FF6B6B"/></marker>
+<marker id="a-mFF7E8E" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#FF7E8E"/></marker>
+<marker id="a-mFFB13D" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#FFB13D"/></marker>
+<linearGradient id="glow" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#16233A"/><stop offset="1" stop-color="#0C1322"/></linearGradient>
+</defs>
+<rect width="1600" height="1000" fill="#0A101C"/>
+<text x="56" y="58" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="700" fill="#63799B" text-anchor="start" letter-spacing="1.6">LATER REVISION · WHAT IS TESTED, AND WHAT DELIBERATELY IS NOT</text>
+<text x="56" y="92" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="36" font-weight="700" fill="#EAF0FA" text-anchor="start">Testing and CI Without a GPU</text>
+<text x="56" y="136" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="15" font-weight="400" fill="#94A6C4" text-anchor="start">A runtime seam with a deterministic mock, wire-level contracts between the two services and a throwaway Compose stack make the platform reviewable on any machine.</text>
+<line x1="56" y1="162" x2="1544" y2="162" stroke="#1F2E47" stroke-width="1"/>
+<rect x="100" y="200" width="700" height="560" rx="14" fill="#0E1524" stroke="#1F2E47" stroke-width="1.5"/>
+<rect x="101.5" y="214" width="4" height="532" rx="2" fill="#FFB13D" stroke="none" opacity="0.75"/>
+<text x="120" y="227" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="700" fill="#FFB13D" text-anchor="start" letter-spacing="1.5">THE RUNTIME SEAM</text>
+<rect x="116" y="244" width="668" height="64" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip119"><rect x="116" y="244" width="668" height="64" rx="10"/></clipPath>
+<g clip-path="url(#clip119)"><rect x="116" y="244" width="668" height="5" fill="#FFB13D"/></g>
+<text x="450.0" y="280" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="16" font-weight="600" fill="#EAF0FA" text-anchor="middle">Feature code</text>
+<text x="450.0" y="301" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="middle">inference · sliced inference · validation · training · metrology</text>
+<polyline points="450,310 450,334" fill="none" stroke="#FFB13D" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-mFFB13D)"/>
+<rect x="116" y="336" width="668" height="64" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip120"><rect x="116" y="336" width="668" height="64" rx="10"/></clipPath>
+<g clip-path="url(#clip120)"><rect x="116" y="336" width="668" height="5" fill="#FFB13D"/></g>
+<text x="450.0" y="372" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="16" font-weight="600" fill="#EAF0FA" text-anchor="middle">Runtime protocol</text>
+<text x="450.0" y="393" font-family="'Liberation Mono', 'DejaVu Sans Mono', monospace" font-size="12.0" font-weight="400" fill="#63799B" text-anchor="middle">load(model_ref) · predict(image, params) · train(config) · device()</text>
+<polyline points="450,402 450,416 277,416 277,428" fill="none" stroke="#35D6D0" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-m35D6D0)"/>
+<polyline points="450,402 450,416 623,416 623,428" fill="none" stroke="#7ED957" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-m7ED957)"/>
+<rect x="116" y="430" width="322" height="136" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip121"><rect x="116" y="430" width="322" height="136" rx="10"/></clipPath>
+<g clip-path="url(#clip121)"><rect x="116" y="430" width="322" height="5" fill="#35D6D0"/></g>
+<text x="134" y="456" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#35D6D0" text-anchor="start" letter-spacing="1.4">TESTS · CI</text>
+<text x="134" y="476" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="16" font-weight="600" fill="#EAF0FA" text-anchor="start">Mock runtime</text>
+<text x="134" y="497" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Deterministic boxes from image size</text>
+<text x="134" y="515.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">and parameters; no weights, no device</text>
+<text x="134" y="534.0" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Health endpoint and every manifest</text>
+<text x="134" y="552.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">record which runtime produced a result</text>
+<rect x="462" y="430" width="322" height="136" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip122"><rect x="462" y="430" width="322" height="136" rx="10"/></clipPath>
+<g clip-path="url(#clip122)"><rect x="462" y="430" width="322" height="5" fill="#7ED957"/></g>
+<text x="480" y="456" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#7ED957" text-anchor="start" letter-spacing="1.4">DEPLOYMENT</text>
+<text x="480" y="476" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="16" font-weight="600" fill="#EAF0FA" text-anchor="start">Real runtime</text>
+<text x="480" y="497" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">The deep-learning library</text>
+<text x="480" y="515.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Device injected from configuration,</text>
+<text x="480" y="534.0" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">never probed by the code</text>
+<text x="480" y="552.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">CPU fallback when none is configured</text>
+<text x="116" y="592" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="700" fill="#FFB13D" text-anchor="start" letter-spacing="1.4">SUITES</text>
+<text x="784" y="592" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11.5" font-weight="400" fill="#63799B" text-anchor="end">CPU only · on the order of two thousand tests · minutes</text>
+<text x="116" y="618" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="700" fill="#EAF0FA" text-anchor="start">Unit</text>
+<text x="300" y="618" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">coordinate reconstruction, naming, manifests, registry transactions, metrology stages</text>
+<text x="116" y="641" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="700" fill="#EAF0FA" text-anchor="start">Contract, wire level</text>
+<text x="300" y="641" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">client and routes agree on every payload and error envelope, over real HTTP with the mock</text>
+<text x="116" y="664" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="700" fill="#EAF0FA" text-anchor="start">Purity and fences</text>
+<text x="300" y="664" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">no framework in the service client, no database driver in the AI service, no cross-imports</text>
+<text x="116" y="687" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="700" fill="#EAF0FA" text-anchor="start">Document guards</text>
+<text x="300" y="687" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Compose chain consistent, README claims true, every error code in the catalogue</text>
+<text x="116" y="710" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="700" fill="#EAF0FA" text-anchor="start">Console</text>
+<text x="300" y="710" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">every view renders, every string is translated, permissions hold per group</text>
+<text x="116" y="733" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="700" fill="#EAF0FA" text-anchor="start">Mutation-checked subsets</text>
+<text x="300" y="733" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">coordinate and registry code: the tests fail when the logic is broken</text>
+<rect x="830" y="200" width="714" height="560" rx="14" fill="#0E1524" stroke="#1F2E47" stroke-width="1.5"/>
+<rect x="831.5" y="214" width="4" height="532" rx="2" fill="#7ED957" stroke="none" opacity="0.75"/>
+<text x="850" y="227" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="700" fill="#7ED957" text-anchor="start" letter-spacing="1.5">CONTINUOUS INTEGRATION</text>
+<text x="1524" y="227" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#63799B" text-anchor="end">advisory, not yet blocking</text>
+<rect x="846" y="244" width="380" height="61" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip123"><rect x="846" y="244" width="380" height="61" rx="10"/></clipPath>
+<g clip-path="url(#clip123)"><rect x="846" y="244" width="380" height="5" fill="#4FA8FF"/></g>
+<text x="864" y="278.5" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="14.5" font-weight="600" fill="#EAF0FA" text-anchor="start">push</text>
+<text x="864" y="299.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11.5" font-weight="400" fill="#94A6C4" text-anchor="start">any branch, every commit</text>
+<polyline points="1036,306 1036,315" fill="none" stroke="#4FA8FF" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-m4FA8FF)"/>
+<rect x="846" y="316" width="380" height="61" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip124"><rect x="846" y="316" width="380" height="61" rx="10"/></clipPath>
+<g clip-path="url(#clip124)"><rect x="846" y="316" width="380" height="5" fill="#4FA8FF"/></g>
+<text x="864" y="350.5" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="14.5" font-weight="600" fill="#EAF0FA" text-anchor="start">lint</text>
+<text x="864" y="371.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11.5" font-weight="400" fill="#94A6C4" text-anchor="start">style and static checks</text>
+<polyline points="1036,378 1036,387" fill="none" stroke="#4FA8FF" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-m4FA8FF)"/>
+<rect x="846" y="388" width="380" height="61" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip125"><rect x="846" y="388" width="380" height="61" rx="10"/></clipPath>
+<g clip-path="url(#clip125)"><rect x="846" y="388" width="380" height="5" fill="#4FA8FF"/></g>
+<text x="864" y="422.5" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="14.5" font-weight="600" fill="#EAF0FA" text-anchor="start">compose-chain guard</text>
+<text x="864" y="443.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11.5" font-weight="400" fill="#94A6C4" text-anchor="start">the Compose file chain is consistent</text>
+<polyline points="1036,450 1036,459" fill="none" stroke="#7ED957" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-m7ED957)"/>
+<rect x="846" y="460" width="380" height="61" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip126"><rect x="846" y="460" width="380" height="61" rx="10"/></clipPath>
+<g clip-path="url(#clip126)"><rect x="846" y="460" width="380" height="5" fill="#7ED957"/></g>
+<text x="864" y="494.5" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="14.5" font-weight="600" fill="#EAF0FA" text-anchor="start">build both images</text>
+<text x="864" y="515.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11.5" font-weight="400" fill="#94A6C4" text-anchor="start">web and AI, from the checkout</text>
+<polyline points="1036,522 1036,531" fill="none" stroke="#7ED957" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-m7ED957)"/>
+<rect x="846" y="532" width="380" height="61" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip127"><rect x="846" y="532" width="380" height="61" rx="10"/></clipPath>
+<g clip-path="url(#clip127)"><rect x="846" y="532" width="380" height="5" fill="#7ED957"/></g>
+<text x="864" y="566.5" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="14.5" font-weight="600" fill="#EAF0FA" text-anchor="start">throwaway Compose project</text>
+<text x="864" y="587.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11.5" font-weight="400" fill="#94A6C4" text-anchor="start">own name, own volumes, mock runtime</text>
+<polyline points="1036,594 1036,603" fill="none" stroke="#7ED957" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-m7ED957)"/>
+<rect x="846" y="604" width="380" height="61" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip128"><rect x="846" y="604" width="380" height="61" rx="10"/></clipPath>
+<g clip-path="url(#clip128)"><rect x="846" y="604" width="380" height="5" fill="#7ED957"/></g>
+<text x="864" y="638.5" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="14.5" font-weight="600" fill="#EAF0FA" text-anchor="start">both suites in containers</text>
+<text x="864" y="659.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11.5" font-weight="400" fill="#94A6C4" text-anchor="start">the image that would ship, not a dev tree</text>
+<polyline points="1036,666 1036,675" fill="none" stroke="#FF7E8E" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-mFF7E8E)"/>
+<rect x="846" y="676" width="380" height="61" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip129"><rect x="846" y="676" width="380" height="61" rx="10"/></clipPath>
+<g clip-path="url(#clip129)"><rect x="846" y="676" width="380" height="5" fill="#FF7E8E"/></g>
+<text x="864" y="710.5" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="14.5" font-weight="600" fill="#EAF0FA" text-anchor="start">tear down</text>
+<text x="864" y="731.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11.5" font-weight="400" fill="#94A6C4" text-anchor="start">delete the volumes; nothing shared with a local stack</text>
+<rect x="1250" y="244" width="278" height="152" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip130"><rect x="1250" y="244" width="278" height="152" rx="10"/></clipPath>
+<g clip-path="url(#clip130)"><rect x="1250" y="244" width="278" height="5" fill="#7ED957"/></g>
+<text x="1268" y="278.5" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="14.5" font-weight="600" fill="#EAF0FA" text-anchor="start">Same definitions as a deployment</text>
+<text x="1268" y="299.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">The CI job uses the same Compose</text>
+<text x="1268" y="317.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">files as a deployment, so what is</text>
+<text x="1268" y="335.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">tested is the image that would ship.</text>
+<rect x="1250" y="416" width="278" height="152" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip131"><rect x="1250" y="416" width="278" height="152" rx="10"/></clipPath>
+<g clip-path="url(#clip131)"><rect x="1250" y="416" width="278" height="5" fill="#FF7E8E"/></g>
+<text x="1268" y="450.5" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="14.5" font-weight="600" fill="#EAF0FA" text-anchor="start">Nothing survives the run</text>
+<text x="1268" y="471.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">The project is named per run and its</text>
+<text x="1268" y="489.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">volumes are removed afterwards; no</text>
+<text x="1268" y="507.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">state leaks between runs or into a</text>
+<text x="1268" y="525.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">local stack.</text>
+<rect x="1250" y="588" width="278" height="152" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5" stroke-dasharray="7 6"/>
+<clipPath id="clip132"><rect x="1250" y="588" width="278" height="152" rx="10"/></clipPath>
+<g clip-path="url(#clip132)"><rect x="1250" y="588" width="278" height="5" fill="#63799B"/></g>
+<text x="1268" y="622.5" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="14.5" font-weight="600" fill="#EAF0FA" text-anchor="start">Advisory by decision</text>
+<text x="1268" y="643.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">It reports, it does not block</text>
+<text x="1268" y="661.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">merges. Branch protection is</text>
+<text x="1268" y="679.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">deferred until more than one person</text>
+<text x="1268" y="697.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">commits. The runner is self-managed</text>
+<text x="1268" y="715.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">and not described.</text>
+<rect x="100" y="800" width="1444" height="100" rx="14" fill="#0E1524" stroke="#1F2E47" stroke-width="1.5"/>
+<rect x="101.5" y="814" width="4" height="72" rx="2" fill="#FF6B6B" stroke="none" opacity="0.75"/>
+<text x="120" y="827" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="700" fill="#FF6B6B" text-anchor="start" letter-spacing="1.5">DELIBERATELY NOT TESTED</text>
+<text x="1524" y="827" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#63799B" text-anchor="end">the boundary of the confidence is stated, not hidden</text>
+<text x="132" y="850" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#FF6B6B" text-anchor="start">✕</text>
+<text x="154" y="850" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#94A6C4" text-anchor="start">The real runtime on a device · no GPU in CI</text>
+<text x="132" y="882" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#FF6B6B" text-anchor="start">✕</text>
+<text x="154" y="882" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#94A6C4" text-anchor="start">Model accuracy on real images · no images or weights</text>
+<text x="602" y="850" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#FF6B6B" text-anchor="start">✕</text>
+<text x="624" y="850" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#94A6C4" text-anchor="start">SAHI border behaviour with real boxes · synthetic cases only</text>
+<text x="602" y="882" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#FF6B6B" text-anchor="start">✕</text>
+<text x="624" y="882" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#94A6C4" text-anchor="start">The browser · views render, interactions are not scripted</text>
+<text x="1072" y="850" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#FF6B6B" text-anchor="start">✕</text>
+<text x="1094" y="850" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#94A6C4" text-anchor="start">Metrology against ground truth · arithmetic only (doc 04)</text>
+<rect x="100" y="930" width="11" height="11" rx="3" fill="#FFB13D" stroke="none"/>
+<text x="118" y="939" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Feature code and protocol</text>
+<rect x="300.0" y="930" width="11" height="11" rx="3" fill="#35D6D0" stroke="none"/>
+<text x="318.0" y="939" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Mock runtime</text>
+<rect x="416.8" y="930" width="11" height="11" rx="3" fill="#7ED957" stroke="none"/>
+<text x="434.8" y="939" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Real runtime · CI build</text>
+<rect x="604.0" y="930" width="11" height="11" rx="3" fill="#4FA8FF" stroke="none"/>
+<text x="622.0" y="939" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">CI checks</text>
+<rect x="701.6" y="930" width="11" height="11" rx="3" fill="#FF7E8E" stroke="none"/>
+<text x="719.6" y="939" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Tear down</text>
+<rect x="799.2" y="930" width="11" height="11" rx="3" fill="#FF6B6B" stroke="none"/>
+<text x="817.2" y="939" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Not covered</text>
+<line x1="56" y1="952" x2="1544" y2="952" stroke="#1F2E47" stroke-width="1"/>
+<text x="56" y="974" font-family="'Liberation Mono', 'DejaVu Sans Mono', monospace" font-size="11" font-weight="400" fill="#63799B" text-anchor="start">yolo-training-inference-orchestration-architecture</text>
+<text x="1544" y="974" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="400" fill="#63799B" text-anchor="end">Public-safe architecture documentation · all values illustrative</text>
+</svg>

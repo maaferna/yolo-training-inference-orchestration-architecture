@@ -74,7 +74,11 @@ El repositorio es documentación public-safe; los diagramas heredan esa polític
 | `06-synthetic-dataset` | ¿Cómo se genera un dataset sintético a partir de datos reales escasos? |
 | `07-evolution-roadmap` | ¿Qué se añade primero, qué disparador lo justifica y qué resultó en la revisión posterior? |
 | `08-submit-poll-lifecycle` | ¿Cómo respondió la revisión posterior a los timeouts sin una cola? |
+| `09-model-registry-promotion` | ¿Cómo sustituyó la revisión posterior la referencia de modelo en fichero por un registro con promoción humana? |
+| `10-detection-metrology` | ¿Cómo pasan las detecciones de píxeles a magnitudes físicas y qué estado lleva cada cantidad? |
+| `11-testing-and-ci` | ¿Cómo se prueba la plataforma sin GPU y qué queda deliberadamente sin probar? |
 | `poster-architecture` | Póster de una página que resume el sistema completo |
+| `poster-what-came-next` | Póster de una página de la revisión posterior: qué se mantuvo, limitación → resolución, capacidades nuevas, qué no se hizo |
 
 ## Origen Mermaid
 

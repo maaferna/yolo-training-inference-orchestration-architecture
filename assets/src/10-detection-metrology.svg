@@ -1,0 +1,164 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000">
+<defs>
+<marker id="a-m1F2E47" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#1F2E47"/></marker>
+<marker id="a-m35D6D0" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#35D6D0"/></marker>
+<marker id="a-m4FA8FF" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#4FA8FF"/></marker>
+<marker id="a-m63799B" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#63799B"/></marker>
+<marker id="a-m7ED957" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#7ED957"/></marker>
+<marker id="a-m94A6C4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#94A6C4"/></marker>
+<marker id="a-mB98BFF" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#B98BFF"/></marker>
+<marker id="a-mEAF0FA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#EAF0FA"/></marker>
+<marker id="a-mFF6B6B" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#FF6B6B"/></marker>
+<marker id="a-mFF7E8E" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#FF7E8E"/></marker>
+<marker id="a-mFFB13D" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="#FFB13D"/></marker>
+<linearGradient id="glow" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#16233A"/><stop offset="1" stop-color="#0C1322"/></linearGradient>
+</defs>
+<rect width="1600" height="1000" fill="#0A101C"/>
+<text x="56" y="58" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="700" fill="#63799B" text-anchor="start" letter-spacing="1.6">LATER REVISION · ADR-013 · A CPU JOB TYPE OF THE AI SERVICE</text>
+<text x="56" y="92" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="36" font-weight="700" fill="#EAF0FA" text-anchor="start">Detection Metrology</text>
+<text x="56" y="136" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="15" font-weight="400" fill="#94A6C4" text-anchor="start">From pixel boxes to physical quantities, using only the detections and the image metadata. Every quantity says whether it was measured, estimated or withheld.</text>
+<line x1="56" y1="162" x2="1544" y2="162" stroke="#1F2E47" stroke-width="1"/>
+<rect x="100" y="200" width="460" height="78" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip105"><rect x="100" y="200" width="460" height="78" rx="10"/></clipPath>
+<g clip-path="url(#clip105)"><rect x="100" y="200" width="460" height="5" fill="#35D6D0"/></g>
+<text x="118" y="226" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#35D6D0" text-anchor="start" letter-spacing="1.4">INPUT</text>
+<text x="118" y="246" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="16" font-weight="600" fill="#EAF0FA" text-anchor="start">Image metadata</text>
+<text x="118" y="267" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Height above ground · focal length · sensor size</text>
+<rect x="590" y="200" width="954" height="78" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip106"><rect x="590" y="200" width="954" height="78" rx="10"/></clipPath>
+<g clip-path="url(#clip106)"><rect x="590" y="200" width="954" height="5" fill="#35D6D0"/></g>
+<text x="608" y="226" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#35D6D0" text-anchor="start" letter-spacing="1.4">INPUT</text>
+<text x="608" y="246" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="16" font-weight="600" fill="#EAF0FA" text-anchor="start">Detections in pixel coordinates</text>
+<text x="608" y="267" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Boxes per DetectionClass in the original image frame · sliced inference is reconstructed to full-image coordinates first</text>
+<rect x="100" y="316" width="218" height="176" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip107"><rect x="100" y="316" width="218" height="176" rx="10"/></clipPath>
+<g clip-path="url(#clip107)"><rect x="100" y="316" width="218" height="5" fill="#35D6D0"/></g>
+<text x="118" y="342" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#35D6D0" text-anchor="start" letter-spacing="1.4">STAGE 1</text>
+<text x="118" y="362" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="16" font-weight="600" fill="#EAF0FA" text-anchor="start">Scale</text>
+<text x="118" y="383" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Height above ground,</text>
+<text x="118" y="401" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">focal length, sensor width</text>
+<text x="118" y="419" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">→ ground sampling distance</text>
+<text x="118" y="437" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">(physical length per pixel)</text>
+<polyline points="320,404 343,404" fill="none" stroke="#35D6D0" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-m35D6D0)"/>
+<rect x="345" y="316" width="218" height="176" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip108"><rect x="345" y="316" width="218" height="176" rx="10"/></clipPath>
+<g clip-path="url(#clip108)"><rect x="345" y="316" width="218" height="5" fill="#35D6D0"/></g>
+<text x="363" y="342" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#35D6D0" text-anchor="start" letter-spacing="1.4">STAGE 2</text>
+<text x="363" y="362" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="16" font-weight="600" fill="#EAF0FA" text-anchor="start">Size</text>
+<text x="363" y="383" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Box width, height × GSD</text>
+<text x="363" y="401" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">→ physical size per</text>
+<text x="363" y="419" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">DetectionClass instance</text>
+<text x="363" y="437" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Per image: count, distribution</text>
+<polyline points="565,404 588,404" fill="none" stroke="#B98BFF" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-mB98BFF)"/>
+<rect x="590" y="316" width="218" height="176" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip109"><rect x="590" y="316" width="218" height="176" rx="10"/></clipPath>
+<g clip-path="url(#clip109)"><rect x="590" y="316" width="218" height="5" fill="#B98BFF"/></g>
+<text x="608" y="342" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#B98BFF" text-anchor="start" letter-spacing="1.4">STAGE 3</text>
+<text x="608" y="362" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="16" font-weight="600" fill="#EAF0FA" text-anchor="start">Foci</text>
+<text x="608" y="383" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Density-based clustering</text>
+<text x="608" y="401" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">of detection centres</text>
+<text x="608" y="419" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">→ clusters with extent,</text>
+<text x="608" y="437" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">member count, centroid</text>
+<polyline points="810,404 833,404" fill="none" stroke="#B98BFF" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-mB98BFF)"/>
+<rect x="835" y="316" width="218" height="176" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip110"><rect x="835" y="316" width="218" height="176" rx="10"/></clipPath>
+<g clip-path="url(#clip110)"><rect x="835" y="316" width="218" height="5" fill="#B98BFF"/></g>
+<text x="853" y="342" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#B98BFF" text-anchor="start" letter-spacing="1.4">STAGE 4</text>
+<text x="853" y="362" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="16" font-weight="600" fill="#EAF0FA" text-anchor="start">Coverage</text>
+<text x="853" y="383" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Grid over the image footprint</text>
+<text x="853" y="401" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">→ occupied cells,</text>
+<text x="853" y="419" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">occupancy fraction,</text>
+<text x="853" y="437" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">per-cell counts</text>
+<polyline points="1055,404 1078,404" fill="none" stroke="#B98BFF" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-mB98BFF)"/>
+<rect x="1080" y="316" width="218" height="176" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip111"><rect x="1080" y="316" width="218" height="176" rx="10"/></clipPath>
+<g clip-path="url(#clip111)"><rect x="1080" y="316" width="218" height="5" fill="#B98BFF"/></g>
+<text x="1098" y="342" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#B98BFF" text-anchor="start" letter-spacing="1.4">STAGE 5</text>
+<text x="1098" y="362" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="16" font-weight="600" fill="#EAF0FA" text-anchor="start">Density</text>
+<text x="1098" y="383" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Count per unit area,</text>
+<text x="1098" y="401" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">per image and per batch</text>
+<text x="1098" y="419" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">→ only where the footprint</text>
+<text x="1098" y="437" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">is known</text>
+<polyline points="1300,404 1323,404" fill="none" stroke="#FFB13D" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-mFFB13D)"/>
+<rect x="1325" y="316" width="218" height="176" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip112"><rect x="1325" y="316" width="218" height="176" rx="10"/></clipPath>
+<g clip-path="url(#clip112)"><rect x="1325" y="316" width="218" height="5" fill="#FFB13D"/></g>
+<text x="1343" y="342" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#FFB13D" text-anchor="start" letter-spacing="1.4">STAGE 6</text>
+<text x="1343" y="362" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="16" font-weight="600" fill="#EAF0FA" text-anchor="start">Gates</text>
+<text x="1343" y="383" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Uncertainty checks that</text>
+<text x="1343" y="401" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">refuse to extrapolate</text>
+<text x="1343" y="419" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">→ every quantity carries</text>
+<text x="1343" y="437" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">a status and its reason</text>
+<polyline points="209,278 209,314" fill="none" stroke="#35D6D0" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-m35D6D0)"/>
+<rect x="218.6" y="288.0" width="84.80000000000001" height="17" rx="4" fill="#0A101C" stroke="none"/>
+<text x="261.0" y="300.0" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="700" fill="#94A6C4" text-anchor="middle">scale inputs</text>
+<polyline points="700,278 700,298 454,298 454,314" fill="none" stroke="#35D6D0" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-m35D6D0)"/>
+<polyline points="209,492 209,546" fill="none" stroke="#94A6C4" stroke-width="2" stroke-linejoin="round" stroke-dasharray="6 5" marker-end="url(#a-m94A6C4)"/>
+<rect x="218.8" y="511.0" width="108.4" height="17" rx="4" fill="#0A101C" stroke="none"/>
+<text x="273.0" y="523.0" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="700" fill="#94A6C4" text-anchor="middle">metadata missing</text>
+<rect x="100" y="548" width="464" height="100" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5" stroke-dasharray="7 6"/>
+<clipPath id="clip113"><rect x="100" y="548" width="464" height="100" rx="10"/></clipPath>
+<g clip-path="url(#clip113)"><rect x="100" y="548" width="464" height="5" fill="#94A6C4"/></g>
+<text x="118" y="574" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#94A6C4" text-anchor="start" letter-spacing="1.4">NO TYPICAL VALUE IS ASSUMED</text>
+<text x="118" y="594" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="16" font-weight="600" fill="#EAF0FA" text-anchor="start">Scale-free tier</text>
+<text x="118" y="615" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Counts, relative sizes and clustering are still produced;</text>
+<text x="118" y="633.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">physical sizes and densities are withheld and marked as such.</text>
+<rect x="590" y="548" width="710" height="100" rx="14" fill="#0E1524" stroke="#1F2E47" stroke-width="1.5"/>
+<rect x="591.5" y="562" width="4" height="72" rx="2" fill="#FFB13D" stroke="none" opacity="0.75"/>
+<text x="610" y="575" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="700" fill="#FFB13D" text-anchor="start" letter-spacing="1.5">STATUS CARRIED BY EVERY QUANTITY</text>
+<rect x="606" y="588" width="79.84" height="21" rx="999" fill="#7ED957" stroke="none" opacity="0.16"/><text x="645.92" y="602.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="700" fill="#7ED957" text-anchor="middle" letter-spacing="0.7">measured</text>
+<text x="606" y="626" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11.5" font-weight="400" fill="#94A6C4" text-anchor="start">every input it depends on was present</text>
+<rect x="836" y="588" width="87.32000000000001" height="21" rx="999" fill="#FFB13D" stroke="none" opacity="0.16"/><text x="879.66" y="602.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="700" fill="#FFB13D" text-anchor="middle" letter-spacing="0.7">estimated</text>
+<text x="836" y="626" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11.5" font-weight="400" fill="#94A6C4" text-anchor="start">a documented fallback was used</text>
+<rect x="1066" y="588" width="79.84" height="21" rx="999" fill="#63799B" stroke="none" opacity="0.16"/><text x="1105.92" y="602.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="700" fill="#63799B" text-anchor="middle" letter-spacing="0.7">withheld</text>
+<text x="1066" y="626" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11.5" font-weight="400" fill="#94A6C4" text-anchor="start">not supported; the reason is recorded</text>
+<polyline points="1434,492 1434,674" fill="none" stroke="#FF7E8E" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-mFF7E8E)"/>
+<rect x="1442.35" y="575.0" width="55.300000000000004" height="17" rx="4" fill="#0A101C" stroke="none"/>
+<text x="1470.0" y="587.0" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="700" fill="#94A6C4" text-anchor="middle">outputs</text>
+<rect x="100" y="676" width="464" height="92" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip114"><rect x="100" y="676" width="464" height="92" rx="10"/></clipPath>
+<g clip-path="url(#clip114)"><rect x="100" y="676" width="464" height="5" fill="#FF7E8E"/></g>
+<text x="118" y="712" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="16" font-weight="600" fill="#EAF0FA" text-anchor="start">Per-image and per-batch tables</text>
+<text x="118" y="733" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Sizes, foci, coverage, density; each value</text>
+<text x="118" y="751.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">with its status, so a reader can filter</text>
+<rect x="590" y="676" width="464" height="92" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip115"><rect x="590" y="676" width="464" height="92" rx="10"/></clipPath>
+<g clip-path="url(#clip115)"><rect x="590" y="676" width="464" height="5" fill="#FF7E8E"/></g>
+<text x="608" y="712" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="16" font-weight="600" fill="#EAF0FA" text-anchor="start">GeoJSON per batch</text>
+<text x="608" y="733" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Detections and foci with physical attributes;</text>
+<text x="608" y="751.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">rendered on the console map (doc 05)</text>
+<rect x="1080" y="676" width="464" height="92" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip116"><rect x="1080" y="676" width="464" height="92" rx="10"/></clipPath>
+<g clip-path="url(#clip116)"><rect x="1080" y="676" width="464" height="5" fill="#FF7E8E"/></g>
+<text x="1098" y="712" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="16" font-weight="600" fill="#EAF0FA" text-anchor="start">Manifest entries</text>
+<text x="1098" y="733" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Detection run consumed, parameters, gate outcomes;</text>
+<text x="1098" y="751.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">clustering is deterministic and replayable</text>
+<rect x="100" y="796" width="900" height="114" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip117"><rect x="100" y="796" width="900" height="114" rx="10"/></clipPath>
+<g clip-path="url(#clip117)"><rect x="100" y="796" width="900" height="5" fill="#FFB13D"/></g>
+<text x="118" y="822" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#FFB13D" text-anchor="start" letter-spacing="1.4">ADR-013 · PLACEMENT</text>
+<text x="118" y="842" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="16" font-weight="600" fill="#EAF0FA" text-anchor="start">Runs as a CPU job type of the AI service</text>
+<text x="118" y="863" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Submitted, tracked and manifested like inference; reads a batch's detections from the shared volume and writes beside them</text>
+<text x="118" y="881.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">Own CPU pool, never touches the device; the web layer renders what the manifest lists and computes nothing</text>
+<rect x="1024" y="796" width="520" height="114" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
+<clipPath id="clip118"><rect x="1024" y="796" width="520" height="114" rx="10"/></clipPath>
+<g clip-path="url(#clip118)"><rect x="1024" y="796" width="520" height="5" fill="#FF6B6B"/></g>
+<text x="1042" y="822" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#FF6B6B" text-anchor="start" letter-spacing="1.4">OPEN ITEM</text>
+<text x="1042" y="842" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="16" font-weight="600" fill="#EAF0FA" text-anchor="start">Ground-truth validation pending</text>
+<text x="1042" y="863" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">No field measurement has confirmed the sizes or densities</text>
+<text x="1042" y="881.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">reported: every value is computed, with a documented</text>
+<text x="1042" y="900.0" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#94A6C4" text-anchor="start">derivation, and the repository says so</text>
+<rect x="100" y="930" width="11" height="11" rx="3" fill="#35D6D0" stroke="none"/>
+<text x="118" y="939" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Inputs and scale</text>
+<rect x="242.4" y="930" width="11" height="11" rx="3" fill="#B98BFF" stroke="none"/>
+<text x="260.4" y="939" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Spatial statistics</text>
+<rect x="397.6" y="930" width="11" height="11" rx="3" fill="#FFB13D" stroke="none"/>
+<text x="415.6" y="939" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">AI service · gates</text>
+<rect x="552.8" y="930" width="11" height="11" rx="3" fill="#FF7E8E" stroke="none"/>
+<text x="570.8" y="939" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Output artifacts</text>
+<rect x="695.1999999999999" y="930" width="11" height="11" rx="3" fill="#FF6B6B" stroke="none"/>
+<text x="713.1999999999999" y="939" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Open item</text>
+<line x1="56" y1="952" x2="1544" y2="952" stroke="#1F2E47" stroke-width="1"/>
+<text x="56" y="974" font-family="'Liberation Mono', 'DejaVu Sans Mono', monospace" font-size="11" font-weight="400" fill="#63799B" text-anchor="start">yolo-training-inference-orchestration-architecture</text>
+<text x="1544" y="974" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="400" fill="#63799B" text-anchor="end">Public-safe architecture documentation · all values illustrative</text>
+</svg>

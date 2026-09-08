@@ -1,5 +1,16 @@
 # YOLO Training & Inference Orchestration Architecture
 
+
+### Core Platform
+
+![Python](https://img.shields.io/badge/Python-3.x-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![Django](https://img.shields.io/badge/Django-Web%20Application-092E20?style=for-the-badge&logo=django&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-AI%20Service-009688?style=for-the-badge&logo=fastapi&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Metadata%20Store-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
+![REST API](https://img.shields.io/badge/REST%20API-Service%20Integration-005571?style=for-the-badge)
+
+
+
 > **Documentation only.** Generalized and anonymized architecture for an internal AI vision
 > platform. No source code, datasets, model weights, credentials or measured results. Every
 > number shown is illustrative.
@@ -167,6 +178,9 @@ are build products, not hand-edited files.
 | [06 · Synthetic dataset generation](./assets/diagrams/06-synthetic-dataset.png) | How scarce annotated data is expanded into a usable dataset |
 | [07 · Production evolution roadmap](./assets/diagrams/07-evolution-roadmap.png) | What gets added first, which trigger justifies it, and what a later revision realised |
 | [08 · Submit/poll execution lifecycle](./assets/diagrams/08-submit-poll-lifecycle.png) | How the later revision answered timeouts without a queue: run identifier, job record, batched polling |
+| [09 · Model registry and promotion](./assets/diagrams/09-model-registry-promotion.png) | How the later revision replaced the file-based model reference: version records, one transaction, human promotion, an exported list the AI service trusts |
+| [10 · Detection metrology](./assets/diagrams/10-detection-metrology.png) | How detections become physical sizes, foci, coverage and density, and why every quantity says measured, estimated or withheld |
+| [11 · Testing and CI without a GPU](./assets/diagrams/11-testing-and-ci.png) | How a mock/real runtime seam and a throwaway Compose stack made the platform reviewable on any machine, and what is deliberately not tested |
 
 ### One-page poster
 
@@ -175,6 +189,10 @@ evolution path — sized for print at A2/150 dpi or A3/212 dpi, and for use as a
 presentation asset.
 
 [![Architecture poster](./assets/poster/poster-architecture.png)](./assets/poster/poster-architecture.png)
+
+A second sheet, [What came next](./assets/poster/poster-what-came-next.png), covers the later
+revision: what stayed, each confessed limitation and its resolution, the new capabilities, and
+what the revision deliberately did not do.
 
 To regenerate everything after a documentation change:
 
@@ -249,13 +267,6 @@ CUDA memory management and explicit cleanup between training runs, with DataPara
 
 This repository documents an internal production-oriented AI vision platform architecture that combines web orchestration, GPU-backed machine learning services, dataset configuration management, experiment tracking, and research-oriented computer vision workflows.
 
-### Core Platform
-
-![Python](https://img.shields.io/badge/Python-3.x-3776AB?style=for-the-badge&logo=python&logoColor=white)
-![Django](https://img.shields.io/badge/Django-Web%20Application-092E20?style=for-the-badge&logo=django&logoColor=white)
-![FastAPI](https://img.shields.io/badge/FastAPI-AI%20Service-009688?style=for-the-badge&logo=fastapi&logoColor=white)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Metadata%20Store-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
-![REST API](https://img.shields.io/badge/REST%20API-Service%20Integration-005571?style=for-the-badge)
 
 ### Machine Learning & Computer Vision
 

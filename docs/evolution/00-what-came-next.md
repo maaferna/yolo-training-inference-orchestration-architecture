@@ -5,6 +5,8 @@
 > site, hardware model or measured result, and it dates nothing by calendar. Every number is
 > illustrative.
 
+[![What came next poster](../../assets/poster/poster-what-came-next.png)](../../assets/poster/poster-what-came-next.png)
+
 ## Purpose
 
 The architecture documents (`01` to `21`) describe the initial iteration of the platform and
