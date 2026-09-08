@@ -30,7 +30,7 @@ contract tests, and then let a CI job run the whole thing on a machine with no G
         │
    ┌────┴─────────────────┐
    ▼                      ▼
-  MockRuntime           RealRuntime
+  mock runtime          real runtime
   deterministic          the deep-learning library
   synthetic boxes        device injected from configuration
   no weights, no device  CPU fallback when no device is configured

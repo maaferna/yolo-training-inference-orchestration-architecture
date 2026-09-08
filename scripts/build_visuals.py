@@ -835,15 +835,32 @@ def diagram_synthetic_dataset() -> str:
 # --------------------------------------------------------------------------
 
 
+def _wrap(txt: str, width: int) -> list[str]:
+    """Corte de palabras a un ancho maximo en caracteres."""
+    words, cur, out = txt.split(), "", []
+    for wd in words:
+        if len(cur) + len(wd) + 1 > width:
+            out.append(cur)
+            cur = wd
+        else:
+            cur = (cur + " " + wd).strip()
+    out.append(cur)
+    return out
+
+
 def diagram_evolution_roadmap() -> str:
     c = Canvas(1600, 1000,
                title="Production Evolution Roadmap",
-               subtitle="Every stage names the operational evidence that justifies it. "
-                        "Nothing on this path is scheduled; each item waits for its trigger.",
-               kicker="Scale by evidence, not by default")
+               subtitle="Every stage names the evidence that justifies it. In a later revision "
+                        "the triggers fired, and the answer was not a queue: job records, polling, "
+                        "a registry, contracts and tests.",
+               kicker="Scale by evidence, not by default · outcome per stage")
     c.header()
 
-    c.add(box(100, 230, 280, 310, WEB, "Current state", tag="today", lines=[
+    BOX_Y, BOX_H = 222, 360
+    BOT = BOX_Y + BOX_H
+
+    c.add(box(100, BOX_Y, 280, BOX_H, WEB, "Initial iteration", tag="starting point", lines=[
         "Django web layer",
         "FastAPI AI service",
         "Synchronous HTTP boundary",
@@ -853,7 +870,11 @@ def diagram_evolution_roadmap() -> str:
         "Docker Compose on a single node",
         "Ubuntu GPU runtime baseline",
     ], title_size=18, line_size=13))
-    c.add(text(118, 522, "Sufficient while volume is predictable", 11.5, FAINT, family=BODY))
+    c.add(line(118, BOT - 94, 362, BOT - 94, STROKE_SOFT, 1))
+    c.add(chip(118, BOT - 82, "discarded · tracker only", WEB))
+    for j, ln in enumerate(_wrap("Tracker withdrawn (ADR-012). Services, boundary, "
+                                 "storage and Compose all kept.", 40)):
+        c.add(text(118, BOT - 48 + j * 17, ln, 11.5, FAINT, family=BODY))
 
     stages = [
         (GPU, "Priority 1", "Operational reliability", [
@@ -862,42 +883,53 @@ def diagram_evolution_roadmap() -> str:
             "Explicit job status records",
             "Structured logs, correlation IDs",
             "Artifact manifest per run",
-        ], "Do this first. It costs little and removes most silent failures."),
+        ], "Do this first. It costs little and removes most silent failures.",
+         "realised",
+         "Job records, manifests, backups; preflight became validation at submit."),
         (API, "Priority 2", "Background execution", [
             "Lightweight queue",
             "Single GPU worker",
             "Job status polling",
             "Retry policy, GPU locking",
-        ], "Trigger: repeated timeouts, jobs competing for the GPU, cancellation needed."),
+        ], "Trigger: repeated timeouts, jobs competing for the GPU, cancellation needed.",
+         "realised differently",
+         "Submit/poll on in-process pools, not a queue. GPU admission is the open trigger."),
         (TRACK, "Priority 3", "Artifact governance", [
             "Model reference in the database",
             "Dataset version registry",
             "Immutable run identifiers",
             "Retention policy for outputs",
-        ], "Trigger: lineage questions become hard to answer from storage alone."),
+        ], "Trigger: lineage questions become hard to answer from storage alone.",
+         "realised",
+         "Transactional registry, human promotion; retention as a batch cascade."),
         (FAINT, "Optional", "Scale-out", [
             "GPU worker pool",
             "Object storage",
             "Kubernetes or equivalent",
             "Centralized monitoring",
         ], "Trigger: concurrent long-running jobs, storage beyond local capacity, "
-           "uptime becomes business-critical."),
+           "uptime becomes business-critical.",
+         "not triggered",
+         "One host, one device. Compose overlays; no broker, no Kubernetes."),
     ]
-    for i, (col, tag_, title_, ls, trig) in enumerate(stages):
+    for i, (col, tag_, title_, ls, trig, outcome, note) in enumerate(stages):
         x = 420 + i * 286
-        c.add(box(x, 230, 264, 310, col, title_, tag=tag_, lines=ls,
+        c.add(box(x, BOX_Y, 264, BOX_H, col, title_, tag=tag_, lines=ls,
                   title_size=16, line_size=12.5, dashed=(col is FAINT)))
-        words, cur, out = trig.split(), "", []
-        for wd in words:
-            if len(cur) + len(wd) + 1 > 34:
-                out.append(cur)
-                cur = wd
-            else:
-                cur = (cur + " " + wd).strip()
-        out.append(cur)
-        ty = 540 - 16 - len(out) * 17
+        # resultado en la revision posterior: pastilla + nota, anclados al pie de la caja
+        note_lines = _wrap(note, 36)
+        ny = BOT - 16 - (len(note_lines) - 1) * 17
+        for ln in note_lines:
+            c.add(text(x + 18, ny, ln, 11.5, DIM, family=BODY))
+            ny += 17
+        chip_y = BOT - 16 - len(note_lines) * 17 - 30
+        c.add(chip(x + 18, chip_y, outcome, col))
+        c.add(line(x + 18, chip_y - 12, x + 246, chip_y - 12, STROKE_SOFT, 1))
+        # disparador declarado en la iteracion inicial, encima del resultado
+        trig_lines = _wrap(trig, 34)
+        ty = chip_y - 12 - 14 - (len(trig_lines) - 1) * 17
         c.add(line(x + 18, ty - 22, x + 246, ty - 22, STROKE_SOFT, 1))
-        for ln in out:
+        for ln in trig_lines:
             c.add(text(x + 18, ty, ln, 11.5, FAINT, family=BODY))
             ty += 17
         if i < 3:
@@ -905,7 +937,7 @@ def diagram_evolution_roadmap() -> str:
     c.add(arrow([(382, 385), (416, 385)], GPU))
 
     # -- cuando no anadir infraestructura ---------------------------------
-    c.add(band(100, 596, 1444, 150, "When not to add distributed infrastructure", WARN))
+    c.add(band(100, 622, 1444, 130, "When not to add distributed infrastructure", WARN))
     nots = [
         "Workload volume is predictable and low",
         "Users understand that jobs run long",
@@ -916,13 +948,146 @@ def diagram_evolution_roadmap() -> str:
     ]
     for i, txt_ in enumerate(nots):
         col_, row_ = divmod(i, 2)
-        c.add(text(132 + col_ * 480, 654 + row_ * 36, "✕", 13, WARN, family=BODY))
-        c.add(text(154 + col_ * 480, 654 + row_ * 36, txt_, 13.5, DIM, family=BODY))
+        c.add(text(132 + col_ * 480, 676 + row_ * 34, "✕", 13, WARN, family=BODY))
+        c.add(text(154 + col_ * 480, 676 + row_ * 34, txt_, 13.5, DIM, family=BODY))
 
-    c.add(box(100, 800, 1444, 64, WEB,
+    c.add(box(100, 792, 1444, 64, WEB,
               "Reliability, traceability and artifact governance return more, at this scale, "
               "than any distributed component added ahead of the evidence for it.",
               title_size=15, centered=True))
+    c.add(legend(100, 900, [
+        (GPU, "Realised"), (API, "Realised differently"), (FAINT, "Not triggered"),
+        (WEB, "Discarded (tracker only)"),
+    ]))
+    c.footer()
+    return c.render()
+
+
+# --------------------------------------------------------------------------
+# 08 · Ciclo de vida submit/poll (revision posterior)
+# --------------------------------------------------------------------------
+
+
+def diagram_submit_poll_lifecycle() -> str:
+    c = Canvas(1600, 1000,
+               title="Submit/Poll Execution Lifecycle",
+               subtitle="The request returns a run identifier in milliseconds; the job runs on an "
+                        "in-process pool and the console polls. No queue, no broker, no second "
+                        "process.",
+               kicker="Later revision · ADR-009 amends the synchronous boundary")
+    c.header()
+
+    COL = [240, 460, 680, 900, 1120, 1340]
+    BW = 200
+
+    lane(c, 196, 80, "Web database | web layer", STORE)
+    lane(c, 292, 136, "Console | web layer", WEB)
+    lane(c, 456, 160, "AI service | fastapi · feature pools", API)
+    lane(c, 640, 120, "Shared volume | records · outputs", STORE)
+
+    # -- base de datos web -------------------------------------------------
+    c.add(box(COL[0], 204, 860, 64, STORE, "Job-history table", lines=[
+        "One row per submit, inserted before the HTTP call; status written back on every "
+        "poll · the operator's source of truth",
+    ], title_size=16, line_size=12.5))
+
+    # -- consola -----------------------------------------------------------
+    c.add(box(COL[0], 300, BW, 120, WEB, "Insert history row", tag="step 1", lines=[
+        "status = submitted",
+        "Before the HTTP call, so a lost",
+        "request still leaves a trace",
+    ], title_size=16, line_size=12.5))
+    c.add(box(COL[2], 300, BW, 120, WEB, "Receive 202", tag="step 3", lines=[
+        "{ run_id } in milliseconds",
+        "The request no longer waits",
+        "for the job to finish",
+    ], title_size=16, line_size=12.5))
+    c.add(box(COL[3], 300, BW, 120, WEB, "Poll status", tag="step 4", lines=[
+        "Batched query, many run_ids",
+        "Every few seconds",
+        "Status written to history row",
+    ], title_size=16, line_size=12.5))
+    c.add(box(COL[5], 300, BW, 120, WEB, "Read outputs", tag="step 6", lines=[
+        "Straight from the shared",
+        "volume; only what the",
+        "manifest lists is rendered",
+    ], title_size=16, line_size=12.5))
+
+    # -- servicio de IA ----------------------------------------------------
+    c.add(box(COL[1], 464, BW, 144, API, "Validate and record", tag="step 2", lines=[
+        "Validate inputs synchronously",
+        "Create run_id",
+        "Write one job record (atomic)",
+        "Hand to the feature pool",
+    ], title_size=16, line_size=12.5))
+    c.add(box(COL[3], 464, BW, 144, API, "Answer status query", tag="step 4", lines=[
+        "Read the job records",
+        "{ run_id: status, ... }",
+        "One request, many run_ids",
+    ], title_size=16, line_size=12.5))
+    c.add(box(COL[4], 464, BW, 144, API, "Run on a pool thread", tag="step 5", lines=[
+        "After the response, in-process",
+        "Write manifest + outputs (atomic)",
+        "Job record → done | failed",
+        "!Admission is not controlled",
+    ], title_size=16, line_size=12.5))
+
+    # -- volumen compartido -----------------------------------------------
+    c.add(box(COL[1], 648, 640, 104, STORE, "Job record", lines=[
+        "`jobs/<feature>/<run_id>.json`",
+        "Created exclusively, updated by temp file + rename · the AI service's only state",
+        "Startup reconciliation: anything still running is swept to failed; nothing resumes",
+    ], title_size=16, line_size=12.5))
+    c.add(box(COL[4], 648, BW, 104, STORE, "Run outputs", lines=[
+        "`<run_id>/manifest.json`",
+        "+ outputs/, written atomically",
+        "Only listed files are shown",
+    ], title_size=16, line_size=12.5))
+
+    # -- transiciones ------------------------------------------------------
+    c.add(arrow([(340, 298), (340, 270)], STORE,
+                label="insert", label_dx=40, label_dy=4))
+    c.add(arrow([(1000, 298), (1000, 270)], STORE, dashed=True,
+                label="status on every poll", label_dx=92, label_dy=4))
+    c.add(arrow([(442, 352), (560, 352), (560, 462)], API,
+                label="POST /<feature>/submit", label_dx=12))
+    c.add(arrow([(640, 462), (640, 442), (780, 442), (780, 422)], WEB,
+                label="202 · run_id"))
+    c.add(arrow([(882, 352), (898, 352)], WEB))
+    c.add(arrow([(960, 422), (960, 462)], API,
+                label="status { run_ids }", label_dx=-40, label_dy=5))
+    c.add(arrow([(1050, 462), (1050, 422)], WEB, dashed=True,
+                label="{ run_id: status, ... }", label_dx=56, label_dy=5))
+    c.add(arrow([(560, 610), (560, 646)], STORE,
+                label="write · atomic", label_dy=4))
+    c.add(arrow([(960, 610), (960, 646)], STORE, dashed=True,
+                label="read", label_dy=4))
+    c.add(arrow([(1150, 610), (1150, 630), (1080, 630), (1080, 646)], STORE, dashed=True))
+    c.add(arrow([(1240, 610), (1240, 646)], STORE,
+                label="write · atomic", label_dy=4))
+    c.add(arrow([(1322, 700), (1440, 700), (1440, 422)], WEB,
+                label="outputs from the volume", label_at=0.5))
+
+    # -- lo que no se ofrece y el riesgo abierto ---------------------------
+    c.add(box(56, 790, 700, 112, FAINT, "Not provided", tag="what this is not",
+              dashed=True, lines=[
+                  "Retry: a person re-submits after reading the failure reason",
+                  "Cancellation and resume after restart: not triggered; running jobs are "
+                  "swept to failed",
+                  "A broker or a second worker process: one device, nothing to dispatch across",
+              ], title_size=16, line_size=12.5))
+    c.add(box(780, 790, 764, 112, WARN, "Open risk · admission is not controlled",
+              tag="next trigger", lines=[
+                  "One pool per feature admits several jobs at once; two that need the device "
+                  "compete for its memory.",
+                  "Recommendation: a single GPU admission lane before a second device job type "
+                  "is enabled.",
+              ], title_size=16, line_size=12.5))
+
+    c.add(legend(56, 934, [
+        (WEB, "Console · web layer"), (API, "AI service · in-process pools"),
+        (STORE, "Job records, history table, outputs"), (WARN, "Open risk"),
+    ]))
     c.footer()
     return c.render()
 
@@ -977,9 +1142,9 @@ def poster_architecture() -> str:
     chip_row(c, X, 342, W, [
         (WEB, "Django"), (WEB, "Django REST"), (API, "FastAPI"), (GPU, "PyTorch"),
         (GPU, "CUDA"), (GPU, "Ultralytics YOLO"), (GPU, "SAHI"), (TRACK, "SAM"),
-        (TRACK, "ClearML"), (STORE, "PostgreSQL"), (DATA, "Docker Compose"),
+        (TRACK, "Run manifests"), (STORE, "PostgreSQL"), (DATA, "Docker Compose"),
         (DATA, "Ubuntu"),
-    ])
+    ], gap=6)
 
     # -- seccion A · el sistema -------------------------------------------
     section(c, 452, "The system", WEB, note="one HTTP boundary · one artifact contract")
@@ -1005,7 +1170,7 @@ def poster_architecture() -> str:
         "Validation, training orchestration, inference dispatch",
         "Artifact generation and error propagation",
     ], title_size=19, line_size=13))
-    c.add(box(SX, 666, SW, 104, TRACK, "Experiment Tracking", tag="clearml", lines=[
+    c.add(box(SX, 666, SW, 104, TRACK, "Experiment Tracking", tag="tracker · metadata only", lines=[
         "Run metadata, metrics, lineage",
         "Not a transactional registry",
     ], title_size=17, line_size=12.5))
@@ -1073,8 +1238,9 @@ def poster_architecture() -> str:
     decisions = [
         (WEB, "Separated services", "GPU work never runs inside the web process, "
                                     "so a long training job cannot take the site down."),
-        (API, "Synchronous on purpose", "A queue is real complexity. It is deferred until "
-                                        "timeouts or GPU contention actually appear."),
+        (API, "Synchronous on purpose", "The queue stayed deferred. When timeouts arrived, "
+                                        "the later revision answered with submit/poll on "
+                                        "in-process pools."),
         (STORE, "Storage as a contract", "Shared volumes are practical and coupling. "
                                          "Path validation and manifests are the price."),
         (GPU, "Runtime is not a platform", "Multi-GPU DataParallel and DDP are training "
@@ -1095,35 +1261,34 @@ def poster_architecture() -> str:
             c.add(text(x + 18, 1442 + j * 19, ln, 12.5, DIM, family=BODY))
 
     # -- seccion D · evolucion --------------------------------------------
-    section(c, 1572, "Evolution path", GPU, note="each stage waits for its trigger")
+    section(c, 1572, "Evolution path", GPU,
+            note="the triggers fired in a later revision · the answer was not a queue")
     stages = [
-        (GPU, "Priority 1", "Reliability", "preflight checks, job status, structured logs"),
-        (API, "Priority 2", "Background exec", "only once timeouts or contention are routine"),
-        (TRACK, "Priority 3", "Governance", "model reference and dataset versions in the DB"),
-        (FAINT, "Optional", "Scale-out", "queue pool, object storage, orchestrator"),
+        (GPU, "Priority 1", "Reliability", "preflight checks, job status, structured logs",
+         "realised"),
+        (API, "Priority 2", "Background exec", "only once timeouts or contention are routine",
+         "realised differently · no queue"),
+        (TRACK, "Priority 3", "Governance", "model reference and dataset versions in the DB",
+         "realised"),
+        (FAINT, "Optional", "Scale-out", "queue pool, object storage, orchestrator",
+         "not triggered"),
     ]
-    for i, (col, tag_, t, note) in enumerate(stages):
+    for i, (col, tag_, t, note, outcome) in enumerate(stages):
         x = X + i * 270
-        c.add(rect(x, 1598, 254, 84, PANEL, STROKE, rx=10,
+        c.add(rect(x, 1598, 254, 100, PANEL, STROKE, rx=10,
                    dashed=(col is FAINT)))
-        c.add(rect(x, 1598, 4, 84, col, rx=2))
+        c.add(rect(x, 1598, 4, 100, col, rx=2))
         c.add(text(x + 18, 1620, tag_.upper(), 10, col, family=BODY, weight=700, spacing=1.3))
         c.add(text(x + 18, 1642, t, 15, TEXT, family=DISPLAY, weight=600))
-        words, cur, out = note.split(), "", []
-        for wd in words:
-            if len(cur) + len(wd) + 1 > 32:
-                out.append(cur)
-                cur = wd
-            else:
-                cur = (cur + " " + wd).strip()
-        out.append(cur)
-        for j, ln in enumerate(out[:2]):
+        for j, ln in enumerate(_wrap(note, 32)[:2]):
             c.add(text(x + 18, 1660 + j * 15, ln, 11, FAINT, family=BODY))
+        c.add(text(x + 18, 1690, outcome.upper(), 10, col, family=BODY, weight=700,
+                   spacing=1.3))
 
     # -- pie ---------------------------------------------------------------
-    c.add(line(X, 1706, X + W, 1706, STROKE_SOFT, 1))
-    c.add(text(X, 1728, "github.com/maaferna/" + REPO, 12, FAINT, family=MONO))
-    c.add(text(X + W, 1728, "Public-safe · no code, datasets, weights, credentials or "
+    c.add(line(X, 1714, X + W, 1714, STROKE_SOFT, 1))
+    c.add(text(X, 1734, "github.com/maaferna/" + REPO, 12, FAINT, family=MONO))
+    c.add(text(X + W, 1734, "Public-safe · no code, datasets, weights, credentials or "
                             "real metrics · all values illustrative", 12, FAINT,
                family=BODY, anchor="end"))
     return c.render()
@@ -1141,6 +1306,7 @@ DIAGRAMS = [
     ("diagrams", "05-deployment-strategy", diagram_deployment_strategy),
     ("diagrams", "06-synthetic-dataset", diagram_synthetic_dataset),
     ("diagrams", "07-evolution-roadmap", diagram_evolution_roadmap),
+    ("diagrams", "08-submit-poll-lifecycle", diagram_submit_poll_lifecycle),
     ("poster", "poster-architecture", poster_architecture),
 ]
 

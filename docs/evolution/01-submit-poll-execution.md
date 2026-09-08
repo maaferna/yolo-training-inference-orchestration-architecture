@@ -40,7 +40,7 @@ multi-worker dispatch. The revision implemented the first step and stopped there
   3. ◄── 202 { run_id }          (returns in milliseconds)
 
   4. every few seconds:
-     POST /<feature>/status-query  { run_ids: [...] }   ─►  read job records
+     POST /<feature>/status  { run_ids: [...] }         ─►  read job records
      ◄── { run_id: status, ... }
      update job-history rows
                                  ... job runs on a pool thread ...
@@ -56,8 +56,8 @@ fail fast still fails in the request. Everything else happens after the response
 **One durable job record per run.** The AI service writes a small JSON document per run,
 created exclusively (never overwritten by a second submit with the same identifier) and updated
 atomically through a temporary file and a rename. It is the AI service's only state, and it is a
-file because the AI service holds no database (ADR-005 of the revision's own record, kept here
-as a design rule: the web layer owns rows, the AI service owns bytes).
+file because the AI service holds no database. The design rule of the revision is: the web
+layer owns rows, the AI service owns bytes.
 
 **The web layer keeps a job-history table.** Every submit inserts a row before the HTTP call,
 so a request that never returns still leaves a trace. Every poll writes the returned status back

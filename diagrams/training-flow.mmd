@@ -4,7 +4,7 @@ sequenceDiagram
     participant FastAPI
     participant YOLO as YOLO Engine
     participant Storage as Shared Storage
-    participant ClearML
+    participant Tracker as Tracker (metadata only)
     
     User->>Django: POST /training<br/>(dataset_id, hyperparams)
     Django->>FastAPI: HTTP Request
@@ -18,7 +18,7 @@ sequenceDiagram
     YOLO->>YOLO: Collect metrics
     YOLO->>YOLO: Validate
     YOLO->>Storage: Save checkpoint
-    ClearML->>ClearML: Log per-epoch metrics
+    Tracker->>Tracker: Log per-epoch metrics
     YOLO->>YOLO: Clean CUDA memory
     
     YOLO-->>FastAPI: Training complete<br/>(metrics={seed:42, mAP50:0.85})
@@ -28,8 +28,8 @@ sequenceDiagram
     FastAPI->>Storage: Save best model
     FastAPI->>Storage: Write best_model_ref.json
     
-    FastAPI->>ClearML: Log final metrics
-    FastAPI->>ClearML: Register best model
+    FastAPI->>Tracker: Log final metrics
+    FastAPI->>Tracker: Register best model
     
     FastAPI-->>Django: COMPLETED<br/>(model_path, metrics)
     Django-->>User: Training finished<br/>Model ready for deployment

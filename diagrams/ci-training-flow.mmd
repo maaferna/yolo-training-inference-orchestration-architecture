@@ -4,7 +4,7 @@ sequenceDiagram
     participant FastAPI
     participant Storage as Shared Storage
     participant YOLO as CI Training
-    participant ClearML
+    participant Tracker as Tracker (metadata only)
     
     User->>Django: POST /ci-training<br/>(new_data)
     Django->>FastAPI: HTTP Request
@@ -19,7 +19,7 @@ sequenceDiagram
     FastAPI->>YOLO: Incremental training<br/>(load previous best, new data)
     YOLO->>YOLO: Fine-tune on new data
     YOLO->>Storage: Save checkpoint
-    ClearML->>ClearML: Log metrics
+    Tracker->>Tracker: Log metrics
     
     YOLO-->>FastAPI: CI training complete<br/>(new_metrics={mAP50:0.87})
     
@@ -29,7 +29,7 @@ sequenceDiagram
     alt improvement >= threshold
         FastAPI->>Storage: Save new model
         FastAPI->>Storage: ⚠️ UPDATE best_model_ref.json<br/>(potential race condition)
-        FastAPI->>ClearML: Log improvement
+        FastAPI->>Tracker: Log improvement
         FastAPI-->>Django: SUCCESS<br/>(improved to 0.87)
         Django-->>User: Model improved!
     else no improvement

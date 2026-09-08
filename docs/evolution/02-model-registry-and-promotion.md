@@ -28,8 +28,8 @@ the design:
 ### Two records, one transaction
 
 ```text
-  ModelVersion                          PromotionEvent
-  ────────────                          ──────────────
+  Model version record                  Promotion event record
+  ────────────────────                  ──────────────────────
   name + version   (unique together)    model version promoted
   weights fingerprint (SHA-256)         previous serving version (nullable)
   stage: candidate | serving | retired  decided by (user)

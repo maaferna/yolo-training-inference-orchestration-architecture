@@ -1,335 +1,373 @@
 # Professional Resume & Portfolio Content
 
-> **This document is portfolio-safe**: All content uses anonymized, publicly-shareable language. No real institutions, clients, projects, or metrics are referenced. Safe to include in applications, LinkedIn, interviews, and portfolios.
+> **This document is portfolio-safe**: all content uses anonymized, publicly shareable language.
+> No real institutions, clients, projects, dates or measured results are referenced. Safe to
+> include in applications, LinkedIn, interviews and portfolios.
 
-**Portfolio-Safe Resume Bullets and LinkedIn Descriptions**  
-**Generated from**: YOLO Training & Inference Orchestration Architecture  
+**Portfolio-safe resume bullets, LinkedIn description, GitHub description and project card**
+**Generated from**: YOLO Training & Inference Orchestration Architecture
+
+## How this content is built
+
+The strongest story this repository tells is not a technology list. It is a set of
+**limitation → resolution** pairs: the initial iteration wrote down its limitations and the
+triggers that would justify change (`docs/architecture/15`, `16`); a later revision recorded
+what happened when those triggers fired (`docs/evolution/`, ADR-009 to ADR-013). Every bullet
+below is built on one of those pairs, so each claim can be traced to a document.
+
+One statement of scope, so that nothing below overclaims: **in the later revision, training
+runs outside the platform** and enters through an import step that fingerprints the weights,
+and **the revision's GPU path was not validated** (its test suite runs on CPU with a mock
+runtime). The initial iteration is the one that orchestrated training on the GPU: single-GPU
+as the baseline, DataParallel exercised on two devices, DDP deferred. See
+`docs/evolution/00-what-came-next.md`.
+
+Verbs are design verbs throughout — *designed, documented, specified, proposed, evaluated* —
+because this repository documents an architecture; the implementation remains private.
 
 ---
 
 ## 1. MACHINE LEARNING ENGINEER - Resume Bullets (5)
 
-### Bullet #1: Multi-Seed Model Validation & Statistical Selection
-**Problem Solved**: Unreliable model selection from single training runs  
-**Solution Implemented**: Designed and documented multi-seed experimentation strategy with statistical aggregation
+### Bullet #1: Multi-Seed Validation and Model Selection
+**Limitation**: A single training run is biased by its random initialization, and the initial
+iteration selected the best model inside the training loop as a side effect.
+**Resolution**: Multi-seed training with validation-based aggregation; in the later revision,
+selection became a registry act after validation, never a training side effect (ADR-010).
 
 ```
-• Architected multi-seed training framework (3-5 seeds per experiment) 
-  with automated validation-based model selection, improving model 
-  robustness by capturing initialization variance; implemented CUDA 
-  memory cleanup between seeds enabling clean statistical comparison 
-  across runs without training degradation
+• Designed a multi-seed YOLO training strategy with validation-based
+  model selection and explicit CUDA cleanup between seeds, so runs
+  are comparable rather than contaminated by the previous seed's
+  state; later specified that selection is a registry decision after
+  validation, displayed to a person, not an automatic side effect of
+  the training loop
 ```
 
-**Why this matters**: Shows understanding of ML fundamentals (reproducibility, statistical rigor), not just frameworks.
+**Why this matters**: shows reproducibility and statistical reasoning, and the maturity to
+move a decision out of the loop that produced it.
 
 ---
 
-### Bullet #2: GPU Memory Management & CUDA Optimization
-**Problem Solved**: Out-of-memory failures during multi-seed training  
-**Solution Implemented**: Progressive resource scaling with explicit CUDA cleanup
+### Bullet #2: GPU Memory Management and OOM Recovery
+**Limitation**: An out-of-memory error ended the run.
+**Resolution**: Progressive resource scaling and fallback validation, documented in
+`docs/architecture/13` and `14`.
 
 ```
-• Implemented CUDA memory management strategy with progressive 
-  resource scaling (batch size → image size reduction) and automatic 
-  fallback validation that recovers from OOM instead of 
-  terminating training; engineered explicit cleanup between seeds 
-  (torch.cuda.empty_cache, memory reset) enabling reliable multi-seed 
-  statistical comparison
+• Designed a CUDA memory management pattern for sequential multi-seed
+  training: explicit cache release and memory-stat reset between
+  seeds, progressive resource scaling on OOM (batch size, then image
+  size) and fallback validation when the training call returns no
+  result, so an OOM degrades the run instead of terminating it
 ```
 
-**Why this matters**: Demonstrates hands-on GPU optimization, not theoretical knowledge.
+**Why this matters**: hands-on GPU runtime reasoning, kept distinct from distributed
+orchestration.
 
 ---
 
-### Bullet #3: Experiment Tracking Integration & MLOps Foundation
-**Problem Solved**: No structured tracking for reproducibility or model lineage  
-**Solution Implemented**: ClearML integration with comprehensive metadata capture
+### Bullet #3: Experiment Tracking Without Data Egress
+**Limitation**: The initial tracking tool defaulted to a hosted endpoint and uploaded sample
+imagery as part of its default logging — a leak path where images are the confidential asset.
+**Resolution**: Local artifacts and run manifests as the source of truth; the tool withdrawn on
+data-egress grounds; a self-hosted, tracking-only server decided and not deployed (ADR-012).
 
 ```
-• Designed ClearML experiment tracking integration capturing 
-  auto-metadata (git commit, environment, packages) and manual logging 
-  (hyperparameters, metrics, artifacts); documented multi-phase MLOps 
-  evolution roadmap (MVP Level 2/5 → Level 4/5 by end of year) with 
-  migration plan for transitioning from cloud to self-hosted 
-  infrastructure with an explicit cost model for the decision
+• Designed experiment tracking with local artifacts and a per-run
+  manifest as the source of truth and a tracker as metadata only;
+  later evaluated the initial tool's default data egress as a security
+  property, documented its withdrawal, and specified a self-hosted
+  tracking-only replacement whose deployment waits for an in-platform
+  producer (ADR-012)
 ```
 
-**Why this matters**: Shows MLOps thinking beyond just training code.
+**Why this matters**: MLOps judgement that treats a vendor default as a security decision, not
+a convenience.
 
 ---
 
-### Bullet #4: High-Resolution Object Detection Pipeline
-**Problem Solved**: Accuracy degradation on small objects in large images  
-**Solution Implemented**: SAHI tiling strategy for per-tile inference
+### Bullet #4: High-Resolution Small-Object Detection
+**Limitation**: Small objects fall below the detector's effective resolution at full-frame
+scale.
+**Resolution**: SAHI tiled inference with configurable overlap and detection reconstruction
+(`docs/architecture/11`, ADR-005).
 
 ```
-• Engineered high-resolution inference pipeline using SAHI tiling 
-  strategy, processing large images via per-tile detection with 
-  configurable overlap and automatic result merging; documented 
-  trade-offs between compute cost and per-object accuracy 
-  improvements, enabling flexible inference scaling based on 
-  detection size distribution
+• Specified a SAHI tiling strategy for high-resolution inference:
+  per-tile YOLO detection with configurable overlap, reconstruction of
+  tile detections into image coordinates, and a documented
+  compute-versus-accuracy trade-off between tile size, overlap and
+  the number of tiles per image
 ```
 
-**Why this matters**: Demonstrates understanding of computer vision challenges beyond standard benchmarks.
+**Why this matters**: computer-vision reasoning beyond a benchmark score.
 
 ---
 
-### Bullet #5: Continuous Improvement Training with Conditional Updates
-**Problem Solved**: Uncontrolled model degradation when retraining on new data  
-**Solution Implemented**: Historical baseline comparison and conditional model updates
+### Bullet #5: From Conditional Model Updates to a Registry
+**Limitation**: The continuous-improvement loop updated a file-based "best model" reference
+automatically, and two concurrent runs could overwrite each other (`docs/architecture/10`).
+**Resolution**: A transactional model registry with fingerprints, human promotion and rollback
+(ADR-010).
 
 ```
-• Designed continuous improvement training system comparing new models 
-  against historical baseline with conditional best-model updates only 
-  when improvements exceed configured threshold; implemented experiment 
-  isolation and tracking enabling safe incremental dataset expansion 
-  without production model drift
+• Designed a continuous-improvement training loop with baseline
+  comparison and threshold-gated model updates; documented the race
+  condition in the file-based model reference and specified its
+  resolution: versions with weight fingerprints, promotion and rollback
+  as single transactions with an event naming the previous version,
+  performed by a person rather than by the training job
 ```
 
-**Why this matters**: Shows production thinking—preventing regressions matters as much as improvements.
+**Why this matters**: production thinking — preventing regressions and answering lineage
+questions matter as much as improvements.
 
 ---
 
 ## 2. BACKEND / AI PLATFORM ENGINEER - Resume Bullets (5)
 
-### Bullet #1: Microservice Architecture Design
-**Problem Solved**: Web and compute workloads interfering with each other  
-**Solution Implemented**: Service separation with independent scaling
+### Bullet #1: Service Separation and the End of the Open Request
+**Limitation**: The HTTP request stayed open for the whole GPU job; timeouts arrived and
+operators had no progress.
+**Resolution**: Submit returns a run identifier; the job runs on an in-process pool with a
+durable job record; the console polls. No broker (ADR-009).
 
 ```
-• Designed microservice architecture separating web orchestration 
-  (Django REST Framework) from GPU compute services (FastAPI), 
-  enabling independent scaling and workload isolation; documented 
-  multi-phase evolution from synchronous HTTP to async job queue 
-  architecture with explicit trigger metrics (queue wait > 30 minutes) 
-  for phase advancement
+• Designed a two-service architecture separating web orchestration
+  (Django/DRF) from GPU compute (FastAPI) behind an HTTP boundary;
+  when request timeouts arrived, specified submit/poll execution on
+  in-process pools with a durable job record per run, a job-history
+  table and startup reconciliation — deliberately without a queue,
+  because one host and one device leave nothing to dispatch to
 ```
 
-**Why this matters**: Core backend architecture thinking—separation of concerns, scaling strategy.
+**Why this matters**: the core backend decision, and the discipline to answer a trigger with
+the smallest change that closes it.
 
 ---
 
-### Bullet #2: GPU Resource Orchestration & Compute Dispatch
-**Problem Solved**: No systematic approach to GPU workload distribution  
-**Solution Implemented**: Centralized training coordination with resource management
+### Bullet #2: GPU Compute Orchestration
+**Limitation**: GPU-bound work inside a web process takes the application down with it.
+**Resolution**: A dedicated compute service owning the GPU runtime, with the runtime scope
+stated honestly.
 
 ```
-• Implemented GPU resource orchestration layer coordinating multi-seed 
-  training, validation-based model selection, and inference dispatch 
-  through FastAPI service boundary; engineered CUDA context handling, 
-  DataParallel execution patterns, and DDP (deferred to Phase 3) 
-  enabling reliable GPU utilization across varied workload sizes 
-  (single seed to 5-seed experiments)
+• Designed the AI service boundary that owns YOLO training, validation
+  and inference on CUDA; documented single-GPU execution as the
+  baseline, DataParallel exercised on two devices and DDP deferred
+  pending a runtime audit, keeping multi-GPU runtime distinct from
+  distributed job orchestration throughout
 ```
 
-**Why this matters**: Shows both systems thinking and deep GPU understanding.
+**Why this matters**: systems thinking with a precise claim about what was exercised.
 
 ---
 
-### Bullet #3: Web-to-Compute Integration Pattern & Error Propagation
-**Problem Solved**: Complex error scenarios uncaught between web and compute layers  
-**Solution Implemented**: Comprehensive failure mode documentation and HTTP status mapping
+### Bullet #3: Service Contracts
+**Limitation**: Error handling was prose that callers parsed; paths were translated across four
+coordinate systems; any caller could submit GPU work.
+**Resolution**: One error envelope with stable codes, one run manifest, service tokens,
+and a same-path invariant in place of path translation (`docs/evolution/03`, ADR-011).
 
 ```
-• Architected web-to-compute integration pattern with explicit error 
-  propagation mapping specific GPU failures (OOM, CUDA errors, training 
-  failures) to user-facing HTTP responses; documented 15+ failure 
-  scenarios with recovery strategies, enabling predictable system 
-  behavior and effective user communication for transient vs permanent 
-  failures
+• Specified the contracts between web and compute services: a single
+  error envelope with a catalogued set of stable codes, an append-only
+  run manifest with relative paths, a service key compared in constant
+  time between the services and hashed bearer tokens for automation
+  clients; replaced a path-translation layer with a same-path mount
+  invariant asserted at startup and covered by a test
 ```
 
-**Why this matters**: Production systems are defined by error handling.
+**Why this matters**: production systems are defined by their contracts and their failure
+modes.
 
 ---
 
-### Bullet #4: Persistent Artifact Management & Storage Layer Design
-**Problem Solved**: Scattered model checkpoints without clear versioning or lineage  
-**Solution Implemented**: Centralized artifact storage with ClearML registry integration
+### Bullet #4: Artifact Storage, Configuration and Governance
+**Limitation**: Checkpoints and outputs scattered on a shared volume with no versioning; the
+best-model file was the de-facto registry.
+**Resolution**: Artifact categories and risks documented; a database-backed registry exporting
+a fingerprint-verified list the compute service resolves models through (ADR-002, ADR-010).
 
 ```
-• Designed artifact storage layer (filesystem → evolution path to 
-  object storage) with ClearML integration for model versioning and 
-  lineage tracking; implemented Django ORM-backed configuration 
-  management enabling automatic YAML generation for training 
-  parameters, ensuring configuration consistency across web and 
-  compute layers
+• Designed the shared artifact storage layer and its risk register
+  (path fragility, permissions, stale caches, disk growth); specified a
+  database-backed model registry that exports a list of loadable
+  versions with fingerprints, so the compute service refuses arbitrary
+  paths; designed ORM-backed dataset configuration with generated
+  YOLO-compatible YAML
 ```
 
-**Why this matters**: Shows full-stack thinking—database → compute → storage.
+**Why this matters**: full-stack thinking from database to compute to storage.
 
 ---
 
-### Bullet #5: MLOps Infrastructure Evolution Planning
-**Problem Solved**: Unclear path from MVP single-GPU service to production-scale infrastructure  
-**Solution Implemented**: Metrics-driven, phase-based growth roadmap
+### Bullet #5: Evolution by Evidence, Then the Ledger
+**Limitation**: Roadmaps that promise infrastructure on a calendar are never checked.
+**Resolution**: A roadmap gated by named triggers, and a trigger-by-trigger ledger of what was
+realised, realised differently, not triggered or discarded (`docs/architecture/16`,
+`docs/evolution/07`).
 
 ```
-• Authored comprehensive MLOps infrastructure evolution roadmap 
-  documenting progression from MVP (single GPU, synchronous HTTP) to 
-  enterprise scale (multi-GPU workers, async job queue, ClearML 
-  self-hosted) with explicit trigger metrics and phase success 
-  criteria; included 4-week migration strategy for transitioning from 
-  cloud to self-hosted infrastructure with zero-downtime parallel 
-  execution model
+• Documented a production evolution roadmap in which a queue, a
+  worker pool and Kubernetes are non-goals until a named trigger
+  fires; recorded the outcome trigger by trigger — job records,
+  polling, registry, contracts and tests were realised, no broker or
+  Kubernetes was needed — and specified a mock/real runtime seam with
+  a CPU test suite on the order of two thousand tests and CI on a
+  throwaway Compose stack
 ```
 
-**Why this matters**: Shows strategic thinking beyond just implementing current requirements.
+**Why this matters**: strategic restraint that can be audited.
 
 ---
 
 ## 3. COMPUTER VISION ENGINEER - Resume Bullets (5)
 
-### Bullet #1: Small-Object Detection Optimization via SAHI
-**Problem Solved**: Accuracy degradation on small objects in large high-resolution images  
-**Solution Implemented**: Tiling-based inference strategy with overlap management
+### Bullet #1: Small-Object Detection via SAHI Tiling
+**Limitation**: Accuracy on small objects degrades in large images.
+**Resolution**: Tiling with overlap and reconstruction (`docs/architecture/11`).
 
 ```
-• Engineered SAHI-based tiling strategy for high-resolution small-object 
-  detection, processing large images through configurable overlapping 
-  tiles and automatic result merging; documented compute-vs-accuracy 
-  trade-offs enabling dynamic strategy selection based on image 
-  characteristics and inference latency requirements, recovering 
-  small objects that fall below the detector's effective resolution 
-  at full-frame scale
+• Specified a SAHI-based tiled inference pipeline for high-resolution
+  images: overlapping tiles, per-tile YOLO detection and
+  reconstruction into image coordinates; documented the trade-off
+  between tile size, overlap and compute so the strategy can be chosen
+  from the expected object size rather than fixed
 ```
 
-**Why this matters**: Demonstrates understanding of practical CV challenges on real-world data.
+**Why this matters**: practical CV on real-world image sizes.
 
 ---
 
-### Bullet #2: Multi-Seed Experimental Validation & Model Selection
-**Problem Solved**: Single-run model selection biased by random initialization  
-**Solution Implemented**: Statistical comparison framework with automated best-model selection
+### Bullet #2: Multi-Seed Experimental Validation
+**Limitation**: Single-run selection biased by initialization.
+**Resolution**: Multi-seed training, aggregated validation metrics, CUDA cleanup between seeds.
 
 ```
-• Implemented multi-seed training validation framework (3-5 seeds, 
-  different random initializations) with automated best-model selection 
-  based on maximum mAP50 and statistical confidence metrics (mean ± std 
-  aggregation); designed CUDA cleanup strategy enabling reliable 
-  statistical comparison without training degradation, improving model 
-  stability metrics and reproducibility
+• Designed a multi-seed validation framework selecting on aggregated
+  validation metrics across seeds, with explicit CUDA cleanup so each
+  seed starts from a clean device state; later specified that the
+  selection score is displayed for a person to act on rather than
+  promoted automatically (ADR-010)
 ```
 
-**Why this matters**: Shows understanding that CV model selection requires more rigor than single runs.
+**Why this matters**: rigor in model selection, and restraint in automating it.
 
 ---
 
-### Bullet #3: Dataset Configuration Management & YAML Generation
-**Problem Solved**: Manual YAML configuration error-prone and not version-controlled  
-**Solution Implemented**: Django ORM-backed configuration with automatic YAML generation
+### Bullet #3: Dataset Configuration Management
+**Limitation**: Hand-edited dataset YAML is error-prone and unversioned.
+**Resolution**: ORM-backed configuration (`ProjectConfiguration`, `ClassSet`,
+`DetectionClass`, `DatasetConfiguration`) with generated YOLO-compatible YAML
+(`docs/architecture/08`).
 
 ```
-• Designed Django ORM-backed YOLO dataset configuration management 
-  system (ProjectConfiguration, ClassSet, DetectionClass models) with automatic 
-  Ultralytics-compatible YAML generation from configuration models; 
-  enabled centralized dataset versioning, label schema management, and 
-  training parameter consistency across multiple experiments
+• Designed a database-backed YOLO dataset configuration layer with
+  project, class-set and detection-class models and automatic
+  generation of training-compatible YAML, so label schemas and dataset
+  definitions are versioned records rather than files edited by hand
 ```
 
-**Why this matters**: Shows production thinking—configuration should be version-controlled, not manual files.
+**Why this matters**: configuration as data, not as manual files.
 
 ---
 
-### Bullet #4: Continuous Improvement Training with Safety Checks
-**Problem Solved**: Uncontrolled model degradation or instability when retraining on new data  
-**Solution Implemented**: Historical baseline comparison with conditional model updates
+### Bullet #4: Detection Metrology
+**Limitation**: Detections stopped at pixel boxes; operators asked for physical quantities.
+**Resolution**: A CPU-bound metrology job type in the AI service turning boxes into physical
+size, clusters, coverage and density, with gates (`docs/evolution/04`, ADR-013).
 
 ```
-• Engineered continuous improvement training pipeline with historical 
-  baseline comparison and conditional best-model updates only when new 
-  models exceed improvement thresholds; implemented experiment isolation 
-  and tracking enabling safe incremental dataset expansion and 
-  iterative model refinement without production drift, maintaining 
-  model stability through version control and A/B comparison
+• Designed a detection-metrology job type that converts pixel
+  detections into planar physical sizes, clusters, coverage and
+  density using preserved image metadata, placed in the AI service as
+  a CPU job with its own record and manifest so results are
+  reproducible artifacts; documented that the method is not yet
+  validated against ground truth
 ```
 
-**Why this matters**: Real-world CV systems need safeguards against degradation.
+**Why this matters**: turns a detector into an instrument, and says what remains unproven.
 
 ---
 
-### Bullet #5: High-Resolution Inference Pipeline Architecture
-**Problem Solved**: Memory and latency constraints on large-scale image processing  
-**Solution Implemented**: Tiling with per-tile inference and result aggregation
+### Bullet #5: Operator Console with Geospatial Results
+**Limitation**: Results shown as image previews only; operators asked "where".
+**Resolution**: GeoJSON per batch rendered on an interactive map; batch progress by polling;
+localisation with a guard test (`docs/evolution/05`).
 
 ```
-• Architected end-to-end high-resolution inference pipeline 
-  implementing image tiling, per-tile YOLO detection, configurable 
-  overlap management, and automatic detection result merging; designed 
-  adaptive compute scaling enabling inference on megapixel images within 
-  latency constraints, with documented performance profiles and 
-  trade-offs for production deployment scenarios
+• Designed an operator console that renders per-batch GeoJSON
+  (footprints, detections per class, foci, coverage) on an interactive
+  map from a vendored library with no build step, exposes the same
+  GeoJSON for desktop GIS, polls batched job status for progress, and
+  enforces localisation with a guard test that fails on any
+  untranslated string
 ```
 
-**Why this matters**: Demonstrates systems thinking applied to CV—not just model accuracy.
+**Why this matters**: CV output that an operator can act on.
 
 ---
 
 ## 4. LINKEDIN PROJECT DESCRIPTION
 
 ### Title
-**YOLO Training & Inference Orchestration: Microservice Architecture for AI Vision Platforms**
+**YOLO Training & Inference Orchestration: Architecture for an Internal AI Vision Platform**
 
 ### Description
 
 ```
-Designed and documented a production-ready microservice architecture 
-for orchestrating GPU-intensive YOLO training and inference workloads 
-in web-connected platforms.
+Designed and documented the architecture of an internal computer-vision
+platform that separates web orchestration from GPU-bound YOLO training
+and inference — and, unusually, recorded what happened when its
+declared limitations were reached.
 
-PROJECT SCOPE:
-• Microservice separation: Stateless Django web tier + GPU-optimized 
-  FastAPI compute service enabling independent scaling
-• GPU compute orchestration: Multi-seed training with validation-based 
-  model selection and CUDA memory optimization
-• High-resolution inference: SAHI tiling strategy for small-object 
-  detection on large images
-• MLOps integration: ClearML experiment tracking, metrics logging, and 
-  model lineage management
-• Production evolution planning: Roadmap from MVP (single GPU, HTTP) to 
-  enterprise scale (job queue, Kubernetes) with trigger-based phases
+THE INITIAL ITERATION
+• Django web layer (metadata, configuration, visualisation) separated
+  from a FastAPI AI service that owns the GPU runtime
+• Multi-seed YOLO training with validation-based selection and CUDA
+  cleanup between seeds; single-GPU baseline, DataParallel exercised
+  on two devices, DDP deferred
+• SAHI tiled inference for small objects in high-resolution images
+• Tracking with local artifacts as the source of truth
+• Limitations stated in writing: the request stays open for the whole
+  job, a file-based model reference with a race condition, path
+  translation across containers, no tests, no CI
 
-KEY CONTRIBUTIONS:
-✓ Architected responsible separation of web and compute concerns, 
-  enabling independent scaling and clear failure boundaries
-✓ Designed GPU memory management strategy with multi-seed validation 
-  reducing training instability and improving reproducibility
-✓ Implemented ClearML integration with comprehensive MLOps evolution 
-  roadmap (self-assessed Level 2/5 → Level 4/5), including a 4-week 
-  self-hosted migration plan and the cost model behind it
-✓ Documented high-resolution inference patterns using SAHI tiling, 
-  enabling small-object detection on large images with compute/accuracy 
-  trade-offs
-✓ Engineered continuous improvement training system with safety checks 
-  preventing model degradation during incremental dataset expansion
-✓ Authored 15+ technical documents including architecture decisions 
-  (ADRs), error handling strategies, and production scaling roadmaps
+THE LATER REVISION — limitation by limitation
+• Timeouts arrived: submit/poll on in-process pools with durable job
+  records and startup reconciliation, not a queue (ADR-009)
+• Model reference race: transactional registry with weight
+  fingerprints, human promotion and rollback (ADR-010)
+• Path translation: replaced by a same-path invariant, tested (ADR-011)
+• Tracking tool withdrawn on data-egress grounds; a self-hosted
+  tracking-only server decided and not deployed (ADR-012)
+• Contracts: one error envelope, one run manifest, service tokens
+• Detection metrology as a CPU job type: physical size, coverage,
+  density (ADR-013)
+• Operator console with GeoJSON maps and a localisation guard test
+• Mock/real runtime seam, a CPU test suite on the order of two
+  thousand tests, CI on a throwaway Compose stack
+• Still no broker, no worker pool, no Kubernetes — the triggers never
+  fired
 
-TECHNOLOGIES:
-Django, FastAPI, PyTorch, Ultralytics YOLO, SAHI, ClearML, PostgreSQL, 
-CUDA, Docker, Git
+STATED HONESTLY
+Training runs outside the platform in the later revision and enters
+through a fingerprinted import; the revision's GPU path was not
+validated. The initial iteration is the one that orchestrated training
+on the GPU.
 
-DEMONSTRATED CAPABILITIES:
-• System architecture and microservice design
-• GPU compute optimization and CUDA memory management
-• Machine learning pipeline design (training, validation, inference)
-• Full-stack integration (web framework, compute service, artifact storage)
-• MLOps infrastructure planning and evolution
-• Computer vision pipelines for production environments
-• Technical documentation and architectural decision-making
+TECHNOLOGIES
+Django, FastAPI, PyTorch, Ultralytics YOLO, SAHI, PostgreSQL, CUDA,
+Docker Compose, Git
 
-REPOSITORY:
-Public documentation available at: 
+REPOSITORY
 github.com/maaferna/yolo-training-inference-orchestration-architecture
 
-This project demonstrates production-grade thinking in AI systems 
-architecture, from low-level GPU optimization to high-level MLOps 
-infrastructure planning. Architecture is documented in detail but 
-implementation remains private—focus is on architectural principles, 
-design patterns, and production-readiness thinking applicable across 
-domains.
+Architecture is documented in detail; the implementation remains
+private. The value is in the decisions, their triggers and their
+outcomes.
 ```
 
 ---
@@ -339,10 +377,11 @@ domains.
 ### Short Description (GitHub main)
 
 ```
-Production-ready microservice architecture for YOLO training and 
-inference orchestration. Demonstrates system design, GPU optimization, 
-MLOps integration, and production evolution planning for AI vision 
-platforms. MVP with enterprise-scale roadmap.
+Architecture of an internal YOLO training and inference platform:
+web orchestration separated from GPU compute, limitations stated,
+and a later revision that records what each limitation became —
+job records instead of a queue, a registry instead of a file, a
+same-path invariant instead of path translation.
 ```
 
 ### Long Description (GitHub About section)
@@ -350,326 +389,210 @@ platforms. MVP with enterprise-scale roadmap.
 ```
 YOLO Training & Inference Orchestration Architecture
 
-A production-ready technical reference architecture for web-connected 
-AI vision platforms separating user-facing web services from GPU-
-intensive machine learning workloads.
+Public-safe architecture documentation for an internal AI vision
+platform separating user-facing web workflows from GPU-intensive
+machine learning workloads.
 
-KEY FEATURES:
+WHAT IT ARGUES
 
-🏗️ Microservice Architecture
-  • Django (stateless web) + FastAPI (GPU compute) separation
-  • Independent scaling for web and compute workloads
-  • Explicit responsibility boundaries and failure handling
+- No job queue, no worker pool, no Kubernetes: each is a non-goal
+  with the operational evidence that would justify it.
+- The risks are stated: synchronous execution, filesystem coupling, a
+  race on the file-based model reference, GPU contention.
+- Cost is an architectural decision: where training runs and where
+  the application lives are reasoned about separately.
 
-🎯 GPU Compute Orchestration
-  • Multi-seed training with statistical model selection
-  • CUDA memory optimization and progressive resource scaling
-  • DataParallel and DDP execution patterns
+WHAT HAPPENED NEXT (docs/evolution/)
 
-👁️ High-Resolution Computer Vision
-  • SAHI tiling strategy for small-object detection on large images
-  • Per-tile inference with configurable overlap and result merging
-  • Documented compute-vs-accuracy trade-offs
+- Timeouts: submit/poll on in-process pools with durable job records
+  (ADR-009), not a queue
+- Model reference race: transactional registry, fingerprints, human
+  promotion, rollback (ADR-010)
+- Path translation: same-path invariant (ADR-011)
+- Tracking tool withdrawn on data-egress grounds; self-hosted
+  tracking-only server decided, not deployed (ADR-012)
+- Contracts: error envelope, run manifest, service tokens
+- Detection metrology as a CPU job type (ADR-013)
+- Operator console: GeoJSON maps, localisation guard test
+- Mock/real runtime seam, CPU test suite on the order of two thousand
+  tests, CI on a throwaway Compose stack
+- Training moved outside the platform (fingerprinted import); the
+  revision's GPU path was not validated
 
-📊 MLOps Foundation
-  • ClearML integration for experiment tracking and metrics logging
-  • Multi-phase evolution roadmap (MVP Level 2/5 → Enterprise Level 4/5)
-  • 4-week self-hosted migration strategy with cost analysis
+WHAT'S INCLUDED
 
-🔄 Continuous Improvement
-  • Incremental training on new data with safety checks
-  • Historical baseline comparison and conditional model updates
-  • Experiment isolation and tracking
+- Architecture documents 01 to 21
+- Architecture Decision Records ADR-001 to ADR-013
+- Evolution documents 00 to 07, including a trigger-by-trigger ledger
+- Diagrams and a poster generated from one build script
+- A sanitization gate and a public-safety checklist
 
-📚 WHAT'S INCLUDED:
+WHAT'S NOT INCLUDED
 
-✓ Complete architecture documentation (15+ technical docs)
-✓ 7 Architecture Decision Records (ADRs) with full rationale
-✓ 7 MLOps reference documents and execution roadmaps
-✓ Error handling strategies and failure mode analysis
-✓ Production evolution phases with trigger metrics
-✓ GPU optimization patterns (CUDA, DataParallel)
-✓ Full-stack integration examples (web, compute, storage, database)
-✓ Deployment guidance (Docker Compose, Kubernetes evolution path)
+- Source code, datasets, weights, measured results
+- Credentials, infrastructure identifiers, absolute paths
+- Names of organisations, sites, people or hardware
 
-⚠️ WHAT'S NOT INCLUDED:
+TECHNOLOGIES
 
-✗ Production source code (focus is on architecture)
-✗ Actual datasets or model weights
-✗ Real credentials, API keys, or infrastructure details
-✗ Running application (this is a reference architecture)
-✗ Proprietary implementation details
+Backend: Django, FastAPI, PostgreSQL
+ML/CV: PyTorch, Ultralytics YOLO, SAHI, SAM
+Runtime: Docker Compose, CUDA, DataParallel (DDP deferred)
 
-TECHNOLOGIES:
+DOCUMENTATION STRUCTURE
 
-Backend: Django, FastAPI, PostgreSQL, Redis
-ML/AI: PyTorch, Ultralytics YOLO, SAHI, ClearML
-Infrastructure: Docker, CUDA, DataParallel, DDP
-Versioning: Git, GitHub
+docs/architecture/          Documents 01 to 21 (the initial iteration)
+docs/architecture/adr/      ADR-001 to ADR-013
+docs/evolution/             The later revision, 00 to 07
+docs/portfolio/             This material
 
-USE CASES:
+PHILOSOPHY
 
-→ Production architecture reference for AI vision platforms
-→ System design interview preparation
-→ MLOps infrastructure planning and evolution
-→ GPU optimization patterns and CUDA memory management
-→ Microservice separation and responsibility boundaries
-→ ML pipeline design (training, validation, inference)
-→ Error handling and failure mode documentation
-
-DOCUMENTATION STRUCTURE:
-
-docs/01-overview.md                    → High-level system overview
-docs/02-system-architecture.md         → Visual architecture and components
-docs/03-component-responsibilities.md  → Detailed component interactions
-docs/architecture/adr/                              → Architecture Decision Records
-docs/MLOPS_*.md                        → MLOps evolution and strategy
-docs/13-error-handling-and-fallbacks   → Failure scenarios and recovery
-
-PHILOSOPHY:
-
-"Build for current requirements. Add complexity only when real 
-bottlenecks appear. Each growth phase is triggered by specific 
-metrics, not speculation."
-
-This architecture prioritizes clarity, responsibility separation, 
-and pragmatism over pre-emptive complexity. It demonstrates how to 
-think about AI systems from MVP to enterprise scale.
-
-PUBLIC-SAFE:
-
-This repository contains anonymized, generalized documentation with no 
-proprietary details, real credentials, institution names, or 
-implementation code. Suitable for portfolio sharing and technical 
-reference use.
-
-For detailed system overview, see docs/02-system-architecture.md
+Add infrastructure when a named trigger fires, and expect the evidence
+to ask for less than a queue.
 ```
 
 ---
 
 ## 6. PORTFOLIO WEBSITE - PROJECT CARD
 
-### Project Card HTML/Markdown
+````markdown
+## YOLO Training & Inference Orchestration Architecture
 
-```markdown
-## 🏗️ YOLO Training & Inference Orchestration Architecture
-
-**Role:** Architect | **Technologies:** Django, FastAPI, PyTorch, YOLO, SAHI, ClearML, CUDA  
-**Status:** Production-Ready Architecture | **Public Portfolio Safe:** ✅ Yes
+**Role:** Architect and author | **Technologies:** Django, FastAPI, PyTorch, YOLO, SAHI, CUDA, Docker Compose
+**Status:** Documented architecture with a recorded later revision | **Public-safe:** yes
 
 ### Overview
 
-Designed a production-ready microservice architecture for orchestrating 
-GPU-intensive AI vision workloads in web-connected platforms. Separates 
-stateless Django web tier from GPU-optimized FastAPI compute service, 
-enabling independent scaling while maintaining clear responsibility 
-boundaries and explicit error handling.
+An internal computer-vision platform where a small group of operators
+submits YOLO training and high-resolution inference jobs. Web
+orchestration (Django) is separated from GPU compute (FastAPI) behind
+an HTTP boundary with shared artifact storage between them. The
+design problem is not scale; it is keeping GPU-bound work from taking
+down a web application, and keeping its artifacts traceable.
 
-### Problem Solved
+### Limitation → Resolution
 
-AI vision platforms face critical architectural challenges:
-- **Interference**: Web requests blocking GPU training jobs
-- **Complexity**: Unclear separation between web and compute concerns
-- **Reproducibility**: No systematic experiment tracking or model versioning
-- **Optimization**: Small-object detection on large images degrades accuracy
-- **Growth**: No clear path from MVP to production-scale infrastructure
+| Limitation stated in the initial iteration | Resolution in the later revision | Record |
+|---|---|---|
+| The request stays open for the whole job | Submit/poll on in-process pools, durable job records, startup reconciliation — no queue | ADR-009 |
+| File-based model reference with a race | Transactional registry, weight fingerprints, human promotion, rollback | ADR-010 |
+| Path translation across containers | Same-path mount invariant, asserted and tested | ADR-011 |
+| Tracking tool with data egress by default | Withdrawn; manifests as source of truth; self-hosted tracking-only server decided, not deployed | ADR-012 |
+| Errors as prose, no service authentication | One error envelope, one run manifest, service tokens | evolution 03 |
+| Detections stop at pixel boxes | Metrology job type: physical size, clusters, coverage, density | ADR-013 |
+| Results as image previews only | Operator console with GeoJSON maps; localisation guard test | evolution 05 |
+| No tests, no CI | Mock/real runtime seam; CPU suite on the order of two thousand tests; CI on a throwaway Compose stack | evolution 06 |
+| Queue, worker pool, Kubernetes as non-goals | Not triggered; recorded as such | evolution 07 |
 
-### Solution Implemented
+### Scope, stated plainly
 
+In the later revision, training runs outside the platform and enters
+through a fingerprinted import; the revision's GPU path was not
+validated. The initial iteration orchestrated training on the GPU:
+single-GPU baseline, DataParallel exercised on two devices, DDP
+deferred.
+
+### Technical highlights
+
+**Multi-seed training with CUDA hygiene**
 ```
-ARCHITECTURE LAYERS:
-├── Web Tier (Django)        → User requests, authentication, visualization
-├── Compute Tier (FastAPI)   → Training orchestration, GPU dispatch
-├── ML Pipeline              → Multi-seed training, validation-based selection
-├── Inference Engine         → High-resolution tiling (SAHI)
-├── Experiment Tracking      → ClearML integration, metrics logging
-└── Artifact Storage         → Models, checkpoints, configurations
-
-KEY FEATURES:
-✓ Microservice separation with independent scaling
-✓ Multi-seed training with statistical model selection
-✓ CUDA memory optimization for reliable GPU execution
-✓ SAHI tiling for small-object detection on large images
-✓ ClearML integration with MLOps evolution roadmap
-✓ Continuous improvement training with safety checks
-✓ Complete error handling and failure mode documentation
-```
-
-### Key Technical Decisions
-
-| Challenge | Decision | Rationale |
-|-----------|----------|-----------|
-| Web/Compute Coupling | Separate services | Independent scaling, clear failure boundaries |
-| Model Selection | Multi-seed + validation metrics | Statistical rigor over single-run bias |
-| GPU Memory | Progressive resource scaling + cleanup | OOM recovery without training termination |
-| Small-Object Detection | SAHI tiling strategy | Accuracy improvement on small objects |
-| Experiment Tracking | ClearML integration | Auto-metadata capture, reproducibility, lineage |
-| Infrastructure Growth | Metrics-driven phases | Complexity added only when real constraints appear |
-
-### Impact & Results
-
-✅ **Architecture Clarity**: Explicit responsibility boundaries prevent failure coupling  
-✅ **Reproducibility**: Multi-seed validation + ClearML tracking ensure statistical rigor  
-✅ **Scalability**: Microservice separation enables independent growth phases  
-✅ **MLOps Foundation**: Roadmap from self-assessed Level 2/5 to Level 4/5  
-✅ **GPU Optimization**: Progressive resource scaling recovers from OOM instead of failing  
-✅ **Cost Efficiency**: Self-hosted migration assessed against an explicit cost model  
-
-### Technical Highlights
-
-**1. GPU Memory Management**
-```python
-Multi-seed training strategy with explicit CUDA cleanup:
-• Train with seed 1 → validate → save metrics
-• torch.cuda.empty_cache() → gc.collect()
-• Train with seed 2 → validate → save metrics
-→ Compare results with variance quantification
-→ Select model with highest mAP50
+Train seed → validate → record metrics
+release cache, reset memory stats, collect
+next seed
+→ aggregate validation metrics; selection shown to a person
 ```
 
-**2. High-Resolution Inference**
+**SAHI tiled inference**
 ```
-SAHI tiling approach for small-object detection:
-Large Image (4K) → Tile into 512x512 regions with overlap
-→ Per-tile YOLO detection
-→ Automatic result merging with NMS
-→ Small objects below full-frame detection scale become detectable
+Large image → overlapping tiles → per-tile YOLO detection
+→ reconstruction into image coordinates → metrology (optional)
 ```
 
-**3. MLOps Evolution**
+**Evolution by trigger**
 ```
-Baseline:            Synchronous HTTP, one or two GPUs
-Job status:          Submit/poll with durable job records, no broker
-Governance:          Transactional model registry with promotion events
-Controlled worker:   Only once jobs compete for the GPU
-Scale-out:           Only on operational evidence, never on a calendar
+Baseline:      synchronous HTTP, one or two GPUs
+Trigger fired: timeouts → submit/poll, job records (no broker)
+Trigger fired: lineage questions → registry with promotion events
+Open trigger:  jobs compete for the device → single admission lane
+Not triggered: distributed workers, object storage, Kubernetes
 ```
 
-### Documentation & Code
+### Documentation
 
-📚 **15+ Technical Documents**
-- Architecture Decision Records (ADRs) with full rationale
-- MLOps evolution roadmap with trigger metrics
-- GPU optimization patterns and CUDA strategies
-- Error handling and failure mode analysis
-- Production deployment guidance
+- Architecture documents `01`–`21`, ADR-001 to ADR-013, evolution documents `00`–`07`
+- Diagrams and a poster generated from a single build script
+- A sanitization gate that blocks paths, credentials, dates and identifiers
 
-🔗 **Repository**: [github.com/maaferna/yolo-training-inference-orchestration-architecture](https://github.com/maaferna/yolo-training-inference-orchestration-architecture)
-
-### Skills Demonstrated
-
-**System Architecture**
-- Microservice design and responsibility separation
-- Scalability planning with metrics-driven phases
-- Production evolution thinking
-
-**AI/ML Engineering**
-- GPU optimization and CUDA memory management
-- Machine learning pipeline design (training, validation, inference)
-- Multi-seed experimental validation
-
-**Backend Integration**
-- Web-to-compute integration patterns
-- Error propagation and failure handling
-- Full-stack architecture (database, web, compute, storage)
-
-**MLOps Infrastructure**
-- Experiment tracking integration (ClearML)
-- Infrastructure evolution planning
-- Self-hosted vs cloud trade-offs
-
-### Why This Project Matters
-
-This architecture demonstrates **production-grade thinking** beyond 
-just implementing features. It shows how to:
-
-→ Design systems that scale gracefully as requirements grow  
-→ Make explicit architectural trade-offs and document them  
-→ Think about failure modes before they happen  
-→ Balance pragmatism (MVP) with future growth  
-→ Separate concerns clearly to prevent complexity explosion  
-
-Whether building computer vision, AI pipelines, or any complex system, 
-these principles apply across domains.
-
----
-
-### Links
-
-**Full Repository**: github.com/maaferna/yolo-training-inference-orchestration-architecture  
-**Architecture Overview**: docs/02-system-architecture.md  
-**Decision Records**: docs/architecture/adr/  
-**Later Revision**: docs/evolution/
-```
+**Repository**: github.com/maaferna/yolo-training-inference-orchestration-architecture
+**Decision records**: docs/architecture/adr/
+**Later revision**: docs/evolution/
+````
 
 ---
 
 ## 7. SUMMARY TABLE - Content for Different Platforms
 
-| Platform | Use This | Purpose |
+| Platform | Use this | Purpose |
 |----------|----------|---------|
-| **Resume** | Bullets 1-5 (section 1-3) | Specific achievement bullets |
-| **LinkedIn** | Section 4 full description | Project showcase with context |
-| **GitHub** | Section 5 repo description | Discovery and credibility |
-| **Portfolio Website** | Section 6 project card | Deep dive with technical details |
-| **Interview Prep** | All sections | Talking points about architecture decisions |
-| **Email/Cold Outreach** | LinkedIn description condensed | Quick value proposition |
+| **Resume** | Bullets from sections 1–3 | Specific, traceable bullets |
+| **LinkedIn** | Section 4 | Project showcase with the limitation → resolution arc |
+| **GitHub** | Section 5 | Discovery and credibility |
+| **Portfolio website** | Section 6 | Deep dive with the resolution table |
+| **Interview prep** | All sections plus `docs/architecture/18-technical-responsibilities.md` | Talking points about decisions and triggers |
+| **Email / outreach** | Section 4 condensed | Quick value proposition |
 
 ---
 
 ## 8. CUSTOMIZATION GUIDE
 
-### For Machine Learning Roles
-✅ Lead with: Multi-seed validation, CUDA optimization, experiment tracking  
-✅ Emphasize: Statistical rigor, reproducibility, model selection logic  
-✅ Use bullets: #1-2 focus on ML fundamentals  
+### For Machine Learning roles
+Lead with: multi-seed validation, OOM recovery, tracking without egress (bullets 1–3).
+Emphasize: reproducibility, why selection left the training loop, why the tracker was withdrawn.
 
-### For Backend/Platform Roles
-✅ Lead with: Microservice architecture, service integration, error handling  
-✅ Emphasize: System design, scalability thinking, infrastructure evolution  
-✅ Use bullets: #1, #3-5 focus on backend and architecture  
+### For Backend / Platform roles
+Lead with: service separation and submit/poll, contracts, evolution ledger (bullets 1, 3, 5).
+Emphasize: answering a trigger with the smallest change; contracts; tests without a GPU.
 
-### For Computer Vision Roles
-✅ Lead with: SAHI inference, small-object detection, continuous improvement  
-✅ Emphasize: Real-world CV challenges, production inference patterns  
-✅ Use bullets: #1-2, #4-5 focus on computer vision  
+### For Computer Vision roles
+Lead with: SAHI, metrology, operator console (bullets 1, 4, 5).
+Emphasize: small objects, physical quantities, what is not yet validated.
 
-### For AI/MLOps Lead Roles
-✅ Lead with: Comprehensive architecture, MLOps roadmap, evolution planning  
-✅ Emphasize: Strategic thinking, infrastructure design, team-scale impact  
-✅ Use full project description and architecture overview  
+### For AI / MLOps lead roles
+Lead with: the full limitation → resolution table (section 6) and the ledger
+(`docs/evolution/07-roadmap-realised.md`).
+Emphasize: restraint that can be audited; decisions reversed with a superseding record.
 
 ---
 
 ## 9. TIPS FOR USING THIS CONTENT
 
-### ✅ DO:
-- Adapt bullets to specific job descriptions
-- Emphasize the problems you solved, not just technologies used
+### DO
+- Adapt bullets to the job description; keep the limitation → resolution shape.
 - Describe outcomes, not invented numbers. This repository documents architecture, so it
-  cannot evidence a percentage. If you have a measured figure from the private work, it
-  belongs on your CV — never in this public repository, and never sourced back to it
-- Highlight decision-making: *why* multi-seed, *why* microservices
-- Reference the architecture: "See docs/architecture/adr for detailed decision rationale"
-- Customize LinkedIn description based on role (ML vs Backend vs CV)
+  cannot evidence a percentage. If you have a measured figure from private work, it belongs
+  on your CV — never in this public repository, and never sourced back to it.
+- Use design verbs: designed, documented, specified, proposed, evaluated.
+- Name the record: "see ADR-009" is stronger than "we added polling".
+- State the scope once: training outside the platform in the later revision; GPU path not
+  validated there.
 
-### ❌ DON'T:
-- Claim the code is production-deployed (it's not; this is architecture)
-- Imply you have private datasets or models (you don't; those are confidential)
-- Overclaim maturity levels (MVP is honest; roadmap is prospective)
-- Mention specific client/institution names
-- Share any credentials or infrastructure details
-- Claim full production readiness without implementation
+### DON'T
+- Claim the code is production-deployed or that the repository contains it.
+- Present the initial tracking tool as current; it was withdrawn (ADR-012).
+- Claim a queue, a worker pool or Kubernetes; they were not triggered.
+- Date anything by calendar or quarter; the repository orders by iteration only.
+- Give self-assessed maturity levels or counts that no document in the repository states.
+- Mention client, institution, site, person or hardware names.
 
-### 🎯 FRAMING:
-"I designed and documented a production-ready architecture for AI vision 
-platforms that separates web and GPU compute concerns. The work demonstrates 
-system architecture thinking, GPU optimization, full-stack integration, and 
-production evolution planning. Implementation remains private; public 
-documentation focuses on architectural principles."
+### FRAMING
+"I designed and documented the architecture of an internal AI vision platform that separates
+web orchestration from GPU compute, wrote down its limitations and the triggers that would
+justify change, and recorded what a later revision did when those triggers fired — job records
+instead of a queue, a registry instead of a file, contracts and tests instead of prose. The
+implementation remains private; the public repository holds the decisions and their outcomes."
 
 ---
 
-**Source Repository**: github.com/maaferna/yolo-training-inference-orchestration-architecture  
-**Status**: Public-Safe Portfolio Content ✅
+**Source repository**: github.com/maaferna/yolo-training-inference-orchestration-architecture
+**Status**: public-safe portfolio content

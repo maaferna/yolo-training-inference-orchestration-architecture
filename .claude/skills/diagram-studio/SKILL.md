@@ -72,7 +72,8 @@ El repositorio es documentación public-safe; los diagramas heredan esa polític
 | `04-sahi-inference` | ¿Por qué el teselado mejora la detección de objetos pequeños? |
 | `05-deployment-strategy` | Local, AWS o híbrido: ¿qué conviene y por qué? |
 | `06-synthetic-dataset` | ¿Cómo se genera un dataset sintético a partir de datos reales escasos? |
-| `07-evolution-roadmap` | ¿Qué se añade primero y qué disparador lo justifica? |
+| `07-evolution-roadmap` | ¿Qué se añade primero, qué disparador lo justifica y qué resultó en la revisión posterior? |
+| `08-submit-poll-lifecycle` | ¿Cómo respondió la revisión posterior a los timeouts sin una cola? |
 | `poster-architecture` | Póster de una página que resume el sistema completo |
 
 ## Origen Mermaid

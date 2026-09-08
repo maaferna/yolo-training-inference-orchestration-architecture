@@ -1,117 +1,130 @@
 # Portfolio & Resume Implementation Guide
 
-> **This document is portfolio-safe**: All guidance uses publicly-shareable language and best practices. No real credentials, institutions, or projects are referenced. Safe to follow in hiring, interviews, and professional networking.
+> **This document is portfolio-safe**: all guidance uses publicly shareable language. No real
+> credentials, institutions, projects, dates or measured results are referenced. Safe to follow
+> in hiring, interviews and professional networking.
 
-**How to Use the Generated Content Across Different Platforms**  
+**How to use the content in `PORTFOLIO_RESUME_CONTENT.md` across platforms**
+
+The material is built on **limitation → resolution** pairs: what the initial iteration wrote
+down as a limitation (`docs/architecture/15`, `16`) and what a later revision did about it
+(`docs/evolution/`, ADR-009 to ADR-013). Keep that shape wherever the content goes; it is the
+strongest and most verifiable story the repository has.
+
+One scope statement to carry into every platform: in the later revision, training runs outside
+the platform and enters through a fingerprinted import, and the revision's GPU path was not
+validated. The initial iteration is the one that orchestrated training on the GPU, with
+single-GPU as the baseline and DataParallel exercised on two devices.
 
 ---
 
 ## Quick Start: Pick Your Scenario
 
-### 📋 Scenario 1: Resume/CV Submission
+### Scenario 1: Resume / CV submission
 
-**Use**: Resume bullets from PORTFOLIO_RESUME_CONTENT.md  
-**Approach**: Mix and match 2-3 bullets from relevant section (ML/Backend/CV)  
-**Format**: Tailor to job description keywords
+**Use**: resume bullets from `PORTFOLIO_RESUME_CONTENT.md`, sections 1–3
+**Approach**: two or three bullets from the relevant profile (ML / Backend / CV)
+**Format**: keep the limitation → resolution shape; tailor to the job description
 
-**Example for "ML Engineer" position:**
+**Example for an ML Engineer position:**
 ```
 PROFESSIONAL EXPERIENCE
 
-Senior Machine Learning Engineer | Company | <dates>
-• Architected multi-seed training framework with validation-based model 
-  selection, improving model robustness by capturing initialization 
-  variance across 3-5 seeds; implemented CUDA memory cleanup strategy 
-  enabling clean statistical comparison
-  
-• Implemented GPU memory optimization that recovers from OOM through 
-  progressive resource scaling (batch size → image size) and automatic 
-  fallback validation, degrading the run instead of terminating it
-  
-• Designed ClearML experiment tracking integration with comprehensive 
-  metadata capture and multi-phase MLOps roadmap (self-assessed Level 
-  2/5 → 4/5), including a self-hosted migration plan
+Machine Learning Engineer | Company | <dates>
+• Designed a multi-seed YOLO training strategy with validation-based
+  selection and CUDA cleanup between seeds; later specified that
+  selection is a registry decision shown to a person, not a training
+  side effect (ADR-010)
+
+• Designed OOM recovery for sequential training runs: progressive
+  resource scaling (batch size, then image size) and fallback
+  validation, so an OOM degrades the run instead of ending it
+
+• Designed experiment tracking with local artifacts and run manifests
+  as the source of truth; evaluated the initial tool's default data
+  egress, documented its withdrawal and specified a self-hosted
+  tracking-only replacement, decided and not deployed (ADR-012)
 ```
 
 ---
 
-### 💼 Scenario 2: LinkedIn Profile Update
+### Scenario 2: LinkedIn profile update
 
-**Use**: Full LinkedIn project description + portfolio website project card  
-**Approach**: Post as "Featured Project" on your profile  
-**Format**: Narrative with clear problem/solution/impact
+**Use**: section 4 (LinkedIn description) and section 6 (project card)
+**Approach**: post as a Featured project
+**Format**: narrative with the initial iteration, the revision and the scope statement
 
 **Steps**:
-1. Go to LinkedIn Profile → Featured
-2. Click "Add" → Choose "Article" or "Project"
-3. Add project title: "YOLO Training & Inference Orchestration Architecture"
-4. Paste content from section 4 (LinkedIn description)
-5. Add link to GitHub repository
-6. Highlight key metrics and technologies
+1. Profile → Featured → Add → Project
+2. Title: "YOLO Training & Inference Orchestration Architecture"
+3. Paste section 4
+4. Link the GitHub repository and one rendered diagram from `assets/diagrams/`
+5. Do not add numbers the repository does not state
 
 ---
 
-### 🌐 Scenario 3: Portfolio Website Project Card
+### Scenario 3: Portfolio website project card
 
-**Use**: Full project card from PORTFOLIO_RESUME_CONTENT.md section 6  
-**Approach**: Create standalone project page with detailed narrative  
-**Format**: HTML or Markdown depending on your site
+**Use**: section 6
+**Approach**: a standalone project page built around the limitation → resolution table
+**Format**: HTML or Markdown
 
 **Example structure**:
 ```
 /portfolio/projects/yolo-orchestration/
 ├── index.html (or index.md)
-├── architecture-diagram.png
 ├── images/
-│   ├── microservice-flow.png
-│   ├── mlops-roadmap.png
-│   └── cuda-optimization.png
-└── README.md (full project description)
+│   ├── 01-system-architecture.png     (from assets/diagrams/)
+│   ├── 02-training-flow.png
+│   ├── 04-sahi-inference.png
+│   └── 07-evolution-roadmap.png
+└── README.md
 ```
 
 ---
 
-### 🔗 Scenario 4: GitHub Repository
+### Scenario 4: GitHub repository
 
-**Use**: Full repository description from section 5  
-**Approach**: Update repository "About" section and top-level README  
+**Use**: section 5
+**Approach**: About section and README top
 **Format**: Markdown
 
 **Steps**:
-1. Go to repo settings → About section
-2. Add short description from section 5
-3. Add topics: `architecture`, `ml-ops`, `gpu-optimization`, `computer-vision`
-4. Pin 2-3 key docs in README
-5. Add badges for "Production-Ready Architecture" and "Portfolio Safe"
+1. Settings → About: paste the short description
+2. Topics: `architecture`, `mlops`, `computer-vision`, `yolo`, `sahi`, `fastapi`, `django`,
+   `cuda`, `docker-compose`, `adr`
+3. Keep the README's "What this repository argues" section as the entry point
+4. Badges: "Documentation only" and "Public-safe" — never "production ready"
 
 ---
 
-### 📧 Scenario 5: Cold Outreach / Networking Email
+### Scenario 5: Cold outreach / networking email
 
-**Use**: LinkedIn description (condensed) + 1-2 key bullets  
-**Approach**: Brief, intriguing, with clear GitHub link  
-**Format**: Short paragraph with call-to-action
+**Use**: section 4 condensed plus one limitation → resolution pair
+**Format**: short paragraph with a link
 
 **Template**:
 ```
-Subject: AI Architecture + MLOps Infrastructure
+Subject: Architecture of an internal AI vision platform — with its
+         limitations and what became of them
 
 Hi [Name],
 
-I designed and documented a production-ready architecture for AI vision 
-platforms separating web and GPU compute workloads. The project 
-demonstrates microservice design, GPU optimization, and MLOps 
-infrastructure planning—all on public GitHub.
+I designed and documented the architecture of an internal computer-
+vision platform that separates web orchestration from GPU-bound YOLO
+work. What I think makes it worth a look: the initial iteration states
+its limitations and the triggers that would justify change, and a
+later revision records what happened when they fired.
 
-Key highlights:
-• Microservice separation (Django web + FastAPI compute)
-• Multi-seed training with statistical validation
-• CUDA memory optimization that recovers from OOM instead of failing
-• ClearML integration with enterprise-scale roadmap
+One example: request timeouts arrived, and the answer was submit/poll
+on in-process pools with durable job records — not a queue. Another:
+the race on the file-based model reference was closed by a
+transactional registry with human promotion.
 
-Full architecture: github.com/maaferna/yolo-training-inference-orchestration-architecture
+Repository:
+github.com/maaferna/yolo-training-inference-orchestration-architecture
 
-Would love to discuss how these patterns apply to [relevant context].
+I would be glad to discuss how these patterns apply to [context].
 
 Best,
 [Your Name]
@@ -119,393 +132,315 @@ Best,
 
 ---
 
-### 🎯 Scenario 6: Technical Interview Preparation
+### Scenario 6: Technical interview preparation
 
-**Use**: All bullet points + rationale from each section  
-**Approach**: Prepare talking points for "tell me about your architecture" questions  
-**Format**: Conversational with supporting details
+**Use**: all bullets plus `docs/architecture/18-technical-responsibilities.md`
+**Approach**: talking points on decisions, triggers and outcomes
+**Format**: conversational, each answer ending on a record (an ADR or an evolution document)
 
-**Interview talking points**:
+**Response framework**:
 ```
-Q: "Walk me through how you designed this system"
+"Walk me through how you designed this system"
 
-Response framework:
-1. Start with problem: "Web and compute workloads were interfering"
-2. Solution: "Separated into independent microservices"
-3. Technical depth: "Django handles stateless web tier, FastAPI handles 
-   GPU-intensive training and inference"
-4. Why it matters: "Independent scaling, clear failure boundaries"
-5. Evolution: "MVP is single-GPU HTTP-based, roadmap shows path to 
-   async job queue and multi-GPU workers"
+1. Problem: GPU-bound work inside a web application takes it down
+2. Decision: two services — Django for metadata and visualisation,
+   FastAPI owning the GPU runtime — HTTP between them, shared
+   artifact storage
+3. Depth: multi-seed training with CUDA cleanup; SAHI tiling; local
+   artifacts as the source of truth
+4. Limitations written down: request open for the whole job, a
+   file-based model reference with a race, path translation, no tests
+5. Outcome: when timeouts arrived the answer was submit/poll with job
+   records, not a queue; the race became a transactional registry;
+   path translation became a same-path invariant; contracts and a
+   test suite followed. No broker, no Kubernetes.
 
-Q: "What would you do differently?"
-Response: "This is MVP architecture. The roadmap explicitly documents 
-trigger metrics for each evolution phase. In production, I'd monitor 
-queue wait times, GPU utilization, and scale accordingly."
+"What would you do differently?"
 
-Q: "How do you handle GPU memory issues?"
-Response: "Multi-seed training requires explicit CUDA cleanup. We 
-implemented progressive resource scaling (batch size → image size) and 
-automatic fallback validation, so an OOM degrades the run instead of 
-ending it."
+"Two things the revision already did: withdraw a tracking tool whose
+default sent data off-premises, and take model promotion out of the
+training loop. One thing still open: admission control on the device,
+which is the next trigger."
 ```
 
 ---
 
 ## Platform-Specific Implementation
 
-### LinkedIn Implementation (Detailed)
+### LinkedIn (detailed)
 
 ```
-STEP 1: Update Headline
+STEP 1: Headline
 Add "ML Systems Architect" or "AI Platform Engineer" if relevant
 
-STEP 2: Add Featured Project
+STEP 2: Featured project
 Title: YOLO Training & Inference Orchestration Architecture
-Content: Full project description from section 4
+Content: section 4
 Link: github.com/maaferna/yolo-training-inference-orchestration-architecture
-Image: Architecture diagram if available
+Image: assets/diagrams/01-system-architecture.png
 
-STEP 3: Update Experience Section
-Add bullet points tailored to each role:
-• For current role: Lead with architecture bullets
-• For past roles: Emphasize foundation skills
+STEP 3: Experience
+Bullets from sections 1–3, design verbs only
 
-STEP 4: Add Skills
-Skills to highlight:
-- System Architecture
-- GPU Optimization (CUDA)
-- Microservice Design
-- Machine Learning Operations (MLOps)
-- Python (PyTorch, FastAPI, Django)
-- Full-Stack Integration
+STEP 4: Skills
+System architecture; GPU runtime (CUDA); service contracts; MLOps;
+Python (PyTorch, FastAPI, Django); testing without a GPU
 
-STEP 5: Write "About" Section
-"I design and document production-ready architectures for AI vision 
-platforms. Specialized in system design, GPU optimization, MLOps 
-infrastructure, and full-stack integration. Current focus: scaling ML 
-systems from MVP to enterprise. See featured project for detailed 
-architecture documentation."
+STEP 5: About
+"I design and document architectures for AI vision platforms, and I
+write down their limitations before their features. See the featured
+project for one whose limitations were later resolved on record."
 ```
 
-### GitHub Repository Implementation
+### GitHub repository
 
 ```
-STEP 1: Add Repository Description (edit in About)
-Short: "Production-ready microservice architecture for YOLO training 
-and inference orchestration"
+STEP 1: About
+Short description from section 5
 
-STEP 2: Add Topics
-clearml, yolo, gpu-optimization, microservices, fastapi, django, 
-ml-ops, computer-vision, architecture, cuda
+STEP 2: Topics
+architecture, mlops, computer-vision, yolo, sahi, fastapi, django,
+cuda, docker-compose, adr
 
-STEP 3: Add Badges to README
-[![Architecture](https://img.shields.io/badge/Status-Production%20Ready-brightgreen)]()
-[![Portfolio Safe](https://img.shields.io/badge/Portfolio-Safe-brightgreen)]()
+STEP 3: Badges
+Documentation only · Public-safe · Anonymized
 
-STEP 4: Update README Top Section
-• What this repository is (reference architecture)
-• What this demonstrates (system design, GPU optimization, MLOps)
-• Quick links to key documents
+STEP 4: README entry points
+- What this repository argues
+- docs/architecture/15-limitations-and-risks.md
+- docs/evolution/00-what-came-next.md
+- docs/architecture/adr/
 
-STEP 5: Pin Important Documents
-In README, create "Quick Navigation" section:
-- System Overview (docs/02-system-architecture.md)
-- Architecture Decisions (docs/architecture/adr/README.md)
-- MLOps Strategy (docs/MLOPS_STATUS_REPORT.md)
-- Error Handling (docs/14-error-handling-and-fallbacks.md)
+STEP 5: Never add
+Production-ready badges, self-assessed maturity levels, dates
 ```
 
-### Portfolio Website Implementation
+### Portfolio website
 
 ```
-STEP 1: Create Project Page
-URL: yoursite.com/projects/yolo-orchestration
+STEP 1: Page
+yoursite.com/projects/yolo-orchestration
 
-STEP 2: Section Structure
-├── Hero/Title Section
-├── Problem-Solution Overview
-├── Architecture Diagram
-├── Key Technical Decisions
-├── Results/Impact
-├── Technologies Used
-├── Documentation Links
-└── Call-to-Action (GitHub link)
+STEP 2: Sections
+├── Title and one-paragraph overview
+├── Architecture diagram
+├── Limitation → resolution table (section 6)
+├── Scope statement (training outside the platform; GPU path not
+│   validated in the revision)
+├── Technical highlights
+├── Technologies
+└── Links: repository, docs/architecture/adr/, docs/evolution/
 
-STEP 3: Visual Enhancements
-Add diagrams showing:
-- Service separation (Django vs FastAPI)
-- GPU orchestration flow
-- SAHI tiling strategy
-- MLOps evolution phases
+STEP 3: Visuals (from assets/diagrams/ and assets/poster/)
+01 system architecture · 02 training flow · 04 SAHI · 07 roadmap
 
-STEP 4: Incorporate Outcomes
-Highlight what the design achieves, not invented percentages:
+STEP 4: Outcomes, not percentages
 - OOM recovered rather than fatal
-- Small objects detectable that full-frame inference misses
-- Self-hosted migration decided against an explicit cost model
-
-STEP 5: Link Strategy
-Internal: Link to related projects if any
-External: Link to GitHub repository and documentation
+- small objects detectable that full-frame inference misses
+- timeouts answered without a broker
+- lineage questions answerable from the registry
 ```
 
 ---
 
 ## Tailoring by Role
 
-### For Machine Learning Engineer Positions
+### Machine Learning Engineer
 
-**Resume Focus**:
-- Lead with bullet #1: Multi-seed validation
-- Lead with bullet #2: GPU memory management
-- Include bullet #3: Experiment tracking
+**Resume**: bullets 1–3 of section 1
+**Emphasize**: reproducibility; why selection left the training loop; why the tracker was
+withdrawn and what replaced it as the source of truth
+**Interview**: multi-seed strategy; CUDA cleanup and OOM recovery; tracking without egress
+**Avoid**: deployment detail; claiming the revision trained on the GPU
 
-**LinkedIn Focus**:
-- Highlight: "Statistical rigor over single-run bias"
-- Emphasize: "Reproducibility and experiment tracking"
-- Technical depth on CUDA optimization
+### Backend / Platform Engineer
 
-**Interview Talking Points**:
-- Multi-seed strategy and why it matters
-- CUDA optimization and resource scaling
-- ClearML integration and reproducibility
+**Resume**: bullets 1, 3 and 5 of section 2
+**Emphasize**: answering a trigger with the smallest change; contracts; tests without a GPU
+**Interview**: why two services; submit/poll instead of a queue; error envelope, manifest,
+service tokens, same-path invariant; the evolution ledger
+**Avoid**: deep CV detail
 
-**Avoid**: Infrastructure scaling, deployment details
+### Computer Vision Engineer
 
----
+**Resume**: bullets 1, 4 and 5 of section 3
+**Emphasize**: small objects; physical quantities from detections; what is not validated
+**Interview**: SAHI trade-offs; metrology stages and gates; GeoJSON in the console
+**Avoid**: infrastructure detail
 
-### For Backend/Platform Engineer Positions
+### AI / MLOps Lead
 
-**Resume Focus**:
-- Lead with bullet #1: Microservice architecture
-- Lead with bullet #3: Web-to-compute integration
-- Lead with bullet #5: MLOps infrastructure evolution
-
-**LinkedIn Focus**:
-- Highlight: "Microservice separation and scaling"
-- Emphasize: "Error propagation and system design"
-- Architecture thinking and evolution planning
-
-**Interview Talking Points**:
-- Why separate services (Django vs FastAPI)
-- How services communicate and scale independently
-- Evolution from MVP to enterprise scale
-- Error handling and failure scenarios
-
-**Avoid**: Deep GPU optimization details, computer vision specifics
-
----
-
-### For Computer Vision Engineer Positions
-
-**Resume Focus**:
-- Lead with bullet #1: SAHI tiling for small objects
-- Lead with bullet #2: Multi-seed validation
-- Lead with bullet #4: Dataset management
-
-**LinkedIn Focus**:
-- Highlight: "Small-object detection optimization"
-- Emphasize: "High-resolution inference patterns"
-- Real-world CV challenges and solutions
-
-**Interview Talking Points**:
-- SAHI tiling strategy and its effectiveness
-- Compute-vs-accuracy trade-offs
-- Dataset configuration and versioning
-- Continuous improvement training
-
-**Avoid**: Infrastructure scaling, backend integration details
-
----
-
-### For AI/MLOps Lead Positions
-
-**Resume Focus**:
-- Use all bullets as foundation
-- Add strategic perspective: "Designed holistic architecture"
-- Emphasize evolution planning
-
-**LinkedIn Focus**:
-- Full project description
-- Emphasize roadmap and strategic thinking
-- Mention team-scale implications
-
-**Interview Talking Points**:
-- Full architecture overview
-- Trade-offs and decision rationale
-- MLOps evolution and infrastructure planning
-- Scaling strategy and metrics-driven phases
-
-**Include**: Everything—this is comprehensive overview role
+**Resume**: the limitation → resolution table of section 6 as the spine
+**Emphasize**: restraint that can be audited; four decisions reversed with superseding records
+**Interview**: the whole arc from `16` to `docs/evolution/07`
 
 ---
 
 ## Common Interview Questions & Responses
 
-### Q1: "Walk me through this architecture"
+### "Walk me through this architecture"
 
-**Answer Framework**:
 ```
-"This is a microservice architecture for AI vision platforms. The 
-problem was that web requests and GPU training jobs were interfering 
-with each other. 
+"An internal computer-vision platform: a small group of operators
+submits YOLO training and high-resolution inference jobs. The design
+problem is not scale; it is keeping GPU-bound work from taking down a
+web application and keeping its artifacts traceable.
 
-Solution: Separate them entirely.
+Django owns metadata, configuration and visualisation. FastAPI owns
+the GPU runtime. HTTP between them, shared artifact storage as the
+integration mechanism, a relational database only on the web side.
 
-Django handles the web tier—stateless, handles user requests, 
-authentication, result display. FastAPI handles the compute tier—
-GPU-intensive training, inference, experiment orchestration.
+The initial iteration stated its limitations: the request stays open
+for the whole job, the best model is a file with a race condition,
+paths are translated across containers, nothing is tested. It also
+named the trigger for each.
 
-Key technical decisions:
-1. Multi-seed training for statistical robustness (not single runs)
-2. CUDA memory management for reliable multi-seed execution
-3. SAHI tiling for high-resolution small-object detection
-4. ClearML for experiment tracking and reproducibility
-
-Growth phases:
-- MVP: Single GPU, synchronous HTTP (current)
-- Phase 2: Job queue when queue wait > 30 minutes
-- Phase 3: Multi-GPU workers and DDP
-- Phase 4: Kubernetes orchestration
-
-The architecture prioritizes clarity—responsibility boundaries are 
-explicit, failures are predictable, and each phase is triggered by 
-specific metrics, not speculation."
+When the triggers fired, the revision answered each one with the
+smallest change that closed it: job records and polling, not a queue;
+a transactional registry, not a lock; one mount path, not a
+translation layer; a mock/real runtime seam and a CPU test suite, not
+a GPU in CI. A queue, a worker pool and Kubernetes were never
+triggered, and that is on record."
 ```
 
-### Q2: "Why multi-seed training?"
+### "How do you approach scalability?"
 
-**Answer Framework**:
 ```
-"Single training runs have inherent randomness from initialization. 
-You get one random value, not the distribution. With multiple seeds, 
-you capture the distribution.
+"By trigger, not by calendar. The initial iteration ran synchronously
+on one or two GPUs, which fit a predictable internal workload. The
+roadmap named what would justify each addition: job status and
+polling once operators need progress; a controlled GPU worker once
+jobs compete for the device; a broker only once retry, cancellation
+and multi-worker dispatch are real requirements.
 
-Concretely: Train 5 times with different random seeds. Get 5 model 
-performance curves. Average them. That average is what you can 
-actually expect in production, not a lucky or unlucky single run.
-
-Implementation challenge: CUDA memory. If you train 5 seeds 
-sequentially, you need to clean up between them properly. We 
-implemented explicit cleanup (torch.cuda.empty_cache, gc.collect) 
-after each seed.
-
-Result: Statistically robust model selection, not random luck."
+What actually happened: timeouts fired and polling with durable job
+records was enough. Contention on the device is the open trigger; the
+design recommendation is a single admission lane. Nothing further was
+triggered."
 ```
 
-### Q3: "How do you handle GPU memory issues?"
+### "Why multi-seed training?"
 
-**Answer Framework**:
 ```
-"Out-of-memory (OOM) errors can terminate training. We prevent them 
-with progressive resource scaling.
+"A single run gives one draw from the initialization distribution,
+not the distribution. Several seeds give a spread; selection on
+aggregated validation metrics is more robust than selection on one
+lucky run.
 
-Strategy:
-1. Start with configured batch size and image size
-2. If OOM occurs, try fallback: reduce batch size by 50%
-3. If still OOM: reduce image size
-4. If still OOM: reduce number of epochs remaining
-5. If still OOM: terminate gracefully
+The runtime cost is CUDA hygiene: seeds run sequentially, so cache
+release and memory-stat reset between them keep each seed comparable.
 
-This keeps training alive even in constrained environments. Between 
-training runs (especially multi-seed), we explicit ly clean CUDA 
-memory to avoid hidden failures.
-
-Result: an OOM degrades the run instead of ending it."
+The later decision was to take selection out of the loop: the score
+is shown to a person and promotion is a registry transaction with an
+event, not a side effect of training (ADR-010)."
 ```
 
-### Q4: "Why SAHI for inference?"
+### "How do you handle GPU memory issues?"
 
-**Answer Framework**:
 ```
-"SAHI is a tiling strategy for high-resolution images. The problem:
-Small objects are hard to detect at high resolution because they're 
-'too small' for the model to see clearly.
+"An OOM should degrade the run, not end it. The documented pattern is
+progressive resource scaling — reduce batch size first, then image
+size — with fallback validation when the training call returns no
+result, and explicit cleanup between seeds so a previous run's state
+does not cause the next one's OOM.
 
-Solution: Instead of resizing the huge image to fit, process it in 
-tiles.
-
-How it works:
-1. Split large 4K image into overlapping 512×512 tiles
-2. Run YOLO detection on each tile (where small objects look 'large' 
-   enough to detect)
-3. Merge results automatically, removing duplicates
-
-Result: objects too small to detect at full-frame scale become 
-detectable inside their tile.
-
-Trade-off: Compute cost increases (N tiles to run detection on), but 
-accuracy improvement is worth it."
+To be precise about scope: those are runtime facts of the initial
+iteration, which orchestrated training on the GPU. The later revision
+did not validate its GPU path; its tests run on CPU with a mock
+runtime."
 ```
 
-### Q5: "What would you change in production?"
+### "Why SAHI for inference?"
 
-**Answer Framework**:
 ```
-"This is MVP architecture. In production, I'd make changes based on 
-real constraints, not speculation. Specifically:
+"Small objects in a large image fall below the detector's effective
+resolution once the image is resized to the model's input. Tiling
+keeps them at a scale the model can see: overlapping tiles, per-tile
+detection, reconstruction into image coordinates.
 
-1. If queue wait time > 30 minutes: Add job queue (RabbitMQ/Celery)
-2. If GPU utilization > 80% regularly: Add multi-GPU workers
-3. If model loading latency matters: Add inference caching
-4. If data grows > 1TB: Move from filesystem to object storage
-5. If single-point-of-failure risk unacceptable: Add redundancy
+The trade-off is compute: more tiles and more overlap cost more
+passes. The strategy is chosen from the expected object size, not
+fixed. In the revision, the reconstructed detections feed a metrology
+stage that turns boxes into physical size, coverage and density —
+documented as not yet validated against ground truth."
+```
 
-The architecture explicitly documents trigger metrics for each phase. 
-In production, I'd monitor those metrics and evolve the system as 
-needed."
+### "Describe a problem you found and how it was resolved"
+
+```
+"The continuous-improvement loop updated a file-based best-model
+reference whenever a run beat the baseline. Two concurrent runs could
+read the same baseline and the worse one could write last. I
+documented the timeline and the mitigation options.
+
+The revision closed it properly: model versions as rows with a
+weight fingerprint, promotion and rollback as single transactions
+writing an event that names the previous version, the user and a
+reason, and a person performing the promotion. The AI service
+resolves models only through the exported list, verifying the
+fingerprint (ADR-010)."
+```
+
+### "What would you change in production?"
+
+```
+"Only what a trigger asks for. The open one is admission on the
+device: several jobs can be accepted at once and there is no lane
+control. Beyond that: make CI blocking, validate the metrology method
+against ground truth, deploy the tracking server once training
+returns to the platform, and add a request identifier that spans both
+services. None of those is a queue or Kubernetes; the ledger in
+docs/evolution/07 is explicit about why."
 ```
 
 ---
 
 ## Credibility Checklist
 
-Before sharing your portfolio content, verify:
+Before sharing portfolio content, verify:
 
-- ✅ No real institution/client names
-- ✅ No private dataset references
-- ✅ No real model weights or performance results
-- ✅ No credentials or API keys
-- ✅ No absolute local paths or environment specifics
-- ✅ Claims are within scope of public documentation
-- ✅ "MVP" and "production-ready" properly contextualized
-- ✅ No implication of private code release
-- ✅ Honest about what's documented vs implemented
-- ✅ Appropriate disclaimers about reference architecture status
+- No institution, client, site, person or hardware names
+- No private dataset references, weights or measured results
+- No credentials, infrastructure identifiers or absolute paths
+- No calendar dates, quarters or years; iterations only
+- No self-assessed maturity levels; no counts the repository does not state
+- Design verbs only: designed, documented, specified, proposed, evaluated
+- The initial tracking tool is described as withdrawn, never as current
+- No queue, worker pool or Kubernetes claimed; they were not triggered
+- The scope statement is present: training outside the platform in the revision; GPU path
+  not validated there
+- Every claim points at a document: `docs/architecture/`, `docs/architecture/adr/`,
+  `docs/evolution/`
 
 ---
 
 ## Tracking Updates
 
-When you update the resume/portfolio content, track changes:
+When the portfolio content changes, note it here by iteration, not by date:
 
-| Version | Date | Changes | Where Used |
-|---------|------|---------|-----------|
-| 1.0 | initial | Initial creation | - |
-| | | Added all platforms | - |
-| 1.1 | [Date] | [Changes] | LinkedIn, Portfolio |
-| 1.2 | [Date] | [Changes] | Resume, GitHub |
+| Revision | Changes | Where used |
+|---|---|---|
+| Initial | Bullets by profile, LinkedIn, GitHub, project card | All platforms |
+| Limitation → resolution rewrite | Content rebuilt on the evolution documents and ADR-009 to ADR-013; tracking tool marked withdrawn; maturity levels, dates and unsourced counts removed | All platforms |
 
 ---
 
 ## Final Thoughts
 
-This content demonstrates **production thinking**—how you'd actually 
-approach building and scaling AI systems, not just implementing 
-features. 
+This content demonstrates a way of working: state the limitation, name the trigger, answer it
+with the smallest change that closes it, and write down the outcome — including what was not
+built and what was not validated.
 
 Use it to show:
-- ✅ System architecture understanding
-- ✅ Thoughtful design decisions with trade-offs
-- ✅ Production-readiness thinking
-- ✅ Clear communication of complex technical concepts
-- ✅ Honest assessment of MVP vs enterprise scale
+- system architecture with explicit responsibility boundaries
+- decisions with triggers, and a ledger of what those triggers produced
+- contracts and tests as the answer to prose and manual checks
+- honest scope: what the initial iteration exercised, what the revision moved out
 
-Your goal isn't to claim expertise you don't have, but to demonstrate 
-how you think about building systems that work at scale.
+The goal is not to claim more than the repository can evidence, but to show how you think
+about systems whose limitations you are willing to write down.
 
 ---
 
-**Associated Content**: PORTFOLIO_RESUME_CONTENT.md  
-**Status**: Ready to use ✅
+**Associated content**: `PORTFOLIO_RESUME_CONTENT.md`
+**Status**: public-safe portfolio content

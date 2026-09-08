@@ -9,7 +9,7 @@ graph TB
     end
     
     subgraph Metadata["Metadata Layer"]
-        ClearML["ClearML<br/>(Experiment Tracking)"]
+        Tracker["Tracker<br/>(metadata only)"]
         PostgreSQL["PostgreSQL<br/>(Data & Models)"]
     end
     
@@ -24,9 +24,9 @@ graph TB
     FastAPI -->|Coordinate| SAHI
     FastAPI -->|Coordinate| CI
     
-    YOLO -->|Metrics| ClearML
-    CI -->|Metrics| ClearML
-    SAHI -->|Metrics| ClearML
+    YOLO -->|Metrics| Tracker
+    CI -->|Metrics| Tracker
+    SAHI -->|Metrics| Tracker
     
     YOLO -->|Read/Write| SharedFS
     CI -->|Read/Write| SharedFS
@@ -34,7 +34,7 @@ graph TB
     
     Django -->|Queries| PostgreSQL
     FastAPI -->|Store Status| PostgreSQL
-    ClearML -->|Experiments| PostgreSQL
+    Tracker -->|Run metadata| PostgreSQL
     
     YOLO -->|GPU Compute| GPU
     SAHI -->|GPU Compute| GPU

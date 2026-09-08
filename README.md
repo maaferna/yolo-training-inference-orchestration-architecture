@@ -165,7 +165,8 @@ are build products, not hand-edited files.
 | [04 · SAHI tiled inference](./assets/diagrams/04-sahi-inference.png) | Why tiling recovers small objects, and what it costs |
 | [05 · Deployment and cost strategy](./assets/diagrams/05-deployment-strategy.png) | Local, cloud or hybrid — and the reasoning behind the choice |
 | [06 · Synthetic dataset generation](./assets/diagrams/06-synthetic-dataset.png) | How scarce annotated data is expanded into a usable dataset |
-| [07 · Production evolution roadmap](./assets/diagrams/07-evolution-roadmap.png) | What gets added first, and which trigger justifies it |
+| [07 · Production evolution roadmap](./assets/diagrams/07-evolution-roadmap.png) | What gets added first, which trigger justifies it, and what a later revision realised |
+| [08 · Submit/poll execution lifecycle](./assets/diagrams/08-submit-poll-lifecycle.png) | How the later revision answered timeouts without a queue: run identifier, job record, batched polling |
 
 ### One-page poster
 

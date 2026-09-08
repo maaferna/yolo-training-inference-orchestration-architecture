@@ -19,7 +19,8 @@ assets/
 | `diagrams/04-sahi-inference.png` | Tiled inference for small-object detection |
 | `diagrams/05-deployment-strategy.png` | Local, cloud and hybrid deployment trade-offs |
 | `diagrams/06-synthetic-dataset.png` | Synthetic dataset generation pipeline |
-| `diagrams/07-evolution-roadmap.png` | Evolution priorities and their triggers |
+| `diagrams/07-evolution-roadmap.png` | Evolution priorities, their triggers and the outcome per stage |
+| `diagrams/08-submit-poll-lifecycle.png` | Submit/poll execution of the later revision: run identifier, job record, batched polling |
 | `poster/poster-architecture.png` | One-page architecture poster |
 
 ## Regenerating
