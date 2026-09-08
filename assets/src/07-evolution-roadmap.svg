@@ -48,7 +48,7 @@
 <text x="438" y="532" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11.5" font-weight="400" fill="#94A6C4" text-anchor="start">Job records, manifests, backups;</text>
 <text x="438" y="549" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11.5" font-weight="400" fill="#94A6C4" text-anchor="start">preflight became validation at</text>
 <text x="438" y="566" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11.5" font-weight="400" fill="#94A6C4" text-anchor="start">submit.</text>
-<rect x="438" y="485" width="79.84" height="21" rx="999" fill="#7ED957" stroke="none" opacity="0.16"/><text x="477.92" y="499.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="700" fill="#7ED957" text-anchor="middle" letter-spacing="0.7">realised</text>
+<rect x="438" y="485" width="79.84" height="21" rx="999" fill="#7ED957" stroke="none" opacity="0.16"/><text x="477.92" y="499.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="700" fill="#7ED957" text-anchor="middle" letter-spacing="0.7">realized</text>
 <line x1="438" y1="473" x2="666" y2="473" stroke="#1F2E47" stroke-width="1"/>
 <line x1="438" y1="420" x2="666" y2="420" stroke="#1F2E47" stroke-width="1"/>
 <text x="438" y="442" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11.5" font-weight="400" fill="#63799B" text-anchor="start">Do this first. It costs little and</text>
@@ -66,7 +66,7 @@
 <text x="724" y="532" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11.5" font-weight="400" fill="#94A6C4" text-anchor="start">Submit/poll on in-process pools, not</text>
 <text x="724" y="549" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11.5" font-weight="400" fill="#94A6C4" text-anchor="start">a queue. GPU admission is the open</text>
 <text x="724" y="566" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11.5" font-weight="400" fill="#94A6C4" text-anchor="start">trigger.</text>
-<rect x="724" y="485" width="169.60000000000002" height="21" rx="999" fill="#FFB13D" stroke="none" opacity="0.16"/><text x="808.8" y="499.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="700" fill="#FFB13D" text-anchor="middle" letter-spacing="0.7">realised differently</text>
+<rect x="724" y="485" width="169.60000000000002" height="21" rx="999" fill="#FFB13D" stroke="none" opacity="0.16"/><text x="808.8" y="499.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="700" fill="#FFB13D" text-anchor="middle" letter-spacing="0.7">realized differently</text>
 <line x1="724" y1="473" x2="952" y2="473" stroke="#1F2E47" stroke-width="1"/>
 <line x1="724" y1="403" x2="952" y2="403" stroke="#1F2E47" stroke-width="1"/>
 <text x="724" y="425" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11.5" font-weight="400" fill="#63799B" text-anchor="start">Trigger: repeated timeouts, jobs</text>
@@ -85,7 +85,7 @@
 <text x="1010" y="532" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11.5" font-weight="400" fill="#94A6C4" text-anchor="start">Transactional registry, human</text>
 <text x="1010" y="549" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11.5" font-weight="400" fill="#94A6C4" text-anchor="start">promotion; retention as a batch</text>
 <text x="1010" y="566" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11.5" font-weight="400" fill="#94A6C4" text-anchor="start">cascade.</text>
-<rect x="1010" y="485" width="79.84" height="21" rx="999" fill="#B98BFF" stroke="none" opacity="0.16"/><text x="1049.92" y="499.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="700" fill="#B98BFF" text-anchor="middle" letter-spacing="0.7">realised</text>
+<rect x="1010" y="485" width="79.84" height="21" rx="999" fill="#B98BFF" stroke="none" opacity="0.16"/><text x="1049.92" y="499.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="700" fill="#B98BFF" text-anchor="middle" letter-spacing="0.7">realized</text>
 <line x1="1010" y1="473" x2="1238" y2="473" stroke="#1F2E47" stroke-width="1"/>
 <line x1="1010" y1="420" x2="1238" y2="420" stroke="#1F2E47" stroke-width="1"/>
 <text x="1010" y="442" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11.5" font-weight="400" fill="#63799B" text-anchor="start">Trigger: lineage questions become</text>
@@ -130,9 +130,9 @@
 <g clip-path="url(#clip63)"><rect x="100" y="792" width="1444" height="5" fill="#4FA8FF"/></g>
 <text x="822.0" y="827" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="15" font-weight="600" fill="#EAF0FA" text-anchor="middle">Reliability, traceability and artifact governance return more, at this scale, than any distributed component added ahead of the evidence for it.</text>
 <rect x="100" y="892" width="11" height="11" rx="3" fill="#7ED957" stroke="none"/>
-<text x="118" y="901" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Realised</text>
+<text x="118" y="901" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Realized</text>
 <rect x="191.2" y="892" width="11" height="11" rx="3" fill="#FFB13D" stroke="none"/>
-<text x="209.2" y="901" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Realised differently</text>
+<text x="209.2" y="901" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Realized differently</text>
 <rect x="359.2" y="892" width="11" height="11" rx="3" fill="#63799B" stroke="none"/>
 <text x="377.2" y="901" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Not triggered</text>
 <rect x="482.4" y="892" width="11" height="11" rx="3" fill="#4FA8FF" stroke="none"/>

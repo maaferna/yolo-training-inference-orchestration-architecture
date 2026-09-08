@@ -1,4 +1,4 @@
-# Operator Console: Batches, Maps and Localisation
+# Operator Console: Batches, Maps and Localization
 
 > Public-safe documentation. Design-level description of the web layer in a later revision. No
 > screenshots, no place names, no example coordinates from real imagery. The geospatial
@@ -69,14 +69,14 @@ The console renders that document on an interactive map:
 - The same GeoJSON is downloadable, so a desktop GIS can open it; the console is a viewer, not
   the system of record.
 
-### Localisation
+### Localization
 
 The console is presented in the operators' language, not the developers'.
 
-- Every user-facing string goes through the framework's translation catalogue; source strings
-  are English, the catalogue supplies the interface language.
+- Every user-facing string goes through the framework's translation catalog; source strings
+  are English, the catalog supplies the interface language.
 - A **guard test** renders every console view and fails if an untranslated source string
-  appears. This is what keeps the catalogue complete: a developer who adds a label without a
+  appears. This is what keeps the catalog complete: a developer who adds a label without a
   translation breaks the build, not the operator's morning.
 - Dates, numbers and units follow the interface locale; identifiers and codes (`03`) do not,
   because they are contracts.
@@ -122,6 +122,6 @@ show positional uncertainty.
 
 The console makes the submit/poll model visible (progress per batch), makes results spatial (a
 GeoJSON layer per batch on an interactive map with vendored libraries and no build step), and
-makes the tool usable by its actual operators (a translation catalogue enforced by a guard
+makes the tool usable by its actual operators (a translation catalog enforced by a guard
 test). It reads artifacts from the volume through the manifest contract and leaves the
 geospatial mathematics to the pipeline that produces the GeoJSON.

@@ -16,7 +16,7 @@
 <rect width="1600" height="1000" fill="#0A101C"/>
 <text x="56" y="58" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="700" fill="#63799B" text-anchor="start" letter-spacing="1.6">DATASET ENGINEERING · AUXILIARY RESEARCH WORKFLOW</text>
 <text x="56" y="92" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="36" font-weight="700" fill="#EAF0FA" text-anchor="start">Synthetic Dataset Generation</text>
-<text x="56" y="136" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="15" font-weight="400" fill="#94A6C4" text-anchor="start">When annotated examples of a class are scarce, cut real objects out of the images that exist and recompose them into new labelled scenes.</text>
+<text x="56" y="136" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="15" font-weight="400" fill="#94A6C4" text-anchor="start">When annotated examples of a class are scarce, cut real objects out of the images that exist and recompose them into new labeled scenes.</text>
 <line x1="56" y1="162" x2="1544" y2="162" stroke="#1F2E47" stroke-width="1"/>
 <rect x="100" y="245" width="272" height="170" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
 <clipPath id="clip44"><rect x="100" y="245" width="272" height="170" rx="10"/></clipPath>
@@ -43,7 +43,7 @@
 <text x="702" y="290.5" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="15.5" font-weight="600" fill="#EAF0FA" text-anchor="start">Box to mask</text>
 <text x="702" y="311.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">SAM turns each bounding box</text>
 <text x="702" y="329.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">into a segmentation mask</text>
-<text x="702" y="347.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Save binary and colour masks</text>
+<text x="702" y="347.5" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Save binary and color masks</text>
 <polyline points="958,330 974,330" fill="none" stroke="#B98BFF" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-mB98BFF)"/>
 <rect x="976" y="245" width="272" height="170" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
 <clipPath id="clip47"><rect x="976" y="245" width="272" height="170" rx="10"/></clipPath>

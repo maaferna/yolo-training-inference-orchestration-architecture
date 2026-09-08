@@ -82,7 +82,7 @@ data-egress grounds; a self-hosted, tracking-only server decided and not deploye
   producer (ADR-012)
 ```
 
-**Why this matters**: MLOps judgement that treats a vendor default as a security decision, not
+**Why this matters**: MLOps judgment that treats a vendor default as a security decision, not
 a convenience.
 
 ---
@@ -206,14 +206,14 @@ a fingerprint-verified list the compute service resolves models through (ADR-002
 ### Bullet #5: Evolution by Evidence, Then the Ledger
 **Limitation**: Roadmaps that promise infrastructure on a calendar are never checked.
 **Resolution**: A roadmap gated by named triggers, and a trigger-by-trigger ledger of what was
-realised, realised differently, not triggered or discarded (`docs/architecture/16`,
+realized, realized differently, not triggered or discarded (`docs/architecture/16`,
 `docs/evolution/07`).
 
 ```
 • Documented a production evolution roadmap in which a queue, a
   worker pool and Kubernetes are non-goals until a named trigger
   fires; recorded the outcome trigger by trigger — job records,
-  polling, registry, contracts and tests were realised, no broker or
+  polling, registry, contracts and tests were realized, no broker or
   Kubernetes was needed — and specified a mock/real runtime seam with
   a CPU test suite on the order of two thousand tests and CI on a
   throwaway Compose stack
@@ -295,14 +295,14 @@ size, clusters, coverage and density, with gates (`docs/evolution/04`, ADR-013).
 ### Bullet #5: Operator Console with Geospatial Results
 **Limitation**: Results shown as image previews only; operators asked "where".
 **Resolution**: GeoJSON per batch rendered on an interactive map; batch progress by polling;
-localisation with a guard test (`docs/evolution/05`).
+localization with a guard test (`docs/evolution/05`).
 
 ```
 • Designed an operator console that renders per-batch GeoJSON
   (footprints, detections per class, foci, coverage) on an interactive
   map from a vendored library with no build step, exposes the same
   GeoJSON for desktop GIS, polls batched job status for progress, and
-  enforces localisation with a guard test that fails on any
+  enforces localization with a guard test that fails on any
   untranslated string
 ```
 
@@ -346,7 +346,7 @@ THE LATER REVISION — limitation by limitation
 • Contracts: one error envelope, one run manifest, service tokens
 • Detection metrology as a CPU job type: physical size, coverage,
   density (ADR-013)
-• Operator console with GeoJSON maps and a localisation guard test
+• Operator console with GeoJSON maps and a localization guard test
 • Mock/real runtime seam, a CPU test suite on the order of two
   thousand tests, CI on a throwaway Compose stack
 • Still no broker, no worker pool, no Kubernetes — the triggers never
@@ -413,7 +413,7 @@ WHAT HAPPENED NEXT (docs/evolution/)
   tracking-only server decided, not deployed (ADR-012)
 - Contracts: error envelope, run manifest, service tokens
 - Detection metrology as a CPU job type (ADR-013)
-- Operator console: GeoJSON maps, localisation guard test
+- Operator console: GeoJSON maps, localization guard test
 - Mock/real runtime seam, CPU test suite on the order of two thousand
   tests, CI on a throwaway Compose stack
 - Training moved outside the platform (fingerprinted import); the
@@ -431,7 +431,7 @@ WHAT'S NOT INCLUDED
 
 - Source code, datasets, weights, measured results
 - Credentials, infrastructure identifiers, absolute paths
-- Names of organisations, sites, people or hardware
+- Names of organizations, sites, people or hardware
 
 TECHNOLOGIES
 
@@ -481,7 +481,7 @@ down a web application, and keeping its artifacts traceable.
 | Tracking tool with data egress by default | Withdrawn; manifests as source of truth; self-hosted tracking-only server decided, not deployed | ADR-012 |
 | Errors as prose, no service authentication | One error envelope, one run manifest, service tokens | evolution 03 |
 | Detections stop at pixel boxes | Metrology job type: physical size, clusters, coverage, density | ADR-013 |
-| Results as image previews only | Operator console with GeoJSON maps; localisation guard test | evolution 05 |
+| Results as image previews only | Operator console with GeoJSON maps; localization guard test | evolution 05 |
 | No tests, no CI | Mock/real runtime seam; CPU suite on the order of two thousand tests; CI on a throwaway Compose stack | evolution 06 |
 | Queue, worker pool, Kubernetes as non-goals | Not triggered; recorded as such | evolution 07 |
 
@@ -560,7 +560,7 @@ Emphasize: small objects, physical quantities, what is not yet validated.
 
 ### For AI / MLOps lead roles
 Lead with: the full limitation → resolution table (section 6) and the ledger
-(`docs/evolution/07-roadmap-realised.md`).
+(`docs/evolution/07-roadmap-realized.md`).
 Emphasize: restraint that can be audited; decisions reversed with a superseding record.
 
 ---

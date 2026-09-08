@@ -299,8 +299,8 @@ deploy:
 
 > **Reference implementation note.** In the reference implementation the AI service ran on the
 > host inside a conda environment, outside Docker, so that the driver, CUDA and PyTorch stack was
-> used directly. The containerised GPU service shown in this document is the target runtime, and
-> containerising the service was one of the first changes of the later revision
+> used directly. The containerized GPU service shown in this document is the target runtime, and
+> containerizing the service was one of the first changes of the later revision
 > ([`docs/evolution/00-what-came-next.md`](../evolution/00-what-came-next.md)).
 
 **Environment Variables**:

@@ -61,7 +61,7 @@
 <text x="116" y="664" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="700" fill="#EAF0FA" text-anchor="start">Purity and fences</text>
 <text x="300" y="664" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">no framework in the service client, no database driver in the AI service, no cross-imports</text>
 <text x="116" y="687" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="700" fill="#EAF0FA" text-anchor="start">Document guards</text>
-<text x="300" y="687" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Compose chain consistent, README claims true, every error code in the catalogue</text>
+<text x="300" y="687" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Compose chain consistent, README claims true, every error code in the catalog</text>
 <text x="116" y="710" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="700" fill="#EAF0FA" text-anchor="start">Console</text>
 <text x="300" y="710" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">every view renders, every string is translated, permissions hold per group</text>
 <text x="116" y="733" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="700" fill="#EAF0FA" text-anchor="start">Mutation-checked subsets</text>
@@ -144,7 +144,7 @@
 <text x="132" y="882" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#FF6B6B" text-anchor="start">✕</text>
 <text x="154" y="882" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#94A6C4" text-anchor="start">Model accuracy on real images · no images or weights</text>
 <text x="602" y="850" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#FF6B6B" text-anchor="start">✕</text>
-<text x="624" y="850" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#94A6C4" text-anchor="start">SAHI border behaviour with real boxes · synthetic cases only</text>
+<text x="624" y="850" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#94A6C4" text-anchor="start">SAHI border behavior with real boxes · synthetic cases only</text>
 <text x="602" y="882" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#FF6B6B" text-anchor="start">✕</text>
 <text x="624" y="882" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#94A6C4" text-anchor="start">The browser · views render, interactions are not scripted</text>
 <text x="1072" y="850" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="13" font-weight="400" fill="#FF6B6B" text-anchor="start">✕</text>

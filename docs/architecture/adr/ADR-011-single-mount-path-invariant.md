@@ -13,7 +13,7 @@ ADR-008 and `19-inference-result-synchronization.md` describe a translation laye
 coordinate systems: the AI service's container path, the web layer's container path, the host
 path and the URL the browser sees. The initial iteration implemented it as string replacement
 with hard-coded prefixes, and `07-shared-storage-and-artifacts.md` lists path mismatch as a
-standing risk. The revision had to decide whether to formalise the translator or remove the
+standing risk. The revision had to decide whether to formalize the translator or remove the
 need for it.
 
 Forces:
@@ -44,7 +44,7 @@ systems remain four opportunities to be wrong.
 ### Have the AI service serve artifacts over HTTP
 Rejected for this iteration. It removes the shared mount from the web layer at the cost of a
 second file-serving path, streaming large outputs through the API process, and a new
-authorisation surface. The trigger for it is a second host; it has not fired.
+authorization surface. The trigger for it is a second host; it has not fired.
 
 ### Object storage with signed URLs
 Rejected. `16` names it as optional scale-out with its own trigger (storage hard to govern
@@ -60,7 +60,7 @@ locally), which had not fired. It also does not remove the need for a stable rel
 ### Negative
 - Both containers must be able to mount the same path, which ties them to one host or to a
   shared filesystem exposed at the same path. This is stated as the assumption it is.
-- Any deployment variant that cannot honour the invariant fails at startup rather than degrading.
+- Any deployment variant that cannot honor the invariant fails at startup rather than degrading.
 
 ### Neutral
 - The web layer still reads the volume directly. The coupling ADR-002 accepted remains; it is

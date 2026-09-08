@@ -56,7 +56,7 @@
 <text x="608" y="342" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#B98BFF" text-anchor="start" letter-spacing="1.4">STAGE 3</text>
 <text x="608" y="362" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="16" font-weight="600" fill="#EAF0FA" text-anchor="start">Foci</text>
 <text x="608" y="383" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">Density-based clustering</text>
-<text x="608" y="401" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">of detection centres</text>
+<text x="608" y="401" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">of detection centers</text>
 <text x="608" y="419" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">→ clusters with extent,</text>
 <text x="608" y="437" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#94A6C4" text-anchor="start">member count, centroid</text>
 <polyline points="810,404 833,404" fill="none" stroke="#B98BFF" stroke-width="2" stroke-linejoin="round" marker-end="url(#a-mB98BFF)"/>

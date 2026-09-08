@@ -38,7 +38,7 @@ Design detail is in [`docs/evolution/01-submit-poll-execution.md`](../../evoluti
 ## Alternatives Considered
 
 ### Keep the synchronous request and raise timeouts
-Rejected. Timeouts were the symptom; the disease was that nothing recorded a job independently
+Rejected. Timeouts were the symptom; the cause was that no record of a job existed independently
 of the connection that started it.
 
 ### A task queue with a broker and a worker process
@@ -59,7 +59,7 @@ restarting is already handled by reconciliation.
 ### Positive
 - The web request returns in milliseconds; timeouts disappear as a failure class.
 - Every run leaves a durable record even if the request that started it dies.
-- Restart behaviour is defined: in-flight jobs fail with a reason instead of vanishing.
+- Restart behavior is defined: in-flight jobs fail with a reason instead of vanishing.
 - Two processes, as before. No new service.
 
 ### Negative

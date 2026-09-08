@@ -37,15 +37,15 @@ endpoints, has the same shape:
 }
 ```
 
-- `code` is stable and documented in a catalogue; renaming a code is a breaking change.
+- `code` is stable and documented in a catalog; renaming a code is a breaking change.
 - `message` is for people and may change freely.
 - `details` is structured and optional.
 - HTTP status carries the class (400 validation, 401/403 authentication and permission, 404,
   409 conflict, 422 semantic, 500 unexpected); the code carries the cause.
 
-The catalogue lives next to the contract and is maintained **in the same change** as any
+The catalog lives next to the contract and is maintained **in the same change** as any
 endpoint that raises a new code. A test asserts that every code raised in the service appears in
-the catalogue and vice versa.
+the catalog and vice versa.
 
 ### One run manifest
 
@@ -85,7 +85,7 @@ in a manifest is relative anyway. ADR-011 records the decision and supersedes AD
 | Automation ↔ web layer (API) | Bearer tokens stored **hashed**; the plaintext is shown once at creation; revocable individually |
 
 The initial iteration's `user_id` in the payload is kept as provenance but no longer implies
-authorisation; the token or session does.
+authorization; the token or session does.
 
 ## Constraints
 
@@ -98,7 +98,7 @@ authorisation; the token or session does.
 
 ## Risks
 
-**Catalogue drift.** Codes multiply. The test that ties catalogue and code together is the
+**Catalog drift.** Codes multiply. The test that ties catalog and code together is the
 only thing that keeps the list honest; the count in the revision was in the tens.
 
 **Manifest bloat.** Recording every output with size is cheap; recording per-detection data in

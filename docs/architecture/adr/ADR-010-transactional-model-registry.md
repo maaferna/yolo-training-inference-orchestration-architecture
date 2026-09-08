@@ -52,7 +52,7 @@ in a tool the platform may not deploy.
 
 ### Automatic promotion on score
 Rejected. It is the initial iteration's "update on improvement" with a database instead of a
-file. The race is gone but the judgement is still absent; a person reading the score was judged
+file. The race is gone but the judgment is still absent; a person reading the score was judged
 cheaper than a wrong model in production.
 
 ### A registry inside the AI service

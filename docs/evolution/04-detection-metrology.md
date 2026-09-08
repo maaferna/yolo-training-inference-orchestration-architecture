@@ -31,7 +31,7 @@ this needs a GPU, all of it needs care about units and about what is unknown.
           │
           ▼
   1. Scale        height above ground, focal length, sensor width
-                  → ground sampling distance (physical length per pixel)
+                  → ground sampling distance (GSD, physical length per pixel)
                   missing metadata → scale-free tier (see below)
           │
           ▼
@@ -39,7 +39,7 @@ this needs a GPU, all of it needs care about units and about what is unknown.
                   aggregated per image: count, size distribution
           │
           ▼
-  3. Foci         density-based clustering of detection centres
+  3. Foci         density-based clustering of detection centers
                   → clusters ("foci") with extent, member count, centroid
           │
           ▼

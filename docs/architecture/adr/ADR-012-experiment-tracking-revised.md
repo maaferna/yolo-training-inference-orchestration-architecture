@@ -55,7 +55,7 @@ in-platform producer yet, and the reason its deployment is deferred rather than 
 
 ### Keep the tool, configure it strictly
 Rejected. A default that is safe only when configured is a default that will eventually be
-unconfigured. The image-upload behaviour would also have to be disabled in every training
+unconfigured. The image-upload behavior would also have to be disabled in every training
 entry point, forever.
 
 ### Self-host the same tool
@@ -95,5 +95,5 @@ should be tooled once training returns to the platform.
 ## Public-Safe Note
 
 Tool names are those of publicly available products. No workspace, account, endpoint or
-credential is mentioned. The security observations concern default behaviours documented by
+credential is mentioned. The security observations concern default behaviors documented by
 the tools themselves.

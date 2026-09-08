@@ -195,21 +195,21 @@
 <text x="106" y="1642" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="15" font-weight="600" fill="#EAF0FA" text-anchor="start">Reliability</text>
 <text x="106" y="1660" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="400" fill="#63799B" text-anchor="start">preflight checks, job status,</text>
 <text x="106" y="1675" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="400" fill="#63799B" text-anchor="start">structured logs</text>
-<text x="106" y="1690" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#7ED957" text-anchor="start" letter-spacing="1.3">REALISED</text>
+<text x="106" y="1690" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#7ED957" text-anchor="start" letter-spacing="1.3">REALIZED</text>
 <rect x="358" y="1598" width="254" height="100" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
 <rect x="358" y="1598" width="4" height="100" rx="2" fill="#FFB13D" stroke="none"/>
 <text x="376" y="1620" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#FFB13D" text-anchor="start" letter-spacing="1.3">PRIORITY 2</text>
 <text x="376" y="1642" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="15" font-weight="600" fill="#EAF0FA" text-anchor="start">Background exec</text>
 <text x="376" y="1660" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="400" fill="#63799B" text-anchor="start">only once timeouts or contention</text>
 <text x="376" y="1675" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="400" fill="#63799B" text-anchor="start">are routine</text>
-<text x="376" y="1690" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#FFB13D" text-anchor="start" letter-spacing="1.3">REALISED DIFFERENTLY · NO QUEUE</text>
+<text x="376" y="1690" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#FFB13D" text-anchor="start" letter-spacing="1.3">REALIZED DIFFERENTLY · NO QUEUE</text>
 <rect x="628" y="1598" width="254" height="100" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5"/>
 <rect x="628" y="1598" width="4" height="100" rx="2" fill="#B98BFF" stroke="none"/>
 <text x="646" y="1620" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#B98BFF" text-anchor="start" letter-spacing="1.3">PRIORITY 3</text>
 <text x="646" y="1642" font-family="Montserrat, 'DejaVu Sans', sans-serif" font-size="15" font-weight="600" fill="#EAF0FA" text-anchor="start">Governance</text>
 <text x="646" y="1660" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="400" fill="#63799B" text-anchor="start">model reference and dataset</text>
 <text x="646" y="1675" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="11" font-weight="400" fill="#63799B" text-anchor="start">versions in the DB</text>
-<text x="646" y="1690" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#B98BFF" text-anchor="start" letter-spacing="1.3">REALISED</text>
+<text x="646" y="1690" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#B98BFF" text-anchor="start" letter-spacing="1.3">REALIZED</text>
 <rect x="898" y="1598" width="254" height="100" rx="10" fill="#141E31" stroke="#2A3B58" stroke-width="1.5" stroke-dasharray="7 6"/>
 <rect x="898" y="1598" width="4" height="100" rx="2" fill="#63799B" stroke="none"/>
 <text x="916" y="1620" font-family="Lato, 'DejaVu Sans', sans-serif" font-size="10" font-weight="700" fill="#63799B" text-anchor="start" letter-spacing="1.3">OPTIONAL</text>

@@ -811,4 +811,4 @@ These are not bugs or oversights. They reflect **pragmatic engineering decisions
 
 ---
 
-**This architecture is pragmatically scoped for a controlled internal platform. The evolution path is in `16-production-evolution-roadmap.md`; what a later revision actually did about each limitation listed here is recorded in [`docs/evolution/00-what-came-next.md`](../evolution/00-what-came-next.md) and, trigger by trigger, in [`docs/evolution/07-roadmap-realised.md`](../evolution/07-roadmap-realised.md).**
+**This architecture is pragmatically scoped for a controlled internal platform. The evolution path is in `16-production-evolution-roadmap.md`; what a later revision actually did about each limitation listed here is recorded in [`docs/evolution/00-what-came-next.md`](../evolution/00-what-came-next.md) and, trigger by trigger, in [`docs/evolution/07-roadmap-realized.md`](../evolution/07-roadmap-realized.md).**

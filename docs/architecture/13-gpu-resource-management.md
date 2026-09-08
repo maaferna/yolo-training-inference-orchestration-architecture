@@ -160,14 +160,14 @@ FastAPI process, one job at a time, no scheduler.
 ### Why a single-GPU fallback is kept
 
 - **Portability**: the same job must run on a one-GPU workstation for development and debugging
-- **Simplicity**: no synchronisation overhead, no primary-device bottleneck when tracing an issue
+- **Simplicity**: no synchronization overhead, no primary-device bottleneck when tracing an issue
 - **Isolation**: a device can be reserved for inference while training uses the other
 
 ### Why DataParallel and not DDP
 
 DataParallel is one process and one interpreter: it needs no launcher, no rendezvous and no
 change to the FastAPI process model. DDP would multiply processes inside the service and
-requires a runtime audit of the multiprocessing behaviour under the container; it was evaluated
+requires a runtime audit of the multiprocessing behavior under the container; it was evaluated
 and deferred, not rejected.
 
 ---

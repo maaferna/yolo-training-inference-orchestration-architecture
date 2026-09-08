@@ -29,6 +29,10 @@ and why:
 - **Cost is an architectural decision** — where training runs and where the application lives are
   reasoned about separately, from data volume and GPU hours.
   See [deployment and cost strategy](./docs/architecture/20-deployment-cost-strategy.md).
+- **What came next is on the record** — when the triggers fired, a later revision answered with
+  job records, a registry, contracts and tests, not a queue. It also moved training out of the
+  platform and left its GPU path unvalidated, and says so.
+  See [what came next](./docs/evolution/00-what-came-next.md).
 
 ## Start here
 
@@ -171,7 +175,7 @@ are build products, not hand-edited files.
 | [04 · SAHI tiled inference](./assets/diagrams/04-sahi-inference.png) | Why tiling recovers small objects, and what it costs |
 | [05 · Deployment and cost strategy](./assets/diagrams/05-deployment-strategy.png) | Local, cloud or hybrid — and the reasoning behind the choice |
 | [06 · Synthetic dataset generation](./assets/diagrams/06-synthetic-dataset.png) | How scarce annotated data is expanded into a usable dataset |
-| [07 · Production evolution roadmap](./assets/diagrams/07-evolution-roadmap.png) | What gets added first, which trigger justifies it, and what a later revision realised |
+| [07 · Production evolution roadmap](./assets/diagrams/07-evolution-roadmap.png) | What gets added first, which trigger justifies it, and what a later revision realized |
 | [08 · Submit/poll execution lifecycle](./assets/diagrams/08-submit-poll-lifecycle.png) | How the later revision answered timeouts without a queue: run identifier, job record, batched polling |
 | [09 · Model registry and promotion](./assets/diagrams/09-model-registry-promotion.png) | How the later revision replaced the file-based model reference: version records, one transaction, human promotion, an exported list the AI service trusts |
 | [10 · Detection metrology](./assets/diagrams/10-detection-metrology.png) | How detections become physical sizes, foci, coverage and density, and why every quantity says measured, estimated or withheld |
@@ -394,7 +398,7 @@ specification, these are the questions worth reading for, each with where it is 
 | Why are notebooks useful for research but not as a production execution model? | [`ADR-006`](./docs/architecture/adr/ADR-006-notebooks-auxiliary-research.md) |
 | Why is Kubernetes optional rather than inevitable? | [`16-production-evolution-roadmap.md`](./docs/architecture/16-production-evolution-roadmap.md) |
 | Where should training run, and where should the application live? | [`20-deployment-cost-strategy.md`](./docs/architecture/20-deployment-cost-strategy.md) |
-| What happened when the triggers actually fired? | [`docs/evolution/07-roadmap-realised.md`](./docs/evolution/07-roadmap-realised.md) |
+| What happened when the triggers actually fired? | [`docs/evolution/07-roadmap-realized.md`](./docs/evolution/07-roadmap-realized.md) |
 | How do you replace a synchronous request without adding a queue? | [`docs/evolution/01-submit-poll-execution.md`](./docs/evolution/01-submit-poll-execution.md), [`ADR-009`](./docs/architecture/adr/ADR-009-submit-poll-in-process-execution.md) |
 | How was the model-reference race condition closed? | [`docs/evolution/02-model-registry-and-promotion.md`](./docs/evolution/02-model-registry-and-promotion.md), [`ADR-010`](./docs/architecture/adr/ADR-010-transactional-model-registry.md) |
 | How is a platform like this tested without a GPU? | [`docs/evolution/06-testing-and-ci-strategy.md`](./docs/evolution/06-testing-and-ci-strategy.md) |
@@ -615,9 +619,9 @@ are stated in the first document.
 | [`02-model-registry-and-promotion.md`](./docs/evolution/02-model-registry-and-promotion.md) | Versions with fingerprints, human promotion in one transaction, rollback |
 | [`03-service-contracts.md`](./docs/evolution/03-service-contracts.md) | One error envelope, one run manifest, authentication, same-path invariant |
 | [`04-detection-metrology.md`](./docs/evolution/04-detection-metrology.md) | From pixel boxes to physical size, foci, coverage and density, with gates |
-| [`05-operator-console.md`](./docs/evolution/05-operator-console.md) | Batches with progress, GeoJSON on an interactive map, localisation with a guard test |
+| [`05-operator-console.md`](./docs/evolution/05-operator-console.md) | Batches with progress, GeoJSON on an interactive map, localization with a guard test |
 | [`06-testing-and-ci-strategy.md`](./docs/evolution/06-testing-and-ci-strategy.md) | Mock/real runtime seam, contract tests, CI on a throwaway Compose stack |
-| [`07-roadmap-realised.md`](./docs/evolution/07-roadmap-realised.md) | The roadmap of `16`, trigger by trigger: realised, not triggered, discarded |
+| [`07-roadmap-realized.md`](./docs/evolution/07-roadmap-realized.md) | The roadmap of `16`, trigger by trigger: realized, not triggered, discarded |
 
 Decision records of the revision: [ADR-009](./docs/architecture/adr/ADR-009-submit-poll-in-process-execution.md) execution,
 [ADR-010](./docs/architecture/adr/ADR-010-transactional-model-registry.md) registry,
@@ -678,26 +682,26 @@ Recommended next steps focus on internal operational reliability:
 ### Priority 1: Reliability
 
 - [ ] Add preflight validation for datasets, storage, models, outputs, and GPU availability.
-- [x] Add explicit job status records. *Realised in a later revision; see [`07-roadmap-realised.md`](./docs/evolution/07-roadmap-realised.md).*
+- [x] Add explicit job status records. *Realized in a later revision; see [`07-roadmap-realized.md`](./docs/evolution/07-roadmap-realized.md).*
 - [ ] Add structured logs with correlation IDs.
-- [x] Add artifact manifests for generated outputs. *Realised.*
+- [x] Add artifact manifests for generated outputs. *Realized.*
 - [ ] Add storage and GPU health checks.
 - [ ] Define backup and retention policies.
 
 ### Priority 2: Controlled Background Execution
 
-- [x] ~~Add a lightweight queue~~ Timeouts arrived; the response was submit/poll on in-process pools, **not a queue**. *Realised differently.*
+- [x] ~~Add a lightweight queue~~ Timeouts arrived; the response was submit/poll on in-process pools, **not a queue**. *Realized differently.*
 - [ ] Add a single GPU worker or controlled worker process.
 - [ ] Add job cancellation and retry policy.
-- [x] Add progress/status polling. *Realised.*
+- [x] Add progress/status polling. *Realized.*
 - [ ] Add GPU resource locking.
 
 ### Priority 3: Governance
 
-- [x] Add a database-backed model reference registry if file-based references become risky. *Realised; ADR-010.*
+- [x] Add a database-backed model reference registry if file-based references become risky. *Realized; ADR-010.*
 - [ ] Add dataset version tracking.
 - [ ] Link training runs to dataset configuration versions.
-- [x] Validate generated artifacts before visualization or downstream use. *Realised through the manifest contract.*
+- [x] Validate generated artifacts before visualization or downstream use. *Realized through the manifest contract.*
 
 ### Optional Scale-Out
 

@@ -64,13 +64,13 @@ This document outlines the sanitization process for preparing this repository fo
 
 ❌ **Absolute Dates**
 - Years, quarters, month-and-year stamps, "last updated" footers (e.g., "June 2025", "Q3 2025")
-- Why: a dated timeline plus a sector plus a public profile is enough to identify an organisation
+- Why: a dated timeline plus a sector plus a public profile is enough to identify an organization
 - Use: iteration order only — `**Iteration**: initial` / `revision`, "a later revision", "the
   initial iteration". Illustrative timestamps in payloads use a neutral year (`2000-01-01`)
 
 ❌ **System-Succession Vocabulary**
-- Phrases that frame the documentation as two systems from two organisations: "legacy system",
-  "the new platform", "successor platform", "second organisation", "previous employer"
+- Phrases that frame the documentation as two systems from two organizations: "legacy system",
+  "the new platform", "successor platform", "second organization", "previous employer"
 - Why: the repository documents one reference architecture and its revisions, not a migration
   between employers. A tool migration (cloud to self-hosted) is fine; system succession is not
 - Use: "the initial iteration", "a later revision", "the reference implementation"

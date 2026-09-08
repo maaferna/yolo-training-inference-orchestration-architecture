@@ -1,7 +1,7 @@
 # What Came Next: A Later Revision of the Same Architecture
 
 > Public-safe documentation. This section describes a later revision of the reference
-> architecture at the level of design decisions. It names no organisation, application field,
+> architecture at the level of design decisions. It names no organization, application field,
 > site, hardware model or measured result, and it dates nothing by calendar. Every number is
 > illustrative.
 
@@ -41,16 +41,16 @@ describes the response.
 | The HTTP request stays open for the whole job (`15`, ADR-003) | Timeouts, operators needing progress | Submit returns a run identifier; the job runs on an in-process pool; the console polls | [`01`](./01-submit-poll-execution.md), ADR-009 |
 | No job status records, no recovery after a restart (`15`, `08` risk 5) | Failures become hard to explain | Durable job record per run plus a job-history table; startup reconciliation | [`01`](./01-submit-poll-execution.md), ADR-009 |
 | File-based model reference with a race condition (`10`, `07`) | Lineage questions hard to answer from storage | Transactional model registry with promotion events; human promotion | [`02`](./02-model-registry-and-promotion.md), ADR-010 |
-| Path translation across four coordinate systems (`19`, ADR-008) | Path bugs in result synchronisation | One mount path in both containers; the invariant is tested | [`03`](./03-service-contracts.md), ADR-011 |
-| No service-to-service authentication (`05`) | Any caller could submit GPU work | Hashed service tokens; web sessions with groups and lockout | [`03`](./03-service-contracts.md) |
-| Error handling as prose (`14`) | Callers parse messages | One error envelope with stable codes; a catalogue kept with the contract | [`03`](./03-service-contracts.md) |
+| Path translation across four coordinate systems (`19`, ADR-008) | Path bugs in result synchronization | One mount path in both containers; the invariant is tested | [`03`](./03-service-contracts.md), ADR-011 |
+| No service-to-service authentication (`05`) | Any caller could submit GPU work | A service key between the two services; hashed bearer tokens for automation; sessions with groups and lockout for operators | [`03`](./03-service-contracts.md) |
+| Error handling as prose (`14`) | Callers parse messages | One error envelope with stable codes; a catalog kept with the contract | [`03`](./03-service-contracts.md) |
 | Tracking tool chosen for its SaaS convenience (ADR-004, ADR-007) | Data leaving the premises by default | Tool withdrawn; a self-hosted alternative decided and **not** deployed | ADR-012 |
 | Detections stop at pixel boxes | Operators asked for physical quantities | A detection-metrology job type in the AI service | [`04`](./04-detection-metrology.md), ADR-013 |
 | Results shown as image previews only | Operators asked "where" | GeoJSON per batch rendered on an interactive map in the console | [`05`](./05-operator-console.md) |
 | No automated tests, no CI (`15`) | Every change was a manual check | A mock/real runtime seam and a CPU test suite on the order of two thousand tests; CI on a throwaway Compose stack | [`06`](./06-testing-and-ci-strategy.md) |
 
 The full trigger-by-trigger reconciliation against `16` is in
-[`07-roadmap-realised.md`](./07-roadmap-realised.md).
+[`07-roadmap-realized.md`](./07-roadmap-realized.md).
 
 ## What left the platform
 
@@ -64,14 +64,13 @@ seam, but training itself is performed in notebooks and enters the platform thro
 step that fingerprints the weights and registers a model version. The reason is recorded in
 ADR-012's addendum: the training stack needed a newer deep-learning runtime than the pinned
 inference set, and coupling them would have blocked inference releases on training upgrades.
-This is a decision the revision made, not an omission, and it is the main reason the initial
-iteration remains the backbone of this repository: it is the iteration that orchestrated
-training on the GPU.
+This was a decision, not an omission. The initial iteration remains the backbone of this
+repository because it is the one that orchestrated training on the GPU.
 
 **The GPU path was not validated in the revision.** The AI service container exposes the GPU
 only when explicitly enabled, the health endpoint reports the GPU as not configured by default,
 and the whole test suite runs on CPU with a mock runtime. Every claim in this section about
-throughput, contention or device behaviour is therefore a design claim. The runtime facts about
+throughput, contention or device behavior is therefore a design claim. The runtime facts about
 GPUs, DataParallel and DDP remain those of the initial iteration (`13`).
 
 ## How to read this section

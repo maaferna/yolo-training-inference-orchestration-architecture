@@ -776,7 +776,7 @@ def diagram_synthetic_dataset() -> str:
     c = Canvas(1600, 1000,
                title="Synthetic Dataset Generation",
                subtitle="When annotated examples of a class are scarce, cut real objects out of "
-                        "the images that exist and recompose them into new labelled scenes.",
+                        "the images that exist and recompose them into new labeled scenes.",
                kicker="Dataset engineering · auxiliary research workflow")
     c.header()
 
@@ -786,7 +786,7 @@ def diagram_synthetic_dataset() -> str:
         (DATA, "Resolve dataset", ["Detect the YOLO layout", "Count images and labels",
                                    "Map class IDs to names"]),
         (TRACK, "Box to mask", ["SAM turns each bounding box", "into a segmentation mask",
-                                "Save binary and colour masks"]),
+                                "Save binary and color masks"]),
         (TRACK, "Extract shapes", ["Apply the mask to the source", "Recrop to the tight rectangle",
                                    "Save an RGBA cutout per object"]),
         (WARN, "Filter quality", ["Drop objects below the", "minimum size, cap the",
@@ -884,7 +884,7 @@ def diagram_evolution_roadmap() -> str:
             "Structured logs, correlation IDs",
             "Artifact manifest per run",
         ], "Do this first. It costs little and removes most silent failures.",
-         "realised",
+         "realized",
          "Job records, manifests, backups; preflight became validation at submit."),
         (API, "Priority 2", "Background execution", [
             "Lightweight queue",
@@ -892,7 +892,7 @@ def diagram_evolution_roadmap() -> str:
             "Job status polling",
             "Retry policy, GPU locking",
         ], "Trigger: repeated timeouts, jobs competing for the GPU, cancellation needed.",
-         "realised differently",
+         "realized differently",
          "Submit/poll on in-process pools, not a queue. GPU admission is the open trigger."),
         (TRACK, "Priority 3", "Artifact governance", [
             "Model reference in the database",
@@ -900,7 +900,7 @@ def diagram_evolution_roadmap() -> str:
             "Immutable run identifiers",
             "Retention policy for outputs",
         ], "Trigger: lineage questions become hard to answer from storage alone.",
-         "realised",
+         "realized",
          "Transactional registry, human promotion; retention as a batch cascade."),
         (FAINT, "Optional", "Scale-out", [
             "GPU worker pool",
@@ -956,7 +956,7 @@ def diagram_evolution_roadmap() -> str:
               "than any distributed component added ahead of the evidence for it.",
               title_size=15, centered=True))
     c.add(legend(100, 900, [
-        (GPU, "Realised"), (API, "Realised differently"), (FAINT, "Not triggered"),
+        (GPU, "Realized"), (API, "Realized differently"), (FAINT, "Not triggered"),
         (WEB, "Discarded (tracker only)"),
     ]))
     c.footer()
@@ -1265,11 +1265,11 @@ def poster_architecture() -> str:
             note="the triggers fired in a later revision · the answer was not a queue")
     stages = [
         (GPU, "Priority 1", "Reliability", "preflight checks, job status, structured logs",
-         "realised"),
+         "realized"),
         (API, "Priority 2", "Background exec", "only once timeouts or contention are routine",
-         "realised differently · no queue"),
+         "realized differently · no queue"),
         (TRACK, "Priority 3", "Governance", "model reference and dataset versions in the DB",
-         "realised"),
+         "realized"),
         (FAINT, "Optional", "Scale-out", "queue pool, object storage, orchestrator",
          "not triggered"),
     ]
@@ -1434,7 +1434,7 @@ def diagram_detection_metrology() -> str:
                          "→ ground sampling distance", "(physical length per pixel)"]),
         (DATA, "Size", ["Box width, height × GSD", "→ physical size per",
                         "DetectionClass instance", "Per image: count, distribution"]),
-        (TRACK, "Foci", ["Density-based clustering", "of detection centres",
+        (TRACK, "Foci", ["Density-based clustering", "of detection centers",
                          "→ clusters with extent,", "member count, centroid"]),
         (TRACK, "Coverage", ["Grid over the image footprint", "→ occupied cells,",
                              "occupancy fraction,", "per-cell counts"]),
@@ -1561,7 +1561,7 @@ def diagram_testing_ci() -> str:
         ("Purity and fences", "no framework in the service client, no database driver in the "
                               "AI service, no cross-imports"),
         ("Document guards", "Compose chain consistent, README claims true, every error code "
-                            "in the catalogue"),
+                            "in the catalog"),
         ("Console", "every view renders, every string is translated, permissions hold per group"),
         ("Mutation-checked subsets", "coordinate and registry code: the tests fail when the "
                                      "logic is broken"),
@@ -1611,7 +1611,7 @@ def diagram_testing_ci() -> str:
     nots = [
         "The real runtime on a device · no GPU in CI",
         "Model accuracy on real images · no images or weights",
-        "SAHI border behaviour with real boxes · synthetic cases only",
+        "SAHI border behavior with real boxes · synthetic cases only",
         "The browser · views render, interactions are not scripted",
         "Metrology against ground truth · arithmetic only (doc 04)",
     ]
@@ -1655,7 +1655,7 @@ def poster_what_came_next() -> str:
         (WEB, "Django"), (API, "FastAPI"), (GPU, "PyTorch"), (GPU, "Ultralytics YOLO"),
         (GPU, "SAHI"), (STORE, "PostgreSQL"), (DATA, "Docker Compose"),
         (TRACK, "Run manifests"), (STORE, "Model registry"), (DATA, "GeoJSON"),
-        (DATA, "Metrology"), (GPU, "CI without GPU"),
+        (DATA, "Metrology"), (GPU, "Tests without a GPU"),
     ], gap=6)
 
     # -- seccion A · lo que se mantuvo ------------------------------------
@@ -1667,7 +1667,7 @@ def poster_what_came_next() -> str:
                                    "ADR-002 · ADR-011"]),
         (API, "FastAPI boundary", ["In front of the runtime;", "execution mode amended",
                                    "ADR-003 · ADR-009"]),
-        (GPU, "SAHI", ["Small objects in large", "images: tiles, merge, NMS", "ADR-005"]),
+        (GPU, "SAHI", ["Small objects in large", "images: tiles, merge overlaps", "ADR-005"]),
         (FAINT, "No broker, no Kubernetes", ["Compose on one node; the", "web layer owns the DB",
                                              "doc 16 · doc 03"]),
     ]
@@ -1675,8 +1675,8 @@ def poster_what_came_next() -> str:
         x = X + i * 216
         c.add(box(x, 478, 200, 106, col, title_, title_size=13.5, dashed=(col is FAINT)))
         for j, ln in enumerate(ls):
-            colour = FAINT if j == len(ls) - 1 else DIM
-            c.add(text(x + 18, 534 + j * 16, ln, 11, colour, family=BODY))
+            color = FAINT if j == len(ls) - 1 else DIM
+            c.add(text(x + 18, 534 + j * 16, ln, 11, color, family=BODY))
 
     # -- seccion B · limitacion → resolucion ------------------------------
     section(c, 626, "Limitation → resolution", API,
@@ -1698,7 +1698,7 @@ def poster_what_came_next() -> str:
          "Hashed service tokens and a service key; web sessions with groups and lockout",
          "evolution 03"),
         (API, "Error handling as prose that callers parse", "doc 14",
-         "One error envelope with stable codes; a catalogue kept with the contract",
+         "One error envelope with stable codes; a catalog kept with the contract",
          "evolution 03"),
         (TRACK, "Tracking tool chosen for its SaaS convenience", "ADR-004 · ADR-007",
          "Tool withdrawn; a self-hosted, tracking-only alternative decided and not deployed",
@@ -1736,7 +1736,7 @@ def poster_what_came_next() -> str:
         ], "evolution 04 · ADR-013"),
         (WEB, "Operator console", [
             "GeoJSON per batch on an interactive",
-            "map; a localisation guard on every",
+            "map; a localization guard on every",
             "string; permissions per group",
         ], "evolution 05"),
         (STORE, "Batch lifecycle", [

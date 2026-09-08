@@ -114,7 +114,7 @@ batch-level policy rather than a background sweep.
 
 1. A single GPU admission lane, as described above, before any second job type that uses the
    device is enabled.
-2. A cancellation flag on the job record, honoured between processing units, so that a
+2. A cancellation flag on the job record, honored between processing units, so that a
    long batch can be stopped without restarting the service.
 3. Idempotent submit keyed on a client-supplied identifier, so that a console retry after a
    network error does not create a duplicate run.

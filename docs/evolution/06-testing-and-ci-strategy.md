@@ -55,7 +55,7 @@ contract tests, and then let a CI job run the whole thing on a machine with no G
 | Unit | Coordinate reconstruction, naming, manifest writing, registry transactions, metrology stages | Both services |
 | Contract, wire level | The web layer's client and the AI service's routes agree on every payload and error envelope, exercised through the real HTTP layer with the mock runtime | Both |
 | Purity and fences | The web layer's service client imports no framework; the AI service imports no database driver; feature packages do not import each other | Both |
-| Document guards | The Compose file chain is consistent; claims the README makes about commands and targets are true; every error code raised is in the catalogue | Repository |
+| Document guards | The Compose file chain is consistent; claims the README makes about commands and targets are true; every error code raised is in the catalog | Repository |
 | Console | Every view renders; every string is translated (`05`); permissions hold per group | Web layer |
 | Mutation-checked subsets | For coordinate and registry code, a mutation run confirms the tests actually fail when the logic is broken | Both |
 
@@ -83,9 +83,9 @@ The whole set runs on CPU, in the order of two thousand tests, in minutes.
 
 | Not covered | Why | Consequence |
 |---|---|---|
-| The real runtime on a device | No GPU in CI; the device is injected | Device behaviour, memory and throughput remain claims of the initial iteration (`13`) |
+| The real runtime on a device | No GPU in CI; the device is injected | Device behavior, memory and throughput remain claims of the initial iteration (`13`) |
 | Model accuracy on real images | No real images or weights in the repository | Accuracy is a property of a trained model, validated outside the platform |
-| Sliced inference border behaviour with real detections | Mock boxes do not straddle tiles the way real ones do | Reconstruction is unit-tested on synthetic cases only |
+| Sliced inference border behavior with real detections | Mock boxes do not straddle tiles the way real ones do | Reconstruction is unit-tested on synthetic cases only |
 | The browser | No end-to-end browser tests | Views render, interactions are not scripted |
 | Metrology against ground truth | See `04` | Arithmetic is tested; the method is not validated |
 
