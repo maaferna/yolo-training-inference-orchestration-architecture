@@ -6,10 +6,10 @@ Well-organized architecture and operational documentation.
 
 ```
 docs/
-├── architecture/          # Core system architecture documentation (20 documents)
+├── architecture/          # Core system architecture documentation (21 documents)
 │   ├── 01-context-and-problem.md
 │   ├── 02-system-architecture.md
-│   ├── ... (18 more)
+│   ├── ... (19 more)
 │
 ├── portfolio/            # Portfolio and resume materials
 │   ├── PORTFOLIO_IMPLEMENTATION_GUIDE.md

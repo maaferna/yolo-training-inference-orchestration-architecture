@@ -46,7 +46,7 @@ LICENSE-DOCS                    CC BY 4.0, cubre prosa, diagramas e imágenes ge
 docs/
   README.md                     Índice de la carpeta docs
   architecture/                 01..21 documentos de arquitectura (fuente de verdad técnica)
-    adr/                        README + ADR-001..ADR-007 (registros de decisión)
+    adr/                        README + ADR-001..ADR-008 (registros de decisión)
   operations/                   7 documentos MLOps: estado, roadmap, migración ClearML,
                                 referencia rápida, índice, resumen, informe de entrega
   portfolio/                    PORTFOLIO_RESUME_CONTENT.md, PORTFOLIO_IMPLEMENTATION_GUIDE.md
@@ -89,12 +89,10 @@ La numeración `01`..`21` es el orden de lectura y no tiene huecos ni duplicados
 - ADR-001 separar web y IA · ADR-002 almacenamiento compartido · ADR-003 FastAPI como
   frontera GPU · ADR-004 ClearML (decisión, arquitectura, migración; **leer primero**) ·
   ADR-005 SAHI · ADR-006 notebooks como investigación auxiliar · ADR-007 evaluación de
-  herramientas de tracking (complementa a ADR-004, no lo duplica).
-- **Hay dos ficheros con prefijo `ADR-001`**: `ADR-001-separate-web-and-ai-services.md` es
-  el ADR-001 oficial e indexado; `ADR-001-path-translation-layer.md` está fuera del índice del
-  README de ADRs y cita como "futuros" un ADR-002 y ADR-003 que no coinciden con los reales.
-  El validador solo detecta prefijos duplicados en `docs/architecture/`, no en `adr/`. Antes
-  de citar un ADR por número, verificar el nombre real en disco.
+  herramientas de tracking (complementa a ADR-004, no lo duplica) · ADR-008 capa de
+  traducción de rutas entre contenedores.
+- El validador solo detecta prefijos duplicados en `docs/architecture/`, no en `adr/`. Al
+  añadir un ADR, tomar el siguiente número libre y registrarlo en `adr/README.md`.
 
 ## Convenciones de documentación
 
@@ -166,20 +164,14 @@ cambio, describe la categoría, nunca el par original-reemplazo.
 ## Auditoría vigente
 
 `.github/REPOSITORY-AUDIT-2026-08.md` recoge los hallazgos de la auditoría de agosto de 2026
-(críticos C1-C2, altos H1-H7, medios M1-M10, bajos L1-L7). A fecha de septiembre de 2026 casi
-todos están cerrados: archivo eliminado e historia reescrita, gate `validate-sanitization.sh`
+(críticos C1-C2, altos H1-H7, medios M1-M11, bajos L1-L7). A fecha de septiembre de 2026 están
+todos cerrados: archivo eliminado e historia reescrita, gate `validate-sanitization.sh`
 operativo, cifras sin respaldo retiradas, índice del README y `docs/README.md` regenerados desde
 disco, documentos renumerados `01`..`21`, diagrama de cola corregido, YOLOv8/v11 unificado,
-credenciales de ejemplo leídas del entorno, licencia dual.
-
-Residuos que quedan y conviene no reintroducir:
-
-- **M1**: la ruta absoluta de `docs/operations/MLOPS_QUICK_REFERENCE.md:147` ya es
-  `<REPOSITORY_ROOT>/`, pero la fila del informe no está marcada como resuelta.
-- **M5**: `docs/portfolio/PORTFOLIO_RESUME_CONTENT.md:655` sigue diciendo "See docs/adr";
-  la ruta correcta es `docs/architecture/adr/`.
-- `docs/README.md` aún indica "(20 documents)" en el árbol aunque hay 21.
-- La colisión `ADR-001` descrita arriba no figura como hallazgo.
+credenciales de ejemplo leídas del entorno, licencia dual, ADR de traducción de rutas
+renumerado a ADR-008 (M11). El único punto abierto es la exposición residual de C2, fuera del
+control del repositorio: los objetos antiguos siguen accesibles por SHA hasta que GitHub los
+recolecte.
 
 `./scripts/validate-sanitization.sh` pasa en limpio (todas las comprobaciones bloqueantes y
 advisory). Consultar el informe antes de tocar documentación.

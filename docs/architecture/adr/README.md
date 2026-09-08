@@ -26,6 +26,7 @@ Each ADR follows a standard format:
 | 005 | Use SAHI for High-Resolution Small-Object Inference | ✅ Accepted | June 2026 | Inference |
 | 006 | Use Notebooks as Auxiliary Research Workflow | ✅ Accepted | June 2026 | **MLOps** |
 | 007 | Tracking Tool Evaluation: ClearML over MLflow and W&B | ✅ Accepted (supports ADR-004) | June 2026 | **MLOps** |
+| 008 | Path Translation Layer for Multi-Container Artifact Synchronization | ✅ Accepted | June 2026 | Storage |
 
 ### Reading Guide by Topic
 
@@ -33,6 +34,7 @@ Each ADR follows a standard format:
 - **ADR-001**: Why we separate web (Django) from compute (FastAPI)
 - **ADR-002**: Where models and artifacts live (shared storage)
 - **ADR-003**: Why FastAPI is our compute boundary
+- **ADR-008**: How container paths become web-visible URLs for inference results
 
 #### 📊 MLOps & Experiment Management
 - **ADR-004**: The tracking decision, its architecture and the self-hosted migration strategy — **start here**

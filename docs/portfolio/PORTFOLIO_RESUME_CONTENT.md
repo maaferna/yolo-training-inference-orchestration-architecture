@@ -652,7 +652,7 @@ these principles apply across domains.
   cannot evidence a percentage. If you have a measured figure from the private work, it
   belongs on your CV — never in this public repository, and never sourced back to it
 - Highlight decision-making: *why* multi-seed, *why* microservices
-- Reference the architecture: "See docs/adr for detailed decision rationale"
+- Reference the architecture: "See docs/architecture/adr for detailed decision rationale"
 - Customize LinkedIn description based on role (ML vs Backend vs CV)
 
 ### ❌ DON'T:

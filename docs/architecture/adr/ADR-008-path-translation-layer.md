@@ -1,4 +1,4 @@
-# ADR-001: Path Translation Layer for Multi-Container Artifact Synchronization
+# ADR-008: Path Translation Layer for Multi-Container Artifact Synchronization
 
 **Status**: Accepted (Implemented Phase 1)  
 **Date**: June 2026  
@@ -354,8 +354,10 @@ def test_full_pipeline():
 
 ## Related ADRs
 
-- **ADR-002** (Future): Async Job Queue Architecture
-- **ADR-003** (Future): Distributed Model Registry
+- **ADR-002** — Shared artifact storage: the volume this layer translates paths across
+- **ADR-003** — FastAPI as the GPU service boundary: the producer of the paths being translated
+- An async job queue and a formal model registry have no ADR yet; both are documented as
+  conditional evolutions in `../16-production-evolution-roadmap.md`
 
 ---
 
