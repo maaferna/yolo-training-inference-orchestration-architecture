@@ -4,7 +4,7 @@ Complete audit of the repository against its own public-safe policy
 (`docs/architecture/17-public-release-sanitization.md`, `.github/public-safety-checklist.md`)
 and against internal consistency, technical accuracy and portfolio effectiveness.
 
-- **Audited at**: commit `034d5c6`
+- **Audited at**: the last commit before the sanitization work (pre-rewrite SHA held privately)
 - **Scope**: all 165 tracked files, ~43,500 lines of Markdown. Includes `.github/archive/` —
   that directory is committed and therefore public, whatever its name suggests.
 - **Method**: automated sweeps for leaks, link resolution against disk, structural comparison of
@@ -30,7 +30,7 @@ documents is genuinely good.
 The problems are of a different kind, and there are two clusters of them.
 
 ~~**The safety process the repository documents no longer runs.**~~ **Resolved** — see H1.
-`CONTRIBUTING.md` told contributors to execute five sanitization scripts deleted in `ca58f44`,
+`CONTRIBUTING.md` told contributors to execute five sanitization scripts deleted in an earlier cleanup commit,
 including one installed as a git pre-commit hook. The enforcement mechanism for the repository's
 central policy was a set of commands that errored out. It is now a single working gate.
 
@@ -52,19 +52,19 @@ self-assessment against the rubric defined at `MLOPS_STATUS_REPORT.md:57`. It is
 | # | Finding | Location |
 |---|---|---|
 | C1 | **The archive published the key to the sanitization.** `.github/archive/` was committed and public. It contained the complete before-and-after mapping produced during the public-release cleanup, presented as a table pairing each private identifier — container paths and Django model names — with the generic name that replaced it. Every generic name a reader meets in the live documentation could therefore be reversed to its private original, including an institution acronym the owner is not cleared to publish. The live documents were largely clean; the archive undid them. **Resolved**: the 79-file archive is deleted, and the sanitization is completed in the live documents, which had themselves retained 33 private identifiers the original cleanup missed. This report deliberately does not restate the mapping. | `.github/archive/` (deleted) · 8 live files |
-| C2 | ~~**Git history retained the pre-sanitization documents.**~~ **Resolved.** The commit that generalized the private identifiers left the earlier content reachable through `git log -S` and `git show`, so deleting the archive at `HEAD` was not sufficient. History was rewritten with `git-filter-repo` across all 64 commits, covering file contents, commit messages — three of which spelled the mapping out in prose, including one written during this audit — and every case variant of each identifier. Verified against a fresh clone of the remote: zero occurrences in content, messages and paths. All 64 commits, their authorship and dates are preserved; every SHA changed. | all commits, rewritten `6474480` → `8ac66da` |
+| C2 | ~~**Git history retained the pre-sanitization documents.**~~ **Resolved.** The commit that generalized the private identifiers left the earlier content reachable through `git log -S` and `git show`, so deleting the archive at `HEAD` was not sufficient. History was rewritten with `git-filter-repo` across all 64 commits, covering file contents, commit messages — three of which spelled the mapping out in prose, including one written during this audit — and every case variant of each identifier. Verified against a fresh clone of the remote: zero occurrences in content, messages and paths. All 64 commits, their authorship and dates are preserved; every SHA changed. | all commits, rewritten the pre-rewrite head → `8ac66da` |
 
 **Residual exposure after C2 — measured, not assumed.** Force-pushing repoints the branch but
 does not remove the old objects from GitHub. Checked directly against the API and the raw host:
 
 - All 12 pre-rewrite commits that carried the identifier still resolve at
   `/repos/{owner}/{repo}/commits/{sha}` (HTTP 200).
-- The deleted archive file is still downloadable at `raw.githubusercontent.com/.../2fab4da/...`,
+- The deleted archive file is still downloadable at `raw.githubusercontent.com/.../<pre-rewrite sha>/...`,
   identifiers intact.
-- The commit message of `2fab4da` still contains all eight identifiers, because it described the
+- The commit message of the archive-deleting commit still contains all eight identifiers, because it described the
   mapping in prose before that message was rewritten.
 
-`raw.githubusercontent.com` does **not** serve every old path — `eaba2f2` returns 404 — so the
+`raw.githubusercontent.com` does **not** serve every old path — one of the pre-rewrite paths returns 404 — so the
 exposure is partial rather than complete, but it is live.
 
 Closing it requires GitHub Support to purge the cached views; the request is drafted with these
@@ -77,7 +77,7 @@ rewrite, which bounds the exposure.
 
 | # | Finding | Location |
 |---|---|---|
-| H1 | ~~**The documented safety gate is broken.**~~ **Resolved.** Six commands referenced sanitization scripts deleted in `ca58f44`, including one installed as a pre-commit hook that failed silently. Fixed by implementing a single working gate, `scripts/validate-sanitization.sh`, and rewriting the three affected sections of `CONTRIBUTING.md` around it. The gate reproduces M1 and M9 independently. | `CONTRIBUTING.md` · `scripts/validate-sanitization.sh` |
+| H1 | ~~**The documented safety gate is broken.**~~ **Resolved.** Six commands referenced sanitization scripts deleted in an earlier cleanup commit, including one installed as a pre-commit hook that failed silently. Fixed by implementing a single working gate, `scripts/validate-sanitization.sh`, and rewriting the three affected sections of `CONTRIBUTING.md` around it. The gate reproduces M1 and M9 independently. | `CONTRIBUTING.md` · `scripts/validate-sanitization.sh` |
 | H2 | ~~**Unsourced performance claims used in CV material.**~~ **Resolved.** "reducing OOM incidents by 80%" (8 occurrences) and "15-25% mAP improvement" (5) existed only in `docs/portfolio/` with no derivation anywhere. All 16 rewritten as outcome statements: OOM is recovered rather than fatal; small objects below full-frame detection scale become detectable. The DO-list instruction that told readers to reuse the numbers now says the opposite. | `PORTFOLIO_RESUME_CONTENT.md:36,196,517,538,651` · `PORTFOLIO_IMPLEMENTATION_GUIDE.md:28,110,150,244,245,415,435` |
 | H3 | ~~**A cost saving asserted from a model made entirely of placeholders.**~~ **Resolved.** The worksheet is now labelled as a worksheet, the placeholders are named after what they hold, `ROI breakeven` is replaced with a real break-even (`MIGRATION_COST / monthly_saving`, in months), and operations time is called out as the term most likely to decide the answer. The eight downstream "~60%" claims are gone. Original finding: ** The cost analysis reads `Monthly subscription: $X` / `Storage: $Y` / `Server/VM: $Z` / `Ops time: 4 hours × $rate`. Nothing can be computed from it, yet line 14 states "~60% savings after 6 months" as fact, and the delivery report derives it from an equally unsourced "~40% of cloud cost". The claim then propagates to 8 locations including resume bullets. Separately, `ROI breakeven: $ANNUAL_CLOUD / $ANNUAL_SELFHOSTED` is a ratio, not a breakeven — a breakeven is a point in time. | `MIGRATION_CLEARML_CLOUD_TO_SELFHOSTED.md:14,44-62` · `MLOPS_DELIVERY_REPORT.md:141-142` · `MLOPS_DOCUMENTATION_SUMMARY.md:232,274` · `MLOPS_IMPLEMENTATION_ROADMAP.md:521` · both portfolio docs |
 | H4 | ~~**The documentation index names files that do not exist.**~~ **Resolved.** Index regenerated from disk, now 21 entries matching the tree exactly. Original finding: ** 11 of 20 entries are wrong (`09-yolo-training-engine.md` … `19-jupyter-research-workflow.md`); the last never existed in any form. Two real documents — `19-inference-result-synchronization.md` and `20-deployment-cost-strategy.md` — are missing from the index entirely. | `README.md:480-501` |
@@ -89,11 +89,11 @@ rewrite, which bounds the exposure.
 
 | # | Finding | Location |
 |---|---|---|
-| M1 | ~~**A real absolute path is still published.**~~ **Resolved.** The line now reads `Project Root: <REPOSITORY_ROOT>/`; the archive copies went with C1. Original finding: ** `Project Root: /home/user/myprojects/...`. The policy at `17-public-release-sanitization.md:22` forbids exactly this. It survived the `ca58f44..f390374` cleanup, which edited this very file. Also in three archive files. | `MLOPS_QUICK_REFERENCE.md:147` · `.github/archive/{PUBLICATION-READY.md:187, IMPLEMENTATION-COMPLETE.md:320, SANITIZATION_IMPLEMENTATION_GUIDE.md:188}` |
+| M1 | ~~**A real absolute path is still published.**~~ **Resolved.** The line now reads `Project Root: <REPOSITORY_ROOT>/`; the archive copies went with C1. Original finding: ** `Project Root: /home/user/myprojects/...`. The policy at `17-public-release-sanitization.md:22` forbids exactly this. It survived the the earlier cleanup range cleanup, which edited this very file. Also in three archive files. | `MLOPS_QUICK_REFERENCE.md:147` · `.github/archive/{PUBLICATION-READY.md:187, IMPLEMENTATION-COMPLETE.md:320, SANITIZATION_IMPLEMENTATION_GUIDE.md:188}` |
 | M2 | ~~**Duplicate numbering.**~~ **Resolved.** 13 documents renumbered so `docs/architecture/` runs `01` to `21` with no collision. The target numbering is the one the README already claimed for 09-18, so this restored the intended order rather than inventing a new one. Original finding: ** Two documents share prefix `08-`, and two ADRs share `ADR-001`. This is the root cause of H4 and H5: everything after `08` is offset by one. | `docs/architecture/08-*` · `adr/ADR-001-*` |
 | M3 | ~~**Two accepted ADRs decide the same thing.**~~ **Resolved.** They are complementary, not duplicated: ADR-004 carries the decision, architecture and migration; ADR-007 carries the tool evaluation. The titles hid that. ADR-007 is retitled to name its scope, both carry an explicit `Relationship` line, and the index says which to read first. Original finding: ** `ADR-004` and `ADR-007` both adopt ClearML for experiment tracking; both are `Status: Accepted`; neither supersedes the other. A reader cannot tell which governs. | `adr/ADR-004`, `adr/ADR-007` |
 | M4 | ~~**The YOLO version is inconsistent.**~~ **Resolved.** `09-yolo-training-engine.md:9` is the authoritative statement — the engine supports YOLOv8 and YOLOv11 — so generic prose that arbitrarily picked one version now says "YOLO", and the supported-set form `YOLOv8/v11` is used where the versions matter. 12 sites corrected. Original finding: ** `YOLOv8` appears 15 times, `YOLOv11` 6 times, and `environment.example.env` sets `YOLO_VERSION=11`, while the README speaks generically of "YOLO". `MLOPS_QUICK_REFERENCE.md:12` offers "YOLO-v8, v8, v5". | across `docs/`, `diagrams/`, `examples/` |
-| M5 | ~~**A dangling reference created by the recent cleanup.**~~ **Resolved.** The portfolio line now points at `docs/architecture/adr`. Original finding: ** "See docs/adr for detailed decision rationale" — that directory was removed in `f390374`. The path is now `docs/architecture/adr/`. | `PORTFOLIO_RESUME_CONTENT.md:653` |
+| M5 | ~~**A dangling reference created by the recent cleanup.**~~ **Resolved.** The portfolio line now points at `docs/architecture/adr`. Original finding: ** "See docs/adr for detailed decision rationale" — that directory was removed in an earlier cleanup commit. The path is now `docs/architecture/adr/`. | `PORTFOLIO_RESUME_CONTENT.md:653` |
 | M6 | ~~**Seven broken internal links in live documents.**~~ **Resolved.** Eight in total: the five duplicated `docs/` segments and the two ADR sibling paths were repaired during the renumber; `README.md:334` no longer promises a `CASE-STUDY.md` that never existed. The advisory link check now passes. Original finding: ** Five use `./docs/21-synthetic-dataset-generation-pipeline.md` with a duplicated `docs/` segment; two in `ADR-001-path-translation-layer.md` resolve outside the `adr/` directory; `README.md:334` points to `./CASE-STUDY.md`, which has never existed. | `03:519`, `04:613`, `14:533`, `16:434`, `17:533`, `adr/ADR-001-path-translation-layer.md:365-366`, `README.md:334` |
 | M7 | ~~27 of 79 archive files are 0 bytes.~~ **Resolved** with C1: the archive is deleted. | `.github/archive/` |
 | M8 | ~~**`MLOPS_QUICK_REFERENCE.md` is the least sanitized file in the repository.**~~ **Resolved**, and the same defects were found and fixed in three sibling operations documents: stale `docs/` paths, a storage tree that contradicted `07-shared-storage-and-artifacts.md`, and `:8080` where the rest of the repository uses `:8001` (now 12 consistent references). Original finding: ** Beyond M1 it points at `docs/MLOPS_STATUS_REPORT.md` and `docs/MIGRATION_*` (both moved to `docs/operations/`), documents a `shared_storage/` tree that does not match `07-shared-storage-and-artifacts.md`, and uses `http://fastapi:8080` where every other document uses `:8001`. | `MLOPS_QUICK_REFERENCE.md:12,147,150-154,260-261,281` |
@@ -135,7 +135,7 @@ rewrite, which bounds the exposure.
 
 ## Resolved since the previous pass
 
-Fixed on `master` in `ca58f44..f390374`, verified after rebase:
+Fixed on `master` in the earlier cleanup range, verified after rebase:
 
 - the empty `docs/adr/` directory and its eight 0-byte files — removed;
 - the five 0-byte sanitization scripts — removed.

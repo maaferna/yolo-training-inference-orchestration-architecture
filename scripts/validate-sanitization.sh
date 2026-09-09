@@ -128,7 +128,7 @@ run_check "no system-succession vocabulary" block "$(
   echo "$FILES" | xargs -r grep -nEi '\b(legacy (system|platform|code|codebase|implementation|project)|successor (system|platform)|(second|previous|new|another) (organi[sz]ation|employer|client|company|team)|the (new|old) platform|migrated (from|to) the (old|new|legacy))\b' 2>/dev/null \
     | filter_allowed)"
 
-# 9 · Private token list: organisation, crop, place and person names. Kept OUTSIDE the
+# 9 · Private token list: the private identifiers of the source systems. Kept OUTSIDE the
 #     repository so the list itself is never published. Only path:line is printed.
 TOKENS="${PUBLIC_SAFE_TOKENS:-$HOME/.config/public-safe/yolo-orchestration.tokens}"
 if [ -f "$TOKENS" ]; then

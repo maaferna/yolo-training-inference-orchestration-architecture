@@ -80,7 +80,7 @@ show what a leaked token looks like. Those lines are listed in
 `scripts/sanitization-allowlist.txt`, each with the reason it is there. Add an entry only when
 the match is genuinely an example — never to silence a real finding.
 
-The private token list (organisation, crop, place and person names) lives **outside** the
+The private token list (the private identifiers of the source systems) lives **outside** the
 repository, by default at `~/.config/public-safe/yolo-orchestration.tokens`, one token per
 line. The gate prints only `path:line` for a hit. Without the list the sweep is skipped with a
 warning; with `PUBLIC_SAFE_STRICT=1` its absence blocks, which is how the hook below runs.
