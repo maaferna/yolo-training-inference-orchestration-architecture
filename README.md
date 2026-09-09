@@ -7,8 +7,10 @@
 ![REST API](https://img.shields.io/badge/REST%20API-Service%20Integration-005571?style=for-the-badge)
 
 > **Documentation only.** Generalized and anonymized architecture for an internal AI vision
-> platform. No source code, datasets, model weights, credentials or measured results. Every
-> number shown is illustrative.
+> platform. No source code, datasets, model weights, credentials, real infrastructure details or
+> measured results. Every number, path and identifier shown is an illustrative placeholder.
+> The full rule is in [`17-public-release-sanitization.md`](./docs/architecture/17-public-release-sanitization.md);
+> contributors follow [`CONTRIBUTING.md`](./CONTRIBUTING.md) and a validation gate.
 
 An internal platform where a limited group of operators and researchers submit YOLO training and
 high-resolution inference jobs. The design problem is not scale — it is keeping GPU-bound work
@@ -40,108 +42,51 @@ and why:
 |---|---|
 | 30 seconds | The diagram above, and [the poster](./assets/poster/poster-architecture.png) |
 | 5 minutes | [The questions this architecture answers](#the-questions-this-architecture-answers) |
-| An hour | [`01-context-and-problem.md`](./docs/architecture/01-context-and-problem.md) onward, in order |
 | A hiring decision | [Limitations](./docs/architecture/15-limitations-and-risks.md), then [what a later revision did about them](./docs/evolution/00-what-came-next.md), then the [ADRs](./docs/architecture/adr/) |
+| An hour | [`01-context-and-problem.md`](./docs/architecture/01-context-and-problem.md) onward, in order |
+
+Reading paths by audience, each ending in the evolution section:
+
+| Audience | Path |
+|---|---|
+| Portfolio reviewer | `01-context-and-problem` → `18-technical-responsibilities` → `evolution/00` → `evolution/07` |
+| Backend / platform | `02-system-architecture` → `05-api-integration-contracts` → `06-docker-runtime-architecture` → `evolution/01` → `evolution/03` |
+| ML / computer vision | `09-yolo-training-engine` → `11-sahi-inference-engine` → `13-gpu-resource-management` → `evolution/02` → `evolution/04` |
+| Architecture reviewer | `02-system-architecture` → `15-limitations-and-risks` → `16-production-evolution-roadmap` → `evolution/07` → ADRs |
 
 ---
 
-## ⚠️ Public-Safe Documentation Repository
+## Scope and maturity
 
-**This repository contains generalized, anonymized architecture documentation only. It is not a production release of private source code.**
-
-This repository documents a public-safe architecture pattern for an internal AI vision platform that separates user-facing web workflows from GPU-intensive machine learning workloads.
-
-It is intended for portfolio, technical communication, and architecture review purposes. It does not include runnable application code, private datasets, model weights, credentials, real metrics, real infrastructure details, or production deployment files.
-
----
-
-## What This Repository Is
-
-This repository documents **architectural decisions for a web-connected AI vision platform** designed for controlled internal agricultural, industrial, or research-oriented workflows.
-
-It demonstrates:
-
-- **Microservice separation:** a Django-based web and administration layer separated from a FastAPI-based AI processing layer.
-- **GPU-backed AI execution:** YOLO training, validation, inference, SAHI-based high-resolution inference, and experiment workflows executed through a dedicated compute service.
-- **Training runtime scope:** the reference implementation trains with DataParallel across two GPUs; single-GPU execution is the fallback configuration when only one device is present, and DistributedDataParallel was evaluated and deferred pending a runtime audit. The distinction between a multi-GPU *runtime* and a distributed *platform* is kept explicit throughout.
-- **Dataset configuration management:** database-backed dataset configuration, label/class metadata, and public-safe documentation of YOLO-compatible dataset configuration generation.
-- **MLOps foundations:** experiment tracking, metric logging, artifact lineage, and model reference management using lightweight tracking patterns.
-- **Research workflow support:** notebook-oriented experimentation and synthetic dataset generation workflows documented as auxiliary research and dataset engineering paths.
-- **Operational risk analysis:** explicit discussion of synchronous execution, shared storage coupling, GPU contention, artifact governance, and scale-out triggers.
-- **Fit-for-purpose evolution planning:** a roadmap focused on internal reliability, traceability, and controlled operational growth rather than premature distributed infrastructure.
-
-**Positioning:** Internal production-oriented AI vision platform architecture for controlled agricultural and research workflows.
-
-### Operating System Runtime Decision
-
-Ubuntu was selected as the preferred operating system environment for GPU-backed training and inference workflows.
-
-This decision was important because deep learning workloads involving PyTorch, CUDA, NVIDIA drivers, Ultralytics YOLO, and multi-GPU training are highly sensitive to operating system compatibility, driver versions, CUDA runtime configuration, and multiprocessing behavior.
-
-During development, alternative environments were considered or tested. Windows was suitable for simpler single-GPU execution, but multi-GPU and DDP-oriented workflows introduced additional operational complexity. Other Linux distributions can work, but may require more manual dependency resolution depending on driver, CUDA, PyTorch, and package compatibility.
-
-For this architecture, Ubuntu provides a more predictable and commonly supported runtime baseline for:
-
-- NVIDIA driver installation;
-- CUDA toolkit compatibility;
-- PyTorch GPU execution;
-- Docker-based GPU workloads;
-- multi-GPU training experiments;
-- Linux-native filesystem and process behavior;
-- reproducible deployment on GPU workstations or servers.
-
-This does not mean Ubuntu is the only valid option. It means Ubuntu was selected as the preferred baseline to reduce runtime friction and improve reproducibility for GPU-intensive computer vision workflows.
-
----
-
-## What This Repository Is Not
-
-🚫 **This repository does not contain:**
-
-- production source code from the private implementation;
-- actual datasets or training data;
-- real trained model weights;
-- real metrics or performance results;
-- real coordinates, detections, or inference outputs;
-- client, institution, farm, field, or researcher names;
-- credentials, secrets, API keys, or workspace identifiers;
-- absolute local paths or environment-specific configurations;
-- ClearML, CVAT, Roboflow, cloud, or server workspace names;
-- real screenshots, generated images, masks, previews, or model outputs;
-- runnable Django, FastAPI, YOLO, SAHI, SAM, ClearML, Docker, or notebook code;
-- production Dockerfiles or deployable containers;
-- private IP, deployment infrastructure, or operational playbooks.
-
-This repository does not contain the private implementation, datasets, trained weights, real metrics, credentials, or production deployment files.
-
----
-
-## Maturity Tier: Internal Production-Oriented Architecture
-
-This repository documents an architecture designed for a **controlled internal deployment context**, not a public SaaS product, a large-scale multi-tenant platform, or a globally distributed service.
-
-The expected users are a limited group of operational, technical, research, or analysis staff who submit scheduled or occasional training, inference, validation, and research-oriented jobs. In this context, a single-node or small-server deployment using Docker Compose, a dedicated AI service, GPU-backed execution, and shared artifact storage can be sufficient when workloads are predictable and concurrency is low.
+This documents an architecture for a **controlled internal deployment**, not a public SaaS
+product, a multi-tenant platform or a globally distributed service. The expected users are a
+limited group of operational, technical and research staff submitting scheduled or occasional
+jobs. At that scale a single node with Docker Compose, a dedicated AI service, GPU-backed
+execution and shared artifact storage is sufficient.
 
 | Aspect | Status | Notes |
 |--------|--------|-------|
-| Deployment context | Internal platform | Designed for controlled organizational use, not public multi-tenant SaaS. |
-| Request handling | Synchronous / controlled | Acceptable when job frequency is low and users understand long-running operations. |
-| Job queuing | Optional future improvement | Needed only if concurrent jobs, request timeouts, or operational contention become frequent. |
-| Training GPU execution | DataParallel on two GPUs | The reference implementation trains with DataParallel across two devices; single-GPU is the fallback configuration; DDP evaluated and deferred. See [`13-gpu-resource-management.md`](./docs/architecture/13-gpu-resource-management.md). |
-| Distributed job orchestration | Not required for current scope | Worker pools and distributed schedulers are unnecessary unless workload volume increases. |
-| Kubernetes orchestration | Not required | Docker Compose or a managed single-server deployment is more appropriate for the current operational scale. |
-| Model registry | Lightweight tracking | Experiment tracking and local artifact references are sufficient unless formal governance requirements increase. |
-| Inference serving | Per-request / batch-oriented | Suitable for scheduled internal analysis, research workflows, and controlled operational review. |
-| Observability | Basic required | Structured logs, job status, storage checks, and GPU health checks are more relevant than distributed tracing at this scale. |
-| High availability | Optional | Redundancy is a business decision; it may not be justified for occasional internal workloads. |
+| Deployment context | Internal platform | Controlled organizational use, not public multi-tenant SaaS |
+| Request handling | Synchronous in the initial iteration | Replaced by submit/poll in a later revision — [ADR-009](./docs/architecture/adr/ADR-009-submit-poll-in-process-execution.md) |
+| Job queuing | Non-goal until triggered | The trigger fired and the answer was still not a queue — [`evolution/07`](./docs/evolution/07-roadmap-realized.md) |
+| Training GPU execution | DataParallel on two GPUs | Single-GPU is the fallback; DDP evaluated and deferred — [`13`](./docs/architecture/13-gpu-resource-management.md) |
+| Distributed job orchestration | Not implemented | No worker pool, scheduler or distributed job registry |
+| Kubernetes | Not required | Docker Compose fits the operational scale |
+| Model registry | File-based, then transactional | The file reference and its race were replaced — [ADR-010](./docs/architecture/adr/ADR-010-transactional-model-registry.md) |
+| Observability | Basic | Structured logs, job status and health checks over distributed tracing |
+| High availability | Optional | Redundancy is a business decision, not an architectural default |
 
-**Philosophy:** Build for the real operational context. For a controlled internal platform, reliability, traceability, usability, and artifact governance are more important than premature distributed infrastructure.
+**Not demonstrated here:** public SaaS architecture, high-throughput multi-tenant serving, a
+current Kubernetes requirement, multi-region or high-availability design for external customers,
+source-level implementation of the private system, or a fully automated enterprise MLOps platform.
+
+**Philosophy:** build for the real operational context. Reliability, traceability and artifact
+governance return more, at this scale, than any distributed component added ahead of the evidence
+for it.
 
 ---
 
-## Core Architecture Summary
-
-The system separates web orchestration from GPU-intensive AI processing:
+## Architecture and components
 
 ```text
 User / Operator
@@ -157,15 +102,33 @@ GPU Runtime + Shared Artifact Storage
 Django Result Visualization
 ```
 
-For a comprehensive visual and textual overview, see [`docs/architecture/02-system-architecture.md`](./docs/architecture/02-system-architecture.md).
+Explicit responsibility separation is what keeps failure modes reasonable:
+
+| Component | Owns | Must not own | Detail |
+|---|---|---|---|
+| Django web layer | Web UI, authentication, request metadata, dataset configuration, result visualization | GPU-heavy execution | [`03`](./docs/architecture/03-component-responsibilities.md) |
+| FastAPI AI service | Training orchestration, inference dispatch, validation, experiment coordination | User authentication, web presentation | [`03`](./docs/architecture/03-component-responsibilities.md), [ADR-003](./docs/architecture/adr/ADR-003-fastapi-gpu-service.md) |
+| YOLO training engine | Multi-seed training, validation, metric extraction, checkpoints | Request handling | [`09`](./docs/architecture/09-yolo-training-engine.md) |
+| Continuous improvement | Incremental retraining against a baseline, model reference update | Unconditional promotion | [`10`](./docs/architecture/10-continuous-improvement-training.md) |
+| SAHI inference layer | Tiling, small-object inference, detection reconstruction | Model selection | [`11`](./docs/architecture/11-sahi-inference-engine.md) |
+| Experiment tracking | Run metadata, metrics, artifact references, lineage | Being the source of truth for artifacts | [`12`](./docs/architecture/12-clearml-experiment-tracking.md), [ADR-012](./docs/architecture/adr/ADR-012-experiment-tracking-revised.md) |
+| Dataset configuration | Project definitions, detection classes, class sets, dataset files | Training execution | [`08`](./docs/architecture/08-yolo-dataset-configuration-management.md) |
+| Synthetic dataset workflow | SAM-assisted extraction, composition, annotation export | Being a production path | [`21`](./docs/architecture/21-synthetic-dataset-generation-pipeline.md), [ADR-006](./docs/architecture/adr/ADR-006-notebooks-auxiliary-research.md) |
+| Relational database | User data, configuration, request records | ML outputs and generated files | [`07`](./docs/architecture/07-shared-storage-and-artifacts.md) |
+| Shared artifact storage | Checkpoints, outputs, previews, reports | Structured metadata | [`07`](./docs/architecture/07-shared-storage-and-artifacts.md), [ADR-002](./docs/architecture/adr/ADR-002-shared-artifact-storage.md) |
+
+> Public-safe names are used throughout: `ProjectConfiguration`, `DetectionClass`, `ClassSet`
+> and `DatasetConfiguration`.
+
+Full boundary reasoning is in [`02-system-architecture.md`](./docs/architecture/02-system-architecture.md).
 
 ---
 
-## Architecture Diagrams
+## Diagrams and posters
 
-Rendered diagrams for reading, presenting and portfolio use. All are generated from
-[`scripts/build_visuals.py`](./scripts/build_visuals.py); the PNGs and the SVGs in `assets/src/`
-are build products, not hand-edited files.
+All are generated from [`scripts/build_visuals.py`](./scripts/build_visuals.py); the PNGs and the
+SVGs in `assets/src/` are build products, not hand-edited files. Regenerate with
+`./scripts/render-visuals.sh` (needs `python3` and `rsvg-convert`).
 
 | Diagram | What it answers |
 |---|---|
@@ -176,217 +139,45 @@ are build products, not hand-edited files.
 | [05 · Deployment and cost strategy](./assets/diagrams/05-deployment-strategy.png) | Local, cloud or hybrid — and the reasoning behind the choice |
 | [06 · Synthetic dataset generation](./assets/diagrams/06-synthetic-dataset.png) | How scarce annotated data is expanded into a usable dataset |
 | [07 · Production evolution roadmap](./assets/diagrams/07-evolution-roadmap.png) | What gets added first, which trigger justifies it, and what a later revision realized |
-| [08 · Submit/poll execution lifecycle](./assets/diagrams/08-submit-poll-lifecycle.png) | How the later revision answered timeouts without a queue: run identifier, job record, batched polling |
-| [09 · Model registry and promotion](./assets/diagrams/09-model-registry-promotion.png) | How the later revision replaced the file-based model reference: version records, one transaction, human promotion, an exported list the AI service trusts |
-| [10 · Detection metrology](./assets/diagrams/10-detection-metrology.png) | How detections become physical sizes, foci, coverage and density, and why every quantity says measured, estimated or withheld |
-| [11 · Testing and CI without a GPU](./assets/diagrams/11-testing-and-ci.png) | How a mock/real runtime seam and a throwaway Compose stack made the platform reviewable on any machine, and what is deliberately not tested |
+| [08 · Submit/poll execution lifecycle](./assets/diagrams/08-submit-poll-lifecycle.png) | How the later revision answered timeouts without a queue |
+| [09 · Model registry and promotion](./assets/diagrams/09-model-registry-promotion.png) | How the file-based model reference became version records with human promotion |
+| [10 · Detection metrology](./assets/diagrams/10-detection-metrology.png) | How detections become physical sizes, foci, coverage and density, and why each carries a status |
+| [11 · Testing and CI without a GPU](./assets/diagrams/11-testing-and-ci.png) | How a mock/real runtime seam made the platform reviewable, and what is deliberately not tested |
 
-### One-page poster
-
-A single A2 sheet covering the system, the three execution flows, the defining decisions and the
-evolution path — sized for print at A2/150 dpi or A3/212 dpi, and for use as a portfolio or
-presentation asset.
-
-[![Architecture poster](./assets/poster/poster-architecture.png)](./assets/poster/poster-architecture.png)
-
-A second sheet, [What came next](./assets/poster/poster-what-came-next.png), covers the later
-revision: what stayed, each confessed limitation and its resolution, the new capabilities, and
-what the revision deliberately did not do.
-
-To regenerate everything after a documentation change:
-
-```bash
-./scripts/render-visuals.sh          # all diagrams and the poster
-./scripts/render-visuals.sh poster   # only what matches "poster"
-```
-
-Requires `python3` and `rsvg-convert` (`librsvg2-tools` on Fedora, `librsvg2-bin` on Debian/Ubuntu).
+Two one-page sheets, sized for print and for portfolio use:
+[**Architecture**](./assets/poster/poster-architecture.png) covers the system, the execution flows
+and the defining decisions;
+[**What came next**](./assets/poster/poster-what-came-next.png) covers the later revision — what
+stayed, each confessed limitation and its resolution, and what the revision deliberately did not do.
 
 ---
 
-## Clear Responsibility Boundaries
+## Technology stack
 
-Explicit responsibility separation prevents architectural complexity and makes failure modes easier to reason about.
-
-- **Django:** web UI, authentication, request metadata, dataset configuration, result visualization. It should not directly execute GPU-heavy model training.
-- **FastAPI:** AI service boundary for training orchestration, inference dispatch, validation, and experiment coordination. It should not own user authentication or web presentation logic.
-- **YOLO Training Runtime:** model training, validation, metric extraction, and checkpoint production.
-- **SAHI Inference Layer:** high-resolution image tiling, small-object inference, and detection reconstruction.
-- **Experiment Tracking:** run metadata, metric logging, artifact references, and model lineage.
-- **PostgreSQL / Relational Database:** user data, configuration metadata, request records, and system metadata.
-- **Shared Artifact Storage:** checkpoints, generated outputs, previews, reports, and inference artifacts.
-
-For the full responsibility matrix, see [`docs/architecture/03-component-responsibilities.md`](./docs/architecture/03-component-responsibilities.md).
-
----
-
-## Main Components
-
-### 1. Django Web Application
-
-Request submission, dataset configuration, project metadata, result visualization, and administrative workflows.
-
-### 2. FastAPI AI Service
-
-AI orchestration boundary coordinating training, inference, validation, artifact generation, and experiment tracking.
-
-### 3. YOLO Training Engine
-
-Training workflows using YOLO-based object detection models, multi-seed experimentation, validation-based model selection, and checkpoint management.
-
-### 4. Continuous Improvement Training
-
-Incremental retraining workflow that compares new results against a previous baseline and updates the model reference only when improvement criteria are met.
-
-### 5. SAHI Inference Engine
-
-High-resolution tiled inference for small-object detection, detection reconstruction, and output artifact generation.
-
-### 6. Experiment Tracking Layer
-
-Tracking of experiment metadata, metrics, artifacts, lineage, and failure context, with local artifacts as the source of truth. The tracking tool of the initial iteration was withdrawn in a later revision; see [ADR-012](./docs/architecture/adr/ADR-012-experiment-tracking-revised.md).
-
-### 7. Dataset Configuration Layer
-
-Database-backed configuration management for project definitions, detection classes, class sets, dataset configuration files, and training payload preparation.
-
-> Public-safe names are used throughout the repository: `ProjectConfiguration`, `DetectionClass`, `ClassSet`, and `DatasetConfiguration`.
-
-### 8. Synthetic Dataset Generation Workflow
-
-Auxiliary dataset engineering workflow based on SAM-assisted object extraction, RGBA cutout generation, synthetic scene composition, and annotation export.
-
-### 9. GPU Resource Management
-
-CUDA memory management and explicit cleanup between training runs, with DataParallel across two GPUs as the training runtime, single-GPU as the fallback, and DDP and GPU-aware scheduling documented as future work.
-
----
-
-## Technology & Architecture Stack
-
-This repository documents an internal production-oriented AI vision platform architecture that combines web orchestration, GPU-backed machine learning services, dataset configuration management, experiment tracking, and research-oriented computer vision workflows.
-
-
-### Core Platform
-
-![Python](https://img.shields.io/badge/Python-3.x-3776AB?style=for-the-badge&logo=python&logoColor=white)
-![Django](https://img.shields.io/badge/Django-Web%20Application-092E20?style=for-the-badge&logo=django&logoColor=white)
-![FastAPI](https://img.shields.io/badge/FastAPI-AI%20Service-009688?style=for-the-badge&logo=fastapi&logoColor=white)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Metadata%20Store-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
-![REST API](https://img.shields.io/badge/REST%20API-Service%20Integration-005571?style=for-the-badge)
-
-### Machine Learning & Computer Vision
-
-![PyTorch](https://img.shields.io/badge/PyTorch-GPU%20Runtime-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white)
-![CUDA](https://img.shields.io/badge/CUDA-GPU%20Acceleration-76B900?style=for-the-badge&logo=nvidia&logoColor=white)
-![YOLO](https://img.shields.io/badge/YOLO-Object%20Detection-111111?style=for-the-badge)
-![SAHI](https://img.shields.io/badge/SAHI-Sliced%20Inference-6A5ACD?style=for-the-badge)
-![OpenCV](https://img.shields.io/badge/OpenCV-Image%20Processing-5C3EE8?style=for-the-badge&logo=opencv&logoColor=white)
-![Segment Anything](https://img.shields.io/badge/SAM-Segmentation-FF6F00?style=for-the-badge)
-![Pillow](https://img.shields.io/badge/Pillow-Image%20Manipulation-8A2BE2?style=for-the-badge)
-![NumPy](https://img.shields.io/badge/NumPy-Numerical%20Processing-013243?style=for-the-badge&logo=numpy&logoColor=white)
-
-### MLOps, Experiment Tracking & Data Engineering
-
-![Experiment Tracking](https://img.shields.io/badge/Experiment%20Tracking-manifests%20first-1A73E8?style=for-the-badge)
-![YAML](https://img.shields.io/badge/YAML-Configuration-CB171E?style=for-the-badge&logo=yaml&logoColor=white)
-![JSON](https://img.shields.io/badge/JSON-Artifacts-000000?style=for-the-badge&logo=json&logoColor=white)
-![COCO](https://img.shields.io/badge/COCO-Annotation%20Format-7952B3?style=for-the-badge)
-![YOLO Format](https://img.shields.io/badge/YOLO%20Format-Dataset%20Labels-222222?style=for-the-badge)
-![CVAT](https://img.shields.io/badge/CVAT-Dataset%20Annotation-FF9800?style=for-the-badge)
-![Roboflow](https://img.shields.io/badge/Roboflow-Dataset%20Management-6706CE?style=for-the-badge)
-
-### Infrastructure & Runtime
-
-![Docker](https://img.shields.io/badge/Docker-Containerized%20Runtime-2496ED?style=for-the-badge&logo=docker&logoColor=white)
-![Docker Compose](https://img.shields.io/badge/Docker%20Compose-Internal%20Orchestration-2496ED?style=for-the-badge&logo=docker&logoColor=white)
-![Linux](https://img.shields.io/badge/Linux-Operating%20System-FCC624?style=for-the-badge&logo=linux&logoColor=black)
-![Ubuntu](https://img.shields.io/badge/Ubuntu-GPU%20Runtime%20Environment-E95420?style=for-the-badge&logo=ubuntu&logoColor=white)
-![Jupyter](https://img.shields.io/badge/Jupyter-Research%20Workflow-F37626?style=for-the-badge&logo=jupyter&logoColor=white)
-![Shared Storage](https://img.shields.io/badge/Shared%20Storage-Artifact%20Exchange-607D8B?style=for-the-badge)
-
-### Architecture Scope
-
-![Documentation Only](https://img.shields.io/badge/Repository-Documentation%20Only-blue?style=for-the-badge)
-![Public Safe](https://img.shields.io/badge/Public--Safe-Anonymized-green?style=for-the-badge)
-![Internal Platform](https://img.shields.io/badge/Architecture-Internal%20AI%20Platform-purple?style=for-the-badge)
-![Production Oriented](https://img.shields.io/badge/Maturity-Production--Oriented%20Internal%20System-orange?style=for-the-badge)
-
----
-
-## Technology Stack & Integration Patterns
-
-| Layer | Technology | Integration Pattern |
+| Layer | Technology | Integration pattern |
 |-------|------------|---------------------|
-| Web | Django + Django REST Framework | Request validation, user workflows, ORM-backed metadata persistence |
-| AI Service | FastAPI | Internal service boundary for GPU-backed training and inference orchestration |
-| Training | PyTorch + Ultralytics YOLO | Multi-seed experimentation, validation-based selection, checkpoint generation |
-| Inference | YOLO + SAHI | High-resolution tiling strategy for small-object detection |
-| Experiment Tracking | Run manifests; a tracker as metadata only | ClearML in the initial iteration, withdrawn later (ADR-012); local artifacts remain the source of truth |
-| Database | PostgreSQL or equivalent relational DB | User data, project metadata, configuration records, request history |
-| GPU Execution | CUDA + PyTorch | DataParallel training across two GPUs; single-GPU fallback; DDP evaluated and deferred |
-| Containerization | Docker Compose | Controlled internal deployment; Kubernetes is optional and only justified by operational scale or availability requirements |
-| Storage | Shared volumes | Practical artifact exchange for internal workflows; future storage abstraction is optional if governance becomes difficult |
-| Research Workflow | Jupyter Notebook | Auxiliary experimentation and validation workflow, not the primary production execution path |
-| Synthetic Data | SAM + OpenCV + Pillow + NumPy | Dataset engineering workflow for object extraction, synthetic composition, and annotation export |
+| Web | Django + Django REST Framework | Request validation, user workflows, database-backed metadata |
+| AI service | FastAPI | Internal service boundary for GPU-backed training and inference |
+| Training | PyTorch + Ultralytics YOLO | Multi-seed experimentation, validation-based selection, checkpoints |
+| Inference | YOLO + SAHI | High-resolution tiling for small-object detection |
+| Experiment tracking | Run manifests; a tracker as metadata only | ClearML in the initial iteration, withdrawn later (ADR-012); local artifacts remain the source of truth |
+| Database | PostgreSQL or equivalent | User data, project metadata, configuration, request history |
+| GPU execution | CUDA + PyTorch | DataParallel across two GPUs; single-GPU fallback; DDP deferred |
+| Containerization | Docker Compose | Controlled internal deployment; Kubernetes optional and evidence-gated |
+| Storage | Shared volumes | Practical artifact exchange; object storage only if governance becomes hard |
+| Annotation and datasets | CVAT, Roboflow | Dataset preparation feeding the configuration layer |
+| Research workflow | Jupyter Notebook | Auxiliary experimentation, not the production execution path |
+| Synthetic data | SAM + OpenCV + Pillow + NumPy | Object extraction, synthetic composition, annotation export |
 
-**Integration Philosophy:** keep concerns separated. Use HTTP between services, a relational database for metadata, and artifact storage for generated files. Add queues, workers, object storage, or orchestration only when operational evidence justifies the complexity.
-
----
-
-## What This Repository Demonstrates
-
-### A. System Design Thinking
-
-- **Responsibility separation:** Django handles web orchestration; FastAPI isolates GPU-heavy AI processing.
-- **Failure mode analysis:** the architecture documents known failure categories and mitigation strategies.
-- **Synchronous-first pragmatism:** controlled internal workloads can start with direct HTTP-based orchestration when concurrency is low and long-running jobs are expected.
-- **Scale-by-evidence philosophy:** queues, workers, and Kubernetes are optional responses to real bottlenecks, not default requirements.
-
-### B. AI/ML Architecture Knowledge
-
-- **Multi-seed experimentation:** training can be evaluated across multiple runs for more robust model selection.
-- **Model selection logic:** validation metrics drive model reference updates rather than manual checkpoint selection.
-- **High-resolution inference:** SAHI tiling trades compute for better small-object detection in large images.
-- **GPU resource management:** CUDA context handling, memory cleanup between seeds, and a documented path from DataParallel to DDP.
-- **Experiment tracking:** metric logging and lineage support reproducibility and debugging.
-
-### C. Backend Integration & Full-Stack Patterns
-
-- **Web-to-compute communication:** synchronous HTTP is sufficient for controlled internal workflows, with an optional path toward queues if operational pain appears.
-- **Shared storage orchestration:** Docker volumes or equivalent shared storage simplify artifact exchange in internal deployments.
-- **Database and artifact separation:** relational metadata remains separate from ML outputs and generated files.
-- **Configuration management:** dataset and training configuration are represented as structured metadata before execution.
-- **Error propagation:** infrastructure, GPU, storage, and validation failures are mapped to operationally meaningful categories.
-
-### D. Production Evolution Thinking
-
-- **Fit-for-purpose deployment:** avoids Kubernetes, distributed queues, and object storage until the operational context actually requires them.
-- **Reliability-first roadmap:** prioritizes preflight validation, job status, logs, storage checks, GPU checks, and artifact manifests before scale-out.
-- **Cost awareness:** complexity is added only when real constraints appear.
-
-### E. Responsible Public Documentation
-
-- **Anonymized architecture:** no customer, institution, field, or private project identifiers.
-- **Public-safe examples:** placeholders are used for paths, payloads, classes, metrics, and outputs.
-- **Educational value preserved:** architecture patterns are reusable while private implementation details remain excluded.
-- **Security discipline:** publication guidance and sanitization checklists are part of the repository.
-
-### Not Demonstrated
-
-- ❌ Public SaaS product architecture.
-- ❌ High-throughput multi-tenant model serving.
-- ❌ Current Kubernetes orchestration requirement.
-- ❌ Multi-region or high-availability architecture for external customers.
-- ❌ Source-code-level implementation of the private system.
-- ❌ Fully automated enterprise MLOps platform.
+**Integration philosophy:** keep concerns separated. HTTP between services, a relational database
+for metadata, artifact storage for generated files. Add queues, workers, object storage or
+orchestration only when operational evidence justifies the complexity.
 
 ---
 
 ## The Questions This Architecture Answers
 
-The reasoning is spread across the documents below. If you want the argument rather than the
-specification, these are the questions worth reading for, each with where it is answered:
+If you want the argument rather than the specification, these are the questions worth reading for:
 
 | Question | Where |
 |---|---|
@@ -403,407 +194,117 @@ specification, these are the questions worth reading for, each with where it is 
 | How was the model-reference race condition closed? | [`docs/evolution/02-model-registry-and-promotion.md`](./docs/evolution/02-model-registry-and-promotion.md), [`ADR-010`](./docs/architecture/adr/ADR-010-transactional-model-registry.md) |
 | How is a platform like this tested without a GPU? | [`docs/evolution/06-testing-and-ci-strategy.md`](./docs/evolution/06-testing-and-ci-strategy.md) |
 
----
-
-## System Flow Summary
-
-### Training Flow
-
-1. A user submits a training request through the Django web layer.
-2. Django validates metadata and prepares a public-safe training request structure.
-3. FastAPI receives the request and delegates to the training runtime.
-4. Training executes on the available GPU runtime.
-5. Validation metrics and checkpoints are persisted as artifacts.
-6. The selected model reference and run metadata are recorded.
-7. Django exposes the result summary for review.
-
-### Continuous Improvement Training Flow
-
-1. New data or configuration is submitted for incremental training.
-2. The previous model reference is resolved.
-3. Training executes using the configured baseline.
-4. New metrics are compared against the historical reference.
-5. The model reference is updated only if the improvement rule is satisfied.
-6. Tracking metadata and artifacts are recorded.
-
-### Inference Flow
-
-1. A user submits images or a batch inference request.
-2. FastAPI receives and validates the request.
-3. High-resolution images are processed using direct YOLO inference or SAHI tiling.
-4. Tile-level detections are reconstructed into image-level outputs.
-5. Output metadata, previews, and artifacts are persisted.
-6. Django renders or links the generated results.
-
-### Artifact Exposure Flow
-
-1. The AI service writes artifacts to shared storage.
-2. The web layer resolves artifacts through its configured media or artifact access path.
-3. The UI displays previews, summaries, and downloadable outputs.
-4. Error states are surfaced with operational context.
-
----
-
-## Architectural Evolution Path
-
-This repository demonstrates **fit-for-purpose growth thinking**. The architecture is designed for a controlled internal deployment context, not for a public SaaS or large-scale multi-tenant platform.
-
-The goal is not to add distributed infrastructure by default. The goal is to preserve reliability, traceability, GPU workload isolation, and operational simplicity for a limited group of users running scheduled training, inference, validation, or research-oriented workflows.
-
-### Current State: Internal Production-Oriented Architecture
-
-- Django web layer for configuration, request submission, metadata, and result visualization.
-- FastAPI AI service for GPU-backed training, validation, and inference orchestration.
-- Synchronous HTTP request/response between Django and the AI service.
-- Shared artifact storage for model checkpoints, inference outputs, previews, and generated files.
-- GPU-backed execution with DataParallel across two GPUs, with training runs executed sequentially across seeds.
-- Experiment tracking and metric logging.
-- Basic error handling and operational diagnostics.
-
-This design can be sufficient for a controlled internal platform when workload volume is predictable, users are limited, and long-running jobs are expected.
-
-### Priority 1: Operational Reliability
-
-Add these improvements before considering distributed infrastructure (the checklist under
-[Production Evolution Roadmap](#production-evolution-roadmap) marks which were realized):
-
-- preflight validation for datasets, model checkpoints, output directories, storage mounts, and GPU availability;
-- explicit job status records;
-- structured logs with correlation IDs;
-- clearer user-facing error states;
-- storage health checks;
-- GPU memory and availability checks;
-- artifact manifests for generated outputs;
-- backup policy for important datasets, models, and results.
-
-### Priority 2: Controlled Background Execution
-
-Add a lightweight queue only if synchronous execution becomes operationally painful.
-
-Possible triggers:
-
-- users experience repeated HTTP timeouts;
-- more than one long-running job is frequently submitted at the same time;
-- training and inference jobs compete for the same GPU resources;
-- operators need cancellation, retry, progress tracking, or resumability.
-
-Potential additions:
-
-- lightweight queue;
-- single GPU worker;
-- job status polling;
-- controlled retry policy;
-- GPU resource locking.
-
-### Priority 3: Artifact and Model Governance
-
-Improve traceability before scaling infrastructure:
-
-- database-backed model reference tracking;
-- dataset version registry;
-- artifact manifest per execution;
-- immutable run identifiers;
-- retention policy for large outputs;
-- clear separation between raw data, generated outputs, and publishable artifacts.
-
-### Optional Scale-Out Path
-
-Distributed workers, Kubernetes, and object storage are optional future improvements, not mandatory next steps.
-
-They are justified only if the operational context changes, for example:
-
-- multiple concurrent users submit long-running jobs regularly;
-- artifact storage exceeds local operational capacity;
-- uptime requirements become business-critical;
-- deployment must span multiple servers or locations;
-- manual operation becomes too costly or unreliable.
-
-Potential additions:
-
-- GPU worker pool;
-- object storage such as S3, GCS, MinIO, or equivalent;
-- Kubernetes or another orchestrator;
-- centralized monitoring and alerting;
-- distributed tracing.
-
-**Philosophy:** Scale by operational evidence, not by default. For a controlled internal AI platform, simplicity, reliability, and traceability are more valuable than premature distributed infrastructure.
-
-For detailed roadmap reasoning, see [`docs/architecture/16-production-evolution-roadmap.md`](./docs/architecture/16-production-evolution-roadmap.md).
-
----
-
-## Repository Structure
-
-```text
-yolo-training-inference-orchestration-architecture/
-├── README.md                        Argument, start-here table, index
-├── CONTRIBUTING.md                  Contribution rules and the sanitization gate
-├── LICENSE                          MIT, for the scripts
-├── LICENSE-DOCS                     CC BY 4.0, for prose, diagrams and images
-├── docs/
-│   ├── README.md                    Index of the docs folder
-│   ├── architecture/                01..21 architecture documents (initial iteration)
-│   │   └── adr/                     ADR-001..008 (initial), ADR-009..013 (revision)
-│   ├── evolution/                   00..07: what a later revision did when the triggers fired
-│   ├── operations/                  README.md only: the operational calendar was retired
-│   └── portfolio/                   Resume, LinkedIn and interview material
-├── diagrams/                        Mermaid sources (.mmd)
-├── assets/
-│   ├── src/                         Generated SVG sources (do not edit)
-│   ├── diagrams/                    Rendered PNG diagrams 01..11
-│   └── poster/                      Two rendered posters
-├── examples/
-│   ├── api-payloads/                Conceptual request payloads
-│   ├── artifact-manifests/          Example artifact manifests
-│   └── docker/                      Conceptual compose file and example env
-├── scripts/                         validate-sanitization.sh (gate), build_visuals.py, render-visuals.sh
-└── .github/                         Safety checklist, audits, critical review
-```
-
-> Architecture documents are numbered `01` to `21`. The numbering is the reading order; gaps and duplicates are treated as defects.
-
----
-
-## Documentation Index
-
-### Core Architecture
-
-| Document | Purpose |
-|----------|---------|
-| `01-context-and-problem.md` | Problem statement, context, and design motivation |
-| `02-system-architecture.md` | High-level system architecture and layer boundaries |
-| `03-component-responsibilities.md` | Responsibilities of each component |
-| `04-system-flow.md` | Training, inference, configuration, and artifact flows |
-| `05-api-integration-contracts.md` | Conceptual API payloads and integration contracts |
-| `06-docker-runtime-architecture.md` | Container and runtime architecture |
-| `07-shared-storage-and-artifacts.md` | Artifact storage, path mapping, and risks |
-| `08-yolo-dataset-configuration-management.md` | Dataset configuration and YAML generation layer |
-| `09-yolo-training-engine.md` | YOLO training runtime and validation strategy |
-| `10-continuous-improvement-training.md` | Incremental training and model reference update logic |
-| `11-sahi-inference-engine.md` | High-resolution SAHI inference pattern |
-| `12-clearml-experiment-tracking.md` | Experiment tracking and lineage |
-| `13-gpu-resource-management.md` | GPU runtime, memory, and multi-GPU considerations |
-| `14-error-handling-and-fallbacks.md` | Error categories and mitigation patterns |
-| `15-limitations-and-risks.md` | Current risks and limitations |
-| `16-production-evolution-roadmap.md` | Internal platform evolution roadmap |
-| `17-public-release-sanitization.md` | Public-safe documentation rules |
-| `18-technical-responsibilities.md` | Portfolio-safe responsibilities |
-| `19-inference-result-synchronization.md` | Synchronizing inference results back to the web layer |
-| `20-deployment-cost-strategy.md` | Local, cloud, and hybrid deployment cost reasoning |
-| `21-synthetic-dataset-generation-pipeline.md` | Synthetic dataset generation workflow |
-
-### Evolution: a later revision of the same architecture
-
-The initial iteration confessed its limitations and named the triggers that would justify
-change. `docs/evolution/` records what a later revision did when those triggers fired: no queue
-and no Kubernetes, but job records, a registry, contracts, tests, metrology and an operator
-console. Training left the platform in that revision and its GPU path was not validated; both
-are stated in the first document.
-
-| Document | Purpose |
-|----------|---------|
-| [`00-what-came-next.md`](./docs/evolution/00-what-came-next.md) | What stayed, what changed, what left the platform, what was not validated |
-| [`01-submit-poll-execution.md`](./docs/evolution/01-submit-poll-execution.md) | Submit returns a run identifier; in-process pools; durable job records; no broker |
-| [`02-model-registry-and-promotion.md`](./docs/evolution/02-model-registry-and-promotion.md) | Versions with fingerprints, human promotion in one transaction, rollback |
-| [`03-service-contracts.md`](./docs/evolution/03-service-contracts.md) | One error envelope, one run manifest, authentication, same-path invariant |
-| [`04-detection-metrology.md`](./docs/evolution/04-detection-metrology.md) | From pixel boxes to physical size, foci, coverage and density, with gates |
-| [`05-operator-console.md`](./docs/evolution/05-operator-console.md) | Batches with progress, GeoJSON on an interactive map, localization with a guard test |
-| [`06-testing-and-ci-strategy.md`](./docs/evolution/06-testing-and-ci-strategy.md) | Mock/real runtime seam, contract tests, CI on a throwaway Compose stack |
-| [`07-roadmap-realized.md`](./docs/evolution/07-roadmap-realized.md) | The roadmap of `16`, trigger by trigger: realized, not triggered, discarded |
-
-Decision records of the revision: [ADR-009](./docs/architecture/adr/ADR-009-submit-poll-in-process-execution.md) execution,
-[ADR-010](./docs/architecture/adr/ADR-010-transactional-model-registry.md) registry,
-[ADR-011](./docs/architecture/adr/ADR-011-single-mount-path-invariant.md) storage path,
-[ADR-012](./docs/architecture/adr/ADR-012-experiment-tracking-revised.md) tracking,
-[ADR-013](./docs/architecture/adr/ADR-013-metrology-in-the-ai-service.md) metrology placement.
-
-### Companion repository
-
-The script-level pipelines this platform orchestrates — YOLO and SAHI inference with geospatial
-export, COCO evaluation, video tracking, dataset validation and benchmarking, and the
-single-GPU / DataParallel / DDP training runtime — are documented in
-[`agridrone-vision-evaluation-pipeline`](https://github.com/maaferna/agridrone-vision-evaluation-pipeline).
-This repository covers the orchestration around them and links there rather than repeating them.
-
----
-
-## Current Maturity Level
-
-**Internal Production-Oriented / Advanced Internal Platform**
-
-The items below describe the initial iteration; [`docs/evolution/`](./docs/evolution/00-what-came-next.md) records what a later revision did about each warning.
-
-- ✅ Core orchestration pattern documented.
-- ✅ Django/FastAPI separation documented.
-- ✅ GPU training and inference workflows represented.
-- ✅ Experiment tracking and artifact lineage represented.
-- ✅ Dataset configuration and research workflows documented.
-- ✅ Public-safe sanitization policy included.
-- ⚠️ Long-running tasks are synchronous unless future background execution is added.
-- ⚠️ Shared artifact storage requires operational discipline.
-- ⚠️ File-based model references can require stronger governance if concurrency increases.
-- ⚠️ Observability is basic and should focus on logs, job status, GPU/storage checks, and artifact manifests.
-- ❌ Not designed as a public SaaS or high-throughput multi-tenant platform.
-
----
-
-## Key Limitations
-
-> Limitations of the initial iteration. Their outcome is in [`docs/evolution/07-roadmap-realized.md`](./docs/evolution/07-roadmap-realized.md).
-
-### Current State
-
-- No formal job queue in the documented current architecture.
-- Long-running tasks may execute synchronously through the AI service.
-- Shared filesystem coupling can create operational fragility.
-- Lightweight model references may not be sufficient under high concurrency.
-- Observability is limited compared with enterprise distributed systems.
-- Retry, cancellation, and progress tracking may require future background execution.
-- Kubernetes, object storage, and worker pools are optional, not current requirements.
-
-### Why These Exist
-
-These are intentional trade-offs for a controlled internal platform. The architecture prioritizes simplicity, reliability, traceability, and usability for a limited user base over premature distributed infrastructure.
+**Flows in one line each**, detailed in [`04-system-flow.md`](./docs/architecture/04-system-flow.md):
+a **training** request is validated by the web layer, delegated to the AI service, executed on the
+GPU runtime, and returns metrics and a checkpoint; **continuous improvement** resolves the previous
+model reference, retrains, and updates it only if the improvement rule holds; **inference** runs
+direct or tiled, reconstructs tile detections into image-level outputs and persists artifacts;
+**artifact exposure** has the AI service write to shared storage and the web layer resolve and
+render what the manifest lists.
 
 ---
 
 ## Production Evolution Roadmap
 
-Recommended next steps focus on internal operational reliability:
+Recommended next steps, ordered by return at this scale rather than by ambition. Items marked
+realized were addressed in a later revision; the trigger-by-trigger ledger is in
+[`07-roadmap-realized.md`](./docs/evolution/07-roadmap-realized.md). Numbers and statuses here
+are illustrative, as everywhere in this repository.
 
-### Priority 1: Reliability
+**Priority 1 · Reliability**
 
-- [ ] Add preflight validation for datasets, storage, models, outputs, and GPU availability.
-- [x] Add explicit job status records. *Realized in a later revision; see [`07-roadmap-realized.md`](./docs/evolution/07-roadmap-realized.md).*
-- [ ] Add structured logs with correlation IDs.
-- [x] Add artifact manifests for generated outputs. *Realized.*
-- [ ] Add storage and GPU health checks.
-- [ ] Define backup and retention policies.
+- [ ] Preflight validation for datasets, storage, models, outputs and GPU availability.
+- [x] Explicit job status records. *Realized.*
+- [ ] Structured logs with correlation identifiers.
+- [x] Artifact manifests for generated outputs. *Realized.*
+- [ ] Storage and GPU health checks.
+- [ ] Backup and retention policies.
 
-### Priority 2: Controlled Background Execution
+**Priority 2 · Controlled background execution**
 
-- [x] ~~Add a lightweight queue~~ Timeouts arrived; the response was submit/poll on in-process pools, **not a queue**. *Realized differently.*
-- [ ] Add a single GPU worker or controlled worker process.
-- [ ] Add job cancellation and retry policy.
-- [x] Add progress/status polling. *Realized.*
-- [ ] Add GPU resource locking.
+- [x] ~~A lightweight queue~~ Timeouts arrived; the response was submit/poll on in-process pools, **not a queue**. *Realized differently.*
+- [ ] A single GPU worker or admission lane — **the open trigger**: jobs can still compete for the device.
+- [ ] Job cancellation and retry policy.
+- [x] Progress and status polling. *Realized.*
 
-### Priority 3: Governance
+**Priority 3 · Governance**
 
-- [x] Add a database-backed model reference registry if file-based references become risky. *Realized; ADR-010.*
-- [ ] Add dataset version tracking.
-- [ ] Link training runs to dataset configuration versions.
-- [x] Validate generated artifacts before visualization or downstream use. *Realized through the manifest contract.*
+- [x] A database-backed model reference registry. *Realized; ADR-010.*
+- [ ] Dataset version tracking, linked to training runs.
+- [x] Validate generated artifacts before visualization. *Realized through the manifest contract.*
 
-### Optional Scale-Out
-
-- [ ] Add distributed workers only if concurrent long-running workloads exceed current capacity.
-- [ ] Add object storage only if local storage becomes hard to govern.
-- [ ] Add Kubernetes only if multi-server deployment, uptime requirements, or operational complexity justify it.
-
-For details, see [`docs/architecture/16-production-evolution-roadmap.md`](./docs/architecture/16-production-evolution-roadmap.md).
+**Optional scale-out**, none of which was triggered: distributed workers, object storage,
+Kubernetes. Each waits for concurrent long-running load, storage that is hard to govern locally,
+or an uptime commitment. Full reasoning in
+[`16-production-evolution-roadmap.md`](./docs/architecture/16-production-evolution-roadmap.md).
 
 ---
 
-## Confidentiality Policy
+## Documentation index
 
-**This repository is designed to be publicly shareable while protecting private IP and sensitive data.**
+The canonical map, with a one-line purpose per document, is
+[`docs/README.md`](./docs/README.md). The shape of it:
 
-### Never Commit
+```text
+docs/
+├── architecture/     01..21, the initial iteration; adr/ holds ADR-001..008 (initial) and 009..013 (revision)
+├── evolution/        00..07, what a later revision did when the triggers fired
+├── operations/       retired operational calendar; README explains where its content went
+└── portfolio/        resume, profile and interview material
+assets/               generated diagrams and posters · diagrams/ Mermaid sources · examples/ payloads and manifests
+scripts/              validate-sanitization.sh (public-safe gate), build_visuals.py, render-visuals.sh
+```
 
-- ❌ source code from the private project;
-- ❌ real datasets, images, labels, masks, shapefiles, GeoJSON, or generated outputs;
-- ❌ trained model weights or checkpoints;
-- ❌ real metrics or experimental results;
-- ❌ real coordinates or field identifiers;
-- ❌ client, institution, farm, field, or researcher names;
-- ❌ credentials, API keys, tokens, or secrets;
-- ❌ absolute local paths or environment-specific configuration;
-- ❌ workspace identifiers from external tools;
-- ❌ screenshots or visual outputs from private data.
+**Architecture, `01` to `21`** — the reading order; gaps and duplicates are treated as defects.
+Problem and context (`01`), system architecture (`02`), component responsibilities (`03`), flows
+(`04`), API contracts (`05`), Docker runtime (`06`), shared storage and artifacts (`07`), dataset
+configuration (`08`), training engine (`09`), continuous improvement (`10`), SAHI inference (`11`),
+experiment tracking (`12`), GPU resource management (`13`), error handling (`14`), limitations and
+risks (`15`), evolution roadmap (`16`), sanitization policy (`17`), technical responsibilities
+(`18`), result synchronization (`19`), deployment and cost (`20`), synthetic datasets (`21`).
 
-### Always Use
+**Evolution** — the initial iteration confessed its limitations and named the triggers that would
+justify change. This section records what a later revision did when they fired.
 
-- ✅ placeholder values;
-- ✅ anonymized examples;
-- ✅ generic architecture diagrams;
-- ✅ illustrative payloads;
-- ✅ public-safe conceptual descriptions;
-- ✅ documentation-only examples.
+| Document | Purpose |
+|----------|---------|
+| [`00-what-came-next.md`](./docs/evolution/00-what-came-next.md) | What stayed, what changed, what left the platform, what was not validated |
+| [`01-submit-poll-execution.md`](./docs/evolution/01-submit-poll-execution.md) | Run identifier on submit, in-process pools, durable job records, no broker |
+| [`02-model-registry-and-promotion.md`](./docs/evolution/02-model-registry-and-promotion.md) | Versions with fingerprints, human promotion in one transaction, rollback |
+| [`03-service-contracts.md`](./docs/evolution/03-service-contracts.md) | One error envelope, one run manifest, authentication, same-path invariant |
+| [`04-detection-metrology.md`](./docs/evolution/04-detection-metrology.md) | From pixel boxes to physical size, foci, coverage and density, with gates |
+| [`05-operator-console.md`](./docs/evolution/05-operator-console.md) | Batches with progress, GeoJSON on an interactive map, localization guard test |
+| [`06-testing-and-ci-strategy.md`](./docs/evolution/06-testing-and-ci-strategy.md) | Mock/real runtime seam, contract tests, CI on a throwaway Compose stack |
+| [`07-roadmap-realized.md`](./docs/evolution/07-roadmap-realized.md) | The roadmap of `16`, trigger by trigger: realized, not triggered, discarded |
 
----
+Decision records of the revision: [ADR-009](./docs/architecture/adr/ADR-009-submit-poll-in-process-execution.md) execution ·
+[ADR-010](./docs/architecture/adr/ADR-010-transactional-model-registry.md) registry ·
+[ADR-011](./docs/architecture/adr/ADR-011-single-mount-path-invariant.md) storage path ·
+[ADR-012](./docs/architecture/adr/ADR-012-experiment-tracking-revised.md) tracking ·
+[ADR-013](./docs/architecture/adr/ADR-013-metrology-in-the-ai-service.md) metrology placement.
+The [ADR index](./docs/architecture/adr/README.md) says which supersede which.
 
-## Suggested Reading Path
-
-### Recruiters / Portfolio Reviewers
-
-1. README.md
-2. `docs/architecture/01-context-and-problem.md`
-3. `docs/architecture/03-component-responsibilities.md`
-4. `docs/architecture/18-technical-responsibilities.md`
-
-### Backend / Platform Engineers
-
-1. `docs/architecture/02-system-architecture.md`
-2. `docs/architecture/04-system-flow.md`
-3. `docs/architecture/05-api-integration-contracts.md`
-4. `docs/architecture/06-docker-runtime-architecture.md`
-5. `docs/architecture/16-production-evolution-roadmap.md`
-
-### ML / Computer Vision Engineers
-
-1. `docs/architecture/09-yolo-training-engine.md`
-2. `docs/architecture/10-continuous-improvement-training.md`
-3. `docs/architecture/11-sahi-inference-engine.md`
-4. `docs/architecture/13-gpu-resource-management.md`
-5. `docs/architecture/21-synthetic-dataset-generation-pipeline.md`
-
-### Architecture Reviewers
-
-1. `docs/architecture/02-system-architecture.md`
-2. `docs/architecture/14-error-handling-and-fallbacks.md`
-3. `docs/architecture/15-limitations-and-risks.md`
-4. `docs/architecture/16-production-evolution-roadmap.md`
+**Companion repository** — the script-level pipelines this platform orchestrates (YOLO and SAHI
+inference with geospatial export, COCO evaluation, video tracking, dataset validation and
+benchmarking, and the training runtime itself) are documented in
+[`agridrone-vision-evaluation-pipeline`](https://github.com/maaferna/agridrone-vision-evaluation-pipeline).
+That repository answers *how a run is computed and evaluated*; this one answers *how runs are
+requested, tracked, stored and governed*. Neither repeats the other.
 
 ---
 
-## Contributing
+## Contributing and licence
 
-This is a documentation and architecture reference repository. Contributions should:
-
-- preserve public-safe documentation standards;
-- avoid implementation leakage;
-- use anonymized examples;
-- keep current-state and future-state architecture clearly separated;
-- avoid overstating production maturity;
-- align roadmap items with operational evidence, not speculation.
-
----
-
-## License
-
-Two licences, because this repository holds two kinds of thing:
+Contributions preserve the public-safe standard, avoid implementation leakage, keep the initial
+iteration and the later revision clearly separated, and align roadmap items with operational
+evidence rather than speculation. The workflow and the validation gate are in
+[`CONTRIBUTING.md`](./CONTRIBUTING.md).
 
 | What | Licence | File |
 |---|---|---|
-| Documentation, diagrams and generated images — `docs/`, `diagrams/`, `assets/`, `README.md`, `CONTRIBUTING.md` | CC BY 4.0 | [`LICENSE-DOCS`](./LICENSE-DOCS) |
+| Documentation, diagrams and generated images | CC BY 4.0 | [`LICENSE-DOCS`](./LICENSE-DOCS) |
 | Executable content — `scripts/` | MIT | [`LICENSE`](./LICENSE) |
 
-CC BY 4.0 is the conventional fit for prose and diagrams; MIT's terms are written around
-"the Software" and sit awkwardly on an image. Reuse of the diagrams is welcome under attribution:
-credit this repository and link back to it.
-
-All numeric values in the documentation and diagrams are illustrative, not measured results.
-
----
-
-## Questions & Feedback
-
-For questions about architecture patterns, design decisions, or system integration approaches documented here, please refer to the relevant documentation files or open an issue with a specific architecture question.
-
-**Important:** This is a documentation repository, not a support channel for the private production system.
-
----
-
-**Repository Type:** Architecture Documentation  
-**Status:** Public-Safe Release Candidate
+Reuse of the diagrams is welcome under attribution: credit this repository and link back to it.
+This is a documentation repository, not a support channel for any private system; open an issue
+with a specific architecture question.

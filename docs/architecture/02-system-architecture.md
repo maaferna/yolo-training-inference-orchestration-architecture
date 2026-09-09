@@ -457,6 +457,17 @@ Ubuntu is the preferred runtime baseline for this architecture because GPU-heavy
 
 Other operating systems or Linux distributions may work, but they can introduce additional runtime friction. Ubuntu provides a more predictable and commonly supported baseline for GPU-backed computer vision workloads.
 
+During development, alternatives were considered or tested. Windows was workable for simple
+single-device execution, but multi-GPU and DDP-oriented workflows introduced additional
+operational complexity around multiprocessing behavior. Other Linux distributions can work at the
+cost of more manual dependency resolution across driver, CUDA, PyTorch and packaging versions.
+
+Ubuntu was selected as the preferred baseline for seven concrete reasons: NVIDIA driver
+installation, CUDA toolkit compatibility, PyTorch GPU execution, Docker-based GPU workloads,
+multi-GPU training experiments, Linux-native filesystem and process behavior, and reproducible
+deployment on GPU workstations or servers. This does not make Ubuntu the only valid option; it
+makes it the baseline that reduces runtime friction for this class of workload.
+
 ### Constraints
 
 - GPU memory is finite and must be actively managed.

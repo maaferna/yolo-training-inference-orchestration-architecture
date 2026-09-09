@@ -133,7 +133,8 @@ You can reference specific ADRs when discussing:
 | Document | Purpose | When to Read |
 |----------|---------|--------------|
 | **ADR (this directory)** | Document architectural decisions | When you want to understand the "why" |
-| **../../../README.md** | Argument, start-here table and full index | When you want the complete story |
+| **../../../README.md** | Argument, start-here table and reading paths | When you want the complete story |
+| **../../README.md** | Canonical index, one line per document | When you are looking for a specific document |
 | **../02-system-architecture.md** | Technical architecture diagram | When you want the baseline |
 | **../16-production-evolution-roadmap.md** | Evidence-triggered evolution path | When you want to understand growth |
 

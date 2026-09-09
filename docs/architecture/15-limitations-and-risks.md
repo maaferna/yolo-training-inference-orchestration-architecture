@@ -209,23 +209,25 @@ Job 2: Inference ❌ (queued, blocked)    Queue
 Result: Sequential execution, no parallelism
 ```
 
-### When Bottleneck Appears
+### When the Bottleneck Appears
 
-- > 2 concurrent long jobs
-- Peak usage times with high request load
-- Multi-user scenarios
+The trigger is contention on the device, not a fixed job count: two long-running jobs that both
+need the GPU at the same time, routinely rather than occasionally. Peak usage and multi-user
+submission make it more likely but are not the condition themselves.
 
-### Solution: Multiple GPU Workers
+### The Response, in Order
 
-```
-Future: Multi-instance with load balancing
+1. **Admission control on one device.** A single lane for any job that touches the GPU, so
+   concurrent submissions serialize instead of competing for memory. This is the smallest change
+   that removes the failure and the one the roadmap names first.
+2. **A controlled worker process**, only if admission control is not enough because the service
+   process itself needs isolation from the runtime.
+3. **More devices or more hosts** — and only then does dispatch across workers have anything to
+   dispatch to, which is the point at which a broker starts to earn its cost.
 
-Load Balancer (nginx)
-    ├→ FastAPI Worker 0 (GPU 0) ━━━━━ [Training]
-    ├→ FastAPI Worker 1 (GPU 1) ━━━ [Inference]
-    ├→ FastAPI Worker 2 (GPU 2) ━ [CI Training]
-    └→ FastAPI Worker 3 (GPU 3)   [Ready]
-```
+Load balancing across several GPU workers is not the answer to this bottleneck at this scale: it
+presumes hardware and an operational burden the context does not have. See
+`16-production-evolution-roadmap.md`.
 
 ---
 
@@ -246,29 +248,16 @@ Currently, users must:
 - ⚠️ No SLA guarantees
 - ⚠️ No preemption (can't prioritize urgent jobs)
 
-### Future: Kubernetes Scheduler
+### What Scheduling Would Require
 
-```yaml
-# Future: Kubernetes CronJob for CI training
+Scheduling is a non-goal here, and naming a scheduler would misrepresent the problem. What is
+missing is narrower and cheaper: a way to say *this job runs before that one*, and a way to run a
+recurring job unattended. At this scale the first is admission control with a queue discipline
+inside the service, and the second is the host's own timer facility.
 
-apiVersion: batch/v1
-kind: CronJob
-metadata:
-  name: ci-training-daily
-spec:
-  schedule: "0 2 * * *"  # 2 AM daily
-  jobTemplate:
-    spec:
-      template:
-        spec:
-          containers:
-          - name: ci-training
-            image: project_fastapi:latest
-            resources:
-              requests:
-                nvidia.com/gpu: 1
-          restartPolicy: OnFailure
-```
+An external orchestrator becomes the right answer only when several hosts must be scheduled
+together, which is the trigger `16-production-evolution-roadmap.md` names for it. Until then it
+would add a control plane to operate, monitor and secure for a workload that one node absorbs.
 
 ---
 
@@ -359,7 +348,7 @@ COMMIT;  -- All or nothing
 
 **Available**:
 - ✓ Application logs (console output)
-- ✓ ClearML experiment tracking (metadata)
+- ✓ Experiment metadata through the tracking layer of the iteration in question
 - ✓ Local error files (in shared storage)
 
 **Missing**:
@@ -766,10 +755,14 @@ For comprehensive documentation, see [**docs/21-synthetic-dataset-generation-pip
 
 ### Path to Scale
 
-**<10 concurrent jobs**: Current architecture sufficient
-**10-50 concurrent**: Add job queue + 2-4 GPU workers
-**50-500 concurrent**: Multi-node Kubernetes + object storage
-**500+**: Autoscaling Kubernetes + serverless inference
+There is no job-count ladder to climb, and quoting one would invent numbers this repository does
+not have. The path is by trigger, in this order: admission control when jobs contend for the
+device; durable job records and polling when failures become hard to explain (realized — see
+`../evolution/01-submit-poll-execution.md`); a broker when retry, cancellation and multi-worker
+dispatch become requirements; object storage when local storage becomes hard to govern; an
+orchestrator when more than one host must be scheduled together.
+
+Each step is justified by evidence from operation, never by an anticipated concurrency figure.
 
 ---
 
